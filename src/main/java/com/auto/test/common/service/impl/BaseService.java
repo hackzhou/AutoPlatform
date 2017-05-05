@@ -7,7 +7,6 @@ import com.auto.test.common.dao.IBaseDao;
 import com.auto.test.common.service.IBaseService;
 import com.auto.test.common.exception.BusinessException;
 
-
 public class BaseService implements IBaseService {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

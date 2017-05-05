@@ -1,6 +1,7 @@
 package com.auto.test.common.exception;
 
 public class BusinessException extends RuntimeException {
+	
 	private static final long serialVersionUID = 1307184728982833217L;
 
 	public BusinessException() {

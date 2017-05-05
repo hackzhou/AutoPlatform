@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import com.auto.test.common.dao.IBaseDao;
 
-
 public class BaseDao extends HibernateDaoSupport implements IBaseDao {
 
 	@Override

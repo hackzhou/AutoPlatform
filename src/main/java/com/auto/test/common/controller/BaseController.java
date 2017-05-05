@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.entity.TUser;
 
-
 public class BaseController implements MessageSourceAware {
 
 	protected MessageSource messageSource;
