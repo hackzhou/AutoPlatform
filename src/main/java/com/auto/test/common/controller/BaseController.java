@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.config.GlobalValueConfig;
-import com.auto.test.entity.TUser;
+import com.auto.test.entity.AUser;
 
 public class BaseController implements MessageSourceAware {
 
@@ -114,8 +114,8 @@ public class BaseController implements MessageSourceAware {
 		return start < 0 ? 0 : start;
 	}
 
-	public TUser getCurrentUser(HttpServletRequest request) {
-		TUser user = (TUser) request.getSession().getAttribute("user");
+	public AUser getCurrentUser(HttpServletRequest request) {
+		AUser user = (AUser) request.getSession().getAttribute("user");
 		return user;
 	}
 

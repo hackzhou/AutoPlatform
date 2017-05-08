@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_user")
-public class TUser implements Serializable{
+@Table(name="a_user")
+public class AUser implements Serializable{
 	private static final long serialVersionUID = -1008125737378657440L;
 
 	@Id
@@ -34,7 +34,7 @@ public class TUser implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
-	public TUser() {
+	public AUser() {
 		super();
 	}
 	
@@ -77,7 +77,7 @@ public class TUser implements Serializable{
 
 	@Override
 	public String toString() {
-		return "TUser [id=" + id + ", username=" + username + ", password=" + password + ", createTime=" + createTime
+		return "AUser [id=" + id + ", username=" + username + ", password=" + password + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 

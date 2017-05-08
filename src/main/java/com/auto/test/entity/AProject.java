@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_project")
-public class TProject implements Serializable{
+@Table(name="a_project")
+public class AProject implements Serializable{
 	private static final long serialVersionUID = -6328575654769126042L;
 
 	@Id
@@ -31,7 +31,7 @@ public class TProject implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
-	public TProject() {
+	public AProject() {
 		super();
 	}
 
@@ -68,7 +68,7 @@ public class TProject implements Serializable{
 
 	@Override
 	public String toString() {
-		return "TProject [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
+		return "AProject [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
 				+ ", memo=" + memo + "]";
 	}
 	
