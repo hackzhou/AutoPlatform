@@ -149,7 +149,7 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="myTable" class="table table-striped">
+            <table id="projectTable" class="table table-striped">
               <thead>
                 <tr>
                   <th>No</th>
@@ -166,7 +166,7 @@
 	                  <td><fmt:formatDate value="${project.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 	                  <td class="text-nowrap">
 	                  	<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a> 
-	                  	<a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger" id="sa-warning"></i> </a> 
+	                  	<a href="#" data-toggle="tooltip" data-original-title="Close" id="${project.id}"> <i class="fa fa-close text-danger" id="sa-warning_${project.id}"></i> </a> 
 	                  </td>
 	                </tr>
               	</c:forEach>
@@ -210,9 +210,33 @@
 <script>
 
     $(document).ready(function(){
-      $('#myTable').DataTable();
+      	$('#projectTable').DataTable();
+      	
+		$('[id^="sa-warning"]').click(function(){
+			var did = $(this).attr("id").split("_")[1];
+			swal({
+				title: "Are you sure?",
+				text: "You will not be able to recover this imaginary file!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Yes, delete it!",
+				closeOnConfirm: false
+			}, function(){
+				$.ajax({
+					type:"get",
+	          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+	          		success:function(data){
+	          	    	if(data.success){
+	          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
+	          	    	}
+	          	    	$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
+	          	    }
+				});
+			});
+		});
     });
-
+    
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

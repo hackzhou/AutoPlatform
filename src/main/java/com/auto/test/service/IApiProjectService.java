@@ -8,5 +8,7 @@ import com.auto.test.entity.AProject;
 public interface IApiProjectService{
 	
 	List<AProject> getAllProject();
+	
+	void delete(Integer id);
 
 }

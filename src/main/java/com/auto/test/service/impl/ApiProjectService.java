@@ -21,4 +21,9 @@ public class ApiProjectService implements IApiProjectService {
 	public List<AProject> getAllProject() {
 		return dao.findAllOrder();
 	}
+
+	@Override
+	public void delete(Integer id) {
+		dao.deleteById(id);
+	}
 }
