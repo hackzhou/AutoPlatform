@@ -12,7 +12,7 @@ import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
 
 @Controller
-@RequestMapping(value = "api")
+@RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiProjectController.class);

@@ -5,9 +5,6 @@ import java.io.FileInputStream;
 import java.util.Properties;
 import org.springframework.util.ResourceUtils;
 
-/**
- * 全局配置类
- */
 public class GlobalValueConfig {
 	private static Properties configProp = new Properties();
 
