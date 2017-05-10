@@ -11,6 +11,8 @@ public interface IApiProjectService{
 	
 	Integer create(AProject aProject);
 	
+	AProject update(AProject aProject);
+	
 	void delete(Integer id);
 
 }

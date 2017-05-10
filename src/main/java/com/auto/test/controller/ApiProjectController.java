@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +36,7 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/create/name={name}", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createProject( @PathVariable("name") String name) {
+	public Map<String, Object> createProject(@PathVariable("name") String name) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Integer pid = projectService.create(new AProject(name));
 		if(pid != null){
@@ -48,9 +47,23 @@ public class ApiProjectController extends BaseController{
 		return map;
 	}
 	
+	@RequestMapping(value = "/update/id={id}/name={name}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateProject(@PathVariable("id") Integer id, @PathVariable("name") String name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		AProject aProject = projectService.update(new AProject(id, name));
+		if(aProject != null){
+			map.put("success", true);
+		}else{
+			map.put("success", false);
+		}
+		map.put("success", true);
+		return map;
+	}
+	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> deleteProject(HttpServletRequest request, @PathVariable("id") String id) {
+	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		projectService.delete(Integer.parseInt(id));
 		map.put("success", true);

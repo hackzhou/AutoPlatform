@@ -88,7 +88,7 @@
 	              <div class="col-md-9">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
 		            </div>
 	              </div>
 	            </div>
@@ -109,16 +109,17 @@
                     <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
                   </div>
                   <div class="modal-body">
-                    <from id="add-project-from" class="form-horizontal form-material">
+                    <from id="api-project-from" class="form-horizontal form-material">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="project-name" name="project-name" class="form-control" placeholder="Name">
+	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
+	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
 	                      </div>
 	                    </div>
 	                </from>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect add-project" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect api-project-save" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -126,7 +127,7 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="project-table" class="table table-striped">
+            <table id="api-project-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>No</th>
@@ -142,8 +143,8 @@
 	                  <td>${project.name}</td>
 	                  <td><fmt:formatDate value="${project.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 	                  <td class="text-nowrap">
-	                  	<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a> 
-	                  	<a href="#" data-toggle="tooltip" data-original-title="Close" id="${project.id}"> <i class="fa fa-close text-danger" id="sa-warning_${project.id}"></i> </a> 
+	                  	<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10" onclick="apiProjectEdit('${project.id}','${project.name}');" data-toggle="modal" data-target="#exampleModal"></i> </a> 
+	                  	<a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger" onclick="apiProjectDel('${project.id}');"></i> </a> 
 	                  </td>
 	                </tr>
               	</c:forEach>
@@ -187,46 +188,64 @@
 <script>
 
     $(document).ready(function(){
-      	$('#project-table').DataTable();
+      	$('#api-project-table').DataTable();
       	
-		$('[id^="sa-warning"]').click(function(){
-			var did = $(this).attr("id").split("_")[1];
-			swal({
-				title: "Are you sure?",
-				text: "You will not be able to recover this imaginary file!",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "Yes, delete it!",
-				closeOnConfirm: false
-			}, function(){
-				$.ajax({
-					type:"get",
-	          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
-	          		success:function(data){
-	          	    	if(data.success){
-	          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
-	          	    	}
-	          	    	$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
-	          	    }
-				});
-			});
-		});
-		
-		$('.add-project').click(function(){
+		$('.api-project-save').click(function(){
+			var pid = $('#api-project-id').val();
+			var pname = $('#api-project-name').val();
+			var purl = "";
+			if(pid == ""){
+				purl = "<%=request.getContextPath()%>/api/project/create/name=" + pname;
+			}else{
+				purl = "<%=request.getContextPath()%>/api/project/update/id=" + pid + "/name=" + pname;
+			}
 			$.ajax({
 				type:"post",
-          		url:"<%=request.getContextPath()%>/api/project/create/name=" + $('#project-name').val(),
+          		url:purl,
           		success:function(data){
           			if(data.success){
           				$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
           			}else{
-          				swal("Create!", "Create project failure.", "error");
+          				swal("Error", "Create/Update project failure.", "error");
           			}
           	    }
 			});
 		});
+		
     });
+    
+    function initModal(){
+    	$('#api-project-id').val("");
+    	$('#api-project-name').val("");
+    }
+    
+    function apiProjectEdit(id, name){
+    	$('#api-project-id').val(id);
+    	$('#api-project-name').val(name);
+    }
+    
+    function apiProjectDel(did){
+    	swal({
+			title: "Are you sure?",
+			text: "You will not be able to recover this imaginary file!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, delete it!",
+			closeOnConfirm: false
+		}, function(){
+			$.ajax({
+				type:"get",
+          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+          		success:function(data){
+          	    	if(data.success){
+          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
+          	    	}
+          	    	$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
+          	    }
+			});
+		});
+    }
     
 </script>
 <!--Style Switcher -->

@@ -32,6 +32,21 @@ public class ApiProjectService implements IApiProjectService {
 		}
 		return null;
 	}
+	
+	@Override
+	public AProject update(AProject aProject) {
+		if(aProject != null){
+			AProject pro = dao.findById(aProject.getId());
+			if(pro != null){
+				dao.evict(pro);
+				aProject.setCreateTime(pro.getCreateTime());
+				aProject.setUpdateTime(new Date());
+				dao.update(aProject);
+				return aProject;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void delete(Integer id) {
