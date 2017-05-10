@@ -40,6 +40,12 @@
 	    <artifactId>fastjson</artifactId>
 	    <version>1.2.31</version>
 	</dependency>
+	<!-- commons -->
+	<dependency>
+	    <groupId>commons-logging</groupId>
+	    <artifactId>commons-logging</artifactId>
+	    <version>1.2</version>
+	</dependency>
   	<!-- mysql connector -->
 	<dependency>
 	    <groupId>mysql</groupId>

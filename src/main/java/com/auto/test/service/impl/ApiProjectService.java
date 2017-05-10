@@ -1,5 +1,6 @@
 package com.auto.test.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -21,9 +22,22 @@ public class ApiProjectService implements IApiProjectService {
 	public List<AProject> getAllProject() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public Integer create(AProject aProject) {
+		if(aProject != null){
+			aProject.setCreateTime(new Date());
+			dao.create(aProject);
+			return aProject.getId();
+		}
+		return null;
+	}
 
 	@Override
 	public void delete(Integer id) {
-		dao.deleteById(id);
+		if(id != null){
+			dao.deleteById(id);
+		}
 	}
+
 }

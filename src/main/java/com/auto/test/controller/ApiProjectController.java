@@ -7,17 +7,17 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
 
-@Controller
+@RestController
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	@SuppressWarnings("unused")
@@ -35,9 +35,22 @@ public class ApiProjectController extends BaseController{
 		return success(projectList, "api/project");
 	}
 	
+	@RequestMapping(value = "/create/name={name}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> createProject( @PathVariable("name") String name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer pid = projectService.create(new AProject(name));
+		if(pid != null){
+			map.put("success", true);
+		}else{
+			map.put("success", false);
+		}
+		return map;
+	}
+	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> delete(HttpServletRequest request, @PathVariable("id") String id) {
+	public Map<String, Object> deleteProject(HttpServletRequest request, @PathVariable("id") String id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		projectService.delete(Integer.parseInt(id));
 		map.put("success", true);

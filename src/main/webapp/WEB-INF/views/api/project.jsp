@@ -109,39 +109,16 @@
                     <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
                   </div>
                   <div class="modal-body">
-                    <from class="form-horizontal form-material">
+                    <from id="add-project-from" class="form-horizontal form-material">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Type name">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Email">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Phone">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Designation">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Age">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Date of joining">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" class="form-control" placeholder="Salary">
-	                      </div>
-	                      <div class="col-md-12 m-b-20">
-	                        <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Upload Contact Image</span>
-	                          <input type="file" class="upload">
-	                        </div>
+	                        <input type="text" id="project-name" name="project-name" class="form-control" placeholder="Name">
 	                      </div>
 	                    </div>
 	                </from>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect add-project" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -149,7 +126,7 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="projectTable" class="table table-striped">
+            <table id="project-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>No</th>
@@ -210,7 +187,7 @@
 <script>
 
     $(document).ready(function(){
-      	$('#projectTable').DataTable();
+      	$('#project-table').DataTable();
       	
 		$('[id^="sa-warning"]').click(function(){
 			var did = $(this).attr("id").split("_")[1];
@@ -233,6 +210,20 @@
 	          	    	$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
 	          	    }
 				});
+			});
+		});
+		
+		$('.add-project').click(function(){
+			$.ajax({
+				type:"post",
+          		url:"<%=request.getContextPath()%>/api/project/create/name=" + $('#project-name').val(),
+          		success:function(data){
+          			if(data.success){
+          				$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
+          			}else{
+          				swal("Create!", "Create project failure.", "error");
+          			}
+          	    }
 			});
 		});
     });

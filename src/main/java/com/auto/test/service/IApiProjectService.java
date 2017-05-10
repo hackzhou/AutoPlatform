@@ -9,6 +9,8 @@ public interface IApiProjectService{
 	
 	List<AProject> getAllProject();
 	
+	Integer create(AProject aProject);
+	
 	void delete(Integer id);
 
 }
