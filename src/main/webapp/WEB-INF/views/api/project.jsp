@@ -96,6 +96,7 @@
             </div>
           </div>
         </div>
+      </div>
       <!-- /row -->
       <div class="row">
         <div class="col-sm-12">
@@ -142,11 +143,12 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- /.container-fluid -->
+      <footer class="footer text-center"> 2016 &copy; Elite Admin brought to you by themedesigner.in </footer>
     </div>
-    <!-- /.container-fluid -->
-    <footer class="footer text-center"> 2016 &copy; Elite Admin brought to you by themedesigner.in </footer>
+    <!-- /#page-wrapper -->
   </div>
-  <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->
