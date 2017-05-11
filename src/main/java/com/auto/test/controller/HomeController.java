@@ -11,6 +11,11 @@ import com.auto.test.common.controller.BaseController;
 @RequestMapping(value = "home")
 public class HomeController extends BaseController{
 	
+	@RequestMapping(value = "/page")
+	public ModelAndView getHomePage() {
+		return success("index");
+	}
+	
 	@RequestMapping(value = "/page", method = RequestMethod.POST)
 	public ModelAndView getHomePage(@RequestParam("username") String username, @RequestParam("password") String password) {
 		if("admin".equals(username) && "admin".equals(password)){
