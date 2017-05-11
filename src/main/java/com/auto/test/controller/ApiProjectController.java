@@ -40,7 +40,7 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> create(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
+	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
 		if(id == null || id.isEmpty()){
 			Integer pid = projectService.create(new AProject(name));
 			if(pid != null){
