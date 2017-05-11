@@ -186,6 +186,9 @@
     		responsive : false,
     		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data", 
     		bProcessing : true,
+    		"aaSorting": [
+    			[0,'desc']
+    		],
     		aoColumnDefs : [
     			{
 					"sWidth" : "20%",
