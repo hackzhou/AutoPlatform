@@ -1,6 +1,5 @@
 package com.auto.test.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,56 +28,41 @@ public class ApiProjectController extends BaseController{
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject() {
 		List<AProject> projectList = projectService.getAllProject();
-		for (AProject tProject : projectList) {
-			System.out.println(tProject.toString());
-		}
 		return success(projectList, "api/project");
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllProjectData() {
-		Map<String, Object> map = new HashMap<String, Object>();
 		List<AProject> projectList = projectService.getAllProject();
-		map.put("data", projectList);
-		map.put("success", true);
-		return map;
+		return successJson(projectList);
 	}
 	
-	@RequestMapping(value = "/create/name={name}", method = RequestMethod.POST)
+	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createProject(@PathVariable("name") String name) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Integer pid = projectService.create(new AProject(name));
-		if(pid != null){
-			map.put("success", true);
+	public Map<String, Object> create(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
+		if(id == null || id.isEmpty()){
+			Integer pid = projectService.create(new AProject(name));
+			if(pid != null){
+				return successJson();
+			}else{
+				return failedJson();
+			}
 		}else{
-			map.put("success", false);
+			AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name));
+			if(aProject != null){
+				return successJson();
+			}else{
+				return failedJson();
+			}
 		}
-		return map;
-	}
-	
-	@RequestMapping(value = "/update/id={id}/name={name}", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> updateProject(@PathVariable("id") Integer id, @PathVariable("name") String name) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		AProject aProject = projectService.update(new AProject(id, name));
-		if(aProject != null){
-			map.put("success", true);
-		}else{
-			map.put("success", false);
-		}
-		map.put("success", true);
-		return map;
 	}
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
-		Map<String, Object> map = new HashMap<String, Object>();
 		projectService.delete(Integer.parseInt(id));
-		map.put("success", true);
-		return map;
+		return successJson();
 	}
 	
 }

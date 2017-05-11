@@ -244,19 +244,12 @@
     }
     
     function apiProjectSave(){
-    	var pid = $('#api-project-id').val();
-		var pname = $('#api-project-name').val();
-		var purl = "";
-		if(pid == ""){
-			purl = "<%=request.getContextPath()%>/api/project/create/name=" + pname;
-		}else{
-			purl = "<%=request.getContextPath()%>/api/project/update/id=" + pid + "/name=" + pname;
-		}
 		$.ajax({
 			type:"post",
-      		url:purl,
+      		url:"<%=request.getContextPath()%>/api/project/create/update",
+      		data:$('#api-project-form').serialize(),
       		success:function(data){
-      			if(data.success){
+      			if(data.responseCode == "0000"){
       				$('#api-project-table').dataTable()._fnAjaxUpdate();
       			}else{
       				swal("Error", "Create/Update project failure.", "error");
@@ -279,7 +272,7 @@
 				type:"get",
           		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
           		success:function(data){
-          	    	if(data.success){
+          	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
           	    	}
           	    	$('#api-project-table').dataTable()._fnAjaxUpdate();

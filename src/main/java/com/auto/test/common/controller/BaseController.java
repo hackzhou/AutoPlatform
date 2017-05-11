@@ -21,15 +21,16 @@ public class BaseController implements MessageSourceAware {
 	public static final String SUCCESS_CODE		= "0000";
 	public static final String FAILED_CODE		= "1111";
 
-	public ModelAndView success(List<?> results, int count, String viewName) {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName(viewName);
+	public Map<String, Object> successJson() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(RESPONSE_CODE, SUCCESS_CODE);
-		map.put(DATA_LIST, results);
-		map.put(DATA_COUNT, count);
-		mv.addAllObjects(map);
-		return mv;
+		return map;
+	}
+	
+	public Map<String, Object> failedJson() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_CODE, FAILED_CODE);
+		return map;
 	}
 
 	public Map<String, Object> successJson(Object result) {
@@ -44,6 +45,17 @@ public class BaseController implements MessageSourceAware {
 		map.put(RESPONSE_CODE, FAILED_CODE);
 		map.put(RESPONSE_MSG, message);
 		return map;
+	}
+	
+	public ModelAndView success(List<?> results, int count, String viewName) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName(viewName);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_CODE, SUCCESS_CODE);
+		map.put(DATA_LIST, results);
+		map.put(DATA_COUNT, count);
+		mv.addAllObjects(map);
+		return mv;
 	}
 
 	public ModelAndView fail(String responseCode, String viewName) {
