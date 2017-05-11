@@ -55,10 +55,10 @@
         <li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs">接口自动化</b> </a>
           <ul class="dropdown-menu dropdown-user animated flipInY">
             <li><a href="${pageContext.request.contextPath}/api/project/list"><i class="ti-briefcase"></i> Project</a></li>
-            <li><a href="api2/case.html"><i class="ti-write"></i> Case</a></li>
-            <li><a href="api2/report.html"><i class="ti-book"></i> Report</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/case/list"><i class="ti-write"></i> Case</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/report/list"><i class="ti-book"></i> Report</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="api2/setting.html"><i class="ti-settings"></i> Setting</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/setting/list"><i class="ti-settings"></i> Setting</a></li>
           </ul>
           <!-- /.dropdown-user -->
         </li>
@@ -87,7 +87,8 @@
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title">Dashboard Home</h4>
         </div>
-      <!-- /.right-sidebar -->
+        <!-- /.right-sidebar -->
+      </div>
     </div>
     <!-- /.container-fluid -->
     <footer class="footer text-center"> 2017 &copy; Elite Admin brought to you by themedesigner.in </footer>

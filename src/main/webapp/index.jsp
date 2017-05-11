@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <body>
 <h2>项目【<%=request.getContextPath()%>】路径入口：</h2><br/>
-<table width="50%" border="1">
+<table style="width: 50%;" border="1">
 	<tr>
 		<td align="center">平台：</td>
 		<td><a href="${pageContext.request.contextPath}/login/page">登录</a><br/></td>
