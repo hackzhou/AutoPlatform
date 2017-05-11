@@ -88,7 +88,7 @@
 	              <div class="col-md-9">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
 		            </div>
 	              </div>
 	            </div>
@@ -119,7 +119,7 @@
 	                </from>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect api-project-save" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -130,25 +130,14 @@
             <table id="api-project-table" class="table table-striped">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Create Date</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-              	<c:forEach items="${data}" var="project" varStatus="indexs">
-              		<tr>
-	                  <td>${indexs.index + 1}</td>
-	                  <td>${project.name}</td>
-	                  <td><fmt:formatDate value="${project.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-	                  <td class="text-nowrap">
-	                  	<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10" onclick="apiProjectEdit('${project.id}','${project.name}');" data-toggle="modal" data-target="#exampleModal"></i> </a> 
-	                  	<a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger" onclick="apiProjectDel('${project.id}');"></i> </a> 
-	                  </td>
-	                </tr>
-              	</c:forEach>
-                </tbody>
+              </tbody>
             </table>
             </div>
           </div>
@@ -188,33 +177,58 @@
 <script>
 
     $(document).ready(function(){
-      	$('#api-project-table').DataTable();
-      	
-		$('.api-project-save').click(function(){
-			var pid = $('#api-project-id').val();
-			var pname = $('#api-project-name').val();
-			var purl = "";
-			if(pid == ""){
-				purl = "<%=request.getContextPath()%>/api/project/create/name=" + pname;
-			}else{
-				purl = "<%=request.getContextPath()%>/api/project/update/id=" + pid + "/name=" + pname;
-			}
-			$.ajax({
-				type:"post",
-          		url:purl,
-          		success:function(data){
-          			if(data.success){
-          				$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
-          			}else{
-          				swal("Error", "Create/Update project failure.", "error");
-          			}
-          	    }
-			});
-		});
-		
+    	createTable();
     });
     
-    function initModal(){
+    function createTable() {
+    	$('#api-project-table').dataTable().fnDestroy();
+    	$('#api-project-table').DataTable({
+    		responsive : false,
+    		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data", 
+    		bProcessing : true,
+    		aoColumnDefs : [
+    			{
+					"sWidth" : "20%",
+					"aTargets" : [ 0 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.id;
+					}
+				},
+				{
+					"sWidth" : "30%",
+					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.name;
+					}
+				},
+				{
+					"sWidth" : "30%",
+					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.createTime;
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
+					}
+				}
+    		]
+    	});
+    }
+    
+    function initApiProjectModal(){
     	$('#api-project-id').val("");
     	$('#api-project-name').val("");
     }
@@ -222,6 +236,28 @@
     function apiProjectEdit(id, name){
     	$('#api-project-id').val(id);
     	$('#api-project-name').val(name);
+    }
+    
+    function apiProjectSave(){
+    	var pid = $('#api-project-id').val();
+		var pname = $('#api-project-name').val();
+		var purl = "";
+		if(pid == ""){
+			purl = "<%=request.getContextPath()%>/api/project/create/name=" + pname;
+		}else{
+			purl = "<%=request.getContextPath()%>/api/project/update/id=" + pid + "/name=" + pname;
+		}
+		$.ajax({
+			type:"post",
+      		url:purl,
+      		success:function(data){
+      			if(data.success){
+      				$('#api-project-table').dataTable()._fnAjaxUpdate();
+      			}else{
+      				swal("Error", "Create/Update project failure.", "error");
+      			}
+      	    }
+		});
     }
     
     function apiProjectDel(did){
@@ -241,7 +277,7 @@
           	    	if(data.success){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
           	    	}
-          	    	$(location).prop('href', '<%=request.getContextPath()%>/api/project/list');
+          	    	$('#api-project-table').dataTable()._fnAjaxUpdate();
           	    }
 			});
 		});

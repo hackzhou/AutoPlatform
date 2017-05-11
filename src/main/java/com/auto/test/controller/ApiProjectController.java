@@ -25,13 +25,23 @@ public class ApiProjectController extends BaseController{
 	@Resource
 	private IApiProjectService projectService;
 	
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject() {
 		List<AProject> projectList = projectService.getAllProject();
 		for (AProject tProject : projectList) {
 			System.out.println(tProject.toString());
 		}
 		return success(projectList, "api/project");
+	}
+	
+	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllProjectData() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<AProject> projectList = projectService.getAllProject();
+		map.put("data", projectList);
+		map.put("success", true);
+		return map;
 	}
 	
 	@RequestMapping(value = "/create/name={name}", method = RequestMethod.POST)
