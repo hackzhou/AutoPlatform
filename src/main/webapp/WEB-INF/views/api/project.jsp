@@ -14,7 +14,7 @@
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/css/cdn/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Menu CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
 <!-- animation CSS -->
@@ -25,7 +25,6 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/colors/blue.css" id="theme"  rel="stylesheet">
-<!-- <script src="http://www.w3schools.com/lib/w3data.js"></script> -->
 </head>
 <body>
 <!-- Preloader -->
@@ -110,14 +109,14 @@
                     <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
                   </div>
                   <div class="modal-body">
-                    <from id="api-project-from" class="form-horizontal form-material">
+                    <form id="api-project-form" class="form-horizontal form-material">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
 	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
 	                      </div>
 	                    </div>
-	                </from>
+	                </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
@@ -168,13 +167,13 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <!-- start - This is for export functionality only -->
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/pdfmake.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/vfs_fonts.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <script>
