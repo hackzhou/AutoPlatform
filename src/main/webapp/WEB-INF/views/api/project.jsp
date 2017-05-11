@@ -77,14 +77,14 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-3">
+	              <!-- <div class="col-md-3">
 	                <div class="form-group">
 					  <label class="control-label col-md-2">Name:</label>
 					  <div class="col-md-9">
 	                    <input type="text" class="form-control" placeholder="name">
 					  </div>
 	                </div>
-	              </div>
+	              </div> -->
 	              <div class="col-md-9">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
