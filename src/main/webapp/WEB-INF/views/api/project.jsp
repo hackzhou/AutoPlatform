@@ -174,6 +174,7 @@
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
+<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <script>
 
     $(document).ready(function(){
@@ -185,7 +186,7 @@
     	$('#api-project-table').DataTable({
     		responsive : false,
     		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data", 
-    		bProcessing : true,
+    		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
     		],
@@ -214,7 +215,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.createTime;
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
 					}
 				},
 				{
