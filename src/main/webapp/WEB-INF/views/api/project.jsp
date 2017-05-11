@@ -85,7 +85,7 @@
 					  </div>
 	                </div>
 	              </div> -->
-	              <div class="col-md-9">
+	              <div class="col-md-12">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
