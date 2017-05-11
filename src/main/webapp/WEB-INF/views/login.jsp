@@ -32,17 +32,17 @@
 <section id="wrapper" class="login-register">
   <div class="login-box login-sidebar">
     <div class="white-box">
-      <form class="form-horizontal form-material" id="loginform" action="${pageContext.request.contextPath}/home/page">
+      <form class="form-horizontal form-material" id="loginform" action="${pageContext.request.contextPath}/home/page" method="post">
         <a href="javascript:void(0)" class="text-center db"><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-logo-dark.png" alt="Home" /><br/><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-text-dark.png" alt="Home" /></a>  
         
         <div class="form-group m-t-40">
           <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Username">
+            <input id="username" name="username" class="form-control" type="text" required placeholder="Username">
           </div>
         </div>
         <div class="form-group">
           <div class="col-xs-12">
-            <input class="form-control" type="password" required="" placeholder="Password">
+            <input id="password" name="password" class="form-control" type="password" required placeholder="Password">
           </div>
         </div>
         <div class="form-group">
@@ -78,7 +78,7 @@
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Email">
+            <input class="form-control" type="text" required placeholder="Email">
           </div>
         </div>
         <div class="form-group text-center m-t-20">
@@ -103,6 +103,11 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
+<script>
+	$(document).ready(function(){
+		
+	});
+</script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 </body>
