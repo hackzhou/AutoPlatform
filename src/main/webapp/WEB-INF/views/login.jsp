@@ -32,7 +32,7 @@
 <section id="wrapper" class="login-register">
   <div class="login-box login-sidebar">
     <div class="white-box">
-      <form class="form-horizontal form-material" id="loginform" action="${pageContext.request.contextPath}/home/page" method="post">
+      <form class="form-horizontal form-material" id="loginform" action="${pageContext.request.contextPath}/user/login">
         <a href="javascript:void(0)" class="text-center db"><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-logo-dark.png" alt="Home" /><br/><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-text-dark.png" alt="Home" /></a>  
         
         <div class="form-group m-t-40">

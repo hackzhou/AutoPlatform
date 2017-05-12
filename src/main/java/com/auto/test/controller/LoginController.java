@@ -14,4 +14,9 @@ public class LoginController extends BaseController{
 		return success("login");
 	}
 	
+	@RequestMapping(value = "/home")
+	public ModelAndView getHomePage() {
+		return success("index");
+	}
+	
 }

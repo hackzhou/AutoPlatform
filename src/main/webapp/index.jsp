@@ -8,7 +8,7 @@
 	<tr>
 		<td align="center">平台：</td>
 		<td><a href="${pageContext.request.contextPath}/login/page">登录</a><br/></td>
-		<td><a href="${pageContext.request.contextPath}/home/page">首页</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/login/home">首页</a><br/></td>
 		<td></td>
 		<td></td>
 	</tr>
