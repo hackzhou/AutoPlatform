@@ -9,7 +9,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.entity.AUser;
 
 public class LoginFilter implements Filter {
@@ -23,14 +22,7 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) arg0;
-		String[] noLogin = GlobalValueConfig.getConfig("noLoginUrl").split(",");
-		boolean isFilterURL= false;
-		for (String s : noLogin) {
-			if(request.getServletPath().endsWith(s)){
-				isFilterURL = true;
-			}
-		}
-		if(isFilterURL){
+		if (isStaticContent(request)) {
 			arg2.doFilter(arg0, arg1);
 		}else{
 			AUser user = (AUser) request.getSession().getAttribute("user");
@@ -47,5 +39,13 @@ public class LoginFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
 	}
-
+	
+	private boolean isStaticContent(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        return servletPath.startsWith("/css") || servletPath.startsWith("/js") 
+        		|| servletPath.startsWith("/eliteadmin") || servletPath.startsWith("/plugins") 
+        		|| servletPath.startsWith("/login") || servletPath.endsWith("/index.jsp") 
+        		|| servletPath.endsWith("/user/login") || servletPath.startsWith("/user/logout");
+    }
+	
 }
