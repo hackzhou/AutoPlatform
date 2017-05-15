@@ -1,7 +1,6 @@
 package com.auto.test.controller;
 
 import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ public class UserController extends BaseController{
 		if(password == null || password.isEmpty()){
 			return failLogin(username, null, "请您输入密码!", "login");
 		}
-		AUser aUser = userService.isLogin(username, password);
+		AUser aUser = userService.isLogin(username, StrUtil.encryptByMD5(password));
 		if(aUser != null){
 			logger.info(aUser.toString());
 			try {
@@ -93,7 +92,7 @@ public class UserController extends BaseController{
 		if(list != null && !list.isEmpty()){
 			return failMsg("[" + username + "]已经注册!", "register");
 		}
-		AUser aUser = userService.create(new AUser(username, password, email));
+		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
 		request.getSession().setAttribute("user", aUser);
 		return success("index");
 	}
