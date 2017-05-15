@@ -9,9 +9,11 @@ public interface IUserService{
 	
 	List<AUser> getAllUser();
 	
+	List<AUser> findByName(String username);
+	
 	AUser isLogin(String username, String password);
 	
-	Integer create(AUser aUser);
+	AUser create(AUser aUser);
 	
 	AUser update(AUser aUser);
 	

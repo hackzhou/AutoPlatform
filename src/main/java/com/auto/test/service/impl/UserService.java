@@ -1,5 +1,6 @@
 package com.auto.test.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -28,14 +29,27 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Integer create(AUser aUser) {
-		dao.create(aUser);
-		return aUser.getId();
+	public AUser create(AUser aUser) {
+		if(aUser != null){
+			aUser.setCreateTime(new Date());
+			return dao.create(aUser);
+		}
+		return null;
 	}
 
 	@Override
 	public AUser update(AUser aUser) {
-		return dao.update(aUser);
+		if(aUser != null){
+			AUser user = dao.findById(aUser.getId());
+			if(user != null){
+				dao.evict(user);
+				aUser.setCreateTime(user.getCreateTime());
+				aUser.setUpdateTime(new Date());
+				dao.update(aUser);
+				return aUser;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -43,5 +57,9 @@ public class UserService implements IUserService {
 		dao.deleteById(id);
 	}
 
+	@Override
+	public List<AUser> findByName(String username) {
+		return dao.findByName(username);
+	}
 
 }

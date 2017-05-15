@@ -1,5 +1,7 @@
 package com.auto.test.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +61,32 @@ public class UserController extends BaseController{
 		request.getSession().invalidate();
 		cleanCookie(request, response);
 		return success("redirect:/");
+	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ModelAndView register(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("password2") String password2) {
+		if(username == null || username.isEmpty()){
+			return failMsg("Username cannot be empty!", "register");
+		}
+		if(email == null || email.isEmpty()){
+			return failMsg("Email cannot be empty!", "register");
+		}
+		if(password == null || password.isEmpty()){
+			return failMsg("Password cannot be empty!", "register");
+		}
+		if(password2 == null || password2.isEmpty()){
+			return failMsg("Confirm Password cannot be empty!", "register");
+		}
+		if(!password.equals(password2)){
+			return failMsg("The two password is different!", "register");
+		}
+		List<AUser> list = userService.findByName(username);
+		if(list != null && !list.isEmpty()){
+			return failMsg("Username has been registered!", "register");
+		}
+		AUser aUser = userService.create(new AUser(username, password, email));
+		request.getSession().setAttribute("user", aUser);
+		return success("index");
 	}
 	
 	private void cleanCookie(HttpServletRequest request, HttpServletResponse response){

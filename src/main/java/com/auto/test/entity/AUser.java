@@ -25,6 +25,9 @@ public class AUser implements Serializable{
 	@Column(name="password")
 	private String password;
 	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -37,7 +40,13 @@ public class AUser implements Serializable{
 	public AUser() {
 		super();
 	}
-	
+	public AUser(String username, String password, String email) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -55,6 +64,12 @@ public class AUser implements Serializable{
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -77,8 +92,8 @@ public class AUser implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AUser [id=" + id + ", username=" + username + ", password=" + password + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AUser [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }
