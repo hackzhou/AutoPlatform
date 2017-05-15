@@ -37,22 +37,22 @@
         <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small> 
         <div class="form-group m-t-20">
           <div class="col-xs-12">
-            <input id="username" name="username" class="form-control" type="text" required placeholder="Username">
+            <input id="username" name="username" class="form-control" type="text" placeholder="Username">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input id="email" name="email" class="form-control" type="text" required placeholder="Email">
+            <input id="email" name="email" class="form-control" type="text" placeholder="Email">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input id="password" name="password" class="form-control" type="password" required placeholder="Password">
+            <input id="password" name="password" class="form-control" type="password" placeholder="Password">
           </div>
         </div>
         <div class="form-group">
           <div class="col-xs-12">
-            <input id="password2" name="password2" class="form-control" type="password" required placeholder="Confirm Password">
+            <input id="password2" name="password2" class="form-control" type="password" placeholder="Confirm Password">
           </div>
         </div>
         <div class="form-group text-center m-t-20">
@@ -68,7 +68,6 @@
         <div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
 				<div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
-					<input id="msgHidden" name="msgHidden" type="hidden" value="${msg}">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 						&times;
 					</button>
@@ -97,16 +96,16 @@
 <script>
 
 	$(document).ready(function(){
-		var msg = $('#msgHidden').val();
-		if(msg != null && msg != ""){
-			showMsgDiv(msg);
-			$('#msgHidden').val("");
-		}
+		showMsgDiv("${msg}");
+		$('#username').val("${name}");
+		$('#email').val("${email}");
 	});
 	
 	function showMsgDiv(msgStr){
-		$("#msgDiv").show();
-		$("#msg").html(msgStr);
+		if(msgStr != ""){
+			$("#msgDiv").show();
+			$("#msg").html(msgStr);
+		}
 	}
 	
 </script>

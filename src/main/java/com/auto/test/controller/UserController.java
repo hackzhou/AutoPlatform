@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.AUser;
 import com.auto.test.service.IUserService;
+import com.auto.test.utils.StrUtil;
 
 @RestController
 @RequestMapping(value = "user")
@@ -27,6 +28,12 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme) {
+		if(username == null || username.isEmpty()){
+			return failMsg("请您输入用户名!", "login");
+		}
+		if(password == null || password.isEmpty()){
+			return failLogin(username, null, "请您输入密码!", "login");
+		}
 		AUser aUser = userService.isLogin(username, password);
 		if(aUser != null){
 			logger.info(aUser.toString());
@@ -51,8 +58,7 @@ public class UserController extends BaseController{
 				return failMsg(e.getMessage(), "login");
 			}
 		}else{
-			logger.error("Username or Password error!");
-			return failMsg("Username or Password error!", "login");
+			return failMsg("用户名或密码有误，请重新输入!", "login");
 		}
 	}
 	
@@ -66,23 +72,26 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("password2") String password2) {
 		if(username == null || username.isEmpty()){
-			return failMsg("Username cannot be empty!", "register");
+			return failMsg("请您输入用户名!", "register");
 		}
 		if(email == null || email.isEmpty()){
-			return failMsg("Email cannot be empty!", "register");
+			return failLogin(username, null, "请您输入邮箱!", "register");
+		}
+		if(!StrUtil.checkEmail(email)){
+			return failLogin(username, null, "邮箱格式不正确!", "register");
 		}
 		if(password == null || password.isEmpty()){
-			return failMsg("Password cannot be empty!", "register");
+			return failLogin(username, email, "请您输入密码!", "register");
 		}
 		if(password2 == null || password2.isEmpty()){
-			return failMsg("Confirm Password cannot be empty!", "register");
+			return failLogin(username, email, "请您再次输入密码!", "register");
 		}
 		if(!password.equals(password2)){
-			return failMsg("The two password is different!", "register");
+			return failLogin(username, email, "两次输入的密码不一样!", "register");
 		}
 		List<AUser> list = userService.findByName(username);
 		if(list != null && !list.isEmpty()){
-			return failMsg("Username has been registered!", "register");
+			return failMsg("[" + username + "]已经注册!", "register");
 		}
 		AUser aUser = userService.create(new AUser(username, password, email));
 		request.getSession().setAttribute("user", aUser);
