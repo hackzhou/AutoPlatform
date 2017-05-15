@@ -116,6 +116,16 @@ public class BaseController implements MessageSourceAware {
 		mv.addAllObjects(map);
 		return mv;
 	}
+	
+	public ModelAndView failMsg(String msg, String viewName) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName(viewName);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_CODE, FAILED_CODE);
+		map.put("msg", msg);
+		mv.addAllObjects(map);
+		return mv;
+	}
 
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;

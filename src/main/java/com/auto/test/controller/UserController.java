@@ -1,23 +1,21 @@
 package com.auto.test.controller;
 
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.AUser;
 import com.auto.test.service.IUserService;
 
-@Controller
+@RestController
 @RequestMapping(value = "user")
 public class UserController extends BaseController{
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -26,8 +24,7 @@ public class UserController extends BaseController{
 	private IUserService userService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme) {
 		AUser aUser = userService.isLogin(username, password);
 		if(aUser != null){
 			logger.info(aUser.toString());
@@ -45,15 +42,15 @@ public class UserController extends BaseController{
 					cookie.setMaxAge(maxAge);
 					response.addCookie(cookie);
 				}
-				return successJson(null);
+				return success("index");
 			} catch (Exception e) {
 				cleanCookie(request, response);
 				logger.error(e.getMessage(), e);
-				return failedJson(e.getMessage());
+				return failMsg(e.getMessage(), "login");
 			}
 		}else{
-			logger.error("Username or password error!");
-			return failedJson("Username or password error!");
+			logger.error("Username or Password error!");
+			return failMsg("Username or Password error!", "login");
 		}
 	}
 	

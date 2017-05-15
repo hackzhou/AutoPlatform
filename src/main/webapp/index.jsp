@@ -7,9 +7,9 @@
 <table style="width: 50%;" border="1">
 	<tr>
 		<td align="center">平台：</td>
-		<td><a href="${pageContext.request.contextPath}/login/page">登录</a><br/></td>
-		<td><a href="${pageContext.request.contextPath}/user/home">首页</a><br/></td>
-		<td></td>
+		<td><a href="${pageContext.request.contextPath}/home/index">首页</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/home/login">登录</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/home/register">注册</a><br/></td>
 		<td></td>
 	</tr>
 	<tr>

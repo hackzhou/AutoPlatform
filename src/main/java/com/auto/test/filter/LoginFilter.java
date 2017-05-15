@@ -28,7 +28,7 @@ public class LoginFilter implements Filter {
 			AUser user = (AUser) request.getSession().getAttribute("user");
 			if(user == null){
 				HttpServletResponse response = (HttpServletResponse) arg1;
-				response.sendRedirect(request.getContextPath()+"/login/page");
+				response.sendRedirect(request.getContextPath()+"/home/login");
 			}else{
 				arg2.doFilter(arg0, arg1);
 			}
@@ -42,10 +42,11 @@ public class LoginFilter implements Filter {
 	
 	private boolean isStaticContent(HttpServletRequest request) {
         String servletPath = request.getServletPath();
-        return servletPath.startsWith("/css") || servletPath.startsWith("/js") 
-        		|| servletPath.startsWith("/eliteadmin") || servletPath.startsWith("/plugins") 
-        		|| servletPath.startsWith("/login") || servletPath.endsWith("/index.jsp") 
-        		|| servletPath.endsWith("/user/login") || servletPath.startsWith("/user/logout");
+        return servletPath.startsWith("/css/") || servletPath.startsWith("/js/") 
+        		|| servletPath.startsWith("/eliteadmin/") || servletPath.startsWith("/plugins/") 
+        		|| servletPath.startsWith("/home/login") || servletPath.startsWith("/home/register") 
+        		|| servletPath.startsWith("/user/login") || servletPath.startsWith("/user/logout") 
+        		|| servletPath.endsWith("/index.jsp");
     }
 	
 }
