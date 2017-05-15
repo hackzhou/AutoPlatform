@@ -100,8 +100,14 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 <script>
 	$(document).ready(function(){
-		showMsgDiv("${msg}");
-		$('#username').val("${name}");
+		var username = getCookie("username");
+		var password = getCookie("password");
+		if(username != "" && password != ""){
+			window.location.href="${pageContext.request.contextPath}/home/index";
+		}else{
+			showMsgDiv("${msg}");
+			$('#username').val("${name}");
+		}
 	});
 	
 	function login(){
@@ -109,6 +115,15 @@
 			$('#rememberme').val("1");
 		}
 		$("#loginform").submit();
+	}
+	
+	function getCookie(name){
+		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+		if(arr=document.cookie.match(reg)){
+			return unescape(arr[2]);
+		}else{
+			return "";
+		}
 	}
 	
 	function showMsgDiv(msgStr){

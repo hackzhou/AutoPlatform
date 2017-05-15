@@ -45,7 +45,7 @@ public class UserController extends BaseController{
 					cookie.setMaxAge(maxAge);
 					cookie.setPath("/");
 					response.addCookie(cookie);
-					cookie = new Cookie("password", password);
+					cookie = new Cookie("password", StrUtil.encryptByMD5(password));
 					cookie.setPath("/");
 					cookie.setMaxAge(maxAge);
 					response.addCookie(cookie);
