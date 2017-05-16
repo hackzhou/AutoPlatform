@@ -98,14 +98,25 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+<!-- Base -->
+<script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script>
 	$(document).ready(function(){
-		var username = getCookie("username");
-		var password = getCookie("password");
-		if(username != "" && password != ""){
-			window.location.href="${pageContext.request.contextPath}/home/index";
+		var msg = "${msg}";
+		if(msg == null || msg == ""){
+			var username = "${username}";
+			alert(username);
+			if(username != ""){
+				window.location.href="${pageContext.request.contextPath}/home/index";
+			}else{
+				var uname = getCookie("username");
+				var pwd = getCookie("password");
+				if(uname != "" && pwd != ""){
+					window.location.href="${pageContext.request.contextPath}/user/login/cookie";
+				}
+			}
 		}else{
-			showMsgDiv("${msg}");
+			showMsgDiv(msg);
 			$('#username').val("${name}");
 		}
 	});
@@ -115,22 +126,6 @@
 			$('#rememberme').val("1");
 		}
 		$("#loginform").submit();
-	}
-	
-	function getCookie(name){
-		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-		if(arr=document.cookie.match(reg)){
-			return unescape(arr[2]);
-		}else{
-			return "";
-		}
-	}
-	
-	function showMsgDiv(msgStr){
-		if(msgStr != ""){
-			$("#msgDiv").show();
-			$("#msg").html(msgStr);
-		}
 	}
 	
 </script>

@@ -18,6 +18,7 @@ public class BaseController implements MessageSourceAware {
 	public static final String DATA_LIST		= "dataList";
 	public static final String DATA				= "data";
 	public static final String DATA_COUNT		= "dataCount";
+	public static final String USER_NAME		= "username";
 	public static final String SUCCESS_CODE		= "0000";
 	public static final String FAILED_CODE		= "1111";
 
@@ -77,21 +78,23 @@ public class BaseController implements MessageSourceAware {
 		mv.addAllObjects(map);
 		return mv;
 	}
-	public ModelAndView success(String viewName) {
+	public ModelAndView success(String viewName, String username) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(viewName);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(RESPONSE_CODE, SUCCESS_CODE);
+		map.put(USER_NAME, username);
 		mv.addAllObjects(map);
 		return mv;
 	}
 
-	public ModelAndView success(Object data, String viewName) {
+	public ModelAndView success(Object data, String viewName, String username) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(viewName);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(RESPONSE_CODE, SUCCESS_CODE);
 		map.put(DATA, data);
+		map.put(USER_NAME, username);
 		mv.addAllObjects(map);
 		return mv;
 	}
@@ -151,6 +154,14 @@ public class BaseController implements MessageSourceAware {
 	public AUser getCurrentUser(HttpServletRequest request) {
 		AUser user = (AUser) request.getSession().getAttribute("user");
 		return user;
+	}
+	
+	public String getCurrentUserName(HttpServletRequest request) {
+		AUser user = (AUser) request.getSession().getAttribute("user");
+		if(user != null){
+			return user.getUsername();
+		}
+		return "";
 	}
 
 }

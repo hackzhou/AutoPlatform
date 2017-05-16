@@ -50,7 +50,7 @@ public class UserController extends BaseController{
 					cookie.setMaxAge(maxAge);
 					response.addCookie(cookie);
 				}
-				return success("index");
+				return success("index", getCurrentUserName(request));
 			} catch (Exception e) {
 				cleanCookie(request, response);
 				logger.error(e.getMessage(), e);
@@ -61,11 +61,34 @@ public class UserController extends BaseController{
 		}
 	}
 	
+	@RequestMapping(value = "/login/cookie", method = RequestMethod.GET)
+	public ModelAndView loginCookie(HttpServletRequest request, HttpServletResponse response) {
+		String username = "";
+		String password = "";
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null){
+			for (Cookie cookie : cookies) {
+				if(cookie.getName().equals("username")){
+					username = cookie.getValue();
+				}
+				if(cookie.getName().equals("password")){
+					password = cookie.getValue();
+				}
+			}
+			AUser aUser = userService.isLogin(username, password);
+			if(aUser != null){
+				request.getSession().setAttribute("user", aUser);
+				return success("index", aUser.getUsername());
+			}
+		}
+		return failMsg("请您登录!", "login");
+	}
+	
 	@RequestMapping(value = "/logout")
 	public ModelAndView loginout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().invalidate();
 		cleanCookie(request, response);
-		return success("redirect:/");
+		return success("redirect:/", null);
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -94,7 +117,7 @@ public class UserController extends BaseController{
 		}
 		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
 		request.getSession().setAttribute("user", aUser);
-		return success("index");
+		return success("index", getCurrentUserName(request));
 	}
 	
 	private void cleanCookie(HttpServletRequest request, HttpServletResponse response){

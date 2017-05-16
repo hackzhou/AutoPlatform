@@ -51,9 +51,9 @@
         </li>
       </ul>
       <ul class="nav navbar-top-links navbar-right pull-right">
-        <li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="${pageContext.request.contextPath}/plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">Admin</b> </a>
+        <li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="${pageContext.request.contextPath}/plugins/images/img2.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">${username}</b> </a>
           <ul class="dropdown-menu dropdown-user animated flipInY">
-            <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+            <li><a href="${pageContext.request.contextPath}/user/logout"><i class="fa fa-power-off"></i> Logout</a></li>
           </ul>
         </li>
       </ul>
@@ -65,10 +65,11 @@
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title">Dashboard Report</h4>
         </div>
+      </div>
+      <footer class="footer text-center"> 2017 &copy; Elite Admin brought to you by themedesigner.in </footer>
     </div>
-    <footer class="footer text-center"> 2017 &copy; Elite Admin brought to you by themedesigner.in </footer>
+    <!-- /#page-wrapper -->
   </div>
-  <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->

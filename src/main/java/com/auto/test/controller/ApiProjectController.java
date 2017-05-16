@@ -3,6 +3,7 @@ package com.auto.test.controller;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,9 @@ public class ApiProjectController extends BaseController{
 	private IApiProjectService projectService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView getAllProject() {
+	public ModelAndView getAllProject(HttpServletRequest request) {
 		List<AProject> projectList = projectService.getAllProject();
-		return success(projectList, "api/project");
+		return success(projectList, "api/project", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
