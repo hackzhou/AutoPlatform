@@ -105,7 +105,6 @@
 		var msg = "${msg}";
 		if(msg == null || msg == ""){
 			var username = "${username}";
-			alert(username);
 			if(username != ""){
 				window.location.href="${pageContext.request.contextPath}/home/index";
 			}else{
