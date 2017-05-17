@@ -46,6 +46,14 @@ public class AUser implements Serializable{
 		this.password = password;
 		this.email = email;
 	}
+	
+	public void updateAUser(AUser aUser) {
+		this.username = aUser.getUsername();
+		this.password = aUser.getPassword();
+		this.email = aUser.getEmail();
+		this.updateTime = new Date();
+		this.memo = aUser.getMemo();
+	}
 
 	public Integer getId() {
 		return id;

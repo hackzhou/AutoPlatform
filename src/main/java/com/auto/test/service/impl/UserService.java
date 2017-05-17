@@ -42,11 +42,9 @@ public class UserService implements IUserService {
 		if(aUser != null){
 			AUser user = dao.findById(aUser.getId());
 			if(user != null){
-				dao.evict(user);
-				aUser.setCreateTime(user.getCreateTime());
-				aUser.setUpdateTime(new Date());
-				dao.update(aUser);
-				return aUser;
+				user.updateAUser(aUser);
+				dao.update(user);
+				return user;
 			}
 		}
 		return null;

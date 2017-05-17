@@ -34,6 +34,7 @@ public class AProject implements Serializable{
 	public AProject() {
 		super();
 	}
+	
 	public AProject(String name) {
 		super();
 		this.name = name;
@@ -42,6 +43,12 @@ public class AProject implements Serializable{
 		super();
 		this.id = id;
 		this.name = name;
+	}
+	
+	public void updateAProject(AProject aProject) {
+		this.name = aProject.getName();
+		this.updateTime = new Date();
+		this.memo = aProject.getMemo();
 	}
 	
 	public Integer getId() {
@@ -74,7 +81,7 @@ public class AProject implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "AProject [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
