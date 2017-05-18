@@ -10,17 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="a_case")
-public class ACase implements Serializable{
-	private static final long serialVersionUID = -372190487810560745L;
-	
+@Table(name="a_result_detail")
+public class AResultDetail implements Serializable{
+	private static final long serialVersionUID = 7596016181206871659L;
+
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
 	private Integer id;
 	
-	@Column(name="project_id")
-	private AProject projecto;
+	@Column(name="result_id")
+	private AResult resulto;
+	
+	@Column(name="case_id")
+	private ACase caseo;
 	
 	@Column(name="name")
 	private String name;
@@ -39,10 +42,10 @@ public class ACase implements Serializable{
 	
 	@Column(name="result")
 	private String result;
-	
-	@Column(name="strategy")
-	private String strategy;
 
+	@Column(name="status")
+	private String status;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -52,21 +55,22 @@ public class ACase implements Serializable{
 	@Column(name="memo")
 	private String memo;
 
-	public ACase() {
+	public AResultDetail() {
 		super();
 	}
-	
-	public void updateACase(ACase aCase) {
-		this.projecto = aCase.getProjecto();
-		this.name = aCase.getName();
-		this.method = aCase.getMethod();
-		this.url = aCase.getUrl();
-		this.header = aCase.getHeader();
-		this.body = aCase.getBody();
-		this.result = aCase.getResult();
-		this.strategy = aCase.getStrategy();
+
+	public void updateAResult(AResultDetail aResultDetail){
+		this.resulto = aResultDetail.getResulto();
+		this.caseo = aResultDetail.getCaseo();
+		this.name = aResultDetail.getName();
+		this.method = aResultDetail.getMethod();
+		this.url = aResultDetail.getUrl();
+		this.header = aResultDetail.getHeader();
+		this.body = aResultDetail.getBody();
+		this.result = aResultDetail.getResult();
+		this.status = aResultDetail.getStatus();
 		this.updateTime = new Date();
-		this.memo = aCase.getMemo();
+		this.memo = aResultDetail.getMemo();
 	}
 
 	public Integer getId() {
@@ -75,11 +79,17 @@ public class ACase implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public AProject getProjecto() {
-		return projecto;
+	public AResult getResulto() {
+		return resulto;
 	}
-	public void setProjecto(AProject projecto) {
-		this.projecto = projecto;
+	public void setResulto(AResult resulto) {
+		this.resulto = resulto;
+	}
+	public ACase getCaseo() {
+		return caseo;
+	}
+	public void setCaseo(ACase caseo) {
+		this.caseo = caseo;
 	}
 	public String getName() {
 		return name;
@@ -117,11 +127,11 @@ public class ACase implements Serializable{
 	public void setResult(String result) {
 		this.result = result;
 	}
-	public String getStrategy() {
-		return strategy;
+	public String getStatus() {
+		return status;
 	}
-	public void setStrategy(String strategy) {
-		this.strategy = strategy;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -144,9 +154,9 @@ public class ACase implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ACase [id=" + id + ", projecto=" + projecto + ", name=" + name + ", method=" + method + ", url=" + url
-				+ ", header=" + header + ", body=" + body + ", result=" + result + ", strategy=" + strategy
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", method="
+				+ method + ", url=" + url + ", header=" + header + ", body=" + body + ", result=" + result + ", status="
+				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-
+	
 }
