@@ -19,8 +19,14 @@ public class AResult implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
+	@Column(name="project_id")
+	private AProject projecto;
+	
 	@Column(name="name")
 	private String name;
+	
+	@Column(name="runby")
+	private String runby;
 	
 	@Column(name="create_time")
 	private Date createTime;
@@ -36,7 +42,9 @@ public class AResult implements Serializable{
 	}
 	
 	public void updateAResult(AResult aResult){
+		this.projecto = aResult.getProjecto();
 		this.name = aResult.getName();
+		this.runby = aResult.getRunby();
 		this.updateTime = new Date();
 		this.memo = aResult.getMemo();
 	}
@@ -47,11 +55,23 @@ public class AResult implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	public AProject getProjecto() {
+		return projecto;
+	}
+	public void setProjecto(AProject projecto) {
+		this.projecto = projecto;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getRunby() {
+		return runby;
+	}
+	public void setRunby(String runby) {
+		this.runby = runby;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -74,8 +94,8 @@ public class AResult implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AResult [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + "]";
+		return "AResult [id=" + id + ", projecto=" + projecto + ", name=" + name + ", runby=" + runby + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-	
+
 }

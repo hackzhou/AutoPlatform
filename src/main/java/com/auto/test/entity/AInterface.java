@@ -10,30 +10,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="a_case")
-public class ACase implements Serializable{
-	private static final long serialVersionUID = -372190487810560745L;
-	
+@Table(name="a_interface")
+public class AInterface implements Serializable{
+	private static final long serialVersionUID = 6112628873494753194L;
+
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
 	private Integer id;
-	
+
 	@Column(name="project_id")
-	private AInterface interfaceo;
+	private AProject projecto;
 	
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="header")
-	private String header;
+	@Column(name="type")
+	private String type;
 
-	@Column(name="body")
-	private String body;
+	@Column(name="url")
+	private String url;
 	
-	@Column(name="strategy")
-	private String strategy;
-
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -42,26 +39,31 @@ public class ACase implements Serializable{
 	
 	@Column(name="memo")
 	private String memo;
-
-	public ACase() {
+	
+	public AInterface() {
 		super();
 	}
 	
-	public void updateACase(ACase aCase) {
-		this.interfaceo = aCase.getInterfaceo();
-		this.name = aCase.getName();
-		this.header = aCase.getHeader();
-		this.body = aCase.getBody();
-		this.strategy = aCase.getStrategy();
+	public void updateAInterface(AInterface aInterface) {
+		this.projecto = aInterface.getProjecto();
+		this.name = aInterface.getName();
+		this.type = aInterface.getType();
+		this.url = aInterface.getUrl();
 		this.updateTime = new Date();
-		this.memo = aCase.getMemo();
+		this.memo = aInterface.getMemo();
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public AProject getProjecto() {
+		return projecto;
+	}
+	public void setProjecto(AProject projecto) {
+		this.projecto = projecto;
 	}
 	public String getName() {
 		return name;
@@ -69,29 +71,17 @@ public class ACase implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public AInterface getInterfaceo() {
-		return interfaceo;
+	public String getType() {
+		return type;
 	}
-	public void setInterfaceo(AInterface interfaceo) {
-		this.interfaceo = interfaceo;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public String getHeader() {
-		return header;
+	public String getUrl() {
+		return url;
 	}
-	public void setHeader(String header) {
-		this.header = header;
-	}
-	public String getBody() {
-		return body;
-	}
-	public void setBody(String body) {
-		this.body = body;
-	}
-	public String getStrategy() {
-		return strategy;
-	}
-	public void setStrategy(String strategy) {
-		this.strategy = strategy;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -114,9 +104,8 @@ public class ACase implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", name=" + name + ", header=" + header + ", body="
-				+ body + ", strategy=" + strategy + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + "]";
+		return "AInterface [id=" + id + ", projecto=" + projecto + ", name=" + name + ", type=" + type + ", url=" + url
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-
+	
 }

@@ -28,8 +28,8 @@ public class AResultDetail implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="method")
-	private String method;
+	@Column(name="type")
+	private String type;
 
 	@Column(name="url")
 	private String url;
@@ -63,7 +63,7 @@ public class AResultDetail implements Serializable{
 		this.resulto = aResultDetail.getResulto();
 		this.caseo = aResultDetail.getCaseo();
 		this.name = aResultDetail.getName();
-		this.method = aResultDetail.getMethod();
+		this.type = aResultDetail.getType();
 		this.url = aResultDetail.getUrl();
 		this.header = aResultDetail.getHeader();
 		this.body = aResultDetail.getBody();
@@ -97,11 +97,11 @@ public class AResultDetail implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getMethod() {
-		return method;
+	public String getType() {
+		return type;
 	}
-	public void setMethod(String method) {
-		this.method = method;
+	public void setType(String type) {
+		this.type = type;
 	}
 	public String getUrl() {
 		return url;
@@ -154,9 +154,9 @@ public class AResultDetail implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", method="
-				+ method + ", url=" + url + ", header=" + header + ", body=" + body + ", result=" + result + ", status="
+		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", type="
+				+ type + ", url=" + url + ", header=" + header + ", body=" + body + ", result=" + result + ", status="
 				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-	
+
 }
