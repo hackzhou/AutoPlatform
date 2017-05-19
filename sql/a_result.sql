@@ -10,22 +10,20 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-19 19:02:56
+Date: 2017-05-19 19:03:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for a_case
+-- Table structure for a_result
 -- ----------------------------
-DROP TABLE IF EXISTS `a_case`;
-CREATE TABLE `a_case` (
+DROP TABLE IF EXISTS `a_result`;
+CREATE TABLE `a_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `interface_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  `header` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
-  `body` text COLLATE utf8_bin,
-  `strategy` varchar(2048) COLLATE utf8_bin DEFAULT NULL,
+  `runby` varchar(255) COLLATE utf8_bin NOT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
