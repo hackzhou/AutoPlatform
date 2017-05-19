@@ -40,6 +40,7 @@ public class AUser implements Serializable{
 	public AUser() {
 		super();
 	}
+	
 	public AUser(String username, String password, String email) {
 		super();
 		this.username = username;

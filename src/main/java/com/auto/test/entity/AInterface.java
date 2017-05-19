@@ -31,6 +31,9 @@ public class AInterface implements Serializable{
 	@Column(name="url")
 	private String url;
 	
+	@Column(name="description")
+	private String description;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -49,6 +52,7 @@ public class AInterface implements Serializable{
 		this.name = aInterface.getName();
 		this.type = aInterface.getType();
 		this.url = aInterface.getUrl();
+		this.description = aInterface.getDescription();
 		this.updateTime = new Date();
 		this.memo = aInterface.getMemo();
 	}
@@ -83,6 +87,12 @@ public class AInterface implements Serializable{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -105,7 +115,8 @@ public class AInterface implements Serializable{
 	@Override
 	public String toString() {
 		return "AInterface [id=" + id + ", projecto=" + projecto + ", name=" + name + ", type=" + type + ", url=" + url
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", description=" + description + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + "]";
 	}
-	
+
 }

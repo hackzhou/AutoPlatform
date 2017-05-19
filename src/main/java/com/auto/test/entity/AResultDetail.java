@@ -34,6 +34,9 @@ public class AResultDetail implements Serializable{
 	@Column(name="url")
 	private String url;
 	
+	@Column(name="description")
+	private String description;
+	
 	@Column(name="header")
 	private String header;
 
@@ -65,6 +68,7 @@ public class AResultDetail implements Serializable{
 		this.name = aResultDetail.getName();
 		this.type = aResultDetail.getType();
 		this.url = aResultDetail.getUrl();
+		this.description = aResultDetail.getDescription();
 		this.header = aResultDetail.getHeader();
 		this.body = aResultDetail.getBody();
 		this.result = aResultDetail.getResult();
@@ -108,6 +112,12 @@ public class AResultDetail implements Serializable{
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getHeader() {
 		return header;
@@ -155,8 +165,9 @@ public class AResultDetail implements Serializable{
 	@Override
 	public String toString() {
 		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", type="
-				+ type + ", url=" + url + ", header=" + header + ", body=" + body + ", result=" + result + ", status="
-				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ type + ", url=" + url + ", description=" + description + ", header=" + header + ", body=" + body
+				+ ", result=" + result + ", status=" + status + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", memo=" + memo + "]";
 	}
 
 }
