@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,7 +74,7 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -200,7 +200,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
 					}
 				}

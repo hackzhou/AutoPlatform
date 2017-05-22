@@ -19,9 +19,6 @@ public class AVersion implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
-	@Column(name="project_id")
-	private AProject projecto;
-	
 	@Column(name="version")
 	private String version;
 	
@@ -41,8 +38,19 @@ public class AVersion implements Serializable{
 		super();
 	}
 	
+	public AVersion(String version, String channel) {
+		super();
+		this.version = version;
+		this.channel = channel;
+	}
+	public AVersion(Integer id, String version, String channel) {
+		super();
+		this.id = id;
+		this.version = version;
+		this.channel = channel;
+	}
+
 	public void updateAVersion(AVersion aVersion){
-		this.projecto = aVersion.getProjecto();
 		this.version = aVersion.getVersion();
 		this.channel = aVersion.getChannel();
 		this.updateTime = new Date();
@@ -54,12 +62,6 @@ public class AVersion implements Serializable{
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public AProject getProjecto() {
-		return projecto;
-	}
-	public void setProjecto(AProject projecto) {
-		this.projecto = projecto;
 	}
 	public String getVersion() {
 		return version;
@@ -94,8 +96,8 @@ public class AVersion implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AVersion [id=" + id + ", projecto=" + projecto + ", version=" + version + ", channel=" + channel
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AVersion [id=" + id + ", version=" + version + ", channel=" + channel + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }

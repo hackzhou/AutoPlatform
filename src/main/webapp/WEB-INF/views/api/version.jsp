@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>Project</title>
+<title>Version</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -39,7 +39,6 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Data Table</h4> -->
         </div>
       </div>
       <!-- /row -->
@@ -49,18 +48,10 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <!-- <div class="col-md-3">
-	                <div class="form-group">
-					  <label class="control-label col-md-2">Name:</label>
-					  <div class="col-md-9">
-	                    <input type="text" class="form-control" placeholder="name">
-					  </div>
-	                </div>
-	              </div> -->
 	              <div class="col-md-12">
-	              	<!-- /.Create Project -->
+	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">Add Version</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,25 +65,30 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
+                    <h4 class="modal-title" id="exampleModalLabel2">Add Version</h4>
                   </div>
                   <div class="modal-body">
-                    <form id="api-project-form" class="form-horizontal form-material">
+                    <form id="api-version-form" class="form-horizontal form-material">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
+	                        <input type="hidden" id="api-version-id" name="api-version-id" value="">
+	                        <input type="text" id="api-version-version" name="api-version-version" class="form-control" placeholder="Version">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-version-channel" name="api-version-channel" class="form-control" placeholder="Channel">
 	                      </div>
 	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiVersionSave();" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -100,11 +96,12 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-project-table" class="table table-striped">
+            <table id="api-version-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
+                  <th>Version</th>
+                  <th>Channel</th>
                   <th>Create Date</th>
                   <th>Action</th>
                 </tr>
@@ -158,17 +155,17 @@
     });
 
     function createTable() {
-    	$('#api-project-table').dataTable().fnDestroy();
-    	$('#api-project-table').DataTable({
+    	$('#api-version-table').dataTable().fnDestroy();
+    	$('#api-version-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/version/list/data",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "20%",
+					"sWidth" : "15%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -177,21 +174,21 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "25%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.name;
+						return data.version;
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "25%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+						return data.channel;
 					}
 				},
 				{
@@ -200,40 +197,51 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiVersionEdit('" + data.id + "','" + data.version + "','" + data.channel + "');\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiVersionDel('" + data.id + "');\"></i></a>";
 					}
 				}
     		]
     	});
     }
     
-    function initApiProjectModal(){
-    	$('#api-project-id').val("");
-    	$('#api-project-name').val("");
+    function initApiVersionModal(){
+    	$('#api-version-id').val("");
+    	$('#api-version-version').val("");
+    	$('#api-version-channel').val("");
     }
     
-    function apiProjectEdit(id, name){
-    	$('#api-project-id').val(id);
-    	$('#api-project-name').val(name);
+    function apiVersionEdit(id, version, channel){
+    	$('#api-version-id').val(id);
+    	$('#api-version-version').val(version);
+    	$('#api-version-channel').val(channel);
     }
     
-    function apiProjectSave(){
+    function apiVersionSave(){
 		$.ajax({
 			type:"post",
-      		url:"<%=request.getContextPath()%>/api/project/create/update",
-      		data:$('#api-project-form').serialize(),
+      		url:"<%=request.getContextPath()%>/api/version/create/update",
+      		data:$('#api-version-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				$('#api-project-table').dataTable()._fnAjaxUpdate();
+      				$('#api-version-table').dataTable()._fnAjaxUpdate();
       			}else{
-      				swal("Error", "Create/Update project failure.", "error");
+      				swal("Error", "Create/Update version failure.", "error");
       			}
       	    }
 		});
     }
     
-    function apiProjectDel(did){
+    function apiVersionDel(did){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -245,12 +253,12 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/version/delete/id=" + did,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
           	    	}
-          	    	$('#api-project-table').dataTable()._fnAjaxUpdate();
+          	    	$('#api-version-table').dataTable()._fnAjaxUpdate();
           	    }
 			});
 		});
