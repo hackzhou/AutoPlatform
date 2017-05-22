@@ -41,7 +41,7 @@ public class AVersion implements Serializable{
 		super();
 	}
 	
-	public void updateAHeader(AVersion aVersion){
+	public void updateAVersion(AVersion aVersion){
 		this.projecto = aVersion.getProjecto();
 		this.version = aVersion.getVersion();
 		this.channel = aVersion.getChannel();

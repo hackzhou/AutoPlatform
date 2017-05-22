@@ -55,6 +55,9 @@
         <li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs">接口自动化</b> </a>
           <ul class="dropdown-menu dropdown-user animated flipInY">
             <li><a href="${pageContext.request.contextPath}/api/project/list"><i class="ti-briefcase"></i> Project</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/version/list"><i class="ti-briefcase"></i> Version</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/interface/list"><i class="ti-briefcase"></i> Interface</a></li>
+            <li><a href="${pageContext.request.contextPath}/api/account/list"><i class="ti-briefcase"></i> Account</a></li>
             <li><a href="${pageContext.request.contextPath}/api/case/list"><i class="ti-write"></i> Case</a></li>
             <li><a href="${pageContext.request.contextPath}/api/report/list"><i class="ti-book"></i> Report</a></li>
             <li role="separator" class="divider"></li>

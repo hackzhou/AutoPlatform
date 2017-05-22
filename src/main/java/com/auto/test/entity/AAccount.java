@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="a_login")
-public class ALogin implements Serializable{
-	private static final long serialVersionUID = -4782716876268804353L;
+@Table(name="a_account")
+public class AAccount implements Serializable{
+	private static final long serialVersionUID = -5311622782461537226L;
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,15 +34,15 @@ public class ALogin implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
-	public ALogin() {
+	public AAccount() {
 		super();
 	}
 	
-	public void updateALogin(ALogin aLogin) {
-		this.loginname = aLogin.getLoginname();
-		this.password = aLogin.getPassword();
+	public void updateAAccount(AAccount aAccount) {
+		this.loginname = aAccount.getLoginname();
+		this.password = aAccount.getPassword();
 		this.updateTime = new Date();
-		this.memo = aLogin.getMemo();
+		this.memo = aAccount.getMemo();
 	}
 	
 	public Integer getId() {
@@ -84,8 +84,8 @@ public class ALogin implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ALogin [id=" + id + ", loginname=" + loginname + ", password=" + password + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AAccount [id=" + id + ", loginname=" + loginname + ", password=" + password + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-	
+
 }

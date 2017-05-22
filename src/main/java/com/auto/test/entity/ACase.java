@@ -19,14 +19,14 @@ public class ACase implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
+	@Column(name="version_id")
+	private AVersion versiono;
+	
 	@Column(name="project_id")
 	private AInterface interfaceo;
 	
 	@Column(name="name")
 	private String name;
-	
-	@Column(name="header")
-	private String header;
 
 	@Column(name="body")
 	private String body;
@@ -50,7 +50,7 @@ public class ACase implements Serializable{
 	public void updateACase(ACase aCase) {
 		this.interfaceo = aCase.getInterfaceo();
 		this.name = aCase.getName();
-		this.header = aCase.getHeader();
+		this.versiono = aCase.getVersiono();
 		this.body = aCase.getBody();
 		this.strategy = aCase.getStrategy();
 		this.updateTime = new Date();
@@ -69,17 +69,17 @@ public class ACase implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public AVersion getVersiono() {
+		return versiono;
+	}
+	public void setVersiono(AVersion versiono) {
+		this.versiono = versiono;
+	}
 	public AInterface getInterfaceo() {
 		return interfaceo;
 	}
 	public void setInterfaceo(AInterface interfaceo) {
 		this.interfaceo = interfaceo;
-	}
-	public String getHeader() {
-		return header;
-	}
-	public void setHeader(String header) {
-		this.header = header;
 	}
 	public String getBody() {
 		return body;
@@ -114,9 +114,9 @@ public class ACase implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", name=" + name + ", header=" + header + ", body="
-				+ body + ", strategy=" + strategy + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + "]";
+		return "ACase [id=" + id + ", versiono=" + versiono + ", interfaceo=" + interfaceo + ", name=" + name
+				+ ", body=" + body + ", strategy=" + strategy + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", memo=" + memo + "]";
 	}
 
 }
