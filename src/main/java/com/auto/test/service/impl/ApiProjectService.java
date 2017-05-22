@@ -38,7 +38,7 @@ public class ApiProjectService implements IApiProjectService {
 		if(aProject != null){
 			AProject pro = dao.findById(aProject.getId());
 			if(pro != null){
-				pro.updateAProject(aProject);
+				pro.update(aProject);
 				dao.update(pro);
 				return pro;
 			}

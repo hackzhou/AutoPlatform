@@ -34,7 +34,7 @@ public class ApiAccountService implements IApiAccountService {
 		if(aAccount != null){
 			AAccount acc = dao.findById(aAccount.getId());
 			if(acc != null){
-				acc.updateAAccount(aAccount);
+				acc.update(aAccount);
 				dao.update(acc);
 				return acc;
 			}

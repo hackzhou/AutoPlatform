@@ -47,7 +47,7 @@ public class AInterface implements Serializable{
 		super();
 	}
 	
-	public void updateAInterface(AInterface aInterface) {
+	public void update(AInterface aInterface) {
 		this.projecto = aInterface.getProjecto();
 		this.name = aInterface.getName();
 		this.type = aInterface.getType();

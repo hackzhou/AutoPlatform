@@ -50,7 +50,7 @@ public class AAccount implements Serializable{
 		this.password = password;
 	}
 
-	public void updateAAccount(AAccount aAccount) {
+	public void update(AAccount aAccount) {
 		this.loginname = aAccount.getLoginname();
 		this.password = aAccount.getPassword();
 		this.updateTime = new Date();

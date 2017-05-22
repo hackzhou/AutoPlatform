@@ -42,7 +42,7 @@ public class UserService implements IUserService {
 		if(aUser != null){
 			AUser user = dao.findById(aUser.getId());
 			if(user != null){
-				user.updateAUser(aUser);
+				user.update(aUser);
 				dao.update(user);
 				return user;
 			}

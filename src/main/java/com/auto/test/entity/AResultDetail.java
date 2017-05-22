@@ -62,7 +62,7 @@ public class AResultDetail implements Serializable{
 		super();
 	}
 
-	public void updateAResult(AResultDetail aResultDetail){
+	public void update(AResultDetail aResultDetail){
 		this.resulto = aResultDetail.getResulto();
 		this.caseo = aResultDetail.getCaseo();
 		this.name = aResultDetail.getName();

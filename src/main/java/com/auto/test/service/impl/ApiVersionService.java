@@ -34,7 +34,7 @@ public class ApiVersionService implements IApiVersionService {
 		if(aVersion != null){
 			AVersion ver = dao.findById(aVersion.getId());
 			if(ver != null){
-				ver.updateAVersion(aVersion);
+				ver.update(aVersion);
 				dao.update(ver);
 				return ver;
 			}

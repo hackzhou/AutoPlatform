@@ -45,7 +45,7 @@ public class AProject implements Serializable{
 		this.name = name;
 	}
 	
-	public void updateAProject(AProject aProject) {
+	public void update(AProject aProject) {
 		this.name = aProject.getName();
 		this.updateTime = new Date();
 		this.memo = aProject.getMemo();

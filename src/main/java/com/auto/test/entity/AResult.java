@@ -41,7 +41,7 @@ public class AResult implements Serializable{
 		super();
 	}
 	
-	public void updateAResult(AResult aResult){
+	public void update(AResult aResult){
 		this.projecto = aResult.getProjecto();
 		this.name = aResult.getName();
 		this.runby = aResult.getRunby();

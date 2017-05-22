@@ -50,7 +50,7 @@ public class AVersion implements Serializable{
 		this.channel = channel;
 	}
 
-	public void updateAVersion(AVersion aVersion){
+	public void update(AVersion aVersion){
 		this.version = aVersion.getVersion();
 		this.channel = aVersion.getChannel();
 		this.updateTime = new Date();

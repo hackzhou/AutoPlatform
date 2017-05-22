@@ -47,7 +47,7 @@ public class ACase implements Serializable{
 		super();
 	}
 	
-	public void updateACase(ACase aCase) {
+	public void update(ACase aCase) {
 		this.interfaceo = aCase.getInterfaceo();
 		this.name = aCase.getName();
 		this.versiono = aCase.getVersiono();
