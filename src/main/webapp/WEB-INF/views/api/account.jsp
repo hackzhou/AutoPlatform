@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>Project</title>
+<title>Account</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -58,9 +58,9 @@
 	                </div>
 	              </div> -->
 	              <div class="col-md-12">
-	              	<!-- /.Create Project -->
+	              	<!-- /.Create Account -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModal4" data-whatever="@fat">Add Account</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,25 +74,30 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
+                    <h4 class="modal-title" id="exampleModalLabel4">Add Account</h4>
                   </div>
                   <div class="modal-body">
-                    <form id="api-project-form" class="form-horizontal form-material">
+                    <form id="api-account-form" class="form-horizontal form-material">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
+	                        <input type="hidden" id="api-account-id" name="api-account-id" value="">
+	                        <input type="text" id="api-account-loginname" name="api-account-loginname" class="form-control" placeholder="LoginName">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-account-password" name="api-account-password" class="form-control" placeholder="Password">
 	                      </div>
 	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiAccountSave();" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -100,11 +105,12 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-project-table" class="table table-striped">
+            <table id="api-account-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
+                  <th>LoginName</th>
+                  <th>Password</th>
                   <th>Create Date</th>
                   <th>Action</th>
                 </tr>
@@ -158,17 +164,17 @@
     });
 
     function createTable() {
-    	$('#api-project-table').dataTable().fnDestroy();
-    	$('#api-project-table').DataTable({
+    	$('#api-account-table').dataTable().fnDestroy();
+    	$('#api-account-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/account/list/data",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "20%",
+					"sWidth" : "15%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -177,21 +183,21 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "25%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.name;
+						return data.loginname;
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "25%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+						return data.password;
 					}
 				},
 				{
@@ -200,40 +206,51 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiAccountEdit('" + data.id + "','" + data.loginname + "','" + data.password + "');\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiAccountDel('" + data.id + "');\"></i></a>";
 					}
 				}
     		]
     	});
     }
     
-    function initApiProjectModal(){
-    	$('#api-project-id').val("");
-    	$('#api-project-name').val("");
+    function initApiAccountModal(){
+    	$('#api-account-id').val("");
+    	$('#api-account-loginname').val("");
+    	$('#api-account-password').val("");
     }
     
-    function apiProjectEdit(id, name){
-    	$('#api-project-id').val(id);
-    	$('#api-project-name').val(name);
+    function apiAccountEdit(id, loginname, password){
+    	$('#api-account-id').val(id);
+    	$('#api-account-loginname').val(loginname);
+    	$('#api-account-password').val(password);
     }
     
-    function apiProjectSave(){
+    function apiAccountSave(){
 		$.ajax({
 			type:"post",
-      		url:"<%=request.getContextPath()%>/api/project/create/update",
-      		data:$('#api-project-form').serialize(),
+      		url:"<%=request.getContextPath()%>/api/account/create/update",
+      		data:$('#api-account-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				$('#api-project-table').dataTable()._fnAjaxUpdate();
+      				$('#api-account-table').dataTable()._fnAjaxUpdate();
       			}else{
-      				swal("Error", "Create/Update project failure.", "error");
+      				swal("Error", "Create/Update account failure.", "error");
       			}
       	    }
 		});
     }
     
-    function apiProjectDel(did){
+    function apiAccountDel(did){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -245,12 +262,12 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/account/delete/id=" + did,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
           	    	}
-          	    	$('#api-project-table').dataTable()._fnAjaxUpdate();
+          	    	$('#api-account-table').dataTable()._fnAjaxUpdate();
           	    }
 			});
 		});

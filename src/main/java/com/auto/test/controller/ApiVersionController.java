@@ -61,7 +61,7 @@ public class ApiVersionController extends BaseController{
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
+	public Map<String, Object> deleteVersion(@PathVariable("id") String id) {
 		versionService.delete(Integer.parseInt(id));
 		return successJson();
 	}
