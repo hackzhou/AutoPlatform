@@ -10,20 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="a_header")
-public class AHeader implements Serializable{
-	private static final long serialVersionUID = 8356832169204253927L;
+@Table(name="a_version")
+public class AVersion implements Serializable{
+	private static final long serialVersionUID = -3957590496068903091L;
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
 	private Integer id;
 	
-	@Column(name="key")
-	private String key;
+	@Column(name="project_id")
+	private AProject projecto;
 	
-	@Column(name="value")
-	private String value;
+	@Column(name="version")
+	private String version;
+	
+	@Column(name="channel")
+	private String channel;
 	
 	@Column(name="create_time")
 	private Date createTime;
@@ -34,15 +37,16 @@ public class AHeader implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
-	public AHeader() {
+	public AVersion() {
 		super();
 	}
 	
-	public void updateAHeader(AHeader aHeader){
-		this.key = aHeader.getKey();
-		this.value = aHeader.getValue();
+	public void updateAHeader(AVersion aVersion){
+		this.projecto = aVersion.getProjecto();
+		this.version = aVersion.getVersion();
+		this.channel = aVersion.getChannel();
 		this.updateTime = new Date();
-		this.memo = aHeader.getMemo();
+		this.memo = aVersion.getMemo();
 	}
 	
 	public Integer getId() {
@@ -51,17 +55,23 @@ public class AHeader implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getKey() {
-		return key;
+	public AProject getProjecto() {
+		return projecto;
 	}
-	public void setKey(String key) {
-		this.key = key;
+	public void setProjecto(AProject projecto) {
+		this.projecto = projecto;
 	}
-	public String getValue() {
-		return value;
+	public String getVersion() {
+		return version;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public String getChannel() {
+		return channel;
+	}
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -84,8 +94,8 @@ public class AHeader implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AHeader [id=" + id + ", key=" + key + ", value=" + value + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AVersion [id=" + id + ", projecto=" + projecto + ", version=" + version + ", channel=" + channel
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-	
+
 }
