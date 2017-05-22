@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>Project</title>
+<title>Interface</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -58,9 +58,9 @@
 	                </div>
 	              </div> -->
 	              <div class="col-md-12">
-	              	<!-- /.Create Project -->
+	              	<!-- /.Create Interface -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModal3" data-whatever="@fat">Add Interface</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,25 +74,56 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
+                    <h4 class="modal-title" id="exampleModalLabel3">Add Interface</h4>
                   </div>
                   <div class="modal-body">
-                    <form id="api-project-form" class="form-horizontal form-material">
+                    <form id="api-interface-form" class="form-horizontal form-material">
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>Project <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-interface-project" name="api-interface-project" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
+	                        <label class="col-sm-3 text-info text-center"><code>Type <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-interface-type" name="api-interface-type" class="form-select" style="width: 80%;">
+		                        	<option value="GET" selected="selected">GET</option>
+		                        	<option value="POST">POST</option>
+		                        	<option value="PUT">PUT</option>
+		                        	<option value="DELETE">DELETE</option>
+		                        </select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="hidden" id="api-interface-id" name="api-interface-id" value="">
+	                        <input type="text" id="api-interface-name" name="api-interface-name" class="form-control" placeholder="Name">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-interface-url" name="api-interface-url" class="form-control" placeholder="Url">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="Description">
 	                      </div>
 	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiInterfaceSave();" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -100,11 +131,15 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-project-table" class="table table-striped">
+            <table id="api-interface-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Project</th>
                   <th>Name</th>
+                  <th>Type</th>
+                  <th>Url</th>
+                  <th>Description</th>
                   <th>Create Date</th>
                   <th>Action</th>
                 </tr>
@@ -155,20 +190,21 @@
 
     $(document).ready(function(){
     	createTable();
+    	initApiInterfaceProject(null);
     });
 
     function createTable() {
-    	$('#api-project-table').dataTable().fnDestroy();
-    	$('#api-project-table').DataTable({
+    	$('#api-interface-table').dataTable().fnDestroy();
+    	$('#api-interface-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/project/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/interface/list/data",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "20%",
+					"sWidth" : "10%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -177,8 +213,17 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "10%",
 					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.projecto.name;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -186,8 +231,35 @@
 					}
 				},
 				{
+					"sWidth" : "10%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.type;
+					}
+				},
+				{
 					"sWidth" : "30%",
-					"aTargets" : [ 2 ],
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.url;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 5 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.description;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -195,45 +267,75 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
-					"aTargets" : [ 3 ],
+					"sWidth" : "10%",
+					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiInterfaceEdit('" + data.id + "','" + data.projecto.id + "','" + data.name + "','" + data.type + "','" + data.url + "','" + data.description + "');\" data-toggle=\"modal\" data-target=\"#exampleModal3\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiInterfaceDel('" + data.id + "');\"></i></a>";
 					}
 				}
     		]
     	});
     }
     
-    function initApiProjectModal(){
-    	$('#api-project-id').val("");
-    	$('#api-project-name').val("");
+    function initApiInterfaceProject(projectid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(projectid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+    					}
+    				}
+    				$('#api-interface-project').empty();
+    				$('#api-interface-project').append(optionstring);
+    			}
+    		}
+    	});
     }
     
-    function apiProjectEdit(id, name){
-    	$('#api-project-id').val(id);
-    	$('#api-project-name').val(name);
+    function initApiInterfaceModal(){
+    	$('#api-interface-id').val("");
+    	$('#api-interface-name').val("");
+    	$('#api-interface-url').val("");
+    	$('#api-interface-description').val("");
+    	initApiInterfaceProject(null);
+    	$('#api-interface-type').val("GET");
     }
     
-    function apiProjectSave(){
+    function apiInterfaceEdit(id, projectid, name, type, url, description){
+    	$('#api-interface-id').val(id);
+    	$('#api-interface-name').val(name);
+    	$('#api-interface-url').val(url);
+    	$('#api-interface-description').val(description);
+    	initApiInterfaceProject(projectid);
+    	$('#api-interface-type').val(type);
+    }
+    
+    function apiInterfaceSave(){
 		$.ajax({
 			type:"post",
-      		url:"<%=request.getContextPath()%>/api/project/create/update",
-      		data:$('#api-project-form').serialize(),
+      		url:"<%=request.getContextPath()%>/api/interface/create/update",
+      		data:$('#api-interface-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				$('#api-project-table').dataTable()._fnAjaxUpdate();
+      				$('#api-interface-table').dataTable()._fnAjaxUpdate();
       			}else{
-      				swal("Error", "Create/Update project failure.", "error");
+      				swal("Error", "Create/Update interface failure.", "error");
       			}
       	    }
 		});
     }
     
-    function apiProjectDel(did){
+    function apiInterfaceDel(did){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -245,12 +347,12 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/interface/delete/id=" + did,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
           	    	}
-          	    	$('#api-project-table').dataTable()._fnAjaxUpdate();
+          	    	$('#api-interface-table').dataTable()._fnAjaxUpdate();
           	    }
 			});
 		});

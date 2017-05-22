@@ -35,6 +35,10 @@ public class AProject implements Serializable{
 		super();
 	}
 	
+	public AProject(Integer id) {
+		super();
+		this.id = id;
+	}
 	public AProject(String name) {
 		super();
 		this.name = name;

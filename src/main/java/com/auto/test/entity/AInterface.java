@@ -2,12 +2,20 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="a_interface")
@@ -19,7 +27,9 @@ public class AInterface implements Serializable{
     @Column(name="id")
 	private Integer id;
 
-	@Column(name="project_id")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="project_id")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private AProject projecto;
 	
 	@Column(name="name")
@@ -47,6 +57,24 @@ public class AInterface implements Serializable{
 		super();
 	}
 	
+	public AInterface(Integer projectId, String name, String type, String url, String description) {
+		super();
+		this.projecto = new AProject(projectId);
+		this.name = name;
+		this.type = type;
+		this.url = url;
+		this.description = description;
+	}
+	public AInterface(Integer id, Integer projectId, String name, String type, String url, String description) {
+		super();
+		this.id = id;
+		this.projecto = new AProject(projectId);
+		this.name = name;
+		this.type = type;
+		this.url = url;
+		this.description = description;
+	}
+
 	public void update(AInterface aInterface) {
 		this.projecto = aInterface.getProjecto();
 		this.name = aInterface.getName();
