@@ -4,17 +4,23 @@
 <html lang="en">
 <body>
 <h2>项目【<%=request.getContextPath()%>】路径入口：</h2><br/>
-<table style="width: 50%;" border="1">
+<table style="width: 60%;" border="1">
 	<tr>
 		<td align="center">平台：</td>
 		<td><a href="${pageContext.request.contextPath}/home/index">首页</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/home/login">登录</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/home/register">注册</a><br/></td>
 		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td align="center">接口自动化：</td>
 		<td><a href="${pageContext.request.contextPath}/api/project/list">接口项目</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/api/version/list">接口版本</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/api/interface/list">接口信息</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/api/account/list">测试账号</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/case/list">接口案例</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/report/list">接口报告</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/setting/list">接口设置</a><br/></td>
@@ -25,9 +31,15 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td align="center">测试工具：</td>
+		<td></td>
+		<td></td>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>

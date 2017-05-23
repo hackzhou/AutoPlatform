@@ -107,7 +107,7 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiAccountSave();">Save</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiAccountSave();">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
