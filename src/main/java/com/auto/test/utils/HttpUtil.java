@@ -18,9 +18,8 @@ public class HttpUtil {
 	public static void main(String[] args) {
 //		sendGet("https://www.jddfun.com/api_app/api/app/usercenter/getUserPersonalInfo");
 //		sendPost("https://www.jddfun.com/api_app/api/app/usercenter/appVersionUpdate", "");
-//		sendPost("https://www.jddfun.com/api_app/api/app/coterie/list", "{\"page\":1,\"pageSize\":10}");
-	
-		parseJSONObject("aaa", false);
+		sendPost("https://www.jddfun.com/api_app/api/app/coterie/list", "{\"page\":1,\"pageSize\":10}");
+//		parseJSONObject("aaa", false);
 	}
 
 	public static void sendGet(String url){

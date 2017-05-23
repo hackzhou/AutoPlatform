@@ -66,7 +66,7 @@
           <div class="white-box">
             <!-- /.modal -->
             <div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog" role="document" style="width: 1000px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -98,13 +98,13 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-body" name="api-case-body" class="form-control" placeholder="Body">
+	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="Strategy">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="Strategy">
-	                      </div>
+	                      <div class="col-md-12 m-b-20" style="width:100%">
+							<textarea autoHeight="true" name="api-case-body" id="api-case-body" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="Body"></textarea>
+                           </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
@@ -184,13 +184,28 @@
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
 <script type="text/javascript">
+
+	function autoHeight(elem){
+		elem.style.height = 'auto';
+		elem.scrollTop = 0;
+		elem.style.height = elem.scrollHeight + 'px';
+	}
+	$.fn.autoHeight = function(){
+		this.each(function(){
+			autoHeight(this);
+			$(this).on('keyup', function(){
+				autoHeight(this);
+			});
+		});
+	}
+	$('textarea[autoHeight]').autoHeight();
   
 	$(document).ready(function() {
 		createTable();
 		initApiCaseInterface(null);
 		initApiCaseVersion(null);
 	});
-   
+	
 	function createTable() {
 		$('#api-case-table').dataTable().fnDestroy();
    		$('#api-case-table').DataTable({
@@ -337,6 +352,7 @@
     	$('#api-case-strategy').val("");
     	initApiCaseInterface(null);
     	initApiCaseVersion(null);
+    	autoHeight($("#api-case-body")[0]);
     }
 	
 	function apiCaseEdit(id, interfaceid, versionid, name, body, strategy){
