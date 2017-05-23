@@ -82,11 +82,11 @@
                     <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
                   </div>
                   <div class="modal-body">
-                    <form data-toggle="validator" id="api-project-form" class="form-horizontal form-material">
+                    <form id="api-project-form" class="form-horizontal form-material">
                         <input type="hidden" id="api-project-id" name="api-project-id" value="">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name" required>
+	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -151,7 +151,6 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/eliteadmin/js/validator.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
