@@ -2,12 +2,18 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="a_result")
@@ -19,7 +25,9 @@ public class AResult implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
-	@Column(name="project_id")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="project_id")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private AProject projecto;
 	
 	@Column(name="name")

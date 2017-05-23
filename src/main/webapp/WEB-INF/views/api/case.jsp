@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +13,14 @@
 <title>Case</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/css/cdn/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Menu CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
-<!-- toast CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
-<!-- morris CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
+<!--alerts CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -30,16 +32,123 @@
   <div class="cssload-speeding-wheel"></div>
 </div>
 <div id="wrapper">
-  <!-- Navigation -->
+  <!-- Top Navigation -->
   <jsp:include page="/WEB-INF/views/top.jsp"></jsp:include>
   <!-- Page Content -->
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Dashboard Case</h4>
         </div>
       </div>
+      <!-- /row -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+            <div class="panel-body">
+	          <div class="form-body">
+	            <div class="row">
+	              <div class="col-md-12">
+	              	<!-- /.Create Case -->
+		            <div class="button-box text-right">
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModal5" data-whatever="@fat">Add Case</button>
+		            </div>
+	              </div>
+	            </div>
+	          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /row -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="white-box">
+            <!-- /.modal -->
+            <div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel5">Add Case</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form id="api-case-form" class="form-horizontal form-material">
+                        <input type="hidden" id="api-case-id" name="api-case-id" value="">
+                        <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-interface" name="api-case-interface" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>Version <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="Name">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-case-body" name="api-case-body" class="form-control" placeholder="Body">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="Strategy">
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
+								<button type="button" class="close" aria-hidden="true">
+									&times;
+								</button>
+								<span id="msg"></span>
+							</div>
+	                      </div>
+	                    </div>
+	                </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseSave();">Save</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+			<!-- /.table -->
+            <div class="table-responsive">
+            <table id="api-case-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Project</th>
+                  <th>Url</th>
+                  <th>version</th>
+                  <th>Name</th>
+                  <th>Body</th>
+                  <th>Strategy</th>
+                  <th>Create Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
     </div>
     <!-- /#page-wrapper -->
@@ -59,32 +168,229 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
-<!--Counter js -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.js"></script>
+<!-- Sweet-Alert  -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/eliteadmin/js/dashboard1.js"></script>
-<!-- Sparkline chart JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/pdfmake.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/vfs_fonts.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
 <script type="text/javascript">
   
-   $(document).ready(function() {
-      /* $.toast({
-        heading: 'Welcome to Elite admin',
-        text: 'Use the predefined ones, or specify a custom position object.',
-        position: 'top-right',
-        loaderBg:'#ff6849',
-        icon: 'info',
-        hideAfter: 3500, 
-        stack: 6
-      }) */
-    });
+	$(document).ready(function() {
+		createTable();
+		initApiCaseInterface(null);
+		initApiCaseVersion(null);
+	});
+   
+	function createTable() {
+		$('#api-case-table').dataTable().fnDestroy();
+   		$('#api-case-table').DataTable({
+	   		responsive : false,
+	   		sAjaxSource : "<%=request.getContextPath()%>/api/case/list/data",
+	   		bProcessing : false,
+	   		"aaSorting": [
+	   			[0,'desc']
+	   		],
+	   		aoColumnDefs : [
+	  			{
+					"sWidth" : "5%",
+					"aTargets" : [ 0 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.id;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.interfaceo.projecto.name;
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.interfaceo.url;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.versiono.version;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.name;
+					}
+				},
+				{
+					"sWidth" : "25%",
+					"aTargets" : [ 5 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.body;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 6 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.strategy;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 8 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "','" + data.interfaceo.id + "','" + data.versiono.id + "','" + data.name + "','" + data.body + "','" + data.strategy + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiCaseDel('" + data.id + "');\"></i></a>";
+					}
+				}
+	   		]
+		});
+	}
+	
+	function initApiCaseInterface(interfaceid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/interface/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(interfaceid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].url + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
+    					}
+    				}
+    				$('#api-case-interface').empty();
+    				$('#api-case-interface').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
+	function initApiCaseVersion(versionid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(versionid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+    					}
+    				}
+    				$('#api-case-version').empty();
+    				$('#api-case-version').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
+	function initApiCaseModal(){
+		$('#api-case-name').val("");
+		$('#api-case-body').val("");
+    	$('#api-case-strategy').val("");
+    	initApiCaseInterface(null);
+    	initApiCaseVersion(null);
+    }
+	
+	function apiCaseEdit(id, interfaceid, versionid, name, body, strategy){
+    	$('#api-case-id').val(id);
+    	$('#api-case-name').val(name);
+		$('#api-case-body').val(body);
+    	$('#api-case-strategy').val(strategy);
+    	initApiCaseInterface(interfaceid);
+    	initApiCaseVersion(versionid);
+    }
+	
+	function apiCaseSave(){
+    	if($('#api-case-name').val().trim() == ""){
+	    	showMsgDiv("请输入案例名称！");
+    	}else{
+    		hideMsgDiv();
+    		$('#exampleModal5').modal('hide');
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/case/create/update",
+          		data:$('#api-case-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				$('#api-case-table').dataTable()._fnAjaxUpdate();
+          			}else{
+          				swal("Error", "Create/Update case failure.", "error");
+          			}
+          	    }
+    		});
+    	}
+    }
+	
+	function apiCaseDel(did){
+    	swal({
+			title: "Are you sure?",
+			text: "You will not be able to recover this imaginary file!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, delete it!",
+			closeOnConfirm: false
+		}, function(){
+			$.ajax({
+				type:"get",
+          		url:"<%=request.getContextPath()%>/api/case/delete/id=" + did,
+          		success:function(data){
+          	    	if(data.responseCode == "0000"){
+          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
+          	    	}
+          	    	$('#api-case-table').dataTable()._fnAjaxUpdate();
+          	    }
+			});
+		});
+    }
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

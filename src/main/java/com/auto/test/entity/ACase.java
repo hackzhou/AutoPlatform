@@ -2,12 +2,18 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="a_case")
@@ -19,10 +25,14 @@ public class ACase implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
-	@Column(name="version_id")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="version_id")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private AVersion versiono;
 	
-	@Column(name="project_id")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="interface_id")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private AInterface interfaceo;
 	
 	@Column(name="name")
