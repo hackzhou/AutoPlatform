@@ -294,7 +294,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "','" + data.interfaceo.id + "','" + data.versiono.id + "','" + data.name + "','" + data.body + "','" + data.strategy + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiCaseDel('" + data.id + "');\"></i></a>";
 					}
 				}
@@ -355,13 +355,22 @@
     	autoHeight($("#api-case-body")[0]);
     }
 	
-	function apiCaseEdit(id, interfaceid, versionid, name, body, strategy){
-    	$('#api-case-id').val(id);
-    	$('#api-case-name').val(name);
-		$('#api-case-body').val(body);
-    	$('#api-case-strategy').val(strategy);
-    	initApiCaseInterface(interfaceid);
-    	initApiCaseVersion(versionid);
+	function apiCaseEdit(cid){
+		$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/case/id=" + cid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var c = data.data;
+      	    		$('#api-case-id').val(c.id);
+	      	      	$('#api-case-name').val(c.name);
+	      	  		$('#api-case-body').val(c.body);
+	      	      	$('#api-case-strategy').val(c.strategy);
+	      	      	initApiCaseInterface(c.interfaceo.id);
+	      	      	initApiCaseVersion(c.versiono.id);
+      	    	}
+      	    }
+		});
     }
 	
 	function apiCaseSave(){
@@ -404,7 +413,7 @@
 		});
 	}
 	
-	function apiCaseDel(did){
+	function apiCaseDel(cid){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -416,7 +425,7 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/case/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/case/delete/id=" + cid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");

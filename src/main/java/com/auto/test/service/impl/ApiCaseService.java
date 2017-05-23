@@ -22,6 +22,11 @@ public class ApiCaseService implements IApiCaseService {
 	public List<ACase> getAllCase() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public ACase getCaseById(Integer id) {
+		return dao.findById(id);
+	}
 
 	@Override
 	public Integer create(ACase aCase) {

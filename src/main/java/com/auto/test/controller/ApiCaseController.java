@@ -46,6 +46,17 @@ public class ApiCaseController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getCaseById(@PathVariable("id") String id) {
+		ACase aCase = caseService.getCaseById(Integer.parseInt(id));
+		if(aCase != null && aCase.getBody() != null){
+			JSONObject json = JSON.parseObject(aCase.getBody().trim());
+			aCase.setBody(JSON.toJSONString(json, true));
+		}
+		return successJson(aCase);
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 

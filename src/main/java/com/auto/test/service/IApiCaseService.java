@@ -8,6 +8,8 @@ import com.auto.test.entity.ACase;
 public interface IApiCaseService{
 	
 	List<ACase> getAllCase();
+
+	ACase getCaseById(Integer id);
 	
 	Integer create(ACase aCase);
 	
