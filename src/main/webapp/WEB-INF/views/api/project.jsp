@@ -82,17 +82,27 @@
                     <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
                   </div>
                   <div class="modal-body">
-                    <form id="api-project-form" class="form-horizontal form-material">
+                    <form data-toggle="validator" id="api-project-form" class="form-horizontal form-material">
+                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="hidden" id="api-project-id" name="api-project-id" value="">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
+	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name" required>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
+								<button type="button" class="close" aria-hidden="true">
+									&times;
+								</button>
+								<span id="msg"></span>
+							</div>
 	                      </div>
 	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiProjectSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectSave();">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -127,6 +137,9 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Base -->
+<script src="${pageContext.request.contextPath}/js/base.js"></script>
+<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -138,6 +151,7 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/eliteadmin/js/validator.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
@@ -148,9 +162,6 @@
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
-<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
-<!-- Base -->
-<script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script>
 
     $(document).ready(function(){
@@ -219,18 +230,24 @@
     }
     
     function apiProjectSave(){
-		$.ajax({
-			type:"post",
-      		url:"<%=request.getContextPath()%>/api/project/create/update",
-      		data:$('#api-project-form').serialize(),
-      		success:function(data){
-      			if(data.responseCode == "0000"){
-      				$('#api-project-table').dataTable()._fnAjaxUpdate();
-      			}else{
-      				swal("Error", "Create/Update project failure.", "error");
-      			}
-      	    }
-		});
+    	if($('#api-project-name').val().trim() == ""){
+	    	showMsgDiv("请输入项目名称！");
+    	}else{
+    		hideMsgDiv();
+    		$('#exampleModal1').modal('hide');
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/project/create/update",
+          		data:$('#api-project-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				$('#api-project-table').dataTable()._fnAjaxUpdate();
+          			}else{
+          				swal("Error", "Create/Update project failure.", "error");
+          			}
+          	    }
+    		});
+    	}
     }
     
     function apiProjectDel(did){
@@ -255,7 +272,6 @@
 			});
 		});
     }
-    
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

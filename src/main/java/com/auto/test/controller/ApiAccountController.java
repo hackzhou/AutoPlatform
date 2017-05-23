@@ -43,14 +43,14 @@ public class ApiAccountController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {
 		if(id == null || id.isEmpty()){
-			Integer pid = accountService.create(new AAccount(loginname, password));
+			Integer pid = accountService.create(new AAccount(loginname.trim(), password.trim()));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname, password));
+			AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname.trim(), password.trim()));
 			if(aAccount != null){
 				return successJson();
 			}else{

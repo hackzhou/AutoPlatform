@@ -43,14 +43,14 @@ public class ApiVersionController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
 		if(id == null || id.isEmpty()){
-			Integer pid = versionService.create(new AVersion(version, channel));
+			Integer pid = versionService.create(new AVersion(version.trim(), channel.trim()));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version, channel));
+			AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), channel.trim()));
 			if(aVersion != null){
 				return successJson();
 			}else{

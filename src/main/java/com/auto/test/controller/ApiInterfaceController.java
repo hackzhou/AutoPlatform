@@ -46,14 +46,14 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-project") String project, @RequestParam("api-interface-name") String name, @RequestParam("api-interface-type") String type, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-description") String description) {
 		if(id == null || id.isEmpty()){
-			Integer pid = interfaceService.create(new AInterface(Integer.parseInt(project), name, type, url, description));
+			Integer pid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			AInterface aInterface = interfaceService.update(new AInterface(Integer.parseInt(id), Integer.parseInt(project), name, type, url, description));
+			AInterface aInterface = interfaceService.update(new AInterface(Integer.parseInt(id), Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
 			if(aInterface != null){
 				return successJson();
 			}else{

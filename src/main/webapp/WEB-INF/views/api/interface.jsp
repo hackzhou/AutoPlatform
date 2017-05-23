@@ -120,10 +120,20 @@
 	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="Description">
 	                      </div>
 	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
+								<button type="button" class="close" aria-hidden="true">
+									&times;
+								</button>
+								<span id="msg"></span>
+							</div>
+	                      </div>
+	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiInterfaceSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiInterfaceSave();">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -162,6 +172,9 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Base -->
+<script src="${pageContext.request.contextPath}/js/base.js"></script>
+<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -183,9 +196,6 @@
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
-<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
-<!-- Base -->
-<script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script>
 
     $(document).ready(function(){
@@ -321,18 +331,30 @@
     }
     
     function apiInterfaceSave(){
-		$.ajax({
-			type:"post",
-      		url:"<%=request.getContextPath()%>/api/interface/create/update",
-      		data:$('#api-interface-form').serialize(),
-      		success:function(data){
-      			if(data.responseCode == "0000"){
-      				$('#api-interface-table').dataTable()._fnAjaxUpdate();
-      			}else{
-      				swal("Error", "Create/Update interface failure.", "error");
-      			}
-      	    }
-		});
+    	if($('#api-interface-project').val().trim() == ""){
+	    	showMsgDiv("请选择接口项目！");
+    	}else if($('#api-interface-type').val().trim() == ""){
+	    	showMsgDiv("请选择接口类型！");
+    	}else if($('#api-interface-name').val().trim() == ""){
+	    	showMsgDiv("请输入接口名称！");
+    	}else if($('#api-interface-url').val().trim() == ""){
+	    	showMsgDiv("请输入接口地址！");
+    	}else{
+    		hideMsgDiv();
+    		$('#exampleModal3').modal('hide');
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/interface/create/update",
+          		data:$('#api-interface-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				$('#api-interface-table').dataTable()._fnAjaxUpdate();
+          			}else{
+          				swal("Error", "Create/Update interface failure.", "error");
+          			}
+          	    }
+    		});
+    	}
     }
     
     function apiInterfaceDel(did){

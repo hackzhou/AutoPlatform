@@ -94,10 +94,20 @@
 	                        <input type="text" id="api-account-password" name="api-account-password" class="form-control" placeholder="Password">
 	                      </div>
 	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
+								<button type="button" class="close" aria-hidden="true">
+									&times;
+								</button>
+								<span id="msg"></span>
+							</div>
+	                      </div>
+	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-info waves-effect" onclick="apiAccountSave();" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-info waves-effect" onclick="apiAccountSave();">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -133,6 +143,9 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Base -->
+<script src="${pageContext.request.contextPath}/js/base.js"></script>
+<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -154,9 +167,6 @@
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
-<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
-<!-- Base -->
-<script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script>
 
     $(document).ready(function(){
@@ -236,18 +246,26 @@
     }
     
     function apiAccountSave(){
-		$.ajax({
-			type:"post",
-      		url:"<%=request.getContextPath()%>/api/account/create/update",
-      		data:$('#api-account-form').serialize(),
-      		success:function(data){
-      			if(data.responseCode == "0000"){
-      				$('#api-account-table').dataTable()._fnAjaxUpdate();
-      			}else{
-      				swal("Error", "Create/Update account failure.", "error");
-      			}
-      	    }
-		});
+    	if($('#api-account-loginname').val().trim() == ""){
+	    	showMsgDiv("请输入账号名称！");
+    	}else if($('#api-account-password').val().trim() == ""){
+	    	showMsgDiv("请输入账号密码！");
+    	}else{
+    		hideMsgDiv();
+    		$('#exampleModal4').modal('hide');
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/account/create/update",
+          		data:$('#api-account-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				$('#api-account-table').dataTable()._fnAjaxUpdate();
+          			}else{
+          				swal("Error", "Create/Update account failure.", "error");
+          			}
+          	    }
+    		});
+    	}
     }
     
     function apiAccountDel(did){

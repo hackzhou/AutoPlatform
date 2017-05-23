@@ -43,14 +43,14 @@ public class ApiProjectController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
 		if(id == null || id.isEmpty()){
-			Integer pid = projectService.create(new AProject(name));
+			Integer pid = projectService.create(new AProject(name.trim()));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name));
+			AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim()));
 			if(aProject != null){
 				return successJson();
 			}else{
