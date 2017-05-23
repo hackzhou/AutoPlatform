@@ -368,22 +368,41 @@
     	if($('#api-case-name').val().trim() == ""){
 	    	showMsgDiv("请输入案例名称！");
     	}else{
-    		hideMsgDiv();
-    		$('#exampleModal5').modal('hide');
-    		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/case/create/update",
-          		data:$('#api-case-form').serialize(),
-          		success:function(data){
-          			if(data.responseCode == "0000"){
-          				$('#api-case-table').dataTable()._fnAjaxUpdate();
-          			}else{
-          				swal("Error", "Create/Update case failure.", "error");
-          			}
-          	    }
-    		});
+    		if($('#api-case-body').val().trim() == ""){
+    			apiCaseCreateUpdate();
+    		}else{
+    			$.ajax({
+        			type:"post",
+              		url:"<%=request.getContextPath()%>/api/case/is/json",
+              		data:$('#api-case-form').serialize(),
+              		success:function(data){
+              			if(data.responseCode == "0000"){
+              				apiCaseCreateUpdate();
+              			}else{
+              				showMsgDiv("您输入的JSON格式不正确！");
+              			}
+              	    }
+        		});
+    		}
     	}
     }
+	
+	function apiCaseCreateUpdate(){
+		hideMsgDiv();
+		$('#exampleModal5').modal('hide');
+		$.ajax({
+			type:"post",
+      		url:"<%=request.getContextPath()%>/api/case/create/update",
+      		data:$('#api-case-form').serialize(),
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				$('#api-case-table').dataTable()._fnAjaxUpdate();
+      			}else{
+      				swal("Error", "Create/Update case failure.", "error");
+      			}
+      	    }
+		});
+	}
 	
 	function apiCaseDel(did){
     	swal({

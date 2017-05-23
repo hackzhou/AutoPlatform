@@ -37,7 +37,10 @@ public class AVersion implements Serializable{
 	public AVersion() {
 		super();
 	}
-	
+	public AVersion(Integer id) {
+		super();
+		this.id = id;
+	}
 	public AVersion(String version, String channel) {
 		super();
 		this.version = version;

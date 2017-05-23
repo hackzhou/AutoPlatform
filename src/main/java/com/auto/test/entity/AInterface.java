@@ -54,7 +54,10 @@ public class AInterface implements Serializable{
 	public AInterface() {
 		super();
 	}
-	
+	public AInterface(Integer id) {
+		super();
+		this.id = id;
+	}
 	public AInterface(Integer projectId, String name, String type, String url, String description) {
 		super();
 		this.projecto = new AProject(projectId);

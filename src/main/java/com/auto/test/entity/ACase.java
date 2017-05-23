@@ -57,6 +57,24 @@ public class ACase implements Serializable{
 		super();
 	}
 	
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String strategy) {
+		super();
+		this.versiono = versiono;
+		this.interfaceo = interfaceo;
+		this.name = name;
+		this.body = body;
+		this.strategy = strategy;
+	}
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String strategy) {
+		super();
+		this.id = id;
+		this.versiono = versiono;
+		this.interfaceo = interfaceo;
+		this.name = name;
+		this.body = body;
+		this.strategy = strategy;
+	}
+	
 	public void update(ACase aCase) {
 		this.interfaceo = aCase.getInterfaceo();
 		this.name = aCase.getName();
