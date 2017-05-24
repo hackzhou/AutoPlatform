@@ -351,6 +351,7 @@
     }
     
     function apiInterfaceEdit(iid){
+    	hideMsgDiv();
     	$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/interface/id=" + iid,

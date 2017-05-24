@@ -474,6 +474,7 @@
 	}
 	
 	function apiCaseEdit(cid){
+		hideMsgDiv();
 		$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/case/id=" + cid,

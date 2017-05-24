@@ -265,6 +265,7 @@
     }
     
     function apiAccountEdit(aid){
+    	hideMsgDiv();
     	$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/account/id=" + aid,

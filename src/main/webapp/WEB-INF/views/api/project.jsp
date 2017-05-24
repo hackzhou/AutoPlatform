@@ -309,6 +309,7 @@
     }
     
     function apiProjectEdit(pid){
+    	hideMsgDiv();
     	$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/project/id=" + pid,

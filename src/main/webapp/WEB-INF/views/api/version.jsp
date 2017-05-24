@@ -256,6 +256,7 @@
     }
     
     function apiVersionEdit(vid){
+    	hideMsgDiv();
     	$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/version/id=" + vid,
