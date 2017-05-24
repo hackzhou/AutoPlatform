@@ -23,6 +23,19 @@ String.format = function() {
 	return str;
 };
 
+function tooltipJson(text){
+	var glance = "";
+	if(text.length > 30) {
+		glance = text.substring(0, 30) + "...";
+	}else{
+		glance = text;
+	}
+	var jsonObj = JSON.parse(text);
+	var json = JSON.stringify(jsonObj, null, '\t');
+	var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'>{1}</div>";
+	return String.format(html, json, glance);
+}
+
 function getCookie(name){
 	var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
 	if(arr=document.cookie.match(reg)){

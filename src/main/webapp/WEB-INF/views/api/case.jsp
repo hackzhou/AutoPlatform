@@ -322,7 +322,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.body;
+						return tooltipJson(data.body);
 					}
 				},
 				{
