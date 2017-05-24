@@ -53,7 +53,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Case -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModal5" data-whatever="@fat">Add Case</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModal5" data-whatever="@fat">添加案例</button>
 		            </div>
 	              </div>
 	            </div>
@@ -72,7 +72,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel5">Add Case</h4>
+                    <h4 class="modal-title" id="exampleModalLabel5">添加/更新 案例</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-case-form" class="form-horizontal form-material">
@@ -88,7 +88,7 @@
 	                    </div>
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-interface" name="api-case-interface" class="form-control select2" style="width: 80%;"></select>
 	                        </div>
@@ -96,7 +96,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Version <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
 	                        </div>
@@ -110,7 +110,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="策略">
+	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="验证点">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -131,8 +131,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseSave();">Save</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseSave();">保存</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -143,7 +143,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabelRun1">Run Case</h4>
+                    <h4 class="modal-title" id="exampleModalLabelRun1">运行案例</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-case-run-form" class="form-horizontal form-material">
@@ -159,8 +159,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseRun();" data-dismiss="modal">Run</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseRun();" data-dismiss="modal">运行</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -372,9 +372,9 @@
       		data:$('#api-case-run-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				swal("Run!", "Run successfully.", "success");
+      				swal("Run!", "运行案例成功.", "success");
       			}else{
-      				swal("Error", "Run case failure.", "error");
+      				swal("Error", "运行案例失败.", "error");
       			}
       	    }
 		});
@@ -492,7 +492,7 @@
       			if(data.responseCode == "0000"){
       				$('#api-case-table').dataTable()._fnAjaxUpdate();
       			}else{
-      				swal("Error", "Create/Update case failure.", "error");
+      				swal("Error", "添加/更新案例失败.", "error");
       			}
       	    }
 		});

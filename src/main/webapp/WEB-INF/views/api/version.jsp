@@ -51,7 +51,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">Add Version</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">添加版本</button>
 		            </div>
 	              </div>
 	            </div>
@@ -70,7 +70,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel2">Add Version</h4>
+                    <h4 class="modal-title" id="exampleModalLabel2">添加/更新 版本</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-version-form" class="form-horizontal form-material">
@@ -100,8 +100,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiVersionSave();">Save</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiVersionSave();">保存</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -248,7 +248,7 @@
           			if(data.responseCode == "0000"){
           				$('#api-version-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "Create/Update version failure.", "error");
+          				swal("Error", "添加/更新版本失败.", "error");
           			}
           	    }
     		});

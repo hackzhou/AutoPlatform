@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">Add Project</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">添加项目</button>
 		            </div>
 	              </div>
 	            </div>
@@ -79,7 +79,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1">Add Project</h4>
+                    <h4 class="modal-title" id="exampleModalLabel1">添加/更新 项目</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-project-form" class="form-horizontal form-material">
@@ -103,8 +103,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectSave();">Save</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectSave();">保存</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -115,7 +115,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabelRun2">Run Project</h4>
+                    <h4 class="modal-title" id="exampleModalLabelRun2">运行项目</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-project-run-form" class="form-horizontal form-material">
@@ -131,8 +131,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectRun();" data-dismiss="modal">Run</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectRun();" data-dismiss="modal">运行</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -255,9 +255,9 @@
       		data:$('#api-project-run-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				swal("Run!", "Run successfully.", "success");
+      				swal("Run!", "运行项目成功.", "success");
       			}else{
-      				swal("Error", "Run case failure.", "error");
+      				swal("Error", "运行项目失败.", "error");
       			}
       	    }
 		});
@@ -301,7 +301,7 @@
           			if(data.responseCode == "0000"){
           				$('#api-project-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "Create/Update project failure.", "error");
+          				swal("Error", "添加/更新项目失败.", "error");
           			}
           	    }
     		});

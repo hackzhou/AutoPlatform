@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Account -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModal4" data-whatever="@fat">Add Account</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModal4" data-whatever="@fat">添加账号</button>
 		            </div>
 	              </div>
 	            </div>
@@ -79,7 +79,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel4">Add Account</h4>
+                    <h4 class="modal-title" id="exampleModalLabel4">添加/更新 账号</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-account-form" class="form-horizontal form-material">
@@ -109,8 +109,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiAccountSave();">Save</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiAccountSave();">保存</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -257,7 +257,7 @@
           			if(data.responseCode == "0000"){
           				$('#api-account-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "Create/Update account failure.", "error");
+          				swal("Error", "添加/更新账号失败.", "error");
           			}
           	    }
     		});

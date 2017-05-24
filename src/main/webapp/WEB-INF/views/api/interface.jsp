@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Interface -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModal3" data-whatever="@fat">Add Interface</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModal3" data-whatever="@fat">添加接口</button>
 		            </div>
 	              </div>
 	            </div>
@@ -79,13 +79,13 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel3">Add Interface</h4>
+                    <h4 class="modal-title" id="exampleModalLabel3">添加/更新 接口</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-interface-form" class="form-horizontal form-material">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Project <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>项目 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-interface-project" name="api-interface-project" class="form-select" style="width: 80%;"></select>
 	                        </div>
@@ -93,7 +93,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Type <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>类型 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-interface-type" name="api-interface-type" class="form-select" style="width: 80%;">
 		                        	<option value="GET" selected="selected">GET</option>
@@ -135,8 +135,8 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiInterfaceSave();">Save</button>
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiInterfaceSave();">保存</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
               </div>
@@ -343,7 +343,7 @@
           			if(data.responseCode == "0000"){
           				$('#api-interface-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "Create/Update interface failure.", "error");
+          				swal("Error", "添加/更新接口失败.", "error");
           			}
           	    }
     		});
