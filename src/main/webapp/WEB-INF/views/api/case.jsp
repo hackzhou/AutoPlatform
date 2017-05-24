@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>Case</title>
+<title>接口-案例</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -295,11 +295,16 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiCaseDel('" + data.id + "');\"></i></a>";
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiCaseDel('" + data.id + "');\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"apiCaseRun('" + data.id + "');\"></i></a>";
 					}
 				}
 	   		]
 		});
+	}
+	
+	function apiCaseRun(cid){
+		alert(cid);
 	}
 	
 	function initApiCaseInterface(interfaceid){

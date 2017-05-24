@@ -8,7 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>Index</title>
+<title>首页</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Menu CSS -->
