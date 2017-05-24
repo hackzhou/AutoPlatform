@@ -410,12 +410,12 @@
     				var list = data.data;
     				for(var i = 0; i < list.length; i++){
     					if(interfaceid == list[i].id || i == 0){
-    						selected = "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
+    						selected = "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
     						if(interfaceid == null){
 	    						$('#api-case-name').val(list[i].name);
     						}
     					}
-    					optionstring += "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
+    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
     				}
     				optionstring += "</optgroup>";
     				$('#api-case-interface').empty();
