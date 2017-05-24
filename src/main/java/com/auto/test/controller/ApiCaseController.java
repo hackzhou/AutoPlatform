@@ -50,9 +50,8 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getCaseById(@PathVariable("id") String id) {
 		ACase aCase = caseService.getCaseById(Integer.parseInt(id));
-		if(aCase != null && aCase.getBody() != null){
-			JSONObject json = JSON.parseObject(aCase.getBody().trim());
-			aCase.setBody(JSON.toJSONString(json, true));
+		if(aCase != null){
+			aCase.setBody(jsonFormat(aCase.getBody(), true));
 		}
 		return successJson(aCase);
 	}
@@ -63,14 +62,14 @@ public class ApiCaseController extends BaseController{
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, 
 			@RequestParam("api-case-strategy") String strategy, @RequestParam("api-case-body") String body) {
 		if(id == null || id.isEmpty()){
-			Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body), strategy.trim()));
+			Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim()));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body), strategy.trim()));
+			ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim()));
 			if(aCase != null){
 				return successJson();
 			}else{
@@ -97,10 +96,10 @@ public class ApiCaseController extends BaseController{
 		}
 	}
 	
-	private String jsonFormat(String result){
+	private String jsonFormat(String result, boolean format){
 		if(result != null && !result.isEmpty()){
 			JSONObject json = JSON.parseObject(result.trim());
-			return JSON.toJSONString(json, false);
+			return JSON.toJSONString(json, format);
 		}
 		return null;
 	}
