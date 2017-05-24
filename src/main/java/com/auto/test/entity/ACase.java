@@ -43,6 +43,9 @@ public class ACase implements Serializable{
 	
 	@Column(name="strategy")
 	private String strategy;
+	
+	@Column(name="run")
+	private Integer run;
 
 	@Column(name="create_time")
 	private Date createTime;
@@ -57,15 +60,16 @@ public class ACase implements Serializable{
 		super();
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String strategy) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
 		this.name = name;
 		this.body = body;
 		this.strategy = strategy;
+		this.run = run;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String strategy) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -73,6 +77,7 @@ public class ACase implements Serializable{
 		this.name = name;
 		this.body = body;
 		this.strategy = strategy;
+		this.run = run;
 	}
 	
 	public void update(ACase aCase) {
@@ -81,6 +86,7 @@ public class ACase implements Serializable{
 		this.versiono = aCase.getVersiono();
 		this.body = aCase.getBody();
 		this.strategy = aCase.getStrategy();
+		this.run = aCase.getRun();
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
@@ -121,6 +127,12 @@ public class ACase implements Serializable{
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public Integer getRun() {
+		return run;
+	}
+	public void setRun(Integer run) {
+		this.run = run;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -143,8 +155,8 @@ public class ACase implements Serializable{
 	@Override
 	public String toString() {
 		return "ACase [id=" + id + ", versiono=" + versiono + ", interfaceo=" + interfaceo + ", name=" + name
-				+ ", body=" + body + ", strategy=" + strategy + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", memo=" + memo + "]";
+				+ ", body=" + body + ", strategy=" + strategy + ", run=" + run + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }

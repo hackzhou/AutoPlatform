@@ -60,16 +60,16 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, 
-			@RequestParam("api-case-strategy") String strategy, @RequestParam("api-case-body") String body) {
+			@RequestParam("api-case-strategy") String strategy, @RequestParam("api-case-body") String body, @RequestParam("api-case-run") String run) {
 		if(id == null || id.isEmpty()){
-			Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim()));
+			Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim(), Integer.parseInt(run)));
 			if(pid != null){
 				return successJson();
 			}else{
 				return failedJson();
 			}
 		}else{
-			ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim()));
+			ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim(), Integer.parseInt(run)));
 			if(aCase != null){
 				return successJson();
 			}else{

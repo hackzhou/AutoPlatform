@@ -77,6 +77,15 @@
                         <input type="hidden" id="api-case-id" name="api-case-id" value="">
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否运行 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-run1" name="api-case-run" value="1" checked>运行 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-run0" name="api-case-run" value="0">不运行 </label>
+                        	</div>
+	                      </div>
+	                    </div>
+                        <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-interface" name="api-case-interface" class="form-select" style="width: 80%;"></select>
@@ -295,9 +304,13 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiCaseDel('" + data.id + "');\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"apiCaseRun('" + data.id + "');\"></i></a>";
+						var html = "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiCaseDel('" + data.id + "');\"></i> </a>";
+						if(data.run == 0){
+							return html;
+						}else{
+							return html + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"apiCaseRun('" + data.id + "');\"></i></a>";
+						}
 					}
 				}
 	   		]
@@ -353,6 +366,7 @@
     }
 	
 	function initApiCaseModal(){
+		$('#api-case-run1').prop("checked",true);
 		$('#api-case-name').val("");
 		$('#api-case-body').val("");
     	$('#api-case-strategy').val("");
@@ -412,6 +426,7 @@
 	      	      	$('#api-case-name').val(c.name);
 	      	  		$('#api-case-body').val(c.body);
 	      	      	$('#api-case-strategy').val(c.strategy);
+					$('#api-case-run' + c.run).prop("checked",true);
 	      	      	initApiCaseInterface(c.interfaceo.id);
 	      	      	initApiCaseVersion(c.versiono.id);
       	    	}
