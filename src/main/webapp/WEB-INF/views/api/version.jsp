@@ -216,7 +216,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiVersionEdit('" + data.id + "','" + data.version + "','" + data.channel + "');\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiVersionEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiVersionDel('" + data.id + "');\"></i></a>";
 					}
 				}
@@ -228,12 +228,6 @@
     	$('#api-version-id').val("");
     	$('#api-version-version').val("");
     	$('#api-version-channel').val("");
-    }
-    
-    function apiVersionEdit(id, version, channel){
-    	$('#api-version-id').val(id);
-    	$('#api-version-version').val(version);
-    	$('#api-version-channel').val(channel);
     }
     
     function apiVersionSave(){
@@ -259,7 +253,22 @@
     	}
     }
     
-    function apiVersionDel(did){
+    function apiVersionEdit(vid){
+    	$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/version/id=" + vid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var v = data.data;
+      	      		$('#api-version-id').val(v.id);
+      	    		$('#api-version-version').val(v.version);
+      	    		$('#api-version-channel').val(v.channel);
+      	    	}
+      	    }
+		});
+    }
+    
+    function apiVersionDel(vid){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -271,7 +280,7 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/version/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/version/delete/id=" + vid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");

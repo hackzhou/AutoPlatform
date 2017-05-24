@@ -18,6 +18,11 @@ public class ApiAccountService implements IApiAccountService {
 	public List<AAccount> getAllAccount() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public AAccount getAccountById(Integer id) {
+		return dao.findById(id);
+	}
 
 	@Override
 	public Integer create(AAccount aAccount) {

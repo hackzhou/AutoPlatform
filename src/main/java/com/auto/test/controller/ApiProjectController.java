@@ -39,6 +39,13 @@ public class ApiProjectController extends BaseController{
 		return successJson(projectList);
 	}
 	
+	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getProjectById(@PathVariable("id") String id) {
+		AProject aProject = projectService.getProjectById(Integer.parseInt(id));
+		return successJson(aProject);
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {

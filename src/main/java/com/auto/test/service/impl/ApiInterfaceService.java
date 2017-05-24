@@ -18,6 +18,11 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	public List<AInterface> getAllInterface() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public AInterface getInterfaceById(Integer id) {
+		return dao.findById(id);
+	}
 
 	@Override
 	public Integer create(AInterface aInterface) {

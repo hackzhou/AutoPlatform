@@ -9,6 +9,8 @@ public interface IApiAccountService{
 	
 	List<AAccount> getAllAccount();
 	
+	AAccount getAccountById(Integer id);
+	
 	Integer create(AAccount aAccount);
 	
 	AAccount update(AAccount aAccount);

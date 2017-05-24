@@ -9,6 +9,8 @@ public interface IApiInterfaceService{
 	
 	List<AInterface> getAllInterface();
 	
+	AInterface getInterfaceById(Integer id);
+	
 	Integer create(AInterface aInterface);
 	
 	AInterface update(AInterface aInterface);

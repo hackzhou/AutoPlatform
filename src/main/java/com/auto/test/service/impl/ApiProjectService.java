@@ -24,6 +24,11 @@ public class ApiProjectService implements IApiProjectService {
 	}
 	
 	@Override
+	public AProject getProjectById(Integer id) {
+		return dao.findById(id);
+	}
+	
+	@Override
 	public Integer create(AProject aProject) {
 		if(aProject != null){
 			aProject.setCreateTime(new Date());

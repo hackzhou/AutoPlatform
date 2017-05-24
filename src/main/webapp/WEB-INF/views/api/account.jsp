@@ -225,7 +225,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiAccountEdit('" + data.id + "','" + data.loginname + "','" + data.password + "');\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiAccountEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiAccountDel('" + data.id + "');\"></i></a>";
 					}
 				}
@@ -237,12 +237,6 @@
     	$('#api-account-id').val("");
     	$('#api-account-loginname').val("");
     	$('#api-account-password').val("");
-    }
-    
-    function apiAccountEdit(id, loginname, password){
-    	$('#api-account-id').val(id);
-    	$('#api-account-loginname').val(loginname);
-    	$('#api-account-password').val(password);
     }
     
     function apiAccountSave(){
@@ -268,7 +262,22 @@
     	}
     }
     
-    function apiAccountDel(did){
+    function apiAccountEdit(aid){
+    	$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/account/id=" + aid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var a = data.data;
+      	    		$('#api-account-id').val(a.id);
+      	      		$('#api-account-loginname').val(a.loginname);
+      	      		$('#api-account-password').val(a.password);
+      	    	}
+      	    }
+		});
+    }
+    
+    function apiAccountDel(aid){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -280,7 +289,7 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/account/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/account/delete/id=" + aid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");

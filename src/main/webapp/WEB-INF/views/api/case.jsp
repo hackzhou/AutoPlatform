@@ -355,24 +355,6 @@
     	autoHeight($("#api-case-body")[0]);
     }
 	
-	function apiCaseEdit(cid){
-		$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/case/id=" + cid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var c = data.data;
-      	    		$('#api-case-id').val(c.id);
-	      	      	$('#api-case-name').val(c.name);
-	      	  		$('#api-case-body').val(c.body);
-	      	      	$('#api-case-strategy').val(c.strategy);
-	      	      	initApiCaseInterface(c.interfaceo.id);
-	      	      	initApiCaseVersion(c.versiono.id);
-      	    	}
-      	    }
-		});
-    }
-	
 	function apiCaseSave(){
     	if($('#api-case-name').val().trim() == ""){
 	    	showMsgDiv("请输入案例名称！");
@@ -413,6 +395,24 @@
 		});
 	}
 	
+	function apiCaseEdit(cid){
+		$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/case/id=" + cid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var c = data.data;
+      	    		$('#api-case-id').val(c.id);
+	      	      	$('#api-case-name').val(c.name);
+	      	  		$('#api-case-body').val(c.body);
+	      	      	$('#api-case-strategy').val(c.strategy);
+	      	      	initApiCaseInterface(c.interfaceo.id);
+	      	      	initApiCaseVersion(c.versiono.id);
+      	    	}
+      	    }
+		});
+    }
+	
 	function apiCaseDel(cid){
     	swal({
 			title: "Are you sure?",
@@ -435,6 +435,7 @@
 			});
 		});
     }
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

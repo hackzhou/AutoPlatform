@@ -39,6 +39,13 @@ public class ApiVersionController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getVersionById(@PathVariable("id") String id) {
+		AVersion aVersion = versionService.getVersionById(Integer.parseInt(id));
+		return successJson(aVersion);
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {

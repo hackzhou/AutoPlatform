@@ -210,7 +210,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "','" + data.name + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
 					}
 				}
@@ -221,11 +221,6 @@
     function initApiProjectModal(){
     	$('#api-project-id').val("");
     	$('#api-project-name').val("");
-    }
-    
-    function apiProjectEdit(id, name){
-    	$('#api-project-id').val(id);
-    	$('#api-project-name').val(name);
     }
     
     function apiProjectSave(){
@@ -249,7 +244,21 @@
     	}
     }
     
-    function apiProjectDel(did){
+    function apiProjectEdit(pid){
+    	$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/project/id=" + pid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var p = data.data;
+      	    		$('#api-project-id').val(p.id);
+      	      		$('#api-project-name').val(p.name);
+      	    	}
+      	    }
+		});
+    }
+    
+    function apiProjectDel(pid){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -261,7 +270,7 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/project/delete/id=" + pid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");

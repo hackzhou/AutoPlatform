@@ -18,6 +18,11 @@ public class ApiVersionService implements IApiVersionService {
 	public List<AVersion> getAllVersion() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public AVersion getVersionById(Integer id) {
+		return dao.findById(id);
+	}
 
 	@Override
 	public Integer create(AVersion aVersion) {

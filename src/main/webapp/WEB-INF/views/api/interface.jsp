@@ -282,7 +282,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiInterfaceEdit('" + data.id + "','" + data.projecto.id + "','" + data.name + "','" + data.type + "','" + data.url + "','" + data.description + "');\" data-toggle=\"modal\" data-target=\"#exampleModal3\"></i> </a>"
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiInterfaceEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal3\"></i> </a>"
 							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiInterfaceDel('" + data.id + "');\"></i></a>";
 					}
 				}
@@ -321,15 +321,6 @@
     	$('#api-interface-type').val("GET");
     }
     
-    function apiInterfaceEdit(id, projectid, name, type, url, description){
-    	$('#api-interface-id').val(id);
-    	$('#api-interface-name').val(name);
-    	$('#api-interface-url').val(url);
-    	$('#api-interface-description').val(description);
-    	initApiInterfaceProject(projectid);
-    	$('#api-interface-type').val(type);
-    }
-    
     function apiInterfaceSave(){
     	if($('#api-interface-project').val().trim() == ""){
 	    	showMsgDiv("请选择接口项目！");
@@ -357,7 +348,25 @@
     	}
     }
     
-    function apiInterfaceDel(did){
+    function apiInterfaceEdit(iid){
+    	$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/interface/id=" + iid,
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		var i = data.data;
+	      	    	$('#api-interface-id').val(i.id);
+	          		$('#api-interface-name').val(i.name);
+	          		$('#api-interface-url').val(i.url);
+	          		$('#api-interface-description').val(i.description);
+	          		$('#api-interface-type').val(i.type);
+	          		initApiInterfaceProject(i.projecto.id);
+      	    	}
+      	    }
+		});
+    }
+    
+    function apiInterfaceDel(iid){
     	swal({
 			title: "Are you sure?",
 			text: "You will not be able to recover this imaginary file!",
@@ -369,7 +378,7 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/interface/delete/id=" + did,
+          		url:"<%=request.getContextPath()%>/api/interface/delete/id=" + iid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");

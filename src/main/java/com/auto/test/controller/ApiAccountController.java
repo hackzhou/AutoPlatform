@@ -39,6 +39,13 @@ public class ApiAccountController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAccountById(@PathVariable("id") String id) {
+		AAccount aAccount = accountService.getAccountById(Integer.parseInt(id));
+		return successJson(aAccount);
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {

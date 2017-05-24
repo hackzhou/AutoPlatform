@@ -9,6 +9,8 @@ public interface IApiVersionService{
 	
 	List<AVersion> getAllVersion();
 	
+	AVersion getVersionById(Integer id);
+	
 	Integer create(AVersion aVersion);
 	
 	AVersion update(AVersion aVersion);

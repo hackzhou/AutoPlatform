@@ -9,6 +9,8 @@ public interface IApiProjectService{
 	
 	List<AProject> getAllProject();
 	
+	AProject getProjectById(Integer id);
+	
 	Integer create(AProject aProject);
 	
 	AProject update(AProject aProject);
