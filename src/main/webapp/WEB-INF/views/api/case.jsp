@@ -240,9 +240,26 @@
   
 	$(document).ready(function() {
 		createTable();
+		initEvent();
 		initApiCaseInterface(null);
 		initApiCaseVersion(null);
 	});
+	
+	function initEvent(){
+		$("#api-case-interface").change(function(){
+			var iid = $(this).val();
+			$.ajax({
+				type:"get",
+	      		url:"<%=request.getContextPath()%>/api/interface/id=" + iid,
+	      		success:function(data){
+	      	    	if(data.responseCode == "0000"){
+	      	    		var i = data.data;
+	      	    		$('#api-case-name').val(i.name);
+	      	    	}
+	      	    }
+			});
+		});
+	}
 	
 	function createTable() {
 		$('#api-case-table').dataTable().fnDestroy();
@@ -390,6 +407,9 @@
     				for(var i = 0; i < list.length; i++){
     					if(interfaceid == list[i].id || i == 0){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].url + "</option>";
+    						if(interfaceid == null){
+	    						$('#api-case-name').val(list[i].name);
+    						}
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
     					}
