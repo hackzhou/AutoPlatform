@@ -109,6 +109,34 @@
                 </div>
               </div>
             </div>
+            <!-- /.modal run -->
+            <div class="modal fade" id="exampleModalRun2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelRun2">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabelRun2">Run Project</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form id="api-project-run-form" class="form-horizontal form-material">
+                    	<input type="hidden" id="api-project-run-id" name="api-project-run-id" value="">
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试账号 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-project-run-account" name="api-project-run-account" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiProjectRun();" data-dismiss="modal">Run</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 			<!-- /.table -->
             <div class="table-responsive">
             <table id="api-project-table" class="table table-striped">
@@ -212,12 +240,47 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>";
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>"
+							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"initApiProjectRun('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i> </a>";
 					}
 				}
     		]
     	});
     }
+    
+    function apiProjectRun(){
+		$.ajax({
+			type:"post",
+      		url:"<%=request.getContextPath()%>/api/project/run",
+      		data:$('#api-project-run-form').serialize(),
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				swal("Run!", "Run successfully.", "success");
+      			}else{
+      				swal("Error", "Run case failure.", "error");
+      			}
+      	    }
+		});
+	}
+    
+    function initApiProjectRun(pid){
+		$('#api-project-run-id').val(pid);
+		$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/account/list/data",
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				var optionstring = "<option value='0'>无</option>";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+    				}
+    				$('#api-project-run-account').empty();
+    				$('#api-project-run-account').append(optionstring);
+      			}
+      	    }
+		});
+	}
     
     function initApiProjectModal(){
     	$('#api-project-id').val("");

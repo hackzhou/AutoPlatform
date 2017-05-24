@@ -135,6 +135,34 @@
                 </div>
               </div>
             </div>
+            <!-- /.modal run -->
+            <div class="modal fade" id="exampleModalRun1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelRun1">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabelRun1">Run Case</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form id="api-case-run-form" class="form-horizontal form-material">
+                    	<input type="hidden" id="api-case-run-id" name="api-case-run-id" value="">
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试账号 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-run-account" name="api-case-run-account" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseRun();" data-dismiss="modal">Run</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 			<!-- /.table -->
             <div class="table-responsive">
             <table id="api-case-table" class="table table-striped">
@@ -309,7 +337,7 @@
 						if(data.run == 0){
 							return html;
 						}else{
-							return html + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"apiCaseRun('" + data.id + "');\"></i></a>";
+							return html + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"initApiCaseRun('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i> </a>";
 						}
 					}
 				}
@@ -317,8 +345,38 @@
 		});
 	}
 	
-	function apiCaseRun(cid){
-		alert(cid);
+	function apiCaseRun(){
+		$.ajax({
+			type:"post",
+      		url:"<%=request.getContextPath()%>/api/case/run",
+      		data:$('#api-case-run-form').serialize(),
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				swal("Run!", "Run successfully.", "success");
+      			}else{
+      				swal("Error", "Run case failure.", "error");
+      			}
+      	    }
+		});
+	}
+	
+	function initApiCaseRun(cid){
+		$('#api-case-run-id').val(cid);
+		$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/account/list/data",
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				var optionstring = "<option value='0'>无</option>";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+    				}
+    				$('#api-case-run-account').empty();
+    				$('#api-case-run-account').append(optionstring);
+      			}
+      	    }
+		});
 	}
 	
 	function initApiCaseInterface(interfaceid){

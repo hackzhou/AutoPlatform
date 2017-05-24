@@ -30,6 +30,14 @@ public class ApiCaseController extends BaseController{
 	@Resource
 	private IApiCaseService caseService;
 
+	@RequestMapping(value = "/run", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> runCase(@RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
+		System.out.println("runid:" + runid);
+		System.out.println("account:" + account);
+		return successJson();
+	}
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllCase(HttpServletRequest request) {
 		List<ACase> list = caseService.getAllCase();

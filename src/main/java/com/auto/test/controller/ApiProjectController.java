@@ -26,6 +26,14 @@ public class ApiProjectController extends BaseController{
 	@Resource
 	private IApiProjectService projectService;
 	
+	@RequestMapping(value = "/run", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> runProject(@RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-account") String account) {
+		System.out.println("runid:" + runid);
+		System.out.println("account:" + account);
+		return successJson();
+	}
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
 		List<AProject> projectList = projectService.getAllProject();
