@@ -21,6 +21,8 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
 <!--alerts CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<!-- page CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.css" rel="stylesheet" type="text/css" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -88,7 +90,7 @@
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
-		                        <select id="api-case-interface" name="api-case-interface" class="form-select" style="width: 80%;"></select>
+		                        <select id="api-case-interface" name="api-case-interface" class="form-control select2" style="width: 80%;"></select>
 	                        </div>
 	                      </div>
 	                    </div>
@@ -211,6 +213,7 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
@@ -402,20 +405,22 @@
     		url:"<%=request.getContextPath()%>/api/interface/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				var optionstring = "";
+    				var optionstring = "<optgroup label=\"请选择...\">";
+    				var selected = "";
     				var list = data.data;
     				for(var i = 0; i < list.length; i++){
     					if(interfaceid == list[i].id || i == 0){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].url + "</option>";
+    						selected = "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
     						if(interfaceid == null){
 	    						$('#api-case-name').val(list[i].name);
     						}
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
     					}
+    					optionstring += "<option value='" + list[i].id + "'>" + list[i].url + "</option>";
     				}
+    				optionstring += "</optgroup>";
     				$('#api-case-interface').empty();
-    				$('#api-case-interface').append(optionstring);
+    				$('#api-case-interface').append(selected + optionstring);
+    				$('#api-case-interface').select2();
     			}
     		}
     	});
