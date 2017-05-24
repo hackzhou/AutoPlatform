@@ -15,8 +15,6 @@
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
 <!-- toast CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
-<!-- morris CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
 <!-- Custom CSS -->
@@ -30,14 +28,13 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  /* (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-19175540-9', 'auto');
-  ga('send', 'pageview');
-
+  ga('send', 'pageview'); */
 </script>
 </head>
 <body>
@@ -78,29 +75,17 @@
 <!--Counter js -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/eliteadmin/js/dashboard1.js"></script>
 <!-- Sparkline chart JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 <script type="text/javascript">
   
-   $(document).ready(function() {
-      /* $.toast({
-        heading: 'Welcome to Elite admin',
-        text: 'Use the predefined ones, or specify a custom position object.',
-        position: 'top-right',
-        loaderBg:'#ff6849',
-        icon: 'info',
-        hideAfter: 3500, 
-        stack: 6
-      }) */
-    });
+	$(document).ready(function() {
+	});
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
