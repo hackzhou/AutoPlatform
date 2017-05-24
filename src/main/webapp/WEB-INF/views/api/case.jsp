@@ -77,7 +77,7 @@
                         <input type="hidden" id="api-case-id" name="api-case-id" value="">
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Interface <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-interface" name="api-case-interface" class="form-select" style="width: 80%;"></select>
 	                        </div>
@@ -85,7 +85,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>Version <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Version <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
 	                        </div>
@@ -93,17 +93,18 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="Name">
+	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="Strategy">
+	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="策略">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20" style="width:100%">
-							<textarea autoHeight="true" name="api-case-body" id="api-case-body" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="Body"></textarea>
+							<textarea autoHeight="true" name="api-case-body" id="api-case-body" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="请求体"></textarea>
                            </div>
 	                    </div>
 	                    <div class="form-group">

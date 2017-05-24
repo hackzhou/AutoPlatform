@@ -77,12 +77,14 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-version-id" name="api-version-id" value="">
-	                        <input type="text" id="api-version-version" name="api-version-version" class="form-control" placeholder="Version">
+	                        <input type="text" id="api-version-version" name="api-version-version" class="form-control" placeholder="版本号">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-version-channel" name="api-version-channel" class="form-control" placeholder="Channel">
+	                        <input type="text" id="api-version-channel" name="api-version-channel" class="form-control" placeholder="版本渠道号">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">

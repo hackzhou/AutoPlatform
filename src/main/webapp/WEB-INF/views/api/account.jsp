@@ -86,12 +86,14 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-account-id" name="api-account-id" value="">
-	                        <input type="text" id="api-account-loginname" name="api-account-loginname" class="form-control" placeholder="LoginName">
+	                        <input type="text" id="api-account-loginname" name="api-account-loginname" class="form-control" placeholder="账号名称">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-account-password" name="api-account-password" class="form-control" placeholder="Password">
+	                        <input type="text" id="api-account-password" name="api-account-password" class="form-control" placeholder="账号密码">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">

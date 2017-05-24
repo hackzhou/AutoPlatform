@@ -86,7 +86,8 @@
                         <input type="hidden" id="api-project-id" name="api-project-id" value="">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="Name">
+	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="项目名称">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">

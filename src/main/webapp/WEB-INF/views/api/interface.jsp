@@ -85,7 +85,7 @@
                     <form id="api-interface-form" class="form-horizontal form-material">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>Project <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Project <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-interface-project" name="api-interface-project" class="form-select" style="width: 80%;"></select>
 	                        </div>
@@ -93,7 +93,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>Type <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>Type <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-interface-type" name="api-interface-type" class="form-select" style="width: 80%;">
 		                        	<option value="GET" selected="selected">GET</option>
@@ -107,17 +107,19 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-interface-id" name="api-interface-id" value="">
-	                        <input type="text" id="api-interface-name" name="api-interface-name" class="form-control" placeholder="Name">
+	                        <input type="text" id="api-interface-name" name="api-interface-name" class="form-control" placeholder="接口名称">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-interface-url" name="api-interface-url" class="form-control" placeholder="Url">
+	                        <input type="text" id="api-interface-url" name="api-interface-url" class="form-control" placeholder="接口地址">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="Description">
+	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="接口描述">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
