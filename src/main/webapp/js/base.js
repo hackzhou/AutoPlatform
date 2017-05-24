@@ -24,6 +24,9 @@ String.format = function() {
 };
 
 function tooltipJson(text){
+	if(text == null || text.length == 0){
+		return text;
+	}
 	var glance = "";
 	if(text.length > 30) {
 		glance = text.substring(0, 30) + "...";
