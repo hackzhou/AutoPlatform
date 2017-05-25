@@ -112,10 +112,10 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Version</th>
-                  <th>Channel</th>
-                  <th>Create Date</th>
-                  <th>Action</th>
+                  <th>版本</th>
+                  <th>渠道号</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>

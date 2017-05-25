@@ -171,14 +171,14 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Project</th>
-                  <th>Url</th>
-                  <th>version</th>
-                  <th>Name</th>
-                  <th>Body</th>
-                  <th>Strategy</th>
-                  <th>Create Date</th>
-                  <th>Action</th>
+                  <th>项目</th>
+                  <th>地址</th>
+                  <th>版本</th>
+                  <th>名称</th>
+                  <th>请求体</th>
+                  <th>验证点</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
