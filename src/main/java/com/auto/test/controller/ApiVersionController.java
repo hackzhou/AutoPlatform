@@ -43,34 +43,45 @@ public class ApiVersionController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getVersionById(@PathVariable("id") String id) {
 		AVersion aVersion = versionService.getVersionById(Integer.parseInt(id));
-		return successJson(aVersion);
+		if(aVersion != null){
+			return successJson(aVersion);
+		}
+		return failedJson("版本不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
-		if(id == null || id.isEmpty()){
-			Integer pid = versionService.create(new AVersion(version.trim(), channel.trim()));
-			if(pid != null){
-				return successJson();
+		try {
+			if(id == null || id.isEmpty()){
+				Integer pid = versionService.create(new AVersion(version.trim(), channel.trim()));
+				if(pid != null){
+					return successJson();
+				}else{
+					return failedJson("添加版本失败！");
+				}
 			}else{
-				return failedJson();
+				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), channel.trim()));
+				if(aVersion != null){
+					return successJson();
+				}else{
+					return failedJson("更新版本失败！");
+				}
 			}
-		}else{
-			AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), channel.trim()));
-			if(aVersion != null){
-				return successJson();
-			}else{
-				return failedJson();
-			}
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> deleteVersion(@PathVariable("id") String id) {
-		versionService.delete(Integer.parseInt(id));
-		return successJson();
+		try {
+			versionService.delete(Integer.parseInt(id));
+			return successJson();
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
 	}
 	
 }

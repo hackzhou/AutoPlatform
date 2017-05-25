@@ -24,6 +24,11 @@ public class ApiCaseService implements IApiCaseService {
 	}
 	
 	@Override
+	public List<ACase> getCaseByInterfaceId(Integer id) {
+		return dao.getCaseByInterfaceId(id);
+	}
+	
+	@Override
 	public ACase getCaseById(Integer id) {
 		return dao.findById(id);
 	}
@@ -51,6 +56,13 @@ public class ApiCaseService implements IApiCaseService {
 		return null;
 	}
 
+	@Override
+	public void delete(ACase aCase) {
+		if(aCase != null){
+			dao.delete(aCase);
+		}
+	}
+	
 	@Override
 	public void delete(Integer id) {
 		if(id != null){

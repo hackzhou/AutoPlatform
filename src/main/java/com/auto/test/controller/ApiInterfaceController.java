@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
+import com.auto.test.service.IApiCaseService;
 import com.auto.test.service.IApiInterfaceService;
 
 @RestController
@@ -26,12 +28,12 @@ public class ApiInterfaceController extends BaseController{
 	@Resource
 	private IApiInterfaceService interfaceService;
 	
+	@Resource
+	private IApiCaseService caseService;
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
 		List<AInterface> list = interfaceService.getAllInterface();
-		for (AInterface aInterface : list) {
-			System.out.println(aInterface.toString());
-		}
 		return success(list, "api/interface", getCurrentUserName(request));
 	}
 	
@@ -46,34 +48,51 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getInterfaceById(@PathVariable("id") String id) {
 		AInterface aInterface = interfaceService.getInterfaceById(Integer.parseInt(id));
-		return successJson(aInterface);
+		if(aInterface != null){
+			return successJson(aInterface);
+		}
+		return failedJson("接口不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-project") String project, @RequestParam("api-interface-name") String name, @RequestParam("api-interface-type") String type, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-description") String description) {
-		if(id == null || id.isEmpty()){
-			Integer pid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
-			if(pid != null){
-				return successJson();
+		try {
+			if(id == null || id.isEmpty()){
+				Integer pid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
+				if(pid != null){
+					return successJson();
+				}else{
+					return failedJson("添加接口失败！");
+				}
 			}else{
-				return failedJson();
+				AInterface aInterface = interfaceService.update(new AInterface(Integer.parseInt(id), Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
+				if(aInterface != null){
+					return successJson();
+				}else{
+					return failedJson("更新接口失败！");
+				}
 			}
-		}else{
-			AInterface aInterface = interfaceService.update(new AInterface(Integer.parseInt(id), Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
-			if(aInterface != null){
-				return successJson();
-			}else{
-				return failedJson();
-			}
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> deleteInterface(@PathVariable("id") String id) {
-		interfaceService.delete(Integer.parseInt(id));
-		return successJson();
+		try {
+			List<ACase> caseList = caseService.getCaseByInterfaceId(Integer.parseInt(id));
+			if(caseList != null && !caseList.isEmpty()){
+				for (ACase aCase : caseList) {
+					caseService.delete(aCase);
+				}
+			}
+			interfaceService.delete(Integer.parseInt(id));
+			return successJson();
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
 	}
 	
 }

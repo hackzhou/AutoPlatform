@@ -8,6 +8,8 @@ import com.auto.test.entity.ACase;
 public interface IApiCaseService{
 	
 	List<ACase> getAllCase();
+	
+	List<ACase> getCaseByInterfaceId(Integer id);
 
 	ACase getCaseById(Integer id);
 	
@@ -15,6 +17,8 @@ public interface IApiCaseService{
 	
 	ACase update(ACase aCase);
 	
+	void delete(ACase aCase);
+
 	void delete(Integer id);
 
 }

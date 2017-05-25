@@ -20,6 +20,11 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
+	public List<AInterface> getInterfaceByProjectId(Integer id) {
+		return dao.findByProjectId(id);
+	}
+	
+	@Override
 	public AInterface getInterfaceById(Integer id) {
 		return dao.findById(id);
 	}
@@ -47,6 +52,13 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		return null;
 	}
 
+	@Override
+	public void delete(AInterface aInterface) {
+		if(aInterface != null){
+			dao.delete(aInterface);
+		}
+	}
+	
 	@Override
 	public void delete(Integer id) {
 		if(id != null){

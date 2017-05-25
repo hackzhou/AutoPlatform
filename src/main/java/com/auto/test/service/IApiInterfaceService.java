@@ -8,6 +8,8 @@ import com.auto.test.entity.AInterface;
 public interface IApiInterfaceService{
 	
 	List<AInterface> getAllInterface();
+
+	List<AInterface> getInterfaceByProjectId(Integer id);
 	
 	AInterface getInterfaceById(Integer id);
 	
@@ -15,6 +17,8 @@ public interface IApiInterfaceService{
 	
 	AInterface update(AInterface aInterface);
 	
+	void delete(AInterface aInterface);
+
 	void delete(Integer id);
 
 }

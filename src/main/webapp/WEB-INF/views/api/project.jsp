@@ -255,9 +255,13 @@
       		data:$('#api-project-run-form').serialize(),
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				swal("Run!", "运行项目成功.", "success");
+      				swal({
+      					title: "成功!",
+      					text: "运行项目成功.",
+      					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
+      				});
       			}else{
-      				swal("Error", "运行项目失败.", "error");
+      				swal("错误", "运行项目失败.", "error");
       			}
       	    }
 		});
@@ -301,8 +305,8 @@
           			if(data.responseCode == "0000"){
           				$('#api-project-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "添加/更新项目失败.", "error");
-          			}
+          	    		swal("错误!", data.responseMsg, "error");
+          	    	}
           	    }
     		});
     	}
@@ -318,6 +322,8 @@
       	    		var p = data.data;
       	    		$('#api-project-id').val(p.id);
       	      		$('#api-project-name').val(p.name);
+      	    	}else{
+      	    		swal("错误!", data.responseMsg, "error");
       	    	}
       	    }
 		});
@@ -325,12 +331,13 @@
     
     function apiProjectDel(pid){
     	swal({
-			title: "Are you sure?",
-			text: "You will not be able to recover this imaginary file!",
+    		title: "你确定吗？",
+			text: "删除之后无法恢复，谨慎操作！\r\n该项目下[接口/案例]也将被删除！",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Yes, delete it!",
+			confirmButtonText: "确定，删除！",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function(){
 			$.ajax({
@@ -338,7 +345,9 @@
           		url:"<%=request.getContextPath()%>/api/project/delete/id=" + pid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
-          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
+          	    		swal("成功!", "删除成功.", "success");
+          	    	}else{
+          	    		swal("错误!", data.responseMsg, "error");
           	    	}
           	    	$('#api-project-table').dataTable()._fnAjaxUpdate();
           	    }

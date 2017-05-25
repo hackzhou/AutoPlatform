@@ -257,7 +257,7 @@
           			if(data.responseCode == "0000"){
           				$('#api-account-table').dataTable()._fnAjaxUpdate();
           			}else{
-          				swal("Error", "添加/更新账号失败.", "error");
+          				swal("错误", data.responseMsg, "error");
           			}
           	    }
     		});
@@ -275,19 +275,22 @@
       	    		$('#api-account-id').val(a.id);
       	      		$('#api-account-loginname').val(a.loginname);
       	      		$('#api-account-password').val(a.password);
-      	    	}
+      	    	}else{
+      				swal("错误", data.responseMsg, "error");
+      			}
       	    }
 		});
     }
     
     function apiAccountDel(aid){
     	swal({
-			title: "Are you sure?",
-			text: "You will not be able to recover this imaginary file!",
+			title: "你确定吗？",
+			text: "删除之后无法恢复，谨慎操作！",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Yes, delete it!",
+			confirmButtonText: "确定，删除！",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function(){
 			$.ajax({
@@ -295,7 +298,9 @@
           		url:"<%=request.getContextPath()%>/api/account/delete/id=" + aid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
-          	    		swal("Deleted!", "Your imaginary file has been deleted.", "success");
+          	    		swal("成功!", "删除成功.", "success");
+          	    	}else{
+          	    		swal("错误!", data.responseMsg, "error");
           	    	}
           	    	$('#api-account-table').dataTable()._fnAjaxUpdate();
           	    }

@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.entity.ACase;
+import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
+import com.auto.test.service.IApiCaseService;
+import com.auto.test.service.IApiInterfaceService;
 import com.auto.test.service.IApiProjectService;
 
 @RestController
@@ -25,6 +29,12 @@ public class ApiProjectController extends BaseController{
 	
 	@Resource
 	private IApiProjectService projectService;
+	
+	@Resource
+	private IApiInterfaceService interfaceService;
+	
+	@Resource
+	private IApiCaseService caseService;
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
@@ -51,34 +61,58 @@ public class ApiProjectController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getProjectById(@PathVariable("id") String id) {
 		AProject aProject = projectService.getProjectById(Integer.parseInt(id));
-		return successJson(aProject);
+		if(aProject != null){
+			return successJson(aProject);
+		}
+		return failedJson("项目不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
-		if(id == null || id.isEmpty()){
-			Integer pid = projectService.create(new AProject(name.trim()));
-			if(pid != null){
-				return successJson();
+		try {
+			if(id == null || id.isEmpty()){
+				Integer pid = projectService.create(new AProject(name.trim()));
+				if(pid != null){
+					return successJson();
+				}else{
+					return failedJson("添加项目失败！");
+				}
 			}else{
-				return failedJson();
+				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim()));
+				if(aProject != null){
+					return successJson();
+				}else{
+					return failedJson("更新项目失败！");
+				}
 			}
-		}else{
-			AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim()));
-			if(aProject != null){
-				return successJson();
-			}else{
-				return failedJson();
-			}
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
-		projectService.delete(Integer.parseInt(id));
-		return successJson();
+		try {
+			List<AInterface> interList = interfaceService.getInterfaceByProjectId(Integer.parseInt(id));
+			if(interList != null && !interList.isEmpty()){
+				List<ACase> caseList = null;
+				for (AInterface aInterface : interList) {
+					caseList = caseService.getCaseByInterfaceId(aInterface.getId());
+					if(caseList != null && !caseList.isEmpty()){
+						for (ACase aCase : caseList) {
+							caseService.delete(aCase);
+						}
+					}
+					interfaceService.delete(aInterface);
+				}
+			}
+			projectService.delete(Integer.parseInt(id));
+			return successJson();
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
 	}
 	
 }

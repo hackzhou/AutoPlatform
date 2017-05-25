@@ -43,34 +43,45 @@ public class ApiAccountController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getAccountById(@PathVariable("id") String id) {
 		AAccount aAccount = accountService.getAccountById(Integer.parseInt(id));
-		return successJson(aAccount);
+		if(aAccount != null){
+			return successJson(aAccount);
+		}
+		return failedJson("该账号不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {
-		if(id == null || id.isEmpty()){
-			Integer pid = accountService.create(new AAccount(loginname.trim(), password.trim()));
-			if(pid != null){
-				return successJson();
+		try {
+			if(id == null || id.isEmpty()){
+				Integer pid = accountService.create(new AAccount(loginname.trim(), password.trim()));
+				if(pid != null){
+					return successJson();
+				}else{
+					return failedJson("添加账号失败！");
+				}
 			}else{
-				return failedJson();
+				AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname.trim(), password.trim()));
+				if(aAccount != null){
+					return successJson();
+				}else{
+					return failedJson("更新账号失败！");
+				}
 			}
-		}else{
-			AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname.trim(), password.trim()));
-			if(aAccount != null){
-				return successJson();
-			}else{
-				return failedJson();
-			}
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/delete/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> deleteAccount(@PathVariable("id") String id) {
-		accountService.delete(Integer.parseInt(id));
-		return successJson();
+		try {
+			accountService.delete(Integer.parseInt(id));
+			return successJson();
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
 	}
 	
 }
