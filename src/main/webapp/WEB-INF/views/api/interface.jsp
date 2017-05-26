@@ -374,7 +374,7 @@
     function apiInterfaceDel(iid){
     	swal({
     		title: "你确定吗？",
-			text: "删除之后无法恢复，谨慎操作！\r\n该项目下[案例]也将被删除！",
+			text: "删除之后无法恢复，谨慎操作！\r\n该接口下[案例]也将被删除！",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
