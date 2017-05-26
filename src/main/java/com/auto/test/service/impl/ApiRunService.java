@@ -40,7 +40,6 @@ public class ApiRunService implements IApiRunService {
 		List<ACase> list = getRunCases(type, runId);
 		if(list != null && !list.isEmpty()){
 			AResult aResult = createApiResult(type, runId, runby);
-			System.out.println(aResult.toString());
 			ApiContext apiContext = getApiContext(list, aResult);
 			IApiCaseParse caseParse = new ApiCaseParse();
 			caseParse.execute(apiContext);
