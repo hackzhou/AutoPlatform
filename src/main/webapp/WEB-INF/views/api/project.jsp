@@ -261,7 +261,7 @@
       					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
       				});
       			}else{
-      				swal("错误", "运行项目失败.", "error");
+      				swal("错误", data.responseMsg, "error");
       			}
       	    }
 		});

@@ -37,9 +37,9 @@ public class ApiCaseController extends BaseController{
 
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runCase(@RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
+	public Map<String, Object> runCase(HttpServletRequest request, @RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
 		try {
-			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account));
+			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), getCurrentUserName(request));
 			return successJson();
 		} catch (Exception e) {
 			return failedJson(e.getMessage());
@@ -49,9 +49,6 @@ public class ApiCaseController extends BaseController{
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllCase(HttpServletRequest request) {
 		List<ACase> list = caseService.findAllCase();
-		for (ACase aCase : list) {
-			System.out.println(aCase.toString());
-		}
 		return success(list, "api/case", getCurrentUserName(request));
 	}
 	

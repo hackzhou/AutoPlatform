@@ -44,9 +44,9 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runProject(@RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-account") String account) {
+	public Map<String, Object> runProject(HttpServletRequest request, @RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-account") String account) {
 		try {
-			runService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account));
+			runService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), getCurrentUserName(request));
 			return successJson();
 		} catch (Exception e) {
 			return failedJson(e.getMessage());
