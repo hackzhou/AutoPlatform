@@ -19,17 +19,17 @@ public class ApiCaseService implements IApiCaseService {
 	private IApiCaseDao dao;
 
 	@Override
-	public List<ACase> getAllCase() {
+	public List<ACase> findAllCase() {
 		return dao.findAllOrder();
 	}
 	
 	@Override
-	public List<ACase> getCaseByInterfaceId(Integer id) {
-		return dao.getCaseByInterfaceId(id);
+	public List<ACase> findByInterfaceId(Integer id) {
+		return dao.findByInterfaceId(id);
 	}
 	
 	@Override
-	public ACase getCaseById(Integer id) {
+	public ACase findById(Integer id) {
 		return dao.findById(id);
 	}
 

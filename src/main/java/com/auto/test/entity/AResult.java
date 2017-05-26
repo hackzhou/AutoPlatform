@@ -36,6 +36,18 @@ public class AResult implements Serializable{
 	@Column(name="runby")
 	private String runby;
 	
+	@Column(name="success")
+	private Integer success;
+	
+	@Column(name="fail")
+	private Integer fail;
+	
+	@Column(name="total")
+	private Integer total;
+	
+	@Column(name="status")
+	private String status;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -53,6 +65,10 @@ public class AResult implements Serializable{
 		this.projecto = aResult.getProjecto();
 		this.name = aResult.getName();
 		this.runby = aResult.getRunby();
+		this.success = aResult.getSuccess();
+		this.fail = aResult.getFail();
+		this.total = aResult.getTotal();
+		this.status = aResult.getStatus();
 		this.updateTime = new Date();
 		this.memo = aResult.getMemo();
 	}
@@ -81,6 +97,30 @@ public class AResult implements Serializable{
 	public void setRunby(String runby) {
 		this.runby = runby;
 	}
+	public Integer getSuccess() {
+		return success;
+	}
+	public void setSuccess(Integer success) {
+		this.success = success;
+	}
+	public Integer getFail() {
+		return fail;
+	}
+	public void setFail(Integer fail) {
+		this.fail = fail;
+	}
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -102,8 +142,9 @@ public class AResult implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AResult [id=" + id + ", projecto=" + projecto + ", name=" + name + ", runby=" + runby + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AResult [id=" + id + ", projecto=" + projecto + ", name=" + name + ", runby=" + runby + ", success="
+				+ success + ", fail=" + fail + ", total=" + total + ", status=" + status + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }

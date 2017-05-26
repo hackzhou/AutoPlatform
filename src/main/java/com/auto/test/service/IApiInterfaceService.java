@@ -7,11 +7,11 @@ import com.auto.test.entity.AInterface;
 @Transactional
 public interface IApiInterfaceService{
 	
-	List<AInterface> getAllInterface();
+	List<AInterface> findAllInterface();
 
-	List<AInterface> getInterfaceByProjectId(Integer id);
+	List<AInterface> findByProjectId(Integer id);
 	
-	AInterface getInterfaceById(Integer id);
+	AInterface findById(Integer id);
 	
 	Integer create(AInterface aInterface);
 	

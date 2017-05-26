@@ -19,7 +19,7 @@ public class UserService implements IUserService {
 	private IUserDao dao;
 
 	@Override
-	public List<AUser> getAllUser() {
+	public List<AUser> findAllUser() {
 		return dao.findAll();
 	}
 

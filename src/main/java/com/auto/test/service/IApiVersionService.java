@@ -7,9 +7,9 @@ import com.auto.test.entity.AVersion;
 @Transactional
 public interface IApiVersionService{
 	
-	List<AVersion> getAllVersion();
+	List<AVersion> findAllVersion();
 	
-	AVersion getVersionById(Integer id);
+	AVersion findById(Integer id);
 	
 	Integer create(AVersion aVersion);
 	

@@ -15,17 +15,17 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	private IApiInterfaceDao dao;
 
 	@Override
-	public List<AInterface> getAllInterface() {
+	public List<AInterface> findAllInterface() {
 		return dao.findAllOrder();
 	}
 	
 	@Override
-	public List<AInterface> getInterfaceByProjectId(Integer id) {
+	public List<AInterface> findByProjectId(Integer id) {
 		return dao.findByProjectId(id);
 	}
 	
 	@Override
-	public AInterface getInterfaceById(Integer id) {
+	public AInterface findById(Integer id) {
 		return dao.findById(id);
 	}
 

@@ -15,12 +15,12 @@ public class ApiVersionService implements IApiVersionService {
 	private IApiVersionDao dao;
 
 	@Override
-	public List<AVersion> getAllVersion() {
+	public List<AVersion> findAllVersion() {
 		return dao.findAllOrder();
 	}
 	
 	@Override
-	public AVersion getVersionById(Integer id) {
+	public AVersion findById(Integer id) {
 		return dao.findById(id);
 	}
 

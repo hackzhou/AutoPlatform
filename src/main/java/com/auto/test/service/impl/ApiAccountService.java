@@ -15,12 +15,12 @@ public class ApiAccountService implements IApiAccountService {
 	private IApiAccountDao dao;
 
 	@Override
-	public List<AAccount> getAllAccount() {
+	public List<AAccount> findAllAccount() {
 		return dao.findAllOrder();
 	}
 	
 	@Override
-	public AAccount getAccountById(Integer id) {
+	public AAccount findById(Integer id) {
 		return dao.findById(id);
 	}
 

@@ -7,6 +7,7 @@ import com.auto.test.common.dao.AbstractHibernateDao;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
+import com.auto.test.entity.AProject;
 
 @Repository("apiCaseDao")
 public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseDao {
@@ -18,10 +19,23 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<ACase> getCaseByInterfaceId(Integer id) {
+	public List<ACase> findByInterfaceId(Integer id) {
 		List<ACase> list = getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("interfaceo", new AInterface(id))).list();
 		if(list != null && !list.isEmpty()){
 			return list;
+		}
+		return null;
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<ACase> findByProjectId(Integer id) {
+		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).list();
+		if(interList != null && !interList.isEmpty()){
+			List<ACase> caseList = getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("interfaceo", interList)).list();
+			if(caseList != null && !caseList.isEmpty()){
+				return caseList;
+			}
 		}
 		return null;
 	}

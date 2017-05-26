@@ -28,21 +28,21 @@ public class ApiAccountController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllAccount(HttpServletRequest request) {
-		List<AAccount> list = accountService.getAllAccount();
+		List<AAccount> list = accountService.findAllAccount();
 		return success(list, "api/account", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllAccountData() {
-		List<AAccount> list = accountService.getAllAccount();
+		List<AAccount> list = accountService.findAllAccount();
 		return successJson(list);
 	}
 	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAccountById(@PathVariable("id") String id) {
-		AAccount aAccount = accountService.getAccountById(Integer.parseInt(id));
+		AAccount aAccount = accountService.findById(Integer.parseInt(id));
 		if(aAccount != null){
 			return successJson(aAccount);
 		}

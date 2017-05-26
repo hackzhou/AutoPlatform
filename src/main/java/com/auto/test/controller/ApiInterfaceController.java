@@ -33,21 +33,21 @@ public class ApiInterfaceController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
-		List<AInterface> list = interfaceService.getAllInterface();
+		List<AInterface> list = interfaceService.findAllInterface();
 		return success(list, "api/interface", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllProjectData() {
-		List<AInterface> list = interfaceService.getAllInterface();
+		List<AInterface> list = interfaceService.findAllInterface();
 		return successJson(list);
 	}
 	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getInterfaceById(@PathVariable("id") String id) {
-		AInterface aInterface = interfaceService.getInterfaceById(Integer.parseInt(id));
+		AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 		if(aInterface != null){
 			return successJson(aInterface);
 		}
@@ -82,7 +82,7 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> deleteInterface(@PathVariable("id") String id) {
 		try {
-			List<ACase> caseList = caseService.getCaseByInterfaceId(Integer.parseInt(id));
+			List<ACase> caseList = caseService.findByInterfaceId(Integer.parseInt(id));
 			if(caseList != null && !caseList.isEmpty()){
 				for (ACase aCase : caseList) {
 					caseService.delete(aCase);

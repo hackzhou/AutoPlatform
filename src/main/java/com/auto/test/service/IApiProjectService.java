@@ -7,9 +7,9 @@ import com.auto.test.entity.AProject;
 @Transactional
 public interface IApiProjectService{
 	
-	List<AProject> getAllProject();
+	List<AProject> findAllProject();
 	
-	AProject getProjectById(Integer id);
+	AProject findById(Integer id);
 	
 	Integer create(AProject aProject);
 	

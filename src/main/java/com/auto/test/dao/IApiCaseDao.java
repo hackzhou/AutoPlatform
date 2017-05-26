@@ -7,6 +7,8 @@ import com.auto.test.entity.ACase;
 
 public interface IApiCaseDao extends IBaseDao<ACase> {
 	
-	List<ACase> getCaseByInterfaceId(Integer id);
+	List<ACase> findByInterfaceId(Integer id);
+	
+	List<ACase> findByProjectId(Integer id);
 
 }

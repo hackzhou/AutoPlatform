@@ -7,11 +7,11 @@ import com.auto.test.entity.ACase;
 @Transactional
 public interface IApiCaseService{
 	
-	List<ACase> getAllCase();
+	List<ACase> findAllCase();
 	
-	List<ACase> getCaseByInterfaceId(Integer id);
+	List<ACase> findByInterfaceId(Integer id);
 
-	ACase getCaseById(Integer id);
+	ACase findById(Integer id);
 	
 	Integer create(ACase aCase);
 	

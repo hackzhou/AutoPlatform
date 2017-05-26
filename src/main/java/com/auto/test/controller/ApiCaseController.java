@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiCaseService;
+import com.auto.test.service.IApiRunService;
 
 @Controller
 @RequestMapping(value = "api/case")
@@ -29,18 +31,24 @@ public class ApiCaseController extends BaseController{
 	
 	@Resource
 	private IApiCaseService caseService;
+	
+	@Resource
+	private IApiRunService runService;
 
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> runCase(@RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
-		System.out.println("runid:" + runid);
-		System.out.println("account:" + account);
-		return successJson();
+		try {
+			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account));
+			return successJson();
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllCase(HttpServletRequest request) {
-		List<ACase> list = caseService.getAllCase();
+		List<ACase> list = caseService.findAllCase();
 		for (ACase aCase : list) {
 			System.out.println(aCase.toString());
 		}
@@ -50,14 +58,14 @@ public class ApiCaseController extends BaseController{
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllCaseData() {
-		List<ACase> list = caseService.getAllCase();
+		List<ACase> list = caseService.findAllCase();
 		return successJson(list);
 	}
 	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getCaseById(@PathVariable("id") String id) {
-		ACase aCase = caseService.getCaseById(Integer.parseInt(id));
+		ACase aCase = caseService.findById(Integer.parseInt(id));
 		if(aCase != null){
 			aCase.setBody(jsonFormat(aCase.getBody(), true));
 			return successJson(aCase);

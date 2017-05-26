@@ -7,9 +7,9 @@ import com.auto.test.entity.AAccount;
 @Transactional
 public interface IApiAccountService{
 	
-	List<AAccount> getAllAccount();
+	List<AAccount> findAllAccount();
 	
-	AAccount getAccountById(Integer id);
+	AAccount findById(Integer id);
 	
 	Integer create(AAccount aAccount);
 	
