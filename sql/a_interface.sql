@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-19 19:03:13
+Date: 2017-05-26 18:56:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,4 +30,4 @@ CREATE TABLE `a_interface` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

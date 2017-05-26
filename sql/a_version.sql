@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-22 10:42:35
+Date: 2017-05-26 18:57:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,11 +21,10 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `a_version`;
 CREATE TABLE `a_version` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` int(11) NOT NULL,
   `version` varchar(255) COLLATE utf8_bin NOT NULL,
-  `channel` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `channel` varchar(255) COLLATE utf8_bin NOT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
