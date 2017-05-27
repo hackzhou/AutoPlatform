@@ -11,8 +11,8 @@ import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.ApiContext;
+import com.auto.test.common.context.SpringContext;
 import com.auto.test.core.api.parse.IApiCaseParse;
-import com.auto.test.core.api.parse.impl.ApiCaseParse;
 import com.auto.test.dao.IApiAccountDao;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiProjectDao;
@@ -48,7 +48,7 @@ public class ApiRunService implements IApiRunService {
 		List<ACase> list = getRunCases(type, runId);
 		if(list != null && !list.isEmpty()){
 			ApiContext apiContext = getApiContext(list, type, runId, accountId, versionId, runby);
-			IApiCaseParse caseParse = new ApiCaseParse();
+			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 			caseParse.execute(apiContext);
 		}
 	}

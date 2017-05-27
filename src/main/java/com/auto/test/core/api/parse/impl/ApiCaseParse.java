@@ -8,9 +8,9 @@ import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.context.ThreadPool;
 import com.auto.test.core.api.execute.ApiExecuteRun;
+import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.core.api.http.bean.AccessToken;
 import com.auto.test.core.api.http.bean.Login;
-import com.auto.test.core.api.http.impl.ApiSendMessage;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
@@ -40,7 +40,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		AVersion aVersion = apiContext.getaVersion();
 		AAccount aAccount = apiContext.getaAccount();
 		if(aAccount != null){
-			ApiSendMessage apiSendMessage = (ApiSendMessage) SpringContext.getBean("apiSendMessage");
+			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 			String result = apiSendMessage.sendPost(apiContext.getUrla() + "/api/user/login", data, "", aVersion.getChannel(), aVersion.getVersion());
 			logger.info("[POST] " + apiContext.getUrla() + "/api/user/login,Channel:" + aVersion.getChannel() + ",Version:" + aVersion.getVersion());
