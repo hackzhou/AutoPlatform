@@ -13,9 +13,11 @@ import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.core.api.parse.impl.ApiCaseParse;
+import com.auto.test.dao.IApiAccountDao;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiProjectDao;
 import com.auto.test.dao.IApiResultDao;
+import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
@@ -32,23 +34,34 @@ public class ApiRunService implements IApiRunService {
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao caseDao;
 	
+	@Resource(name="apiVersionDao")
+	private IApiVersionDao versionDao;
+	
+	@Resource(name="apiAccountDao")
+	private IApiAccountDao accountDao;
+
 	@Resource(name="apiResultDao")
 	private IApiResultDao resultDao;
 
 	@Override
-	public void run(ApiRunType type, Integer runId, Integer accountId, String runby) {
+	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) {
 		List<ACase> list = getRunCases(type, runId);
 		if(list != null && !list.isEmpty()){
-			AResult aResult = createApiResult(type, runId, runby);
-			ApiContext apiContext = getApiContext(list, aResult);
+			ApiContext apiContext = getApiContext(list, type, runId, accountId, versionId, runby);
 			IApiCaseParse caseParse = new ApiCaseParse();
 			caseParse.execute(apiContext);
 		}
 	}
 	
-	private ApiContext getApiContext(List<ACase> list, AResult aResult){
+	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby){
 		ApiContext apiContext = new ApiContext();
-		apiContext.setResult(aResult);
+		if(versionId != null){
+			apiContext.setaVersion(versionDao.findById(versionId));
+		}
+		if(accountId != null){
+			apiContext.setaAccount(accountDao.findById(accountId));
+		}
+		apiContext.setResult(createApiResult(type, runId, runby));
 		apiContext.setList(list);
 		return apiContext;
 	}

@@ -122,6 +122,14 @@
                     	<input type="hidden" id="api-project-run-id" name="api-project-run-id" value="">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-project-run-version" name="api-project-run-version" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试账号 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-project-run-account" name="api-project-run-account" class="form-select" style="width: 80%;"></select>
@@ -269,6 +277,7 @@
     
     function initApiProjectRun(pid){
 		$('#api-project-run-id').val(pid);
+		initApiCaseVersion(null);
 		$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/account/list/data",
@@ -285,6 +294,28 @@
       	    }
 		});
 	}
+    
+    function initApiCaseVersion(versionid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(versionid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+    					}
+    				}
+    				$('#api-project-run-version').empty();
+    				$('#api-project-run-version').append(optionstring);
+    			}
+    		}
+    	});
+    }
     
     function initApiProjectModal(){
     	$('#api-project-id').val("");

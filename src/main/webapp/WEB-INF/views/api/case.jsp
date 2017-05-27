@@ -96,14 +96,6 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
-	                        </div>
-	                      </div>
-	                    </div>
-	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
 	                        <i class="ti-star text-danger"></i>
 	                      </div>
@@ -150,6 +142,14 @@
                     	<input type="hidden" id="api-case-run-id" name="api-case-run-id" value="">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-run-version" name="api-case-run-version" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试账号 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-run-account" name="api-case-run-account" class="form-select" style="width: 80%;"></select>
@@ -173,7 +173,6 @@
                   <th>ID</th>
                   <th>项目</th>
                   <th>地址</th>
-                  <th>版本</th>
                   <th>名称</th>
                   <th>请求体</th>
                   <th>验证点</th>
@@ -245,7 +244,6 @@
 		createTable();
 		initEvent();
 		initApiCaseInterface(null);
-		initApiCaseVersion(null);
 	});
 	
 	function initEvent(){
@@ -284,7 +282,7 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "10%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -302,17 +300,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "10%",
 					"aTargets" : [ 3 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return data.versiono.version;
-					}
-				},
-				{
-					"sWidth" : "8%",
-					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -321,7 +310,7 @@
 				},
 				{
 					"sWidth" : "25%",
-					"aTargets" : [ 5 ],
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -330,7 +319,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 6 ],
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -338,8 +327,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 7 ],
+					"sWidth" : "10%",
+					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -347,8 +336,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 8 ],
+					"sWidth" : "10%",
+					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -386,6 +375,7 @@
 	
 	function initApiCaseRun(cid){
 		$('#api-case-run-id').val(cid);
+		initApiCaseVersion(null);
 		$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/account/list/data",
@@ -402,6 +392,28 @@
       	    }
 		});
 	}
+	
+	function initApiCaseVersion(versionid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(versionid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+    					}
+    				}
+    				$('#api-case-run-version').empty();
+    				$('#api-case-run-version').append(optionstring);
+    			}
+    		}
+    	});
+    }
 	
 	function initApiCaseInterface(interfaceid){
     	$.ajax({
@@ -430,35 +442,12 @@
     	});
     }
 	
-	function initApiCaseVersion(versionid){
-    	$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				var optionstring = "";
-    				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(versionid == list[i].id || i == 0){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
-    				}
-    				$('#api-case-version').empty();
-    				$('#api-case-version').append(optionstring);
-    			}
-    		}
-    	});
-    }
-	
 	function initApiCaseModal(){
 		$('#api-case-run1').prop("checked",true);
 		$('#api-case-name').val("");
 		$('#api-case-body').val("");
     	$('#api-case-strategy').val("");
     	initApiCaseInterface(null);
-    	initApiCaseVersion(null);
     	autoHeight($("#api-case-body")[0]);
     }
 	
@@ -516,7 +505,6 @@
 	      	      	$('#api-case-strategy').val(c.strategy);
 					$('#api-case-run' + c.run).prop("checked",true);
 	      	      	initApiCaseInterface(c.interfaceo.id);
-	      	      	initApiCaseVersion(c.versiono.id);
       	    	}else{
       	    		swal("错误!", data.responseMsg, "error");
       	    	}

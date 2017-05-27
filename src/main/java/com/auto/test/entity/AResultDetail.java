@@ -47,14 +47,23 @@ public class AResultDetail implements Serializable{
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="header")
-	private String header;
+	@Column(name="version")
+	private String version;
+
+	@Column(name="channel")
+	private String channel;
+
+	@Column(name="account")
+	private String account;
 
 	@Column(name="body")
 	private String body;
 	
-	@Column(name="result")
-	private String result;
+	@Column(name="resulta")
+	private String resulta;
+
+	@Column(name="resultb")
+	private String resultb;
 	
 	@Column(name="create_time")
 	private Date createTime;
@@ -76,11 +85,23 @@ public class AResultDetail implements Serializable{
 		this.type = aResultDetail.getType();
 		this.url = aResultDetail.getUrl();
 		this.description = aResultDetail.getDescription();
-		this.header = aResultDetail.getHeader();
+		this.version = aResultDetail.getVersion();
+		this.channel = aResultDetail.getChannel();
+		this.account = aResultDetail.getAccount();
 		this.body = aResultDetail.getBody();
-		this.result = aResultDetail.getResult();
+		this.resulta = aResultDetail.getResulta();
+		this.resultb = aResultDetail.getResultb();
 		this.updateTime = new Date();
 		this.memo = aResultDetail.getMemo();
+	}
+	
+	public void update(ACase aCase){
+		this.caseo = aCase;
+		this.type = aCase.getInterfaceo().getType();
+		this.url = aCase.getInterfaceo().getUrl();
+		this.description = aCase.getInterfaceo().getDescription();
+		this.name = aCase.getName();
+		this.body = aCase.getBody();
 	}
 
 	public Integer getId() {
@@ -125,11 +146,23 @@ public class AResultDetail implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getHeader() {
-		return header;
+	public String getVersion() {
+		return version;
 	}
-	public void setHeader(String header) {
-		this.header = header;
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public String getChannel() {
+		return channel;
+	}
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
 	}
 	public String getBody() {
 		return body;
@@ -137,11 +170,17 @@ public class AResultDetail implements Serializable{
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public String getResult() {
-		return result;
+	public String getResulta() {
+		return resulta;
 	}
-	public void setResult(String result) {
-		this.result = result;
+	public void setResulta(String resulta) {
+		this.resulta = resulta;
+	}
+	public String getResultb() {
+		return resultb;
+	}
+	public void setResultb(String resultb) {
+		this.resultb = resultb;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -165,9 +204,9 @@ public class AResultDetail implements Serializable{
 	@Override
 	public String toString() {
 		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", type="
-				+ type + ", url=" + url + ", description=" + description + ", header=" + header + ", body=" + body
-				+ ", result=" + result + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
-				+ "]";
+				+ type + ", url=" + url + ", description=" + description + ", version=" + version + ", channel="
+				+ channel + ", account=" + account + ", body=" + body + ", resulta=" + resulta + ", resultb=" + resultb
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }
