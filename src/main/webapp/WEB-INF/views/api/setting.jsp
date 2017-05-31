@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,17 +10,17 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>接口-设置</title>
+<title>接口-项目</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/css/cdn/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Menu CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
-<!-- toast CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
-<!-- morris CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
+<!--alerts CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -37,7 +39,33 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Dashboard Setting</h4>
+          <!-- <h4 class="page-title">Dashboard Setting</h4> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+            <div class="panel-body">
+	          <div class="form-body">
+	            <form id="api-upload-form" class="form-horizontal" action="${pageContext.request.contextPath}/api/upload/fileUpload" method="post"  enctype="multipart/form-data">
+	              <div class="form-group">
+	                <label class="col-sm-1 text-info text-center">接口批量上传：</label>
+	                <div class="col-sm-10">
+	                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+	                    <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+	                    <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">选择文件</span> <span class="fileinput-exists">重选</span>
+	                    <input type="file" name="file">
+	                    </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
+	                  </div>
+	                </div>
+	                <div class="col-sm-1">
+		              <button type="button" class="btn btn-success waves-effect waves-light m-r-10" onclick="apiFileUpload();">提交</button>
+	                </div>
+	              </div>
+	            </form>
+	          </div>
+            </div>
+          </div>
         </div>
       </div>
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
@@ -59,32 +87,47 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
-<!--Counter js -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.js"></script>
+<!-- Sweet-Alert  -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/eliteadmin/js/dashboard1.js"></script>
-<!-- Sparkline chart JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
-<script type="text/javascript">
-  
-   $(document).ready(function() {
-      /* $.toast({
-        heading: 'Welcome to Elite admin',
-        text: 'Use the predefined ones, or specify a custom position object.',
-        position: 'top-right',
-        loaderBg:'#ff6849',
-        icon: 'info',
-        hideAfter: 3500, 
-        stack: 6
-      }) */
-    });
+<script src="${pageContext.request.contextPath}/eliteadmin/js/jasny-bootstrap.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/pdfmake.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/vfs_fonts.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
+<script>
+
+	$(document).ready(function() {
+	});
+	
+	function apiFileUpload(){
+		var filename = $('.fileinput-filename').html();
+		if(filename == ""){
+			swal("错误!", "请选择文件！", "error");
+		}else{
+			swal({
+	    		title: "你确定吗？",
+				text: "接口数据批量上传",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "确定，上传！",
+				cancelButtonText: "取消",
+				closeOnConfirm: false
+			}, function(){
+				$('#api-upload-form').submit();
+			});
+		}
+	}
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
