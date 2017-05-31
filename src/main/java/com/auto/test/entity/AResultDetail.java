@@ -65,6 +65,9 @@ public class AResultDetail implements Serializable{
 	@Column(name="resultb")
 	private String resultb;
 	
+	@Column(name="status")
+	private String status;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -91,6 +94,7 @@ public class AResultDetail implements Serializable{
 		this.body = aResultDetail.getBody();
 		this.resulta = aResultDetail.getResulta();
 		this.resultb = aResultDetail.getResultb();
+		this.status = aResultDetail.getStatus();
 		this.updateTime = new Date();
 		this.memo = aResultDetail.getMemo();
 	}
@@ -182,6 +186,12 @@ public class AResultDetail implements Serializable{
 	public void setResultb(String resultb) {
 		this.resultb = resultb;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -206,7 +216,8 @@ public class AResultDetail implements Serializable{
 		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", type="
 				+ type + ", url=" + url + ", description=" + description + ", version=" + version + ", channel="
 				+ channel + ", account=" + account + ", body=" + body + ", resulta=" + resulta + ", resultb=" + resultb
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", status=" + status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
+				+ "]";
 	}
 
 }

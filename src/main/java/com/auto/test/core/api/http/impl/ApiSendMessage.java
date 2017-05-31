@@ -8,11 +8,14 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
+import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
 public class ApiSendMessage implements IApiSendMessage {
+	private static final Logger logger = LoggerFactory.getLogger(ApiSendMessage.class);
 	
 	@Override
 	public <T> T json2JavaBean(Class<T> c, String text){
@@ -31,7 +34,10 @@ public class ApiSendMessage implements IApiSendMessage {
 			response = httpclient.execute(httpGet);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				String conResult = EntityUtils.toString(response.getEntity());
+				logger.info(conResult);
 				return conResult;
+			}else{
+				throw new BusinessException(EntityUtils.toString(response.getEntity()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,7 +70,10 @@ public class ApiSendMessage implements IApiSendMessage {
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				String conResult = EntityUtils.toString(response.getEntity());
-				System.out.println(conResult);
+				logger.info(conResult);
+				return conResult;
+			}else{
+				throw new BusinessException(EntityUtils.toString(response.getEntity()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

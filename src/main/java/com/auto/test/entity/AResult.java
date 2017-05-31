@@ -48,6 +48,12 @@ public class AResult implements Serializable{
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="start_time")
+	private Date startTime;
+	
+	@Column(name="end_time")
+	private Date endTime;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -69,6 +75,8 @@ public class AResult implements Serializable{
 		this.fail = aResult.getFail();
 		this.total = aResult.getTotal();
 		this.status = aResult.getStatus();
+		this.startTime = aResult.getStartTime();
+		this.endTime = aResult.getEndTime();
 		this.updateTime = new Date();
 		this.memo = aResult.getMemo();
 	}
@@ -121,6 +129,18 @@ public class AResult implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -143,8 +163,9 @@ public class AResult implements Serializable{
 	@Override
 	public String toString() {
 		return "AResult [id=" + id + ", projecto=" + projecto + ", name=" + name + ", runby=" + runby + ", success="
-				+ success + ", fail=" + fail + ", total=" + total + ", status=" + status + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ success + ", fail=" + fail + ", total=" + total + ", status=" + status + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo="
+				+ memo + "]";
 	}
 
 }

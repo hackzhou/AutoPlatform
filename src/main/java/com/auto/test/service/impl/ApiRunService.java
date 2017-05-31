@@ -12,6 +12,7 @@ import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
+import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.dao.IApiAccountDao;
 import com.auto.test.dao.IApiCaseDao;
@@ -45,44 +46,43 @@ public class ApiRunService implements IApiRunService {
 
 	@Override
 	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) {
-		List<ACase> list = getRunCases(type, runId);
-		if(list != null && !list.isEmpty()){
-			ApiContext apiContext = getApiContext(list, type, runId, accountId, versionId, runby);
-			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
-			caseParse.execute(apiContext);
+		try {
+			List<ACase> list = getRunCases(type, runId);
+			if(list != null && !list.isEmpty()){
+				ApiContext apiContext = getApiContext(list, type, runId, accountId, versionId, runby);
+				if(apiContext != null){
+					IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
+					caseParse.execute(apiContext);
+				}
+			}else{
+				throw new BusinessException("运行[案例]未找到！");
+			}
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 	
 	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby){
-		ApiContext apiContext = new ApiContext();
-		if(versionId != null){
-			apiContext.setaVersion(versionDao.findById(versionId));
+		try {
+			ApiContext apiContext = new ApiContext();
+			if(accountId != null){
+				apiContext.setaAccount(accountDao.findById(accountId));
+			}
+			if(versionId != null){
+				apiContext.setaVersion(versionDao.findById(versionId));
+			}else{
+				throw new BusinessException("运行[版本/渠道号]未找到！");
+			}
+			apiContext.setResult(createApiResult(type, runId, runby, list.size()));
+			apiContext.setList(list);
+			apiContext.setTotal(list.size());
+			return apiContext;
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
 		}
-		if(accountId != null){
-			apiContext.setaAccount(accountDao.findById(accountId));
-		}
-		apiContext.setResult(createApiResult(type, runId, runby));
-		apiContext.setList(list);
-		return apiContext;
 	}
 	
-	private List<ACase> getRunCases(ApiRunType type, Integer runId){
-		List<ACase> list = new ArrayList<ACase>();
-		if(ApiRunType.PROJECT.equals(type)){
-			List<ACase> cList = caseDao.findByProjectId(runId);
-			if(cList != null && !cList.isEmpty()){
-				list.addAll(cList);
-			}
-		}else if(ApiRunType.CASE.equals(type)){
-			ACase aCase = caseDao.findById(runId);
-			if(aCase != null){
-				list.add(aCase);
-			}
-		}
-		return list;
-	}
-	
-	private AResult createApiResult(ApiRunType type, Integer runId, String runby){
+	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total){
 		AResult aResult = new AResult();
 		if(ApiRunType.PROJECT.equals(type)){
 			AProject aProject = projectDao.findById(runId);
@@ -101,10 +101,27 @@ public class ApiRunService implements IApiRunService {
 		aResult.setStatus(ApiRunStatus.RUNNING.name());
 		aResult.setSuccess(0);
 		aResult.setFail(0);
-		aResult.setTotal(0);
+		aResult.setTotal(total);
 		aResult.setCreateTime(new Date());
+		aResult.setStartTime(new Date());
 		resultDao.create(aResult);
 		return aResult;
+	}
+	
+	private List<ACase> getRunCases(ApiRunType type, Integer runId){
+		List<ACase> list = new ArrayList<ACase>();
+		if(ApiRunType.PROJECT.equals(type)){
+			List<ACase> cList = caseDao.findByProjectId(runId);
+			if(cList != null && !cList.isEmpty()){
+				list.addAll(cList);
+			}
+		}else if(ApiRunType.CASE.equals(type)){
+			ACase aCase = caseDao.findById(runId);
+			if(aCase != null){
+				list.add(aCase);
+			}
+		}
+		return list;
 	}
 	
 }

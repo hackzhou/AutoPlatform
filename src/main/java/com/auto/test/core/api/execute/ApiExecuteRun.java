@@ -1,14 +1,21 @@
 package com.auto.test.core.api.execute;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.auto.test.common.constant.ApiRunStatus;
+import com.auto.test.common.constant.ApiStatus;
 import com.auto.test.common.constant.HttpType;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.entity.ACase;
+import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
 import com.auto.test.service.IApiResultDetailService;
+import com.auto.test.service.IApiResultService;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
@@ -23,41 +30,65 @@ public class ApiExecuteRun implements Runnable {
 
 	@Override
 	public void run() {
-		String authora = apiContext.getAuthora();
-		String authorb = apiContext.getAuthorb();
-		String channel = apiContext.getaVersion().getChannel();
-		String version = apiContext.getaVersion().getVersion();
 		AResultDetail aResultDetail = new AResultDetail();
-		aResultDetail.update(aCase);
-		aResultDetail.setResulto(apiContext.getResult());
-		if(apiContext.getaAccount() != null){
-			aResultDetail.setAccount(apiContext.getaAccount().getLoginname() + "/" + apiContext.getaAccount().getPassword());
+		try {
+			String authora = apiContext.getAuthora();
+			String authorb = apiContext.getAuthorb();
+			String channel = apiContext.getaVersion().getChannel();
+			String version = apiContext.getaVersion().getVersion();
+			aResultDetail.update(aCase);
+			aResultDetail.setResulto(apiContext.getResult());
+			if(apiContext.getaAccount() != null){
+				aResultDetail.setAccount(apiContext.getaAccount().getLoginname() + "/" + apiContext.getaAccount().getPassword());
+			}
+			aResultDetail.setVersion(version);
+			aResultDetail.setChannel(channel);
+			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
+			if(HttpType.GET.equals(aCase.getInterfaceo().getType())){
+				aResultDetail.setResulta(sendMessageGet(apiSendMessage, authora, apiContext.getUrla(), channel, version));
+				aResultDetail.setResultb(sendMessageGet(apiSendMessage, authorb, apiContext.getUrlb(), channel, version));
+			}else if(HttpType.POST.equals(aCase.getInterfaceo().getType())){
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, authora, apiContext.getUrla(), channel, version));
+				aResultDetail.setResultb(sendMessagePost(apiSendMessage, authorb, apiContext.getUrlb(), channel, version));
+			}
+			IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
+			if(aResultDetail.getResulta().equals(aResultDetail.getResultb())){
+				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+			}else{
+				aResultDetail.setStatus(ApiStatus.FAILURE.name());
+			}
+			apiResultDetailService.create(aResultDetail);
+			logger.info(aResultDetail.toString());
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			apiContext.setCount(apiContext.getCount() + 1);
+			AResult aResult = apiContext.getResult();
+			if(ApiStatus.SUCCESS.equals(aResultDetail.getStatus())){
+				aResult.setSuccess(aResult.getSuccess() + 1);
+			}
+			if(apiContext.getCount().equals(apiContext.getTotal())){
+				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+				aResult.setEndTime(new Date());
+				aResult.setStatus(ApiRunStatus.COMPLETE.name());
+				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+				apiResultService.update(aResult);
+			}
 		}
-		aResultDetail.setVersion(version);
-		aResultDetail.setChannel(channel);
-		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-		if(HttpType.GET.equals(aCase.getInterfaceo().getType())){
-			logger.info("[GET] URL:" + apiContext.getUrla() + aCase.getInterfaceo().getUrl() + ",Author:" + authora + ",Channel:" + channel + ",Version:" + version);
-			String resulta = apiSendMessage.sendGet(apiContext.getUrla() + aCase.getInterfaceo().getUrl(), authora, channel, version);
-			logger.info(resulta);
-			aResultDetail.setResulta(resulta);
-			logger.info("[GET] URL:" + apiContext.getUrlb() + aCase.getInterfaceo().getUrl() + ",Author:" + authorb + ",Channel:" + channel + ",Version:" + version);
-			String resultb = apiSendMessage.sendGet(apiContext.getUrlb() + aCase.getInterfaceo().getUrl(), authorb, channel, version);
-			logger.info(resultb);
-			aResultDetail.setResultb(resultb);
-		}else if(HttpType.POST.equals(aCase.getInterfaceo().getType())){
-			logger.info("[POST] URL:" + apiContext.getUrla() + aCase.getInterfaceo().getUrl() + ",Author:" + authora + ",Channel:" + channel + ",Version:" + version);
-			String resulta = apiSendMessage.sendPost(apiContext.getUrla() + aCase.getInterfaceo().getUrl(), aCase.getBody(), authora, channel, version);
-			logger.info(resulta);
-			aResultDetail.setResulta(resulta);
-			logger.info("[POST] URL:" + apiContext.getUrlb() + aCase.getInterfaceo().getUrl() + ",Author:" + authorb + ",Channel:" + channel + ",Version:" + version);
-			String resultb = apiSendMessage.sendPost(apiContext.getUrlb() + aCase.getInterfaceo().getUrl(), aCase.getBody(), authorb, channel, version);
-			logger.info(resultb);
-			aResultDetail.setResultb(resultb);
-		}
-		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
-		apiResultDetailService.create(aResultDetail);
-		logger.info(aResultDetail.toString());
+	}
+	
+	private String sendMessageGet(IApiSendMessage apiSendMessage, String author, String url, String channel, String version){
+		logger.info("[GET:" + url + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "]");
+		String result = apiSendMessage.sendGet(url + aCase.getInterfaceo().getUrl(), author, channel, version);
+		logger.info(result);
+		return result;
+	}
+	
+	private String sendMessagePost(IApiSendMessage apiSendMessage, String author, String url, String channel, String version){
+		logger.info("[POST:" + url + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "],[Data:" + aCase.getBody() + "]");
+		String result = apiSendMessage.sendPost(url + aCase.getInterfaceo().getUrl(), aCase.getBody(), author, channel, version);
+		logger.info(result);
+		return result;
 	}
 
 	public ACase getaCase() {

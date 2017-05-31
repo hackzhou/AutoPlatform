@@ -17,6 +17,8 @@ public class ApiContext {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ApiContext.class);
 
+	private Integer count;
+	private Integer total;
 	private String urla;
 	private String urlb;
 	private String authora;
@@ -29,10 +31,23 @@ public class ApiContext {
 	
 	public ApiContext() {
 		super();
+		this.count = 0;
 		this.urla = GlobalValueConfig.getConfig("uri.production.environment");
 		this.urlb = GlobalValueConfig.getConfig("uri.advance.environment");
 	}
 	
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
 	public String getUrla() {
 		return urla;
 	}
