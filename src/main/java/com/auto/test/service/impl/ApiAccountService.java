@@ -20,6 +20,11 @@ public class ApiAccountService implements IApiAccountService {
 	}
 	
 	@Override
+	public List<AAccount> findByName(String name) {
+		return dao.findByName(name);
+	}
+	
+	@Override
 	public AAccount findById(Integer id) {
 		return dao.findById(id);
 	}

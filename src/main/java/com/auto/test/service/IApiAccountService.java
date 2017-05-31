@@ -9,6 +9,8 @@ public interface IApiAccountService{
 	
 	List<AAccount> findAllAccount();
 	
+	List<AAccount> findByName(String name);
+
 	AAccount findById(Integer id);
 	
 	Integer create(AAccount aAccount);

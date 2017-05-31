@@ -242,22 +242,34 @@
     }
     
     function apiAccountSave(){
-    	if($('#api-account-loginname').val().trim() == ""){
+    	var aloginname = $('#api-account-loginname').val().trim();
+    	var apassword = $('#api-account-password').val().trim();
+    	if(aloginname == ""){
 	    	showMsgDiv("请输入账号名称！");
-    	}else if($('#api-account-password').val().trim() == ""){
+    	}else if(apassword == ""){
 	    	showMsgDiv("请输入账号密码！");
     	}else{
-    		hideMsgDiv();
-    		$('#exampleModal4').modal('hide');
     		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/account/create/update",
-          		data:$('#api-account-form').serialize(),
+    			type:"get",
+          		url:"<%=request.getContextPath()%>/api/account/name=" + aloginname,
           		success:function(data){
-          			if(data.responseCode == "0000"){
-          				$('#api-account-table').dataTable()._fnAjaxUpdate();
-          			}else{
-          				swal("错误", data.responseMsg, "error");
+          	    	if(data.responseCode == "0000"){
+          	    		hideMsgDiv();
+          	    		$('#exampleModal4').modal('hide');
+          	    		$.ajax({
+          	    			type:"post",
+          	          		url:"<%=request.getContextPath()%>/api/account/create/update",
+          	          		data:$('#api-account-form').serialize(),
+          	          		success:function(data){
+          	          			if(data.responseCode == "0000"){
+          	          				$('#api-account-table').dataTable()._fnAjaxUpdate();
+          	          			}else{
+          	          				swal("错误", data.responseMsg, "error");
+          	          			}
+          	          	    }
+          	    		});
+          	    	}else{
+          	    		showMsgDiv(data.responseMsg);
           			}
           	    }
     		});
