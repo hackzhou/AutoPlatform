@@ -30,7 +30,7 @@ public class ApiContext {
 	public ApiContext() {
 		super();
 		this.urla = GlobalValueConfig.getConfig("uri.production.environment");
-		this.urlb = GlobalValueConfig.getConfig("uri.test.environment");
+		this.urlb = GlobalValueConfig.getConfig("uri.advance.environment");
 	}
 	
 	public String getUrla() {
