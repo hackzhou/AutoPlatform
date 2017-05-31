@@ -19,10 +19,12 @@ public class ApiInterfaceDao extends AbstractHibernateDao<AInterface> implements
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<AInterface> findByProjectId(Integer id) {
-		List<AInterface> list = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).list();
-		if(list != null && !list.isEmpty()){
-			return list;
-		}
-		return null;
+		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).list();
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<AInterface> findByUrl(String url) {
+		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("url", url)).list();
 	}
 }

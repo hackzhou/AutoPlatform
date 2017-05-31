@@ -233,22 +233,34 @@
     }
     
     function apiVersionSave(){
-    	if($('#api-version-version').val().trim() == ""){
+    	var vversion = $('#api-version-version').val().trim();
+    	var vchannel = $('#api-version-channel').val().trim();
+    	if(vversion == ""){
 	    	showMsgDiv("请输入版本号！");
-    	}else if($('#api-version-channel').val().trim() == ""){
+    	}else if(vchannel == ""){
 	    	showMsgDiv("请输入版本渠道号！");
     	}else{
-    		hideMsgDiv();
-    		$('#exampleModal2').modal('hide');
     		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/version/create/update",
-          		data:$('#api-version-form').serialize(),
+    			type:"get",
+          		url:"<%=request.getContextPath()%>/api/version/" + vversion + "=version",
           		success:function(data){
-          			if(data.responseCode == "0000"){
-          				$('#api-version-table').dataTable()._fnAjaxUpdate();
-          			}else{
-          	    		swal("错误!", data.responseMsg, "error");
+          	    	if(data.responseCode == "0000"){
+          	    		hideMsgDiv();
+          	    		$('#exampleModal2').modal('hide');
+          	    		$.ajax({
+          	    			type:"post",
+          	          		url:"<%=request.getContextPath()%>/api/version/create/update",
+          	          		data:$('#api-version-form').serialize(),
+          	          		success:function(data){
+          	          			if(data.responseCode == "0000"){
+          	          				$('#api-version-table').dataTable()._fnAjaxUpdate();
+          	          			}else{
+          	          	    		swal("错误!", data.responseMsg, "error");
+          	          	    	}
+          	          	    }
+          	    		});
+          	    	}else{
+          	    		showMsgDiv(data.responseMsg);
           	    	}
           	    }
     		});

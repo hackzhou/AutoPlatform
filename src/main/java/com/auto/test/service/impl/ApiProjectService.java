@@ -24,6 +24,11 @@ public class ApiProjectService implements IApiProjectService {
 	}
 	
 	@Override
+	public List<AProject> findByName(String name) {
+		return dao.findByName(name);
+	}
+	
+	@Override
 	public AProject findById(Integer id) {
 		return dao.findById(id);
 	}

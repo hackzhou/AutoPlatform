@@ -8,4 +8,6 @@ public interface IApiInterfaceDao extends IBaseDao<AInterface> {
 	
 	List<AInterface> findByProjectId(Integer id);
 
+	List<AInterface> findByUrl(String url);
+	
 }

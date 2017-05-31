@@ -28,11 +28,7 @@ public class UserDao extends AbstractHibernateDao<AUser> implements IUserDao {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<AUser> findByName(String username) {
-		List<AUser> list = getCurrentSession().createCriteria(AUser.class).add(Restrictions.eq("username", username)).list();
-		if(list != null && !list.isEmpty()){
-			return list;
-		}
-		return null;
+		return getCurrentSession().createCriteria(AUser.class).add(Restrictions.eq("username", username)).list();
 	}
 	
 }

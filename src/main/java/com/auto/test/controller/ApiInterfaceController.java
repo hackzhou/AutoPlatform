@@ -54,6 +54,16 @@ public class ApiInterfaceController extends BaseController{
 		return failedJson("接口不存在！");
 	}
 	
+	@RequestMapping(value = "/url", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-url") String url) {
+		List<AInterface> list = interfaceService.findByUrl(url);
+		if(list == null || list.isEmpty()){
+			return successJson();
+		}
+		return failedJson("接口[" + url + "]已存在！");
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-project") String project, @RequestParam("api-interface-name") String name, @RequestParam("api-interface-type") String type, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-description") String description) {

@@ -20,11 +20,7 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<ACase> findByInterfaceId(Integer id) {
-		List<ACase> list = getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("interfaceo", new AInterface(id))).list();
-		if(list != null && !list.isEmpty()){
-			return list;
-		}
-		return null;
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("interfaceo", new AInterface(id))).list();
 	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -32,10 +28,7 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	public List<ACase> findByProjectId(Integer id) {
 		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).list();
 		if(interList != null && !interList.isEmpty()){
-			List<ACase> caseList = getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("interfaceo", interList)).list();
-			if(caseList != null && !caseList.isEmpty()){
-				return caseList;
-			}
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("interfaceo", interList)).list();
 		}
 		return null;
 	}

@@ -324,26 +324,41 @@
     }
     
     function apiInterfaceSave(){
-    	if($('#api-interface-project').val().trim() == ""){
+    	var iproject = $('#api-interface-project').val().trim();
+    	var itype = $('#api-interface-type').val().trim();
+    	var iname = $('#api-interface-name').val().trim();
+    	var iurl = $('#api-interface-url').val().trim();
+    	if(iproject == ""){
 	    	showMsgDiv("请选择接口项目！");
-    	}else if($('#api-interface-type').val().trim() == ""){
+    	}else if(itype == ""){
 	    	showMsgDiv("请选择接口类型！");
-    	}else if($('#api-interface-name').val().trim() == ""){
+    	}else if(iname == ""){
 	    	showMsgDiv("请输入接口名称！");
-    	}else if($('#api-interface-url').val().trim() == ""){
+    	}else if(iurl == ""){
 	    	showMsgDiv("请输入接口地址！");
     	}else{
-    		hideMsgDiv();
-    		$('#exampleModal3').modal('hide');
     		$.ajax({
     			type:"post",
-          		url:"<%=request.getContextPath()%>/api/interface/create/update",
+          		url:"<%=request.getContextPath()%>/api/interface/url",
           		data:$('#api-interface-form').serialize(),
           		success:function(data){
-          			if(data.responseCode == "0000"){
-          				$('#api-interface-table').dataTable()._fnAjaxUpdate();
-          			}else{
-          	    		swal("错误!", data.responseMsg, "error");
+          	    	if(data.responseCode == "0000"){
+          	    		hideMsgDiv();
+          	    		$('#exampleModal3').modal('hide');
+          	    		$.ajax({
+          	    			type:"post",
+          	          		url:"<%=request.getContextPath()%>/api/interface/create/update",
+          	          		data:$('#api-interface-form').serialize(),
+          	          		success:function(data){
+          	          			if(data.responseCode == "0000"){
+          	          				$('#api-interface-table').dataTable()._fnAjaxUpdate();
+          	          			}else{
+          	          	    		swal("错误!", data.responseMsg, "error");
+          	          	    	}
+          	          	    }
+          	    		});
+          	    	}else{
+          	    		showMsgDiv(data.responseMsg);
           	    	}
           	    }
     		});

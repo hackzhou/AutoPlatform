@@ -323,20 +323,31 @@
     }
     
     function apiProjectSave(){
-    	if($('#api-project-name').val().trim() == ""){
+    	var pname = $('#api-project-name').val().trim();
+    	if(pname == ""){
 	    	showMsgDiv("请输入项目名称！");
     	}else{
-    		hideMsgDiv();
-    		$('#exampleModal1').modal('hide');
     		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/project/create/update",
-          		data:$('#api-project-form').serialize(),
+    			type:"get",
+    			url:"<%=request.getContextPath()%>/api/project/name=" + pname,
           		success:function(data){
           			if(data.responseCode == "0000"){
-          				$('#api-project-table').dataTable()._fnAjaxUpdate();
+          				hideMsgDiv();
+          	    		$('#exampleModal1').modal('hide');
+          	    		$.ajax({
+          	    			type:"post",
+          	          		url:"<%=request.getContextPath()%>/api/project/create/update",
+          	          		data:$('#api-project-form').serialize(),
+          	          		success:function(data){
+          	          			if(data.responseCode == "0000"){
+          	          				$('#api-project-table').dataTable()._fnAjaxUpdate();
+          	          			}else{
+          	          	    		swal("错误!", data.responseMsg, "error");
+          	          	    	}
+          	          	    }
+          	    		});
           			}else{
-          	    		swal("错误!", data.responseMsg, "error");
+          	    		showMsgDiv(data.responseMsg);
           	    	}
           	    }
     		});

@@ -8,6 +8,8 @@ import com.auto.test.entity.AVersion;
 public interface IApiVersionService{
 	
 	List<AVersion> findAllVersion();
+
+	List<AVersion> findByVersion(String version);
 	
 	AVersion findById(Integer id);
 	

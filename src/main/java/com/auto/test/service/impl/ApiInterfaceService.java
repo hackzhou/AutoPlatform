@@ -20,6 +20,11 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
+	public List<AInterface> findByUrl(String url) {
+		return dao.findByUrl(url);
+	}
+	
+	@Override
 	public List<AInterface> findByProjectId(Integer id) {
 		return dao.findByProjectId(id);
 	}

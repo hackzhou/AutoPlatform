@@ -10,6 +10,8 @@ public interface IApiInterfaceService{
 	List<AInterface> findAllInterface();
 
 	List<AInterface> findByProjectId(Integer id);
+
+	List<AInterface> findByUrl(String url);
 	
 	AInterface findById(Integer id);
 	

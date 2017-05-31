@@ -9,6 +9,8 @@ public interface IApiProjectService{
 	
 	List<AProject> findAllProject();
 	
+	List<AProject> findByName(String name);
+
 	AProject findById(Integer id);
 	
 	Integer create(AProject aProject);

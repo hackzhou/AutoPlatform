@@ -76,6 +76,16 @@ public class ApiProjectController extends BaseController{
 		return failedJson("项目不存在！");
 	}
 	
+	@RequestMapping(value = "/name={name}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getProjectByName(@PathVariable("name") String name) {
+		List<AProject> projectList = projectService.findByName(name);
+		if(projectList == null || projectList.isEmpty()){
+			return successJson();
+		}
+		return failedJson("项目[" + name + "]已存在！");
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {

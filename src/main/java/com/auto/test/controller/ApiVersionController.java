@@ -49,6 +49,16 @@ public class ApiVersionController extends BaseController{
 		return failedJson("版本不存在！");
 	}
 	
+	@RequestMapping(value = "/{version}=version", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getVersionByVersion(@PathVariable("version") String version) {
+		List<AVersion> list = versionService.findByVersion(version);
+		if(list == null || list.isEmpty()){
+			return successJson();
+		}
+		return failedJson("版本[" + version + "]已存在！");
+	}
+	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {

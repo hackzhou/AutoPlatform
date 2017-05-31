@@ -20,6 +20,11 @@ public class ApiVersionService implements IApiVersionService {
 	}
 	
 	@Override
+	public List<AVersion> findByVersion(String version) {
+		return dao.findByVersion(version);
+	}
+	
+	@Override
 	public AVersion findById(Integer id) {
 		return dao.findById(id);
 	}
