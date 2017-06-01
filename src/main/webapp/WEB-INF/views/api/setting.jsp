@@ -61,7 +61,7 @@
 	              <div class="form-group">
 	                <label class="col-sm-1 text-info text-center">接口批量上传：</label>
 	                <div class="col-sm-10">
-	                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+	                  <div class="fileinput fileinput-new input-group" data-provides="fileinput" onclick="hideMsgDiv();">
 	                    <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 	                    <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">选择文件</span> <span class="fileinput-exists">重选</span>
 	                    <input type="file" name="file">
