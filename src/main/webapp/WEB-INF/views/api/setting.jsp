@@ -165,15 +165,6 @@
 		}
 	}
 	
-	<%-- function apiFileDownload(){
-		$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/upload/fileDownload",
-      		success:function(data){
-      	    }
-		});
-	} --%>
-	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
