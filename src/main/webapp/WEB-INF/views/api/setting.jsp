@@ -136,7 +136,7 @@
 			if(checkFiles(filename)){
 				swal({
 		    		title: "你确定吗？",
-					text: "接口数据批量上传",
+		    		text: "接口数据批量上传(谨慎操作！)\r\n已存在的接口地址则更新，否则创建。",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",

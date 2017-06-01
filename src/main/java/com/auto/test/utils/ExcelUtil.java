@@ -42,7 +42,7 @@ public class ExcelUtil {
 	            Iterator<Cell> cells = row.cellIterator();
 	            while (cells.hasNext()) {
 	                Cell cell = cells.next();
-	                String cellValue = cell.getStringCellValue();
+	                String cellValue = trimStr(cell.getStringCellValue());
 	                switch (cell.getColumnIndex()) {
 	                	case 0:
 	                		aInterface.setProjecto(new AProject(getApiProjectID(cellValue)));
@@ -81,6 +81,13 @@ public class ExcelUtil {
 			return Integer.parseInt(str.substring(str.indexOf("(") + 1, str.indexOf(")")));
 		}
 		throw new Exception("项目ID获取失败！");
+	}
+	
+	private String trimStr(String str){
+		if(str != null && !str.isEmpty()){
+			return str.trim();
+		}
+		return "";
 	}
 
 }
