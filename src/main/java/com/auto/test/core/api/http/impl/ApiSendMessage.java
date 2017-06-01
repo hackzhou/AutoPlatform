@@ -15,6 +15,7 @@ import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
 public class ApiSendMessage implements IApiSendMessage {
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ApiSendMessage.class);
 	
 	@Override
@@ -33,11 +34,9 @@ public class ApiSendMessage implements IApiSendMessage {
 			httpGet.setHeader("App-Version", version);
 			response = httpclient.execute(httpGet);
 			if (response.getStatusLine().getStatusCode() == 200) {
-				String conResult = EntityUtils.toString(response.getEntity());
-				logger.info(conResult);
-				return conResult;
+				return EntityUtils.toString(response.getEntity());
 			}else{
-				throw new BusinessException(EntityUtils.toString(response.getEntity()));
+				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,14 +65,14 @@ public class ApiSendMessage implements IApiSendMessage {
 			httpPost.setHeader("Authorization", author);
 			httpPost.setHeader("App-Channel", channel);
 			httpPost.setHeader("App-Version", version);
-			httpPost.setEntity(new StringEntity(data));
+			if(data != null && !data.isEmpty()){
+				httpPost.setEntity(new StringEntity(data));
+			}
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
-				String conResult = EntityUtils.toString(response.getEntity());
-				logger.info(conResult);
-				return conResult;
+				return EntityUtils.toString(response.getEntity());
 			}else{
-				throw new BusinessException(EntityUtils.toString(response.getEntity()));
+				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
