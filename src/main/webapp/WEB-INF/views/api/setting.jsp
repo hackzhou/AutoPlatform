@@ -43,6 +43,16 @@
         </div>
       </div>
       <div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+			<div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
+				<button type="button" class="close" aria-hidden="true">
+					&times;
+				</button>
+				<span id="msg">${msg}</span>
+			</div>
+		</div>
+	  </div>
+      <div class="row">
         <div class="col-md-12">
           <div class="panel panel-info">
             <div class="panel-body">
@@ -106,25 +116,49 @@
 <script>
 
 	$(document).ready(function() {
+		var msg = $('#msg').html();
+		if(msg != null && msg != ""){
+			showMsgDiv(msg);
+		}else{
+			hideMsgDiv();
+		}
+		var hdata = GetQueryString("data");
+		if(hdata == "success"){
+			swal("成功!", "批量更新成功！", "success");
+		}
 	});
 	
 	function apiFileUpload(){
 		var filename = $('.fileinput-filename').html();
 		if(filename == ""){
-			swal("错误!", "请选择文件！", "error");
+			showMsgDiv("请选择文件！");
 		}else{
-			swal({
-	    		title: "你确定吗？",
-				text: "接口数据批量上传",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "确定，上传！",
-				cancelButtonText: "取消",
-				closeOnConfirm: false
-			}, function(){
-				$('#api-upload-form').submit();
-			});
+			if(checkFiles(filename)){
+				swal({
+		    		title: "你确定吗？",
+					text: "接口数据批量上传",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "确定，上传！",
+					cancelButtonText: "取消",
+					closeOnConfirm: false
+				}, function(){
+					$('#api-upload-form').submit();
+				});
+			}else{
+				showMsgDiv("文件格式不合法，文件的扩展名必须为.xlsx或.XLSX格式！");
+			}
+		}
+	}
+	
+	function checkFiles(str){
+		var strRegex = "(.xlsx|.XLSX)$";
+		var re = new RegExp(strRegex);
+		if (re.test(str.toLowerCase())){
+			return true;
+		}else{
+			return false;
 		}
 	}
 	

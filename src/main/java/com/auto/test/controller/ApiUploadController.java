@@ -1,7 +1,6 @@
 package com.auto.test.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.entity.AInterface;
+import com.auto.test.utils.ExcelUtil;
 
 @RestController
 @RequestMapping(value = "api/upload")
@@ -20,16 +21,20 @@ public class ApiUploadController extends BaseController{
 	private Logger logger = LoggerFactory.getLogger(ApiUploadController.class);
 	
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
-	public ModelAndView  fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws IOException {
-		System.out.println("okokok");
-		long startTime = System.currentTimeMillis();
-		System.out.println("fileName：" + file.getOriginalFilename());
-		String path = "C:/Users/Administrator/Desktop/" + file.getOriginalFilename();
-		File newFile = new File(path);
-		file.transferTo(newFile);
-		long endTime = System.currentTimeMillis();
-		System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) + " ms");
-		return success("redirect:/api/setting/list", getCurrentUserName(request));
+	public ModelAndView  fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws Exception {
+		if(file.isEmpty()){
+			return failMsg("文件是空或者不存在！", "api/setting");
+		}
+		if(!file.getOriginalFilename().endsWith("xlsx")){
+            return failMsg("文件不是Excel！", "api/setting");
+        }
+		List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
+		if(list != null && !list.isEmpty()){
+			for (AInterface aInterface : list) {
+				System.out.println(aInterface.toString());
+			}
+		}
+		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	
 }

@@ -23,6 +23,14 @@ String.format = function() {
 	return str;
 };
 
+function GetQueryString(name){
+	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if(r != null)
+		return  unescape(r[2]);
+	return null;
+}
+
 function tooltipJson(text){
 	if(text == null || text.length == 0){
 		return text;
