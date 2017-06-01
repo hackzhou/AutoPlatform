@@ -60,7 +60,7 @@
 	            <form id="api-upload-form" class="form-horizontal" action="${pageContext.request.contextPath}/api/upload/fileUpload" method="post"  enctype="multipart/form-data">
 	              <div class="form-group">
 	                <label class="col-sm-1 text-info text-center">接口批量上传：</label>
-	                <div class="col-sm-10">
+	                <div class="col-sm-9">
 	                  <div class="fileinput fileinput-new input-group" data-provides="fileinput" onclick="hideMsgDiv();">
 	                    <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 	                    <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">选择文件</span> <span class="fileinput-exists">重选</span>
@@ -68,8 +68,11 @@
 	                    </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
 	                  </div>
 	                </div>
-	                <div class="col-sm-1">
-		              <button type="button" class="btn btn-success waves-effect waves-light m-r-10" onclick="apiFileUpload();">提交</button>
+	                <div class="col-sm-2">
+		              <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" onclick="apiFileUpload();">提交</button>
+		              <a href="${pageContext.request.contextPath}/api/upload/fileDownload">
+		              	<button type="button" class="btn btn-danger waves-effect waves-light">模板下载</button>
+		              </a>
 	                </div>
 	              </div>
 	            </form>
@@ -161,6 +164,15 @@
 			return false;
 		}
 	}
+	
+	<%-- function apiFileDownload(){
+		$.ajax({
+			type:"get",
+      		url:"<%=request.getContextPath()%>/api/upload/fileDownload",
+      		success:function(data){
+      	    }
+		});
+	} --%>
 	
 </script>
 <!--Style Switcher -->
