@@ -71,7 +71,7 @@
 	                <div class="col-sm-2">
 		              <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" onclick="apiFileUpload();">提交</button>
 		              <a href="${pageContext.request.contextPath}/api/upload/fileDownload">
-		              	<button type="button" class="btn btn-danger waves-effect waves-light">模板下载</button>
+		              	<button type="button" class="btn btn-warning waves-effect waves-light">模板下载</button>
 		              </a>
 	                </div>
 	              </div>
