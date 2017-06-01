@@ -15,6 +15,8 @@ public interface IApiInterfaceService{
 	
 	AInterface findById(Integer id);
 	
+	void exportApiInterface(List<AInterface> list);
+	
 	Integer create(AInterface aInterface);
 	
 	AInterface update(AInterface aInterface);

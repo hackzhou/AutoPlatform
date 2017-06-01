@@ -71,4 +71,20 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 	}
 
+	@Override
+	public void exportApiInterface(List<AInterface> list) {
+		if(list != null && !list.isEmpty()){
+			for (AInterface aInterface : list) {
+				List<AInterface> interList = findByUrl(aInterface.getUrl());
+				if(interList != null && !interList.isEmpty()){
+					AInterface aInterfaceDB = interList.get(0);
+					aInterfaceDB.update(aInterface);
+					update(aInterfaceDB);
+				}else{
+					create(aInterface);
+				}
+			}
+		}
+	}
+
 }

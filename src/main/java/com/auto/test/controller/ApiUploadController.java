@@ -1,6 +1,7 @@
 package com.auto.test.controller;
 
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.AInterface;
+import com.auto.test.service.IApiInterfaceService;
 import com.auto.test.utils.ExcelUtil;
 
 @RestController
@@ -19,6 +21,9 @@ import com.auto.test.utils.ExcelUtil;
 public class ApiUploadController extends BaseController{
 	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiUploadController.class);
+	
+	@Resource
+	private IApiInterfaceService interfaceService;
 	
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
 	public ModelAndView  fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws Exception {
@@ -29,11 +34,7 @@ public class ApiUploadController extends BaseController{
             return failMsg("文件不是Excel！", "api/setting");
         }
 		List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
-		if(list != null && !list.isEmpty()){
-			for (AInterface aInterface : list) {
-				System.out.println(aInterface.toString());
-			}
-		}
+		interfaceService.exportApiInterface(list);
 		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	
