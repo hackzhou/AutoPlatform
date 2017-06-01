@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.ACase;
@@ -76,9 +75,15 @@ public class ApiProjectController extends BaseController{
 		return failedJson("项目不存在！");
 	}
 	
-	@RequestMapping(value = "/name={name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getProjectByName(@PathVariable("name") String name) {
+	public Map<String, Object> getProjectByName(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
+		if(id != null && !id.isEmpty()){
+			AProject aProject = projectService.findById(Integer.parseInt(id));
+			if(aProject != null && aProject.getName() != null && aProject.getName().equals(name)){
+				return successJson();
+			}
+		}
 		List<AProject> projectList = projectService.findByName(name);
 		if(projectList == null || projectList.isEmpty()){
 			return successJson();

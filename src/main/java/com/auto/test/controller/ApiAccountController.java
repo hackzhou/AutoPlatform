@@ -49,14 +49,20 @@ public class ApiAccountController extends BaseController{
 		return failedJson("该账号不存在！");
 	}
 	
-	@RequestMapping(value = "/name={name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getAccountByName(@PathVariable("name") String name) {
-		List<AAccount> list = accountService.findByName(name);
+	public Map<String, Object> getAccountByName(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname) {
+		if(id != null && !id.isEmpty()){
+			AAccount aAccount = accountService.findById(Integer.parseInt(id));
+			if(aAccount != null && aAccount.getLoginname() != null && aAccount.getLoginname().equals(loginname)){
+				return successJson();
+			}
+		}
+		List<AAccount> list = accountService.findByName(loginname);
 		if(list == null || list.isEmpty()){
 			return successJson();
 		}
-		return failedJson("该账号[" + name + "]已存在！");
+		return failedJson("该账号[" + loginname + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)

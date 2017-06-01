@@ -320,6 +320,7 @@
     function initApiProjectModal(){
     	$('#api-project-id').val("");
     	$('#api-project-name').val("");
+    	hideMsgDiv();
     }
     
     function apiProjectSave(){
@@ -328,8 +329,9 @@
 	    	showMsgDiv("请输入项目名称！");
     	}else{
     		$.ajax({
-    			type:"get",
-    			url:"<%=request.getContextPath()%>/api/project/name=" + pname,
+    			type:"post",
+    			url:"<%=request.getContextPath()%>/api/project/repeat",
+    			data:$('#api-project-form').serialize(),
           		success:function(data){
           			if(data.responseCode == "0000"){
           				hideMsgDiv();

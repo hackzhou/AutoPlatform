@@ -230,6 +230,7 @@
     	$('#api-version-id').val("");
     	$('#api-version-version').val("");
     	$('#api-version-channel').val("");
+    	hideMsgDiv();
     }
     
     function apiVersionSave(){
@@ -241,8 +242,9 @@
 	    	showMsgDiv("请输入版本渠道号！");
     	}else{
     		$.ajax({
-    			type:"get",
-          		url:"<%=request.getContextPath()%>/api/version/" + vversion + "=version",
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/version/repeat",
+          		data:$('#api-version-form').serialize(),
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		hideMsgDiv();

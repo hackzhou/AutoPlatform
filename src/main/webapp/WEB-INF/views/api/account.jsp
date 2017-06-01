@@ -239,6 +239,7 @@
     	$('#api-account-id').val("");
     	$('#api-account-loginname').val("");
     	$('#api-account-password').val("");
+    	hideMsgDiv();
     }
     
     function apiAccountSave(){
@@ -250,8 +251,9 @@
 	    	showMsgDiv("请输入账号密码！");
     	}else{
     		$.ajax({
-    			type:"get",
-          		url:"<%=request.getContextPath()%>/api/account/name=" + aloginname,
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/account/repeat",
+          		data:$('#api-account-form').serialize(),
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		hideMsgDiv();

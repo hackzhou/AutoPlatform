@@ -49,9 +49,15 @@ public class ApiVersionController extends BaseController{
 		return failedJson("版本不存在！");
 	}
 	
-	@RequestMapping(value = "/{version}=version", method = RequestMethod.GET)
+	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getVersionByVersion(@PathVariable("version") String version) {
+	public Map<String, Object> getVersionByVersion(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version) {
+		if(id != null && !id.isEmpty()){
+			AVersion aVersion = versionService.findById(Integer.parseInt(id));
+			if(aVersion != null && aVersion.getVersion() != null && aVersion.getVersion().equals(version)){
+				return successJson();
+			}
+		}
 		List<AVersion> list = versionService.findByVersion(version);
 		if(list == null || list.isEmpty()){
 			return successJson();

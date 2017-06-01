@@ -449,6 +449,7 @@
     	$('#api-case-strategy').val("");
     	initApiCaseInterface(null);
     	autoHeight($("#api-case-body")[0]);
+    	hideMsgDiv();
     }
 	
 	function apiCaseSave(){

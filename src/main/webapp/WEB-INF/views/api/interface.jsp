@@ -321,6 +321,7 @@
     	$('#api-interface-description').val("");
     	initApiInterfaceProject(null);
     	$('#api-interface-type').val("GET");
+    	hideMsgDiv();
     }
     
     function apiInterfaceSave(){
