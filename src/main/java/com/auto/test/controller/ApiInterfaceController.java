@@ -54,9 +54,15 @@ public class ApiInterfaceController extends BaseController{
 		return failedJson("接口不存在！");
 	}
 	
-	@RequestMapping(value = "/url", method = RequestMethod.POST)
+	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-url") String url) {
+	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-url") String url) {
+		if(id != null && !id.isEmpty()){
+			AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
+			if(aInterface != null && aInterface.getUrl() != null && aInterface.getUrl().equals(url)){
+				return successJson();
+			}
+		}
 		List<AInterface> list = interfaceService.findByUrl(url);
 		if(list == null || list.isEmpty()){
 			return successJson();

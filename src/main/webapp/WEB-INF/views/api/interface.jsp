@@ -340,7 +340,7 @@
     	}else{
     		$.ajax({
     			type:"post",
-          		url:"<%=request.getContextPath()%>/api/interface/url",
+          		url:"<%=request.getContextPath()%>/api/interface/repeat",
           		data:$('#api-interface-form').serialize(),
           		success:function(data){
           	    	if(data.responseCode == "0000"){
