@@ -11,6 +11,8 @@ public interface IApiCaseService{
 	
 	List<ACase> findByInterfaceId(Integer id);
 
+	List<ACase> findByVersionId(Integer id);
+
 	ACase findById(Integer id);
 	
 	Integer create(ACase aCase);
