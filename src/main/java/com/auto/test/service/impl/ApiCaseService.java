@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.entity.ACase;
+import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiCaseService;
 
 @Service("apiCaseService")
@@ -31,6 +32,11 @@ public class ApiCaseService implements IApiCaseService {
 	@Override
 	public List<ACase> findByVersionId(Integer id) {
 		return dao.findByVersionId(id);
+	}
+	
+	@Override
+	public List<ACase> findByProjectVersion(Integer pid, Integer vid) {
+		return dao.findByProjectVersion(pid, vid);
 	}
 	
 	@Override
@@ -72,6 +78,20 @@ public class ApiCaseService implements IApiCaseService {
 	public void delete(Integer id) {
 		if(id != null){
 			dao.deleteById(id);
+		}
+	}
+
+	@Override
+	public void copyCase(Integer pid, Integer vida, Integer vidb) {
+		List<ACase> list = this.findByProjectVersion(pid, vida);
+		if(list != null && !list.isEmpty()){
+			ACase newCase = null;
+			for (ACase aCase : list) {
+				newCase = new ACase();
+				newCase.update(aCase);
+				newCase.setVersiono(new AVersion(vidb));
+				this.create(newCase);
+			}
 		}
 	}
 

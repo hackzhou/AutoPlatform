@@ -32,7 +32,7 @@ public class ApiUploadController extends BaseController{
 	@Resource
 	private IApiInterfaceService interfaceService;
 	
-	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
+	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
 	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws Exception {
 		if(file.isEmpty()){
 			return failMsg("文件是空或者不存在！", "api/setting");
@@ -45,7 +45,7 @@ public class ApiUploadController extends BaseController{
 		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	
-	@RequestMapping(value = "fileDownload", method = RequestMethod.GET)
+	@RequestMapping(value = "/fileDownload", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> download(HttpServletRequest request) throws Exception {
 		File file = ResourceUtils.getFile("classpath:template/exportInterface.xlsx");
 		String fileName = new String("接口批量导入模板.xlsx".getBytes("UTF-8"),"iso-8859-1");

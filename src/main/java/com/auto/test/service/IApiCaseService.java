@@ -12,6 +12,8 @@ public interface IApiCaseService{
 	List<ACase> findByInterfaceId(Integer id);
 
 	List<ACase> findByVersionId(Integer id);
+	
+	List<ACase> findByProjectVersion(Integer pid, Integer vid);
 
 	ACase findById(Integer id);
 	
@@ -22,5 +24,7 @@ public interface IApiCaseService{
 	void delete(ACase aCase);
 
 	void delete(Integer id);
+	
+	void copyCase(Integer pid, Integer vida, Integer vidb);
 
 }

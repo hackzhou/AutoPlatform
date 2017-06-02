@@ -57,7 +57,7 @@
           <div class="panel panel-info">
             <div class="panel-body">
 	          <div class="form-body">
-	            <form id="api-upload-form" class="form-horizontal" action="${pageContext.request.contextPath}/api/upload/fileUpload" method="post"  enctype="multipart/form-data">
+	            <form id="api-upload-form" class="form-horizontal" action="${pageContext.request.contextPath}/api/upload/fileUpload" method="post" enctype="multipart/form-data">
 	              <div class="form-group">
 	                <label class="col-sm-2 text-info text-center">接口数据批量上传（Excel）：</label>
 	                <div class="col-sm-8">
@@ -73,6 +73,48 @@
 		              <a href="${pageContext.request.contextPath}/api/upload/fileDownload">
 		              	<button type="button" class="btn btn-warning waves-effect waves-light">模板下载</button>
 		              </a>
+	                </div>
+	              </div>
+	            </form>
+	          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+            <div class="panel-body">
+	          <div class="form-body">
+	            <form id="api-copy-case" class="form-horizontal" action="${pageContext.request.contextPath}/api/setting/copy" method="post">
+	              <div class="form-group">
+	                <label class="col-sm-2 text-info text-center">案例复制：</label>
+	                <div class="col-sm-2">
+	                  <label class="col-sm-3 text-center"><code>项目 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-9">
+                       <select id="api-copy-project" name="api-copy-project" class="form-select" style="width: 80%;"></select>
+                      </div>
+	                </div>
+	                <div class="col-sm-1">
+	                	<label class="col-sm-12 text-center"><i class="fa fa-th-large text-success"></i></label>
+	                </div>
+	                <div class="col-sm-2">
+	                  <label class="col-sm-3 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-9">
+                       <select id="api-copy-version-a" name="api-copy-version-a" class="form-select" style="width: 80%;"></select>
+                      </div>
+	                </div>
+	                <div class="col-sm-1">
+	                	<label class="col-sm-12 text-center"><i class="fa fa-arrow-right text-success"></i></label>
+	                </div>
+	                <div class="col-sm-2">
+	                  <label class="col-sm-3 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-9">
+                       <select id="api-copy-version-b" name="api-copy-version-b" class="form-select" style="width: 80%;"></select>
+                      </div>
+	                </div>
+	                <div class="col-sm-2">
+		              <button type="button" class="btn btn-primary waves-effect waves-light" onclick="apiCopyCase();">复制</button>
 	                </div>
 	              </div>
 	            </form>
@@ -119,6 +161,9 @@
 <script>
 
 	$(document).ready(function() {
+		initEvent();
+		initCopyApiCaseProject();
+		initCopyApiCaseVersion();
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
@@ -131,6 +176,87 @@
 		}
 	});
 	
+	function initEvent(){
+		$("#api-copy-version-a").change(function(){
+			hideMsgDiv();
+		});
+		$("#api-copy-version-b").change(function(){
+			hideMsgDiv();
+		});
+	}
+	
+	function apiCopyCase(){
+		var cproject = $('#api-copy-project').val().trim();
+		var cversiona = $('#api-copy-version-a').val().trim();
+		var cversionb = $('#api-copy-version-b').val().trim();
+		if(cproject == null || cproject == ""){
+			showMsgDiv("项目不能为空！");
+		}else if(cversiona == null || cversiona == ""){
+			showMsgDiv("版本号不能为空！");
+		}else if(cversiona == cversionb){
+			showMsgDiv("案例复制版本号不能相同！");
+		}else{
+			swal({
+	    		title: "你确定吗？",
+	    		text: "案例复制无法撤销（谨慎操作！）",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "确定，复制！",
+				cancelButtonText: "取消",
+				closeOnConfirm: false
+			}, function(){
+				$('#api-copy-case').submit();
+			});
+		}
+	}
+	
+	function initCopyApiCaseProject(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+    					}
+    				}
+    				$('#api-copy-project').empty();
+    				$('#api-copy-project').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
+	function initCopyApiCaseVersion(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+    					}
+    				}
+    				$('#api-copy-version-a').empty();
+    				$('#api-copy-version-a').append(optionstring);
+    				$('#api-copy-version-b').empty();
+    				$('#api-copy-version-b').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
 	function apiFileUpload(){
 		var filename = $('.fileinput-filename').html();
 		if(filename == ""){
@@ -139,7 +265,7 @@
 			if(checkFiles(filename)){
 				swal({
 		    		title: "你确定吗？",
-		    		text: "接口数据批量上传(谨慎操作！)\r\n已存在的接口地址则更新，否则创建。",
+		    		text: "接口数据批量上传(谨慎操作！)\r\n已存在的接口地址则更新，否则创建！",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
