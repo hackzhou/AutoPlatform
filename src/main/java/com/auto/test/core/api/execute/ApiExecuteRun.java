@@ -30,10 +30,8 @@ public class ApiExecuteRun implements Runnable {
 	public void run() {
 		AResultDetail aResultDetail = new AResultDetail();
 		try {
-			String authora = apiContext.getAuthora();
-			String authorb = apiContext.getAuthorb();
-			String channel = apiContext.getaVersion().getChannel();
 			String version = apiContext.getaVersion().getVersion();
+			String channel = apiContext.getaVersion().getChannel();
 			aResultDetail.update(aCase);
 			aResultDetail.setResulto(apiContext.getResult());
 			if(apiContext.getaAccount() != null){
@@ -43,11 +41,11 @@ public class ApiExecuteRun implements Runnable {
 			aResultDetail.setChannel(channel);
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, authora, apiContext.getUrla(), channel, version));
-				aResultDetail.setResultb(sendMessageGet(apiSendMessage, authorb, apiContext.getUrlb(), channel, version));
+				aResultDetail.setResulta(sendMessageGet(apiSendMessage, apiContext.getAuthora(), apiContext.getUrla(), channel, version));
+				aResultDetail.setResultb(sendMessageGet(apiSendMessage, apiContext.getAuthorb(), apiContext.getUrlb(), channel, version));
 			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, authora, apiContext.getUrla(), channel, version));
-				aResultDetail.setResultb(sendMessagePost(apiSendMessage, authorb, apiContext.getUrlb(), channel, version));
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, apiContext.getAuthora(), apiContext.getUrla(), channel, version));
+				aResultDetail.setResultb(sendMessagePost(apiSendMessage, apiContext.getAuthorb(), apiContext.getUrlb(), channel, version));
 			}
 			IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
 			if(aResultDetail.getResulta() != null && aResultDetail.getResulta().equals(aResultDetail.getResultb())){
