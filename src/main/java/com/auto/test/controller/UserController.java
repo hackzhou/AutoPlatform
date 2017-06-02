@@ -63,7 +63,6 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/login/cookie", method = RequestMethod.GET)
 	public ModelAndView loginCookie(HttpServletRequest request, HttpServletResponse response, @RequestParam("jump") String jump) {
-		System.out.println(jump);
 		String username = "";
 		String password = "";
 		Cookie[] cookies = request.getCookies();
