@@ -34,7 +34,7 @@
     <div class="white-box">
       <form class="form-horizontal form-material" id="loginform" action="${pageContext.request.contextPath}/user/login" method="post">
         <a href="javascript:void(0)" class="text-center db"><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-logo-dark.png" alt="Home" /><br/><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-text-dark.png" alt="Home" /></a>  
-        
+        <input type="hidden" id="hiddenjump" name="hiddenjump" value="/home/index">
         <div class="form-group m-t-40">
           <div class="col-xs-12">
             <input id="username" name="username" class="form-control" type="text" placeholder="Username">
@@ -102,6 +102,10 @@
 <script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script>
 	$(document).ready(function(){
+		var hjump = GetQueryString("jump");
+		if(hjump != null && hjump != ""){
+			$("#hiddenjump").val(hjump);
+		}
 		var msg = "${msg}";
 		if(msg == null || msg == ""){
 			var username = "${username}";
@@ -111,7 +115,7 @@
 				var uname = getCookie("username");
 				var pwd = getCookie("password");
 				if(uname != "" && pwd != ""){
-					window.location.href="${pageContext.request.contextPath}/user/login/cookie";
+					window.location.href="${pageContext.request.contextPath}/user/login/cookie?jump=" + $("#hiddenjump").val();
 				}
 			}
 		}else{

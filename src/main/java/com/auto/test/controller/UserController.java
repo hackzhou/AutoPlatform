@@ -26,7 +26,7 @@ public class UserController extends BaseController{
 	private IUserService userService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme, @RequestParam("hiddenjump") String jump) {
 		if(username == null || username.isEmpty()){
 			return failMsg("请您输入用户名!", "login");
 		}
@@ -50,7 +50,7 @@ public class UserController extends BaseController{
 					cookie.setMaxAge(maxAge);
 					response.addCookie(cookie);
 				}
-				return success("index", getCurrentUserName(request));
+				return success("redirect:" + jump, getCurrentUserName(request));
 			} catch (Exception e) {
 				cleanCookie(request, response);
 				logger.error(e.getMessage(), e);
@@ -62,7 +62,8 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/login/cookie", method = RequestMethod.GET)
-	public ModelAndView loginCookie(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView loginCookie(HttpServletRequest request, HttpServletResponse response, @RequestParam("jump") String jump) {
+		System.out.println(jump);
 		String username = "";
 		String password = "";
 		Cookie[] cookies = request.getCookies();
@@ -78,7 +79,7 @@ public class UserController extends BaseController{
 			AUser aUser = userService.isLogin(username, password);
 			if(aUser != null){
 				request.getSession().setAttribute("user", aUser);
-				return success("index", aUser.getUsername());
+				return success("redirect:" + jump, getCurrentUserName(request));
 			}
 		}
 		return failMsg("请您登录!", "login");
