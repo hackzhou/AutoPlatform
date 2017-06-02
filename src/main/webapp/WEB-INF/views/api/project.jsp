@@ -92,6 +92,12 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-project-path" name="api-project-path" class="form-control" placeholder="项目地址">
+	                        <i class="ti-star text-danger"></i>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
 								<button type="button" class="close" aria-hidden="true">
 									&times;
@@ -152,6 +158,7 @@
                 <tr>
                   <th>ID</th>
                   <th>名称</th>
+                  <th>地址</th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -224,7 +231,7 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "20%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -233,8 +240,17 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "20%",
 					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.path;
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -243,7 +259,7 @@
 				},
 				{
 					"sWidth" : "20%",
-					"aTargets" : [ 3 ],
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -320,13 +336,17 @@
     function initApiProjectModal(){
     	$('#api-project-id').val("");
     	$('#api-project-name').val("");
+    	$('#api-project-path').val("");
     	hideMsgDiv();
     }
     
     function apiProjectSave(){
     	var pname = $('#api-project-name').val().trim();
-    	if(pname == ""){
+    	var ppath = $('#api-project-path').val().trim();
+    	if(pname == null || pname == ""){
 	    	showMsgDiv("请输入项目名称！");
+    	}else if(ppath == null || ppath == ""){
+    		showMsgDiv("请输入项目地址！");
     	}else{
     		$.ajax({
     			type:"post",
@@ -366,6 +386,7 @@
       	    		var p = data.data;
       	    		$('#api-project-id').val(p.id);
       	      		$('#api-project-name').val(p.name);
+      	      		$('#api-project-path').val(p.path);
       	    	}else{
       	    		swal("错误!", data.responseMsg, "error");
       	    	}

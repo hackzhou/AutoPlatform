@@ -22,6 +22,9 @@ public class AProject implements Serializable{
 	@Column(name="name")
 	private String name;
 	
+	@Column(name="path")
+	private String path;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -39,18 +42,21 @@ public class AProject implements Serializable{
 		super();
 		this.id = id;
 	}
-	public AProject(String name) {
+	public AProject(String name, String path) {
 		super();
 		this.name = name;
+		this.path = path;
 	}
-	public AProject(Integer id, String name) {
+	public AProject(Integer id, String name, String path) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.path = path;
 	}
 	
 	public void update(AProject aProject) {
 		this.name = aProject.getName();
+		this.path = aProject.getPath();
 		this.updateTime = new Date();
 		this.memo = aProject.getMemo();
 	}
@@ -66,6 +72,12 @@ public class AProject implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -85,11 +97,11 @@ public class AProject implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "AProject [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + "]";
+		return "AProject [id=" + id + ", name=" + name + ", path=" + path + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 	
 }
