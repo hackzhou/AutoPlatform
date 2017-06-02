@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.context.ThreadPool;
@@ -61,15 +62,15 @@ public class ApiCaseParse implements IApiCaseParse {
 	
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, AVersion aVersion){
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
-		logger.info("[Author][POST:" + url + "/api/user/login],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
-		String result = apiSendMessage.sendPost(url + "/api/user/login", data, "", aVersion.getChannel(), aVersion.getVersion());
+		logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.login") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
+		String result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.login"), data, "", aVersion.getChannel(), aVersion.getVersion());
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
 			logger.info("[Author]" + login.toString());
 			if("200".equals(login.getCode())){
 				data = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
-				logger.info("[Author][POST:" + url + "/api/user/accessToken],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
-				result = apiSendMessage.sendPost(url + "/api/user/accessToken", data, "", aVersion.getChannel(), aVersion.getVersion());
+				logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
+				result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.accessToken"), data, "", aVersion.getChannel(), aVersion.getVersion());
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[Author]" + accessToken.toString());

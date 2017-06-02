@@ -85,7 +85,7 @@ public class ApiRunService implements IApiRunService {
 				apiContext.setaAccount(accountDao.findById(accountId));
 			}
 			apiContext.setaVersion(aVersion);
-			apiContext.setResult(createApiResult(type, runId, runby, list.size(), aVersion));
+			apiContext.setResult(createApiResult(type, runId, runby, list.size(), apiContext));
 			apiContext.setList(list);
 			apiContext.setTotal(list.size());
 			return apiContext;
@@ -94,22 +94,24 @@ public class ApiRunService implements IApiRunService {
 		}
 	}
 	
-	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, AVersion aVersion){
+	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, ApiContext apiContext){
 		AResult aResult = new AResult();
 		if(ApiRunType.PROJECT.equals(type)){
 			AProject aProject = projectDao.findById(runId);
 			if(aProject != null){
+				apiContext.setaProject(aProject);
 				aResult.setProjecto(aProject);
 				aResult.setName(String.format(Const.RUN_PROJECT_NAME, aProject.getName()));
 			}
 		}else if(ApiRunType.CASE.equals(type)){
 			ACase aCase = caseDao.findById(runId);
 			if(aCase != null){
+				apiContext.setaProject(aCase.getInterfaceo().getProjecto());
 				aResult.setProjecto(aCase.getInterfaceo().getProjecto());
 				aResult.setName(String.format(Const.RUN_CASE_NAME, aCase.getName()));
 			}
 		}
-		aResult.setVersiono(aVersion);
+		aResult.setVersiono(apiContext.getaVersion());
 		aResult.setRunby(runby);
 		aResult.setStatus(ApiRunStatus.RUNNING.name());
 		aResult.setSuccess(0);

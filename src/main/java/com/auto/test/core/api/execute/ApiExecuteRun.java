@@ -76,15 +76,15 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String author, String url, String channel, String version){
-		logger.info("[Run][GET:" + url + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "]");
-		String result = apiSendMessage.sendGet(url + aCase.getInterfaceo().getUrl(), author, channel, version);
+		logger.info("[Run][GET:" + url + apiContext.getaProject().getPath() + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "]");
+		String result = apiSendMessage.sendGet(url + apiContext.getaProject().getPath() + aCase.getInterfaceo().getUrl(), author, channel, version);
 		logger.info(result);
 		return result;
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String author, String url, String channel, String version){
-		logger.info("[Run][POST:" + url + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "],[Data:" + aCase.getBody() + "]");
-		String result = apiSendMessage.sendPost(url + aCase.getInterfaceo().getUrl(), aCase.getBody(), author, channel, version);
+		logger.info("[Run][POST:" + url + apiContext.getaProject().getPath() + aCase.getInterfaceo().getUrl() + "],[Author:" + author + "],[Channel:" + channel + "],[Version:" + version + "],[Data:" + aCase.getBody() + "]");
+		String result = apiSendMessage.sendPost(url + apiContext.getaProject().getPath() + aCase.getInterfaceo().getUrl(), aCase.getBody(), author, channel, version);
 		logger.info(result);
 		return result;
 	}

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
+import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
 
@@ -24,6 +24,7 @@ public class ApiContext {
 	private String authora;
 	private String authorb;
 	private AResult result;
+	private AProject aProject;
 	private AVersion aVersion;
 	private AAccount aAccount;
 	private List<ACase> list = new ArrayList<ACase>();
@@ -65,6 +66,12 @@ public class ApiContext {
 	}
 	public void setResult(AResult result) {
 		this.result = result;
+	}
+	public AProject getaProject() {
+		return aProject;
+	}
+	public void setaProject(AProject aProject) {
+		this.aProject = aProject;
 	}
 	public AVersion getaVersion() {
 		return aVersion;
