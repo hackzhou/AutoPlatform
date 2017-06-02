@@ -311,10 +311,10 @@
 				type:"get",
           		url:"<%=request.getContextPath()%>/api/account/delete/id=" + aid,
           		success:function(data){
-          	    	if(data.responseCode == "0000"){
-          	    		swal("成功!", "删除成功.", "success");
+          			if(data.responseCode == "0000"){
+          	    		swal("成功", "删除成功！", "success");
           	    	}else{
-          	    		swal("错误!", data.responseMsg, "error");
+          	    		swal("错误", data.responseMsg, "error");
           	    	}
           	    	$('#api-account-table').dataTable()._fnAjaxUpdate();
           	    }

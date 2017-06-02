@@ -9,6 +9,6 @@ public interface IApiCaseDao extends IBaseDao<ACase> {
 	
 	List<ACase> findByInterfaceId(Integer id);
 	
-	List<ACase> findByProjectId(Integer id);
+	List<ACase> findByProjectVersion(Integer pid, Integer vid);
 
 }

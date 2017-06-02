@@ -8,6 +8,7 @@ import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
+import com.auto.test.entity.AVersion;
 
 @Repository("apiCaseDao")
 public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseDao {
@@ -25,10 +26,10 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<ACase> findByProjectId(Integer id) {
-		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).list();
+	public List<ACase> findByProjectVersion(Integer pid, Integer vid) {
+		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
 		if(interList != null && !interList.isEmpty()){
-			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("interfaceo", interList)).list();
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).list();
 		}
 		return null;
 	}

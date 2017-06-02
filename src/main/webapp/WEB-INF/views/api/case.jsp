@@ -86,6 +86,14 @@
                         	</div>
 	                      </div>
 	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -142,14 +150,6 @@
                     	<input type="hidden" id="api-case-run-id" name="api-case-run-id" value="">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-case-run-version" name="api-case-run-version" class="form-select" style="width: 80%;"></select>
-	                        </div>
-	                      </div>
-	                    </div>
-                    	<div class="form-group">
-	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试账号 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-run-account" name="api-case-run-account" class="form-select" style="width: 80%;"></select>
@@ -172,6 +172,7 @@
                 <tr>
                   <th>ID</th>
                   <th>项目</th>
+                  <th>版本</th>
                   <th>地址</th>
                   <th>名称</th>
                   <th>请求体</th>
@@ -243,6 +244,7 @@
 	$(document).ready(function() {
 		createTable();
 		initEvent();
+		initApiCaseVersion(null);
 		initApiCaseInterface(null);
 	});
 	
@@ -291,8 +293,17 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "5%",
 					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.versiono.version;
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -301,7 +312,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 3 ],
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -309,8 +320,8 @@
 					}
 				},
 				{
-					"sWidth" : "25%",
-					"aTargets" : [ 4 ],
+					"sWidth" : "20%",
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -319,7 +330,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 5 ],
+					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -328,7 +339,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 6 ],
+					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -337,7 +348,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 7 ],
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -375,7 +386,6 @@
 	
 	function initApiCaseRun(cid){
 		$('#api-case-run-id').val(cid);
-		initApiCaseVersion(null);
 		$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/account/list/data",
@@ -408,8 +418,8 @@
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
     					}
     				}
-    				$('#api-case-run-version').empty();
-    				$('#api-case-run-version').append(optionstring);
+    				$('#api-case-version').empty();
+    				$('#api-case-version').append(optionstring);
     			}
     		}
     	});
@@ -443,10 +453,12 @@
     }
 	
 	function initApiCaseModal(){
-		$('#api-case-run1').prop("checked",true);
+		$('#api-case-id').val("");
 		$('#api-case-name').val("");
 		$('#api-case-body').val("");
     	$('#api-case-strategy').val("");
+		$('#api-case-run1').prop("checked",true);
+    	initApiCaseVersion(null);
     	initApiCaseInterface(null);
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
@@ -505,6 +517,7 @@
 	      	  		$('#api-case-body').val(c.body);
 	      	      	$('#api-case-strategy').val(c.strategy);
 					$('#api-case-run' + c.run).prop("checked",true);
+					initApiCaseVersion(c.versiono.id);
 	      	      	initApiCaseInterface(c.interfaceo.id);
       	    	}else{
       	    		swal("错误!", data.responseMsg, "error");
@@ -529,9 +542,9 @@
           		url:"<%=request.getContextPath()%>/api/case/delete/id=" + cid,
           		success:function(data){
           	    	if(data.responseCode == "0000"){
-          	    		swal("成功!", "删除成功.", "success");
+          	    		swal("成功", "删除成功！", "success");
           	    	}else{
-          	    		swal("错误!", data.responseMsg, "error");
+          	    		swal("错误", data.responseMsg, "error");
           	    	}
           	    	$('#api-case-table').dataTable()._fnAjaxUpdate();
           	    }

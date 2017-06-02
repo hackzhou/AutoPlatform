@@ -22,6 +22,7 @@ import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
+import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiRunService;
 
 @Service("apiRunService")
@@ -47,9 +48,10 @@ public class ApiRunService implements IApiRunService {
 	@Override
 	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) {
 		try {
-			List<ACase> list = getRunCases(type, runId);
+			List<ACase> list = getRunCases(type, runId, versionId);
 			if(list != null && !list.isEmpty()){
-				ApiContext apiContext = getApiContext(list, type, runId, accountId, versionId, runby);
+				AVersion aVersion = getApiVersion(list, type, versionId);
+				ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion);
 				if(apiContext != null){
 					IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 					caseParse.execute(apiContext);
@@ -62,18 +64,28 @@ public class ApiRunService implements IApiRunService {
 		}
 	}
 	
-	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby){
+	private AVersion getApiVersion(List<ACase> list, ApiRunType type, Integer versionId){
+		AVersion aVersion = null;
+		if(ApiRunType.PROJECT.equals(type)){
+			if(versionId != null){
+				aVersion = versionDao.findById(versionId);
+			}else{
+				throw new BusinessException("运行[版本/渠道号]未找到！");
+			}
+		}else if(ApiRunType.CASE.equals(type)){
+			aVersion = list.get(0).getVersiono();
+		}
+		return aVersion;
+	}
+	
+	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion){
 		try {
 			ApiContext apiContext = new ApiContext();
 			if(accountId != null){
 				apiContext.setaAccount(accountDao.findById(accountId));
 			}
-			if(versionId != null){
-				apiContext.setaVersion(versionDao.findById(versionId));
-			}else{
-				throw new BusinessException("运行[版本/渠道号]未找到！");
-			}
-			apiContext.setResult(createApiResult(type, runId, runby, list.size()));
+			apiContext.setaVersion(aVersion);
+			apiContext.setResult(createApiResult(type, runId, runby, list.size(), aVersion));
 			apiContext.setList(list);
 			apiContext.setTotal(list.size());
 			return apiContext;
@@ -82,7 +94,7 @@ public class ApiRunService implements IApiRunService {
 		}
 	}
 	
-	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total){
+	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, AVersion aVersion){
 		AResult aResult = new AResult();
 		if(ApiRunType.PROJECT.equals(type)){
 			AProject aProject = projectDao.findById(runId);
@@ -97,6 +109,7 @@ public class ApiRunService implements IApiRunService {
 				aResult.setName(String.format(Const.RUN_CASE_NAME, aCase.getName()));
 			}
 		}
+		aResult.setVersiono(aVersion);
 		aResult.setRunby(runby);
 		aResult.setStatus(ApiRunStatus.RUNNING.name());
 		aResult.setSuccess(0);
@@ -108,10 +121,10 @@ public class ApiRunService implements IApiRunService {
 		return aResult;
 	}
 	
-	private List<ACase> getRunCases(ApiRunType type, Integer runId){
+	private List<ACase> getRunCases(ApiRunType type, Integer runId, Integer vId){
 		List<ACase> list = new ArrayList<ACase>();
 		if(ApiRunType.PROJECT.equals(type)){
-			List<ACase> cList = caseDao.findByProjectId(runId);
+			List<ACase> cList = caseDao.findByProjectVersion(runId, vId);
 			if(cList != null && !cList.isEmpty()){
 				list.addAll(cList);
 			}

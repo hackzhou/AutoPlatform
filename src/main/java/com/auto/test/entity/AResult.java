@@ -30,6 +30,11 @@ public class AResult implements Serializable{
 	@NotFound(action = NotFoundAction.IGNORE)
 	private AProject projecto;
 	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="version_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private AVersion versiono;
+	
 	@Column(name="name")
 	private String name;
 	
@@ -69,6 +74,7 @@ public class AResult implements Serializable{
 	
 	public void update(AResult aResult){
 		this.projecto = aResult.getProjecto();
+		this.versiono = aResult.getVersiono();
 		this.name = aResult.getName();
 		this.runby = aResult.getRunby();
 		this.success = aResult.getSuccess();
@@ -92,6 +98,12 @@ public class AResult implements Serializable{
 	}
 	public void setProjecto(AProject projecto) {
 		this.projecto = projecto;
+	}
+	public AVersion getVersiono() {
+		return versiono;
+	}
+	public void setVersiono(AVersion versiono) {
+		this.versiono = versiono;
 	}
 	public String getName() {
 		return name;
@@ -162,10 +174,10 @@ public class AResult implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AResult [id=" + id + ", projecto=" + projecto + ", name=" + name + ", runby=" + runby + ", success="
-				+ success + ", fail=" + fail + ", total=" + total + ", status=" + status + ", startTime=" + startTime
-				+ ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo="
-				+ memo + "]";
+		return "AResult [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", name=" + name + ", runby="
+				+ runby + ", success=" + success + ", fail=" + fail + ", total=" + total + ", status=" + status
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", memo=" + memo + "]";
 	}
 
 }

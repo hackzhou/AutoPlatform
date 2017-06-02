@@ -30,6 +30,11 @@ public class ACase implements Serializable{
 	@NotFound(action = NotFoundAction.IGNORE)
 	private AInterface interfaceo;
 	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="version_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private AVersion versiono;
+	
 	@Column(name="name")
 	private String name;
 
@@ -55,17 +60,19 @@ public class ACase implements Serializable{
 		super();
 	}
 	
-	public ACase(AInterface interfaceo, String name, String body, String strategy, Integer run) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
 		super();
+		this.versiono = versiono;
 		this.interfaceo = interfaceo;
 		this.name = name;
 		this.body = body;
 		this.strategy = strategy;
 		this.run = run;
 	}
-	public ACase(Integer id, AInterface interfaceo, String name, String body, String strategy, Integer run) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
 		super();
 		this.id = id;
+		this.versiono = versiono;
 		this.interfaceo = interfaceo;
 		this.name = name;
 		this.body = body;
@@ -75,6 +82,7 @@ public class ACase implements Serializable{
 	
 	public void update(ACase aCase) {
 		this.interfaceo = aCase.getInterfaceo();
+		this.versiono = aCase.getVersiono();
 		this.name = aCase.getName();
 		this.body = aCase.getBody();
 		this.strategy = aCase.getStrategy();
@@ -100,6 +108,12 @@ public class ACase implements Serializable{
 	}
 	public void setInterfaceo(AInterface interfaceo) {
 		this.interfaceo = interfaceo;
+	}
+	public AVersion getVersiono() {
+		return versiono;
+	}
+	public void setVersiono(AVersion versiono) {
+		this.versiono = versiono;
 	}
 	public String getBody() {
 		return body;
@@ -140,9 +154,9 @@ public class ACase implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", name=" + name + ", body=" + body + ", strategy="
-				+ strategy + ", run=" + run + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo="
-				+ memo + "]";
+		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
+				+ ", body=" + body + ", strategy=" + strategy + ", run=" + run + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }
