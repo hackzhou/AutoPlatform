@@ -33,8 +33,7 @@ public class ApiVersionController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllVersion(HttpServletRequest request) {
-		List<AVersion> list = versionService.findAll();
-		return success(list, "api/version", getCurrentUserName(request));
+		return success("api/version", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)

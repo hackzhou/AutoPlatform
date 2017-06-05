@@ -40,11 +40,14 @@ public class ApiReportController extends BaseController{
 	
 	@RequestMapping(value = "/detail/id={id}", method = RequestMethod.GET)
 	public ModelAndView getAllReportDetail(HttpServletRequest request, @PathVariable("id") String id) {
+		return success(id, "api/detail", getCurrentUserName(request));
+	}
+	
+	@RequestMapping(value = "/detail/data/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllResultDetailData(@PathVariable("id") String id) {
 		List<AResultDetail> list = resultDetailService.findByResultId(Integer.parseInt(id));
-		for (AResultDetail aResultDetail : list) {
-			System.out.println(aResultDetail.toString());
-		}
-		return success("api/report", getCurrentUserName(request));
+		return successJson(list);
 	}
 	
 }

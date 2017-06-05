@@ -28,8 +28,7 @@ public class ApiAccountController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllAccount(HttpServletRequest request) {
-		List<AAccount> list = accountService.findAll();
-		return success(list, "api/account", getCurrentUserName(request));
+		return success("api/account", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
