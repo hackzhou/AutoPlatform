@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +13,14 @@
 <title>接口-报告</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/css/cdn/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Menu CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
-<!-- toast CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
-<!-- morris CSS -->
-<link href="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
+<!--alerts CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -37,7 +39,34 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Dashboard Report</h4>
+        </div>
+      </div>
+      <!-- /row -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="white-box">
+			<!-- /.table -->
+            <div class="table-responsive">
+            <table id="api-report-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>项目</th>
+                  <th>版本</th>
+                  <th>名称</th>
+                  <th>状态</th>
+                  <th>成功/失败/总数</th>
+                  <th>运行时长</th>
+                  <th>运行人</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            </div>
+          </div>
         </div>
       </div>
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
@@ -59,32 +88,134 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
-<!--Counter js -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.js"></script>
+<!-- Sweet-Alert  -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/eliteadmin/js/dashboard1.js"></script>
-<!-- Sparkline chart JavaScript -->
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/pdfmake.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/vfs_fonts.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.html5.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
 <script type="text/javascript">
   
-   $(document).ready(function() {
-      /* $.toast({
-        heading: 'Welcome to Elite admin',
-        text: 'Use the predefined ones, or specify a custom position object.',
-        position: 'top-right',
-        loaderBg:'#ff6849',
-        icon: 'info',
-        hideAfter: 3500, 
-        stack: 6
-      }) */
-    });
+	$(document).ready(function() {
+		createTable();
+	});
+	
+	function createTable() {
+		$('#api-report-table').dataTable().fnDestroy();
+    	$('#api-report-table').DataTable({
+    		responsive : false,
+    		sAjaxSource : "<%=request.getContextPath()%>/api/report/list/data",
+    		bProcessing : false,
+    		"aaSorting": [
+    			[0,'desc']
+    		],
+    		aoColumnDefs : [
+    			{
+					"sWidth" : "10%",
+					"aTargets" : [ 0 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.id;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.projecto.name;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.versiono.version;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.name;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.status;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 5 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						var format = "<b style='color:green'>{0}</b>" + " / "
+						+ "<b style='color:red'>{1}</b>" + " / "
+						+ "<b style='color:blue'>{2}</b>";
+						return String.format(format, data.success, data.fail, data.total);
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 6 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return String.duration(new Date(data.startTime), new Date(data.endTime));
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.runby;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 8 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 9 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiReport('" + data.id + "');\"></i> </a>";
+					}
+				}
+    		]
+    	});
+	}
+   
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
