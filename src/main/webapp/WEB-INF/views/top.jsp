@@ -16,11 +16,16 @@
 				<li role="separator" class="divider"></li>
 				<li><a href="${pageContext.request.contextPath}/api/setting/list"><i class="ti-settings m-r-10"></i> 设置</a></li>
 			</ul>
-			<!-- /.dropdown-user -->
 			</li>
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs m-r-10">UI自动化</b> </a>
+			<ul class="dropdown-menu dropdown-user animated flipInY">
+				<li><a href="#"><i class="ti-briefcase m-r-10"></i> 敬请期待</a></li>
+			</ul>
 			</li>
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs m-r-10">测试工具</b> </a>
+			<ul class="dropdown-menu dropdown-user animated flipInY">
+				<li><a href="#"><i class="ti-briefcase m-r-10"></i> 敬请期待</a></li>
+			</ul>
 			</li>
 		</ul>
 		<ul class="nav navbar-top-links navbar-right pull-right">

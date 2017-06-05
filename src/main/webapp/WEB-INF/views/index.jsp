@@ -51,7 +51,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Dashboard Home</h4>
+          <h4 class="page-title">我的主页，敬请期待！</h4>
         </div>
         <!-- /.right-sidebar -->
       </div>
