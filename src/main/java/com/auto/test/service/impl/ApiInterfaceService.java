@@ -15,7 +15,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	private IApiInterfaceDao dao;
 
 	@Override
-	public List<AInterface> findAllInterface() {
+	public List<AInterface> findAll() {
 		return dao.findAllOrder();
 	}
 	

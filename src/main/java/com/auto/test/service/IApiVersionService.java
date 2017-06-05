@@ -7,7 +7,7 @@ import com.auto.test.entity.AVersion;
 @Transactional
 public interface IApiVersionService{
 	
-	List<AVersion> findAllVersion();
+	List<AVersion> findAll();
 
 	List<AVersion> findByVersion(String version);
 	

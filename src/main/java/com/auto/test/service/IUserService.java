@@ -7,7 +7,7 @@ import com.auto.test.entity.AUser;
 @Transactional
 public interface IUserService{
 	
-	List<AUser> findAllUser();
+	List<AUser> findAll();
 	
 	List<AUser> findByName(String username);
 	

@@ -15,7 +15,7 @@ public class ApiResultService implements IApiResultService {
 	private IApiResultDao dao;
 
 	@Override
-	public List<AResult> findAllResult() {
+	public List<AResult> findAll() {
 		return dao.findAllOrder();
 	}
 

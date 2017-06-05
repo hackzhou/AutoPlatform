@@ -15,7 +15,7 @@ public class ApiAccountService implements IApiAccountService {
 	private IApiAccountDao dao;
 
 	@Override
-	public List<AAccount> findAllAccount() {
+	public List<AAccount> findAll() {
 		return dao.findAllOrder();
 	}
 	

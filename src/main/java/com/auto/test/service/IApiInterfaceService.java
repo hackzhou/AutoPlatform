@@ -7,7 +7,7 @@ import com.auto.test.entity.AInterface;
 @Transactional
 public interface IApiInterfaceService{
 	
-	List<AInterface> findAllInterface();
+	List<AInterface> findAll();
 
 	List<AInterface> findByProjectId(Integer id);
 

@@ -15,8 +15,13 @@ public class ApiResultDetailService implements IApiResultDetailService {
 	private IApiResultDetailDao dao;
 	
 	@Override
-	public List<AResultDetail> findAllResultDetail() {
+	public List<AResultDetail> findAll() {
 		return dao.findAllOrder();
+	}
+	
+	@Override
+	public List<AResultDetail> findByResultId(Integer rid) {
+		return dao.findByResultId(rid);
 	}
 
 	@Override

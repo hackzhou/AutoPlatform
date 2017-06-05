@@ -19,7 +19,7 @@ public class ApiProjectService implements IApiProjectService {
 	private IApiProjectDao dao;
 
 	@Override
-	public List<AProject> findAllProject() {
+	public List<AProject> findAll() {
 		return dao.findAllOrder();
 	}
 	

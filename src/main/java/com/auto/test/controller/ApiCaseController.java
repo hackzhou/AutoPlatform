@@ -48,14 +48,14 @@ public class ApiCaseController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllCase(HttpServletRequest request) {
-		List<ACase> list = caseService.findAllCase();
+		List<ACase> list = caseService.findAll();
 		return success(list, "api/case", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllCaseData() {
-		List<ACase> list = caseService.findAllCase();
+		List<ACase> list = caseService.findAll();
 		return successJson(list);
 	}
 	

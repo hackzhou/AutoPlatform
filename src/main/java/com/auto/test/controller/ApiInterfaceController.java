@@ -33,14 +33,14 @@ public class ApiInterfaceController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
-		List<AInterface> list = interfaceService.findAllInterface();
+		List<AInterface> list = interfaceService.findAll();
 		return success(list, "api/interface", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllProjectData() {
-		List<AInterface> list = interfaceService.findAllInterface();
+		List<AInterface> list = interfaceService.findAll();
 		return successJson(list);
 	}
 	

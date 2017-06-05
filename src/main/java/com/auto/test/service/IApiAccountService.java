@@ -7,7 +7,7 @@ import com.auto.test.entity.AAccount;
 @Transactional
 public interface IApiAccountService{
 	
-	List<AAccount> findAllAccount();
+	List<AAccount> findAll();
 	
 	List<AAccount> findByName(String name);
 

@@ -54,14 +54,14 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
-		List<AProject> projectList = projectService.findAllProject();
+		List<AProject> projectList = projectService.findAll();
 		return success(projectList, "api/project", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllProjectData() {
-		List<AProject> projectList = projectService.findAllProject();
+		List<AProject> projectList = projectService.findAll();
 		return successJson(projectList);
 	}
 	

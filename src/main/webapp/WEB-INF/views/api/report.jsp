@@ -55,8 +55,8 @@
                   <th>版本</th>
                   <th>名称</th>
                   <th>状态</th>
-                  <th>成功/失败/总数</th>
                   <th>运行时长</th>
+                  <th>成功/失败/总数</th>
                   <th>运行人</th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -161,7 +161,15 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.status;
+						if("RUNNING" == data.status){
+							return "正在运行...";
+						}else if("WAITING" == data.status){
+							return "等待运行...";
+						}else if("COMPLETE" == data.status){
+							return "运行完成";
+						}else {
+							return "-";
+						}
 					}
 				},
 				{
@@ -170,10 +178,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var format = "<b style='color:green'>{0}</b>" + " / "
-						+ "<b style='color:red'>{1}</b>" + " / "
-						+ "<b style='color:blue'>{2}</b>";
-						return String.format(format, data.success, data.fail, data.total);
+						if(data.endTime == null || data.endTime == ""){
+							return "-";
+						}
+						return String.duration(new Date(data.startTime), new Date(data.endTime));
 					}
 				},
 				{
@@ -182,7 +190,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return String.duration(new Date(data.startTime), new Date(data.endTime));
+						var format = "<b style='color:green'>{0}</b>" + " / "
+						+ "<b style='color:red'>{1}</b>" + " / "
+						+ "<b style='color:blue'>{2}</b>";
+						return String.format(format, data.success, data.fail, data.total);
 					}
 				},
 				{
@@ -209,13 +220,18 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiReport('" + data.id + "');\"></i> </a>";
+						if("COMPLETE" == data.status){
+							var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-list text-inverse m-r-10\"></i> </a>";
+							return String.format(html, data.id);
+						}else {
+							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-spin fa-spinner text-inverse m-r-10\"</a>";
+						}
 					}
 				}
     		]
     	});
 	}
-   
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

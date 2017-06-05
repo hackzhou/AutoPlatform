@@ -7,7 +7,7 @@ import com.auto.test.entity.AResult;
 @Transactional
 public interface IApiResultService{
 	
-	List<AResult> findAllResult();
+	List<AResult> findAll();
 	
 	AResult findById(Integer id);
 	

@@ -28,14 +28,14 @@ public class ApiAccountController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllAccount(HttpServletRequest request) {
-		List<AAccount> list = accountService.findAllAccount();
+		List<AAccount> list = accountService.findAll();
 		return success(list, "api/account", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllAccountData() {
-		List<AAccount> list = accountService.findAllAccount();
+		List<AAccount> list = accountService.findAll();
 		return successJson(list);
 	}
 	

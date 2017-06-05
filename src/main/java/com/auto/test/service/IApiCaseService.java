@@ -7,7 +7,7 @@ import com.auto.test.entity.ACase;
 @Transactional
 public interface IApiCaseService{
 	
-	List<ACase> findAllCase();
+	List<ACase> findAll();
 	
 	List<ACase> findByInterfaceId(Integer id);
 

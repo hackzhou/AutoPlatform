@@ -15,7 +15,7 @@ public class ApiVersionService implements IApiVersionService {
 	private IApiVersionDao dao;
 
 	@Override
-	public List<AVersion> findAllVersion() {
+	public List<AVersion> findAll() {
 		return dao.findAllOrder();
 	}
 	

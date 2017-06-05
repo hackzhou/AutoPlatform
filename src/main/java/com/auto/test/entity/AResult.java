@@ -71,7 +71,11 @@ public class AResult implements Serializable{
 	public AResult() {
 		super();
 	}
-	
+	public AResult(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	public void update(AResult aResult){
 		this.projecto = aResult.getProjecto();
 		this.versiono = aResult.getVersiono();

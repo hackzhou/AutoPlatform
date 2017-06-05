@@ -7,7 +7,7 @@ import com.auto.test.entity.AProject;
 @Transactional
 public interface IApiProjectService{
 	
-	List<AProject> findAllProject();
+	List<AProject> findAll();
 	
 	List<AProject> findByName(String name);
 

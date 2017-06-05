@@ -20,7 +20,7 @@ public class ApiCaseService implements IApiCaseService {
 	private IApiCaseDao dao;
 
 	@Override
-	public List<ACase> findAllCase() {
+	public List<ACase> findAll() {
 		return dao.findAllOrder();
 	}
 	
