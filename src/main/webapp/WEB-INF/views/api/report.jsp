@@ -193,7 +193,11 @@
 						var format = "<b style='color:green'>{0}</b>" + " / "
 						+ "<b style='color:red'>{1}</b>" + " / "
 						+ "<b style='color:blue'>{2}</b>";
-						return String.format(format, data.success, data.fail, data.total);
+						if("COMPLETE" == data.status){
+							return String.format(format, data.success, data.fail, data.total);
+						}else{
+							return String.format(format, "-", "-", data.total);
+						}
 					}
 				},
 				{
@@ -221,15 +225,29 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
-							var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-list text-inverse m-r-10\"></i></a>";
-							return String.format(html, data.id);
+							if(data.msg == null || data.msg == ""){
+								var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-list text-inverse m-r-10\"></i></a>";
+								return String.format(html, data.id);
+							}else{
+								var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-inverse m-r-10\"></i></a>";
+								return String.format(html, data.msg);
+							}
 						}else {
 							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-spin fa-spinner text-inverse m-r-10\"></i></a>";
 						}
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
+	}
+	
+	function initTableEvent() {
+		$(".alertError").on("click", function(){
+			swal("错误", $(this).data('data'), "error");
+		});
 	}
 	
 </script>

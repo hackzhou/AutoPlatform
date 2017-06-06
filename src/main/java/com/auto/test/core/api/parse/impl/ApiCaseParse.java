@@ -1,10 +1,12 @@
 package com.auto.test.core.api.parse.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.config.GlobalValueConfig;
+import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
@@ -17,7 +19,9 @@ import com.auto.test.core.api.http.bean.Login;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
+import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
+import com.auto.test.service.IApiResultService;
 
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
@@ -41,6 +45,13 @@ public class ApiCaseParse implements IApiCaseParse {
 		} catch (Exception e) {
 			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 			apiApplication.remove(apiContext.getaAccount().getId());
+			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+			AResult aResult = apiContext.getResult();
+			aResult.setEndTime(new Date());
+			aResult.setStatus(ApiRunStatus.COMPLETE.name());
+			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+			aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
+			apiResultService.update(aResult);
 			throw e;
 		}
 	}
@@ -85,13 +96,13 @@ public class ApiCaseParse implements IApiCaseParse {
 						throw new BusinessException(accessToken.getMessage());
 					}
 				}else{
-					throw new BusinessException("[Author]获取AccessToken失败！[" + data + "][" + data2 + "]");
+					throw new BusinessException("[Author]获取AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
 				}
 			}else{
 				throw new BusinessException(login.getMessage());
 			}
 		}else{
-			throw new BusinessException("[Author]登录失败！[" + data + "]");
+			throw new BusinessException("[Author]登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
 		}
 	}
 	
