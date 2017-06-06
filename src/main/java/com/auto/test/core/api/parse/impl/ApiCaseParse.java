@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.config.GlobalValueConfig;
+import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.context.ThreadPool;
@@ -38,6 +39,8 @@ public class ApiCaseParse implements IApiCaseParse {
 				}
 			}
 		} catch (Exception e) {
+			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+			apiApplication.remove(apiContext.getaAccount().getId());
 			throw e;
 		}
 	}
@@ -46,6 +49,8 @@ public class ApiCaseParse implements IApiCaseParse {
 		AVersion aVersion = apiContext.getaVersion();
 		AAccount aAccount = apiContext.getaAccount();
 		if(aAccount != null){
+			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+			apiApplication.add(aAccount.getId());
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			String accessTokena = sendMessage(apiSendMessage, apiContext.getUrla(), aAccount, aVersion);
 			if(accessTokena != null && !accessTokena.isEmpty()){
@@ -68,9 +73,9 @@ public class ApiCaseParse implements IApiCaseParse {
 		if(login != null){
 			logger.info("[Author]" + login.toString());
 			if("200".equals(login.getCode())){
-				data = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
-				logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
-				result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.accessToken"), data, "", aVersion.getChannel(), aVersion.getVersion());
+				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
+				logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data2 + "]");
+				result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.accessToken"), data2, "", aVersion.getChannel(), aVersion.getVersion());
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[Author]" + accessToken.toString());
@@ -80,15 +85,14 @@ public class ApiCaseParse implements IApiCaseParse {
 						throw new BusinessException(accessToken.getMessage());
 					}
 				}else{
-					logger.error("[Author]获取AccessToken失败！");
+					throw new BusinessException("[Author]获取AccessToken失败！[" + data + "][" + data2 + "]");
 				}
 			}else{
 				throw new BusinessException(login.getMessage());
 			}
 		}else{
-			logger.error("[Author]登录失败！");
+			throw new BusinessException("[Author]登录失败！[" + data + "]");
 		}
-		return null;
 	}
 	
 }

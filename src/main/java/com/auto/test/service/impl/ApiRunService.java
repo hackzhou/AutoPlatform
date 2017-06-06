@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
@@ -48,6 +49,10 @@ public class ApiRunService implements IApiRunService {
 	@Override
 	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) {
 		try {
+			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+			if(accountId != null && apiApplication.contain(accountId)){
+				throw new BusinessException("该账号正在使用，请稍后运行！");
+			}
 			List<ACase> list = getRunCases(type, runId, versionId);
 			if(list != null && !list.isEmpty()){
 				AVersion aVersion = getApiVersion(list, type, versionId);
@@ -67,13 +72,12 @@ public class ApiRunService implements IApiRunService {
 	private AVersion getApiVersion(List<ACase> list, ApiRunType type, Integer versionId){
 		AVersion aVersion = null;
 		if(ApiRunType.PROJECT.equals(type)){
-			if(versionId != null){
-				aVersion = versionDao.findById(versionId);
-			}else{
-				throw new BusinessException("运行[版本/渠道号]未找到！");
-			}
+			aVersion = versionDao.findById(versionId);
 		}else if(ApiRunType.CASE.equals(type)){
 			aVersion = list.get(0).getVersiono();
+		}
+		if(aVersion == null){
+			throw new BusinessException("运行[版本/渠道号]未找到！");
 		}
 		return aVersion;
 	}

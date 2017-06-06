@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
 import com.auto.test.common.constant.HttpType;
+import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.core.api.http.IApiSendMessage;
@@ -64,6 +65,8 @@ public class ApiExecuteRun implements Runnable {
 				aResult.setSuccess(aResult.getSuccess() + 1);
 			}
 			if(apiContext.getCount().equals(apiContext.getTotal())){
+				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+				apiApplication.remove(apiContext.getaAccount().getId());
 				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
 				aResult.setEndTime(new Date());
 				aResult.setStatus(ApiRunStatus.COMPLETE.name());
