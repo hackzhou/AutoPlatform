@@ -25,6 +25,8 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/colors/blue.css" id="theme"  rel="stylesheet">
+<!-- diff -->
+<link href="${pageContext.request.contextPath}/css/diffview.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <!-- Preloader -->
@@ -39,6 +41,45 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        </div>
+      </div>
+      <!-- /.modal -->
+      <div class="modal fade" id="exampleModal6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel6">
+        <div class="modal-dialog" role="document" style="width: 100%;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="exampleModalLabel6">结果对比</h4>
+            </div>
+            <div class="modal-body">
+              <form id="api-result-detail-diff-form" class="form-horizontal form-material">
+              	<div class="form-group" style="display:none">
+                  <div class="col-md-12 m-b-20">
+					<div class="row">
+					  <div class="top">
+						<input type="text" id="contextSize" value="" />
+					  </div>
+				      <div class="col-sm-6 textInput">
+						<textarea id="baseText"></textarea>
+		    		  </div>
+			    	  <div class="col-sm-6 textInput spacer">
+						<textarea id="newText"></textarea>
+                   	  </div>
+               		</div>
+                  </div>
+                </div>
+                <div class="viewType" style="display:none">
+					<input type="radio" name="_viewtype" id="sidebyside" onclick="diffUsingJS(0);" /> <label for="sidebyside">Side by Side Diff</label>
+					&nbsp; &nbsp;
+					<input type="radio" name="_viewtype" id="inline" onclick="diffUsingJS(1);" /> <label for="inline">Inline Diff</label>
+				</div>
+				<div id="diffoutput"> </div>
+           	  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+            </div>
+          </div>
         </div>
       </div>
       <!-- /row -->
@@ -77,6 +118,9 @@
   </div>
 </div>
 <!-- /#wrapper -->
+<!-- diff -->
+<script src="${pageContext.request.contextPath}/js/diffview.js"></script>
+<script src="${pageContext.request.contextPath}/js/difflib.js"></script>
 <!-- jQuery -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
@@ -115,7 +159,7 @@
 		$('#api-report-detail-table').dataTable().fnDestroy();
     	$('#api-report-detail-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/data/id=${data}",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/id=${data}",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
@@ -235,11 +279,48 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-spin fa-spinner text-inverse m-r-10\"</a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' id='initResultDetailData'><i class=\"fa fa-database text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
+						return String.format(html, data.id, JSON.stringify(data));;
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
+	}
+	
+	function initTableEvent() {
+		$("#initResultDetailData").on("click",function(){
+			var data = $(this).data('data');
+			$("#baseText").val(jsonFormat(data.resulta));
+			$("#newText").val(jsonFormat(data.resultb));
+			diffUsingJS(0);
+		});
+	}
+
+	function diffUsingJS(viewType) {
+		"use strict";
+		var byId = function (id) { return document.getElementById(id); },
+		base = difflib.stringAsLines(byId("baseText").value),
+		newtxt = difflib.stringAsLines(byId("newText").value),
+		sm = new difflib.SequenceMatcher(base, newtxt),
+		opcodes = sm.get_opcodes(),
+		diffoutputdiv = byId("diffoutput"),
+		contextSize = byId("contextSize").value;
+	
+		diffoutputdiv.innerHTML = "";
+		contextSize = contextSize || null;
+	
+		diffoutputdiv.appendChild(diffview.buildView({
+			baseTextLines: base,
+			newTextLines: newtxt,
+			opcodes: opcodes,
+			baseTextName: "线上数据",
+			newTextName: "预发数据",
+			contextSize: contextSize,
+			viewType: viewType
+		}));
 	}
 	
 </script>

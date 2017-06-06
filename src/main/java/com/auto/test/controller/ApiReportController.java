@@ -38,16 +38,23 @@ public class ApiReportController extends BaseController{
 		return successJson(resultList);
 	}
 	
-	@RequestMapping(value = "/detail/id={id}", method = RequestMethod.GET)
-	public ModelAndView getAllReportDetail(HttpServletRequest request, @PathVariable("id") String id) {
+	@RequestMapping(value = "/detail/list/id={id}", method = RequestMethod.GET)
+	public ModelAndView getReportDetail(HttpServletRequest request, @PathVariable("id") String id) {
 		return success(id, "api/detail", getCurrentUserName(request));
+	}
+	
+	@RequestMapping(value = "/detail/list/data/id={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getReportDetailDataByResultId(@PathVariable("id") String id) {
+		List<AResultDetail> list = resultDetailService.findByResultId(Integer.parseInt(id));
+		return successJson(list);
 	}
 	
 	@RequestMapping(value = "/detail/data/id={id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAllResultDetailData(@PathVariable("id") String id) {
-		List<AResultDetail> list = resultDetailService.findByResultId(Integer.parseInt(id));
-		return successJson(list);
+	public Map<String, Object> getReportDetailById(@PathVariable("id") String id) {
+		AResultDetail resultDetail = resultDetailService.findById(Integer.parseInt(id));
+		return successJson(resultDetail);
 	}
 	
 }

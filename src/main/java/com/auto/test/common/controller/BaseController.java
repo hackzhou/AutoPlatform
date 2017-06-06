@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.entity.AUser;
 
@@ -38,6 +40,14 @@ public class BaseController implements MessageSourceAware {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(RESPONSE_CODE, SUCCESS_CODE);
 		map.put(DATA, result);
+		return map;
+	}
+	
+	public Map<String, Object> successJson(Object result, Object result2) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_CODE, SUCCESS_CODE);
+		map.put(DATA, result);
+		map.put(DATA + "2", result2);
 		return map;
 	}
 
@@ -162,6 +172,14 @@ public class BaseController implements MessageSourceAware {
 			return user.getUsername();
 		}
 		return "";
+	}
+	
+	public String jsonFormat(String result, boolean format){
+		if(result != null && !result.isEmpty()){
+			JSONObject json = JSON.parseObject(result.trim());
+			return JSON.toJSONString(json, format);
+		}
+		return null;
 	}
 
 }

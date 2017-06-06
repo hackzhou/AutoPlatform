@@ -23,6 +23,10 @@ String.format = function() {
 	return str;
 };
 
+function jsonFormat(data){
+	return JSON.stringify(JSON.parse(data), null, '\t');
+}
+
 function GetQueryString(name){
 	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 	var r = window.location.search.substr(1).match(reg);

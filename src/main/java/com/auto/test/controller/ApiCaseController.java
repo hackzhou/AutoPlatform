@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.ACase;
@@ -115,14 +114,6 @@ public class ApiCaseController extends BaseController{
 		} catch (Exception e) {
 			return failedJson();
 		}
-	}
-	
-	private String jsonFormat(String result, boolean format){
-		if(result != null && !result.isEmpty()){
-			JSONObject json = JSON.parseObject(result.trim());
-			return JSON.toJSONString(json, format);
-		}
-		return null;
 	}
 	
 }

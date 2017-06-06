@@ -221,10 +221,10 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
-							var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-list text-inverse m-r-10\"></i> </a>";
+							var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-list text-inverse m-r-10\"></i> </a>";
 							return String.format(html, data.id);
 						}else {
-							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-spin fa-spinner text-inverse m-r-10\"</a>";
+							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"> <i class=\"fa fa-spin fa-spinner text-inverse m-r-10\"></i></a>";
 						}
 					}
 				}
