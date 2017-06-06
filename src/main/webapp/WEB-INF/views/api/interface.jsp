@@ -284,13 +284,35 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiInterfaceEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal3\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiInterfaceDel('" + data.id + "');\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiInterfaceEdit'> <i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal3\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiInterfaceDel'><i class=\"fa fa-close text-danger\"></i></a>";
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
     }
+    
+    function initTableEvent() {
+		$(".apiInterfaceEdit").on("click", function(){
+			hideMsgDiv();
+			var i = $(this).data('data');
+			$('#api-interface-id').val(i.id);
+      		$('#api-interface-name').val(i.name);
+      		$('#api-interface-url').val(i.url);
+      		$('#api-interface-description').val(i.description);
+      		$('#api-interface-type').val(i.type);
+      		initApiInterfaceProject(i.projecto.id);
+		});
+		
+		$(".apiInterfaceDel").on("click", function(){
+			var iid = $(this).data('id');
+			apiInterfaceDel(iid);
+		});
+	}
     
     function initApiInterfaceProject(projectid){
     	$.ajax({
@@ -364,27 +386,6 @@
           	    }
     		});
     	}
-    }
-    
-    function apiInterfaceEdit(iid){
-    	hideMsgDiv();
-    	$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/interface/id=" + iid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var i = data.data;
-	      	    	$('#api-interface-id').val(i.id);
-	          		$('#api-interface-name').val(i.name);
-	          		$('#api-interface-url').val(i.url);
-	          		$('#api-interface-description').val(i.description);
-	          		$('#api-interface-type').val(i.type);
-	          		initApiInterfaceProject(i.projecto.id);
-      	    	}else{
-      	    		swal("错误!", data.responseMsg, "error");
-      	    	}
-      	    }
-		});
     }
     
     function apiInterfaceDel(iid){

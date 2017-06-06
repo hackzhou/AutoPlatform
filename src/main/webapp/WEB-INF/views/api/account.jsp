@@ -227,13 +227,32 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiAccountEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiAccountDel('" + data.id + "');\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiAccountEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiAccountDel'><i class=\"fa fa-close text-danger\"></i></a>";
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
     }
+    
+    function initTableEvent() {
+		$(".apiAccountEdit").on("click", function(){
+			hideMsgDiv();
+			var a = $(this).data('data');
+			$('#api-account-id').val(a.id);
+	      	$('#api-account-loginname').val(a.loginname);
+	      	$('#api-account-password').val(a.password);
+		});
+		
+		$(".apiAccountDel").on("click", function(){
+			var aid = $(this).data('id');
+			apiAccountDel(aid);
+		});
+	}
     
     function initApiAccountModal(){
     	$('#api-account-id').val("");
@@ -276,24 +295,6 @@
           	    }
     		});
     	}
-    }
-    
-    function apiAccountEdit(aid){
-    	hideMsgDiv();
-    	$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/account/id=" + aid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var a = data.data;
-      	    		$('#api-account-id').val(a.id);
-      	      		$('#api-account-loginname').val(a.loginname);
-      	      		$('#api-account-password').val(a.password);
-      	    	}else{
-      				swal("错误", data.responseMsg, "error");
-      			}
-      	    }
-		});
     }
     
     function apiAccountDel(aid){

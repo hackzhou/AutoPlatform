@@ -352,16 +352,42 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiCaseEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiCaseDel('" + data.id + "');\"></i> </a>";
-						if(data.run == 0){
-							return html;
-						}else{
-							return html + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"initApiCaseRun('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i> </a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>";
+						if(data.run == 1){
+							return html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
 						}
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
-	   		]
+	   		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
+		});
+	}
+	
+	function initTableEvent() {
+		$(".apiCaseEdit").on("click", function(){
+			hideMsgDiv();
+			var c = $(this).data('data');
+			$('#api-case-id').val(c.id);
+  	      	$('#api-case-name').val(c.name);
+  	  		$('#api-case-body').val(c.body);
+  	      	$('#api-case-strategy').val(c.strategy);
+			$('#api-case-run' + c.run).prop("checked", true);
+			initApiCaseVersion(c.versiono.id);
+  	      	initApiCaseInterface(c.interfaceo.id);
+		});
+		
+		$(".apiCaseDel").on("click", function(){
+			var cid = $(this).data('id');
+			apiCaseDel(cid);
+		});
+		
+		$(".initApiCaseRun").on("click", function(){
+			var cid = $(this).data('id');
+			initApiCaseRun(cid);
 		});
 	}
 	
@@ -503,28 +529,6 @@
       	    }
 		});
 	}
-	
-	function apiCaseEdit(cid){
-		hideMsgDiv();
-		$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/case/id=" + cid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var c = data.data;
-      	    		$('#api-case-id').val(c.id);
-	      	      	$('#api-case-name').val(c.name);
-	      	  		$('#api-case-body').val(c.body);
-	      	      	$('#api-case-strategy').val(c.strategy);
-					$('#api-case-run' + c.run).prop("checked",true);
-					initApiCaseVersion(c.versiono.id);
-	      	      	initApiCaseInterface(c.interfaceo.id);
-      	    	}else{
-      	    		swal("错误!", data.responseMsg, "error");
-      	    	}
-      	    }
-		});
-    }
 	
 	function apiCaseDel(cid){
     	swal({

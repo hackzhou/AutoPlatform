@@ -280,7 +280,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' id='initResultDetailData'><i class=\"fa fa-database text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
-						return String.format(html, data.id, JSON.stringify(data));;
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
     		],
@@ -291,7 +291,7 @@
 	}
 	
 	function initTableEvent() {
-		$("#initResultDetailData").on("click",function(){
+		$("#initResultDetailData").on("click", function(){
 			var data = $(this).data('data');
 			$("#baseText").val(jsonFormat(data.resulta));
 			$("#newText").val(jsonFormat(data.resultb));

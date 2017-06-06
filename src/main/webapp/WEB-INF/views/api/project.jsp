@@ -263,14 +263,38 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiProjectEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger m-r-10\" onclick=\"apiProjectDel('" + data.id + "');\"></i></a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Run\"> <i class=\"fa fa-toggle-right text-success\" onclick=\"initApiProjectRun('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i> </a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiProjectDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i></a>";
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
     }
+    
+    function initTableEvent() {
+		$(".apiProjectEdit").on("click",function(){
+			hideMsgDiv();
+			var p = $(this).data('data');
+			$('#api-project-id').val(p.id);
+	      	$('#api-project-name').val(p.name);
+	      	$('#api-project-path').val(p.path);
+		});
+		
+		$(".apiProjectDel").on("click",function(){
+			var pid = $(this).data('id');
+			apiProjectDel(pid);
+		});
+		
+		$(".initApiProjectRun").on("click",function(){
+			var pid = $(this).data('id');
+			initApiProjectRun(pid);
+		});
+	}
     
     function apiProjectRun(){
 		$.ajax({
@@ -374,24 +398,6 @@
           	    }
     		});
     	}
-    }
-    
-    function apiProjectEdit(pid){
-    	hideMsgDiv();
-    	$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/project/id=" + pid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var p = data.data;
-      	    		$('#api-project-id').val(p.id);
-      	      		$('#api-project-name').val(p.name);
-      	      		$('#api-project-path').val(p.path);
-      	    	}else{
-      	    		swal("错误!", data.responseMsg, "error");
-      	    	}
-      	    }
-		});
     }
     
     function apiProjectDel(pid){

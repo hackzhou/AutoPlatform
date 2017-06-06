@@ -218,13 +218,32 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Edit\"> <i class=\"fa fa-pencil text-inverse m-r-10\" onclick=\"apiVersionEdit('" + data.id + "');\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i> </a>"
-							 + "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Close\"> <i class=\"fa fa-close text-danger\" onclick=\"apiVersionDel('" + data.id + "');\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiVersionEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiVersionDel'><i class=\"fa fa-close text-danger\"></i></a>";
+						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
-    		]
+    		],
+    		fnDrawCallback : function() {
+    			initTableEvent();
+    		}
     	});
     }
+    
+    function initTableEvent() {
+		$(".apiVersionEdit").on("click",function(){
+			hideMsgDiv();
+			var v = $(this).data('data');
+			$('#api-version-id').val(v.id);
+	    	$('#api-version-version').val(v.version);
+	    	$('#api-version-channel').val(v.channel);
+		});
+		
+		$(".apiVersionDel").on("click",function(){
+			var pid = $(this).data('id');
+			apiVersionDel(pid);
+		});
+	}
     
     function initApiVersionModal(){
     	$('#api-version-id').val("");
@@ -267,24 +286,6 @@
           	    }
     		});
     	}
-    }
-    
-    function apiVersionEdit(vid){
-    	hideMsgDiv();
-    	$.ajax({
-			type:"get",
-      		url:"<%=request.getContextPath()%>/api/version/id=" + vid,
-      		success:function(data){
-      	    	if(data.responseCode == "0000"){
-      	    		var v = data.data;
-      	      		$('#api-version-id').val(v.id);
-      	    		$('#api-version-version').val(v.version);
-      	    		$('#api-version-channel').val(v.channel);
-      	    	}else{
-      	    		swal("错误!", data.responseMsg, "error");
-      	    	}
-      	    }
-		});
     }
     
     function apiVersionDel(vid){
