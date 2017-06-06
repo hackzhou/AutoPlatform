@@ -355,7 +355,7 @@
 						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>";
 						if(data.run == 1){
-							return html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
+							html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
 						}
 						return String.format(html, data.id, JSON.stringify(data));
 					}
@@ -373,7 +373,7 @@
 			var c = $(this).data('data');
 			$('#api-case-id').val(c.id);
   	      	$('#api-case-name').val(c.name);
-  	  		$('#api-case-body').val(c.body);
+  	  		$('#api-case-body').val(jsonFormat(c.body));
   	      	$('#api-case-strategy').val(c.strategy);
 			$('#api-case-run' + c.run).prop("checked", true);
 			initApiCaseVersion(c.versiono.id);

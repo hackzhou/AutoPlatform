@@ -24,6 +24,9 @@ String.format = function() {
 };
 
 function jsonFormat(data){
+	if(data == null || data == ""){
+		return "";
+	}
 	return JSON.stringify(JSON.parse(data), null, '\t');
 }
 
