@@ -296,8 +296,8 @@
 			$("#baseText").val(jsonFormat(data.resulta));
 			$("#newText").val(jsonFormat(data.resultb));
 			diffUsingJS(0);
-			if(data.caseo != null && data.caseo.strategy != null && data.caseo.strategy != ""){
-				$("#ignores").html("（忽略字段：" + data.caseo.strategy + "）");
+			if(data.strategy != null && data.strategy != ""){
+				$("#ignores").html("（忽略字段：" + data.strategy + "）");
 			}
 		});
 	}

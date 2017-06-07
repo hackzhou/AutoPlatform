@@ -55,6 +55,9 @@ public class AResultDetail implements Serializable{
 
 	@Column(name="account")
 	private String account;
+	
+	@Column(name="strategy")
+	private String strategy;
 
 	@Column(name="body")
 	private String body;
@@ -91,6 +94,7 @@ public class AResultDetail implements Serializable{
 		this.version = aResultDetail.getVersion();
 		this.channel = aResultDetail.getChannel();
 		this.account = aResultDetail.getAccount();
+		this.strategy = aResultDetail.getStrategy();
 		this.body = aResultDetail.getBody();
 		this.resulta = aResultDetail.getResulta();
 		this.resultb = aResultDetail.getResultb();
@@ -106,6 +110,7 @@ public class AResultDetail implements Serializable{
 		this.description = aCase.getInterfaceo().getDescription();
 		this.name = aCase.getName();
 		this.body = aCase.getBody();
+		this.strategy = aCase.getStrategy();
 	}
 
 	public Integer getId() {
@@ -168,6 +173,12 @@ public class AResultDetail implements Serializable{
 	public void setAccount(String account) {
 		this.account = account;
 	}
+	public String getStrategy() {
+		return strategy;
+	}
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
 	public String getBody() {
 		return body;
 	}
@@ -215,9 +226,9 @@ public class AResultDetail implements Serializable{
 	public String toString() {
 		return "AResultDetail [id=" + id + ", resulto=" + resulto + ", caseo=" + caseo + ", name=" + name + ", type="
 				+ type + ", url=" + url + ", description=" + description + ", version=" + version + ", channel="
-				+ channel + ", account=" + account + ", body=" + body + ", resulta=" + resulta + ", resultb=" + resultb
-				+ ", status=" + status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
-				+ "]";
+				+ channel + ", account=" + account + ", strategy=" + strategy + ", body=" + body + ", resulta="
+				+ resulta + ", resultb=" + resultb + ", status=" + status + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }
