@@ -56,7 +56,7 @@
                   <th>名称</th>
                   <th>状态</th>
                   <th>运行时长</th>
-                  <th>成功/失败/总数</th>
+                  <th><b style='color:green'>成功</b>/<b style='color:red'>失败</b>/<b style='color:blue'>总数</b></th>
                   <th>运行人</th>
                   <th>创建时间</th>
                   <th>操作</th>
