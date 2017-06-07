@@ -49,7 +49,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="exampleModalLabel6">结果对比</h4>
+              <h4 class="modal-title" id="exampleModalLabel6">结果对比<label class="text-danger" id="ignores"></label></h4>
             </div>
             <div class="modal-body">
               <form id="api-result-detail-diff-form" class="form-horizontal form-material">
@@ -296,6 +296,9 @@
 			$("#baseText").val(jsonFormat(data.resulta));
 			$("#newText").val(jsonFormat(data.resultb));
 			diffUsingJS(0);
+			if(data.caseo != null && data.caseo.strategy != null && data.caseo.strategy != ""){
+				$("#ignores").html("（忽略字段：" + data.caseo.strategy + "）");
+			}
 		});
 	}
 

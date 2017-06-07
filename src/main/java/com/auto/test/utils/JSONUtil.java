@@ -14,6 +14,13 @@ public class JSONUtil {
 		System.out.println(new JSONUtil().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
 	}
 	
+	public boolean compareJson(String json1, String json2, String[] ignore){
+		if(json1 == null || json2 == null){
+			return false;
+		}
+		return compareJson(JSON.parse(json1), JSON.parse(json2), ignore);
+	}
+	
 	public boolean compareJson(Object json1, Object json2, String[] ignore){
 		try {
 			if(json1 instanceof JSONObject){

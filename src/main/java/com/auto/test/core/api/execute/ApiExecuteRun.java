@@ -54,7 +54,7 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
 				ignore = aCase.getStrategy().split(",");
 			}
-			if(aResultDetail.getResulta() != null && new JSONUtil().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+			if(new JSONUtil().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
 				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
 			}else{
 				aResultDetail.setStatus(ApiStatus.FAILURE.name());
