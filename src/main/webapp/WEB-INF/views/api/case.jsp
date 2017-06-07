@@ -378,7 +378,8 @@
 			$('#api-case-id').val(c.id);
   	      	$('#api-case-name').val(c.name);
   	  		$('#api-case-body').val(jsonFormat(c.body));
-  	      	$('#api-case-strategy').val(c.strategy);
+  	  		$('#api-case-strategy').tagsinput('removeAll');
+  	      	$('#api-case-strategy').tagsinput('add', c.strategy);
 			$('#api-case-run' + c.run).prop("checked", true);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.id);
@@ -486,8 +487,8 @@
 		$('#api-case-id').val("");
 		$('#api-case-name').val("");
 		$('#api-case-body').val("");
-    	$('#api-case-strategy').val("");
 		$('#api-case-run1').prop("checked",true);
+    	$('#api-case-strategy').tagsinput('removeAll');
     	initApiCaseVersion(null);
     	initApiCaseInterface(null);
     	autoHeight($("#api-case-body")[0]);
