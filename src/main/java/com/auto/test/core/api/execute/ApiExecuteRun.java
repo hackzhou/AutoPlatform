@@ -15,6 +15,7 @@ import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
 import com.auto.test.service.IApiResultDetailService;
 import com.auto.test.service.IApiResultService;
+import com.auto.test.utils.JSONUtil;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
@@ -49,7 +50,11 @@ public class ApiExecuteRun implements Runnable {
 				aResultDetail.setResultb(sendMessagePost(apiSendMessage, apiContext.getAuthorb(), apiContext.getUrlb(), channel, version));
 			}
 			IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
-			if(aResultDetail.getResulta() != null && aResultDetail.getResulta().equals(aResultDetail.getResultb())){
+			String[] ignore = null;
+			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
+				ignore = aCase.getStrategy().split(",");
+			}
+			if(aResultDetail.getResulta() != null && new JSONUtil().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
 				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
 			}else{
 				aResultDetail.setStatus(ApiStatus.FAILURE.name());

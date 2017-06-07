@@ -23,6 +23,7 @@
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- page CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -104,13 +105,15 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
-	                        <i class="ti-star text-danger"></i>
+				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点</span>
+				              <input type="text" id="api-case-strategy" name="api-case-strategy" value="" data-role="tagsinput" placeholder="添加字段">
+				            </div>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-strategy" name="api-case-strategy" class="form-control" placeholder="验证点">
+	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
+	                        <i class="ti-star text-danger"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -215,6 +218,7 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>

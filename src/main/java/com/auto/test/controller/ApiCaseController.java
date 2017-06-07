@@ -75,14 +75,14 @@ public class ApiCaseController extends BaseController{
 			@RequestParam("api-case-body") String body, @RequestParam("api-case-run") String run) {
 		try {
 			if(id == null || id.isEmpty()){
-				Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim(), Integer.parseInt(run)));
+				Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), trimArray(strategy), Integer.parseInt(run)));
 				if(pid != null){
 					return successJson();
 				}else{
 					return failedJson("添加案例失败！");
 				}
 			}else{
-				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), strategy.trim(), Integer.parseInt(run)));
+				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), trimArray(strategy), Integer.parseInt(run)));
 				if(aCase != null){
 					return successJson();
 				}else{
@@ -114,6 +114,19 @@ public class ApiCaseController extends BaseController{
 		} catch (Exception e) {
 			return failedJson();
 		}
+	}
+	
+	private String trimArray(String text){
+		if(text != null && !text.isEmpty()){
+			String result = "";
+			for (String s : text.trim().split(",")) {
+				if(!s.trim().isEmpty()){
+					result += "," + s.trim();
+				}
+			}
+			return result.startsWith(",") ? result.substring(1) : "";
+		}
+		return "";
 	}
 	
 }
