@@ -161,12 +161,12 @@ public class BaseController implements MessageSourceAware {
 		return start < 0 ? 0 : start;
 	}
 
-	public AUser getCurrentUser(HttpServletRequest request) {
+	protected AUser getCurrentUser(HttpServletRequest request) {
 		AUser user = (AUser) request.getSession().getAttribute("user");
 		return user;
 	}
 	
-	public String getCurrentUserName(HttpServletRequest request) {
+	protected String getCurrentUserName(HttpServletRequest request) {
 		AUser user = (AUser) request.getSession().getAttribute("user");
 		if(user != null){
 			return user.getUsername();
@@ -174,12 +174,25 @@ public class BaseController implements MessageSourceAware {
 		return "";
 	}
 	
-	public String jsonFormat(String result, boolean format){
+	protected String jsonFormat(String result, boolean format){
 		if(result != null && !result.isEmpty()){
 			JSONObject json = JSON.parseObject(result.trim());
 			return JSON.toJSONString(json, format);
 		}
 		return null;
+	}
+	
+	protected String trimArray(String text){
+		if(text != null && !text.isEmpty()){
+			String result = "";
+			for (String s : text.trim().split(",")) {
+				if(!s.trim().isEmpty()){
+					result += "," + s.trim();
+				}
+			}
+			return result.startsWith(",") ? result.substring(1) : "";
+		}
+		return "";
 	}
 
 }

@@ -74,14 +74,14 @@ public class ApiVersionController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
 		try {
 			if(id == null || id.isEmpty()){
-				Integer pid = versionService.create(new AVersion(version.trim(), channel.trim()));
+				Integer pid = versionService.create(new AVersion(version.trim(), trimArray(channel)));
 				if(pid != null){
 					return successJson();
 				}else{
 					return failedJson("添加版本失败！");
 				}
 			}else{
-				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), channel.trim()));
+				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), trimArray(channel)));
 				if(aVersion != null){
 					return successJson();
 				}else{

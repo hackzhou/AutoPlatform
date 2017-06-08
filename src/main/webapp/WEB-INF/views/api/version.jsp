@@ -21,6 +21,8 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
 <!--alerts CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<!-- page CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -66,7 +68,7 @@
           <div class="white-box">
             <!-- /.modal -->
             <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog" role="document" style="width: 1000px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -82,10 +84,9 @@
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-version-channel" name="api-version-channel" class="form-control" placeholder="版本渠道号">
-	                        <i class="ti-star text-danger"></i>
-	                      </div>
+	                      <div class="input-group m-b-20"> <span class="input-group-addon">版本渠道号</span>
+			              	<input type="text" id="api-version-channel" name="api-version-channel" value="" data-role="tagsinput" placeholder="添加渠道号">
+			              </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
@@ -151,6 +152,7 @@
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
@@ -236,7 +238,8 @@
 			var v = $(this).data('data');
 			$('#api-version-id').val(v.id);
 	    	$('#api-version-version').val(v.version);
-	    	$('#api-version-channel').val(v.channel);
+	    	$('#api-version-channel').tagsinput('removeAll');
+  	      	$('#api-version-channel').tagsinput('add', v.channel);
 		});
 		
 		$(".apiVersionDel").on("click",function(){
@@ -248,7 +251,7 @@
     function initApiVersionModal(){
     	$('#api-version-id').val("");
     	$('#api-version-version').val("");
-    	$('#api-version-channel').val("");
+    	$('#api-version-channel').tagsinput('removeAll');
     	hideMsgDiv();
     }
     

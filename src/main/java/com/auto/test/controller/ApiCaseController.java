@@ -116,17 +116,4 @@ public class ApiCaseController extends BaseController{
 		}
 	}
 	
-	private String trimArray(String text){
-		if(text != null && !text.isEmpty()){
-			String result = "";
-			for (String s : text.trim().split(",")) {
-				if(!s.trim().isEmpty()){
-					result += "," + s.trim();
-				}
-			}
-			return result.startsWith(",") ? result.substring(1) : "";
-		}
-		return "";
-	}
-	
 }
