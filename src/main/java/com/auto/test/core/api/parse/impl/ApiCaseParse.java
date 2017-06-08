@@ -65,11 +65,11 @@ public class ApiCaseParse implements IApiCaseParse {
 			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 			aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
 			apiResultService.update(aResult);
-			throw e;
+			throw new BusinessException(e.getMessage());
 		}
 	}
 	
-	private void setAuthor(AAccount aAccount, String version, String channel, String authorA, String authorB){
+	private void setAuthor(AAccount aAccount, String version, String channel, String authorA, String authorB) throws Exception{
 		if(aAccount != null){
 			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 			apiApplication.add(aAccount.getId());
@@ -81,7 +81,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel){
+	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 		logger.info("[Author][POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
 		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version);

@@ -1,6 +1,5 @@
 package com.auto.test.core.api.http.impl;
 
-import java.io.IOException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -19,12 +18,12 @@ public class ApiSendMessage implements IApiSendMessage {
 	private static final Logger logger = LoggerFactory.getLogger(ApiSendMessage.class);
 	
 	@Override
-	public <T> T json2JavaBean(Class<T> c, String text){
+	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
 		return JSON.parseObject(text, c);
 	}
 
 	@Override
-	public String sendGet(String url, String author, String channel, String version) {
+	public String sendGet(String url, String author, String channel, String version) throws Exception{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		try {
@@ -38,25 +37,18 @@ public class ApiSendMessage implements IApiSendMessage {
 			}else{
 				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
-			try {
-				if(response != null){
-					response.close();
-				}
-				if(httpclient != null){
-					httpclient.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(response != null){
+				response.close();
+			}
+			if(httpclient != null){
+				httpclient.close();
 			}
 		}
-		return null;
 	}
 
 	@Override
-	public String sendPost(String url, String data, String author, String channel, String version) {
+	public String sendPost(String url, String data, String author, String channel, String version) throws Exception{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		try {
@@ -74,21 +66,14 @@ public class ApiSendMessage implements IApiSendMessage {
 			}else{
 				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
-			try {
-				if(response != null){
-					response.close();
-				}
-				if(httpclient != null){
-					httpclient.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(response != null){
+				response.close();
+			}
+			if(httpclient != null){
+				httpclient.close();
 			}
 		}
-		return null;
 	}
 	
 }

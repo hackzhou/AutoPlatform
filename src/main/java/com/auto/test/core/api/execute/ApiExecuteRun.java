@@ -9,6 +9,7 @@ import com.auto.test.common.constant.HttpType;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
+import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
@@ -73,7 +74,7 @@ public class ApiExecuteRun implements Runnable {
 			apiResultDetailService.create(aResultDetail);
 			logger.info(aResultDetail.toString());
 		} catch (Exception e) {
-			throw e;
+			throw new BusinessException(e.getMessage());
 		} finally {
 			apiContext.setCount(apiContext.getCount() + 1);
 			AResult aResult = apiContext.getResult();
@@ -92,7 +93,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel){
+	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
 		url = url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 		logger.info("[Run][GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
@@ -100,7 +101,7 @@ public class ApiExecuteRun implements Runnable {
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String author, String version, String channel){
+	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
 		url = url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 		logger.info("[Run][POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + aCase.getBody() + "]");
 		String result = apiSendMessage.sendPost(url, aCase.getBody(), author, channel, version);
