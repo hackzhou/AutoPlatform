@@ -43,12 +43,13 @@ public class ApiCaseParse implements IApiCaseParse {
 		try {
 			List<ACase> list = apiContext.getList();
 			if(list != null && !list.isEmpty()){
-				String authorA = "";
-				String authorB = "";
 				String version = apiContext.getVersion().getVersion();
 				String channels = apiContext.getVersion().getChannel();
 				for (String channel : channels.split(",")) {
-					setAuthor(apiContext.getAccount(), version, channel, authorA, authorB);
+					String authorA = setAuthor(apiContext.getAccount(), urlA, version, channel);
+					logger.info("[AuthorA:" + authorA + "]");
+					String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel);
+					logger.info("[AuthorB:" + authorB + "]");
 					for (ACase aCase : list) {
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
 						cachedThreadPool.execute(apiExecuteRun);
@@ -69,16 +70,14 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private void setAuthor(AAccount aAccount, String version, String channel, String authorA, String authorB) throws Exception{
+	private String setAuthor(AAccount aAccount, String url, String version, String channel) throws Exception{
 		if(aAccount != null){
 			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 			apiApplication.add(aAccount.getId());
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-			authorA = sendMessage(apiSendMessage, urlA, aAccount, version, channel);
-			logger.info("[AuthorA:" + authorA + "]");
-			authorB = sendMessage(apiSendMessage, urlB, aAccount, version, channel);
-			logger.info("[AuthorB:" + authorB + "]");
+			return sendMessage(apiSendMessage, url, aAccount, version, channel);
 		}
+		return "";
 	}
 	
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel) throws Exception{

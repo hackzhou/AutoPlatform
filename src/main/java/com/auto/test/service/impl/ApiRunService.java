@@ -102,14 +102,15 @@ public class ApiRunService implements IApiRunService {
 		if(accountId != null){
 			apiContext.setAccount(accountDao.findById(accountId));
 		}
-		apiContext.setVersion(aVersion);
-		apiContext.setResult(createApiResult(type, runId, runby, list.size(), apiContext));
 		apiContext.setList(list);
-		apiContext.setTotal(list.size());
+		apiContext.setVersion(aVersion);
+		Integer len = aVersion.getChannel().split(",").length;
+		apiContext.setTotal(list.size() * len);
+		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		return apiContext;
 	}
 	
-	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, ApiContext apiContext) throws Exception{
+	private AResult createApiResult(ApiRunType type, Integer runId, String runby, ApiContext apiContext) throws Exception{
 		AResult aResult = new AResult();
 		if(ApiRunType.PROJECT.equals(type)){
 			AProject aProject = projectDao.findById(runId);
@@ -131,7 +132,7 @@ public class ApiRunService implements IApiRunService {
 		aResult.setStatus(ApiRunStatus.RUNNING.name());
 		aResult.setSuccess(0);
 		aResult.setFail(0);
-		aResult.setTotal(total);
+		aResult.setTotal(apiContext.getTotal());
 		aResult.setCreateTime(new Date());
 		aResult.setStartTime(new Date());
 		resultDao.create(aResult);
