@@ -302,7 +302,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.versiono.version;
+						var tooltip = "<div data-toggle='tooltip' title='{0}' data-placement='left'>{1}</div>";
+						return String.format(tooltip, data.versiono.channel.replace(/,/g, "\r\n"), data.versiono.version);
 					}
 				},
 				{
