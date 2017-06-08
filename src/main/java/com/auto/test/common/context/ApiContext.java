@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
@@ -19,24 +18,20 @@ public class ApiContext {
 
 	private Integer count;
 	private Integer total;
-	private String urla;
-	private String urlb;
-	private String authora;
-	private String authorb;
+	
+	private AProject project;
+	private AVersion version;
+	private AAccount account;
 	private AResult result;
-	private AProject aProject;
-	private AVersion aVersion;
-	private AAccount aAccount;
+	
 	private List<ACase> list = new ArrayList<ACase>();
 	private Map<String, String> runInfo = new HashMap<String, String>();
 	
 	public ApiContext() {
 		super();
 		this.count = 0;
-		this.urla = GlobalValueConfig.getConfig("uri.production.environment");
-		this.urlb = GlobalValueConfig.getConfig("uri.advance.environment");
 	}
-	
+
 	public Integer getCount() {
 		return count;
 	}
@@ -49,53 +44,29 @@ public class ApiContext {
 	public void setTotal(Integer total) {
 		this.total = total;
 	}
-	public String getUrla() {
-		return urla;
+	public AProject getProject() {
+		return project;
 	}
-	public void setUrla(String urla) {
-		this.urla = urla;
+	public void setProject(AProject project) {
+		this.project = project;
 	}
-	public String getUrlb() {
-		return urlb;
+	public AVersion getVersion() {
+		return version;
 	}
-	public void setUrlb(String urlb) {
-		this.urlb = urlb;
+	public void setVersion(AVersion version) {
+		this.version = version;
+	}
+	public AAccount getAccount() {
+		return account;
+	}
+	public void setAccount(AAccount account) {
+		this.account = account;
 	}
 	public AResult getResult() {
 		return result;
 	}
 	public void setResult(AResult result) {
 		this.result = result;
-	}
-	public AProject getaProject() {
-		return aProject;
-	}
-	public void setaProject(AProject aProject) {
-		this.aProject = aProject;
-	}
-	public AVersion getaVersion() {
-		return aVersion;
-	}
-	public void setaVersion(AVersion aVersion) {
-		this.aVersion = aVersion;
-	}
-	public AAccount getaAccount() {
-		return aAccount;
-	}
-	public void setaAccount(AAccount aAccount) {
-		this.aAccount = aAccount;
-	}
-	public String getAuthora() {
-		return authora;
-	}
-	public void setAuthora(String authora) {
-		this.authora = authora;
-	}
-	public String getAuthorb() {
-		return authorb;
-	}
-	public void setAuthorb(String authorb) {
-		this.authorb = authorb;
 	}
 	public List<ACase> getList() {
 		return list;
@@ -109,4 +80,5 @@ public class ApiContext {
 	public void setRunInfo(Map<String, String> runInfo) {
 		this.runInfo = runInfo;
 	}
+	
 }

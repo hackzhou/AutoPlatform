@@ -47,84 +47,22 @@ public class ApiRunService implements IApiRunService {
 	private IApiResultDao resultDao;
 
 	@Override
-	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) {
-		try {
-			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-			if(accountId != null && apiApplication.contain(accountId)){
-				throw new BusinessException("该账号正在使用，请稍后运行！");
-			}
-			List<ACase> list = getRunCases(type, runId, versionId);
-			if(list != null && !list.isEmpty()){
-				AVersion aVersion = getApiVersion(list, type, versionId);
-				ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion);
-				if(apiContext != null){
-					IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
-					caseParse.execute(apiContext);
-				}
-			}else{
-				throw new BusinessException("运行[案例]未找到！");
-			}
-		} catch (Exception e) {
-			throw e;
+	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) throws Exception{
+		isNotRunAccount(accountId);
+		List<ACase> list = getRunCases(type, runId, versionId);
+		AVersion aVersion = getApiVersion(list, type, versionId);
+		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion);
+		if(apiContext != null){
+			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
+			caseParse.execute(apiContext);
 		}
 	}
 	
-	private AVersion getApiVersion(List<ACase> list, ApiRunType type, Integer versionId){
-		AVersion aVersion = null;
-		if(ApiRunType.PROJECT.equals(type)){
-			aVersion = versionDao.findById(versionId);
-		}else if(ApiRunType.CASE.equals(type)){
-			aVersion = list.get(0).getVersiono();
+	private void isNotRunAccount(Integer accountId){
+		ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+		if(accountId != null && apiApplication.contain(accountId)){
+			throw new BusinessException("该账号正在使用，请稍后运行！");
 		}
-		if(aVersion == null){
-			throw new BusinessException("运行[版本/渠道号]未找到！");
-		}
-		return aVersion;
-	}
-	
-	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion){
-		try {
-			ApiContext apiContext = new ApiContext();
-			if(accountId != null){
-				apiContext.setaAccount(accountDao.findById(accountId));
-			}
-			apiContext.setaVersion(aVersion);
-			apiContext.setResult(createApiResult(type, runId, runby, list.size(), apiContext));
-			apiContext.setList(list);
-			apiContext.setTotal(list.size());
-			return apiContext;
-		} catch (Exception e) {
-			throw new BusinessException(e.getMessage());
-		}
-	}
-	
-	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, ApiContext apiContext){
-		AResult aResult = new AResult();
-		if(ApiRunType.PROJECT.equals(type)){
-			AProject aProject = projectDao.findById(runId);
-			if(aProject != null){
-				apiContext.setaProject(aProject);
-				aResult.setProjecto(aProject);
-				aResult.setName(String.format(Const.RUN_PROJECT_NAME, aProject.getName()));
-			}
-		}else if(ApiRunType.CASE.equals(type)){
-			ACase aCase = caseDao.findById(runId);
-			if(aCase != null){
-				apiContext.setaProject(aCase.getInterfaceo().getProjecto());
-				aResult.setProjecto(aCase.getInterfaceo().getProjecto());
-				aResult.setName(String.format(Const.RUN_CASE_NAME, aCase.getName()));
-			}
-		}
-		aResult.setVersiono(apiContext.getaVersion());
-		aResult.setRunby(runby);
-		aResult.setStatus(ApiRunStatus.RUNNING.name());
-		aResult.setSuccess(0);
-		aResult.setFail(0);
-		aResult.setTotal(total);
-		aResult.setCreateTime(new Date());
-		aResult.setStartTime(new Date());
-		resultDao.create(aResult);
-		return aResult;
 	}
 	
 	private List<ACase> getRunCases(ApiRunType type, Integer runId, Integer vId){
@@ -140,7 +78,64 @@ public class ApiRunService implements IApiRunService {
 				list.add(aCase);
 			}
 		}
+		if(list.isEmpty()){
+			throw new BusinessException("运行[案例]未找到！");
+		}
 		return list;
+	}
+	
+	private AVersion getApiVersion(List<ACase> list, ApiRunType type, Integer versionId){
+		AVersion aVersion = null;
+		if(ApiRunType.PROJECT.equals(type)){
+			aVersion = versionDao.findById(versionId);
+		}else if(ApiRunType.CASE.equals(type)){
+			aVersion = list.get(0).getVersiono();
+		}
+		if(aVersion == null){
+			throw new BusinessException("运行[版本/渠道号]未找到！");
+		}
+		return aVersion;
+	}
+	
+	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion) throws Exception{
+		ApiContext apiContext = new ApiContext();
+		if(accountId != null){
+			apiContext.setAccount(accountDao.findById(accountId));
+		}
+		apiContext.setVersion(aVersion);
+		apiContext.setResult(createApiResult(type, runId, runby, list.size(), apiContext));
+		apiContext.setList(list);
+		apiContext.setTotal(list.size());
+		return apiContext;
+	}
+	
+	private AResult createApiResult(ApiRunType type, Integer runId, String runby, Integer total, ApiContext apiContext) throws Exception{
+		AResult aResult = new AResult();
+		if(ApiRunType.PROJECT.equals(type)){
+			AProject aProject = projectDao.findById(runId);
+			if(aProject != null){
+				apiContext.setProject(aProject);
+				aResult.setProjecto(aProject);
+				aResult.setName(String.format(Const.RUN_PROJECT_NAME, aProject.getName()));
+			}
+		}else if(ApiRunType.CASE.equals(type)){
+			ACase aCase = caseDao.findById(runId);
+			if(aCase != null){
+				apiContext.setProject(aCase.getInterfaceo().getProjecto());
+				aResult.setProjecto(aCase.getInterfaceo().getProjecto());
+				aResult.setName(String.format(Const.RUN_CASE_NAME, aCase.getName()));
+			}
+		}
+		aResult.setVersiono(apiContext.getVersion());
+		aResult.setRunby(runby);
+		aResult.setStatus(ApiRunStatus.RUNNING.name());
+		aResult.setSuccess(0);
+		aResult.setFail(0);
+		aResult.setTotal(total);
+		aResult.setCreateTime(new Date());
+		aResult.setStartTime(new Date());
+		resultDao.create(aResult);
+		return aResult;
 	}
 	
 }

@@ -35,7 +35,7 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	public List<ACase> findByProjectVersion(Integer pid, Integer vid) {
 		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
 		if(interList != null && !interList.isEmpty()){
-			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).list();
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).list();
 		}
 		return null;
 	}

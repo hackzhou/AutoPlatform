@@ -20,15 +20,22 @@ import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
-import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiResultService;
 
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
 	private ExecutorService cachedThreadPool = null;
+	private String urlA = null;
+	private String urlB = null;
+	private String userLogin = null;
+	private String usersAccessToken = null;
 	
 	public ApiCaseParse(){
 		cachedThreadPool = ThreadPool.getInstance();
+		urlA = GlobalValueConfig.getConfig("uri.production.environment");
+		urlB = GlobalValueConfig.getConfig("uri.advance.environment");
+		userLogin = GlobalValueConfig.getConfig("uri.user.login");
+		usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
 	}
 
 	@Override
@@ -36,15 +43,21 @@ public class ApiCaseParse implements IApiCaseParse {
 		try {
 			List<ACase> list = apiContext.getList();
 			if(list != null && !list.isEmpty()){
-				setAuthor(apiContext);
-				for (ACase aCase : list) {
-					ApiExecuteRun apiExecuteRun = new ApiExecuteRun(aCase, apiContext);
-					cachedThreadPool.execute(apiExecuteRun);
+				String authorA = "";
+				String authorB = "";
+				String version = apiContext.getVersion().getVersion();
+				String channels = apiContext.getVersion().getChannel();
+				for (String channel : channels.split(",")) {
+					setAuthor(apiContext.getAccount(), version, channel, authorA, authorB);
+					for (ACase aCase : list) {
+						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
+						cachedThreadPool.execute(apiExecuteRun);
+					}
 				}
 			}
 		} catch (Exception e) {
 			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-			apiApplication.remove(apiContext.getaAccount().getId());
+			apiApplication.remove(apiContext.getAccount().getId());
 			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
 			AResult aResult = apiContext.getResult();
 			aResult.setEndTime(new Date());
@@ -56,37 +69,29 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private void setAuthor(ApiContext apiContext){
-		AVersion aVersion = apiContext.getaVersion();
-		AAccount aAccount = apiContext.getaAccount();
+	private void setAuthor(AAccount aAccount, String version, String channel, String authorA, String authorB){
 		if(aAccount != null){
 			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 			apiApplication.add(aAccount.getId());
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-			String accessTokena = sendMessage(apiSendMessage, apiContext.getUrla(), aAccount, aVersion);
-			if(accessTokena != null && !accessTokena.isEmpty()){
-				logger.info("[Authora:" + accessTokena + "]");
-				apiContext.setAuthora(accessTokena);
-			}
-			String accessTokenb = sendMessage(apiSendMessage, apiContext.getUrlb(), aAccount, aVersion);
-			if(accessTokenb != null && !accessTokenb.isEmpty()){
-				logger.info("[Authorb:" + accessTokenb + "]");
-				apiContext.setAuthorb(accessTokenb);
-			}
+			authorA = sendMessage(apiSendMessage, urlA, aAccount, version, channel);
+			logger.info("[AuthorA:" + authorA + "]");
+			authorB = sendMessage(apiSendMessage, urlB, aAccount, version, channel);
+			logger.info("[AuthorB:" + authorB + "]");
 		}
 	}
 	
-	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, AVersion aVersion){
+	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel){
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
-		logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.login") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data + "]");
-		String result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.login"), data, "", aVersion.getChannel(), aVersion.getVersion());
+		logger.info("[Author][POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
+		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
 			logger.info("[Author]" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
-				logger.info("[Author][POST:" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "],[Channel:" + aVersion.getChannel() + "],[Version:" + aVersion.getVersion() + "],[Data:" + data2 + "]");
-				result = apiSendMessage.sendPost(url + GlobalValueConfig.getConfig("uri.user.accessToken"), data2, "", aVersion.getChannel(), aVersion.getVersion());
+				logger.info("[Author][POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
+				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[Author]" + accessToken.toString());
