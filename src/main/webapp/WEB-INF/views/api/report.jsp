@@ -143,7 +143,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.versiono == null ? "-" : data.versiono.version;
+						return tooltipJsonByVersion(data.versiono.version, data.versiono.channel);
 					}
 				},
 				{

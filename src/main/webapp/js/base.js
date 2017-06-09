@@ -54,6 +54,19 @@ function tooltipJson(text){
 	return String.format(html, json, glance);
 }
 
+function tooltipJsonByVersion(version, channel){
+	if((version == null || version.length == 0)){
+		return "-";
+	}
+	if(channel == null || channel.length == 0){
+		channel = "";
+	}else{
+		channel = channel.replace(/,/g, "\r\n");
+	}
+	var tooltip = "<div data-toggle='tooltip' title='{0}' data-placement='left'>{1}</div>";
+	return String.format(tooltip, channel, version);
+}
+
 function getCookie(name){
 	var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
 	if(arr=document.cookie.match(reg)){
