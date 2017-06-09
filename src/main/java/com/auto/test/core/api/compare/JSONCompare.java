@@ -9,8 +9,11 @@ import com.alibaba.fastjson.JSONObject;
 public class JSONCompare {
 	
 	public static void main(String[] args) {
-		String s1 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":166948,\"useAmount\":2035.0,\"userType\":1}}";
-		String s2 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"http://192.168.101.242/cdn/c7ea/1334/16a3/4de7/b3da/426c/802a/5b05/c7ea133416a34de7b3da426c802a5b05.png\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":37,\"useAmount\":1.31451443E8,\"userType\":1}}";
+//		String s1 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":166948,\"useAmount\":2035.0,\"userType\":1}}";
+//		String s2 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"http://192.168.101.242/cdn/c7ea/1334/16a3/4de7/b3da/426c/802a/5b05/c7ea133416a34de7b3da426c802a5b05.png\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":37,\"useAmount\":1.31451443E8,\"userType\":1}}";
+//		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
+		String s1 = "{\"code\": 200,\"data\":[{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
+		String s2 = "{\"code\": 200,\"data\":[{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
 		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
 	}
 	
@@ -67,6 +70,8 @@ public class JSONCompare {
 	public boolean compareJson(JSONArray json1, JSONArray json2, String[] ignore) {
 		if(json1.size() == json2.size()){
 			if(!json1.isEmpty()){
+				json1.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
+				json2.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
 				Iterator<?> i1 = json1.iterator();
 				Iterator<?> i2 = json2.iterator();
 				while (i1.hasNext()) {
