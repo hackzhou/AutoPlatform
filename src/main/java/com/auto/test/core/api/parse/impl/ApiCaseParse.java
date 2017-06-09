@@ -71,7 +71,7 @@ public class ApiCaseParse implements IApiCaseParse {
 				aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
 				apiResultService.update(aResult);
 			} catch (Exception e2) {
-				throw new BusinessException(e2.getMessage());
+				throw e2;
 			}
 			throw new BusinessException(e.getMessage());
 		}

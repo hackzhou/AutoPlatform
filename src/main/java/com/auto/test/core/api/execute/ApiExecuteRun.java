@@ -94,7 +94,7 @@ public class ApiExecuteRun implements Runnable {
 					apiResultService.update(aResult);
 				}
 			} catch (Exception e2) {
-				throw new BusinessException(e2.getMessage());
+				throw e2;
 			}
 		}
 	}
