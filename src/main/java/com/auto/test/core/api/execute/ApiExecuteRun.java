@@ -76,19 +76,25 @@ public class ApiExecuteRun implements Runnable {
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		} finally {
-			apiContext.setCount(apiContext.getCount() + 1);
-			AResult aResult = apiContext.getResult();
-			if(ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
-				aResult.setSuccess(aResult.getSuccess() + 1);
-			}
-			if(apiContext.getCount().equals(apiContext.getTotal())){
-				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-				apiApplication.remove(apiContext.getAccount().getId());
-				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-				aResult.setEndTime(new Date());
-				aResult.setStatus(ApiRunStatus.COMPLETE.name());
-				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-				apiResultService.update(aResult);
+			try {
+				apiContext.setCount(apiContext.getCount() + 1);
+				AResult aResult = apiContext.getResult();
+				if(ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
+					aResult.setSuccess(aResult.getSuccess() + 1);
+				}
+				if(apiContext.getCount().equals(apiContext.getTotal())){
+					ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+					if(apiContext.getAccount() != null){
+						apiApplication.remove(apiContext.getAccount().getId());
+					}
+					IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+					aResult.setEndTime(new Date());
+					aResult.setStatus(ApiRunStatus.COMPLETE.name());
+					aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+					apiResultService.update(aResult);
+				}
+			} catch (Exception e2) {
+				throw new BusinessException(e2.getMessage());
 			}
 		}
 	}

@@ -57,15 +57,21 @@ public class ApiCaseParse implements IApiCaseParse {
 				}
 			}
 		} catch (Exception e) {
-			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-			apiApplication.remove(apiContext.getAccount().getId());
-			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-			AResult aResult = apiContext.getResult();
-			aResult.setEndTime(new Date());
-			aResult.setStatus(ApiRunStatus.COMPLETE.name());
-			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-			aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
-			apiResultService.update(aResult);
+			try {
+				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+				if(apiContext.getAccount() != null){
+					apiApplication.remove(apiContext.getAccount().getId());
+				}
+				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+				AResult aResult = apiContext.getResult();
+				aResult.setEndTime(new Date());
+				aResult.setStatus(ApiRunStatus.COMPLETE.name());
+				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+				aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
+				apiResultService.update(aResult);
+			} catch (Exception e2) {
+				throw new BusinessException(e2.getMessage());
+			}
 			throw new BusinessException(e.getMessage());
 		}
 	}
