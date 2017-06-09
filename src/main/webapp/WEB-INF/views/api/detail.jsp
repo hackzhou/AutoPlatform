@@ -279,7 +279,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
