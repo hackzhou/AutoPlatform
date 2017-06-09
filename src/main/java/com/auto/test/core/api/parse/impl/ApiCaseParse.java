@@ -58,8 +58,8 @@ public class ApiCaseParse implements IApiCaseParse {
 			}
 		} catch (Exception e) {
 			try {
-				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 				if(apiContext.getAccount() != null){
+					ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 					apiApplication.remove(apiContext.getAccount().getId());
 				}
 				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");

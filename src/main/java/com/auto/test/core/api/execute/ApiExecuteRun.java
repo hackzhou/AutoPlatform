@@ -10,13 +10,13 @@ import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
+import com.auto.test.core.api.compare.JSONCompare;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
 import com.auto.test.service.IApiResultDetailService;
 import com.auto.test.service.IApiResultService;
-import com.auto.test.utils.JSONUtil;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
@@ -66,7 +66,7 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
 				ignore = aCase.getStrategy().split(",");
 			}
-			if(new JSONUtil().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+			if(new JSONCompare().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
 				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
 			}else{
 				aResultDetail.setStatus(ApiStatus.FAILURE.name());
@@ -83,8 +83,8 @@ public class ApiExecuteRun implements Runnable {
 					aResult.setSuccess(aResult.getSuccess() + 1);
 				}
 				if(apiContext.getCount().equals(apiContext.getTotal())){
-					ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 					if(apiContext.getAccount() != null){
+						ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 						apiApplication.remove(apiContext.getAccount().getId());
 					}
 					IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
