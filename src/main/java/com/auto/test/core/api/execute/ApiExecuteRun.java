@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.constant.HttpType;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
@@ -55,11 +56,11 @@ public class ApiExecuteRun implements Runnable {
 			}
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, urlA, authorA, version, channel));
-				aResultDetail.setResultb(sendMessageGet(apiSendMessage, urlB, authorB, version, channel));
+				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(urlA), authorA, version, channel));
+				aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(urlB), authorB, version, channel));
 			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, urlA, authorA, version, channel));
-				aResultDetail.setResultb(sendMessagePost(apiSendMessage, urlB, authorB, version, channel));
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(urlA), authorA, version, channel));
+				aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(urlB), authorB, version, channel));
 			}
 			IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
 			String[] ignore = null;
@@ -99,8 +100,15 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
+	private String getFullUrl(String url){
+		String desc = aCase.getInterfaceo().getDescription();
+		if(desc != null && desc.contains(Const.API_PLATFORM)){
+			return url + "/" + Const.API_PLATFORM + aCase.getInterfaceo().getUrl();
+		}
+		return url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
+	}
+	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
-		url = url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 		logger.info("[Run][GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
 		logger.info(result);
@@ -108,7 +116,6 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
-		url = url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 		logger.info("[Run][POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + aCase.getBody() + "]");
 		String result = apiSendMessage.sendPost(url, aCase.getBody(), author, channel, version);
 		logger.info(result);
