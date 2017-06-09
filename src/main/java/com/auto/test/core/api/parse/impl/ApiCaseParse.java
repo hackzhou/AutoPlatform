@@ -31,6 +31,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String usersAccessToken = null;
 	
 	public ApiCaseParse(){
+		super();
 		cachedThreadPool = ThreadPool.getInstance();
 		urlA = GlobalValueConfig.getConfig("uri.production.environment");
 		urlB = GlobalValueConfig.getConfig("uri.advance.environment");
