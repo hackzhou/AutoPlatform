@@ -47,7 +47,7 @@ public class ApiUploadController extends BaseController{
 	
 	@RequestMapping(value = "/fileDownload", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> download(HttpServletRequest request) throws Exception {
-		File file = ResourceUtils.getFile("classpath:template/exportInterface.xlsx");
+		File file = ResourceUtils.getFile("classpath:template/ExportIntetface.xlsx");
 		String fileName = new String("接口批量导入模板.xlsx".getBytes("UTF-8"),"iso-8859-1");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
