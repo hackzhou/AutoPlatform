@@ -90,6 +90,14 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>项目 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-project" name="api-case-project" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>版本 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-version" name="api-case-version" class="form-select" style="width: 80%;"></select>
@@ -279,12 +287,16 @@
 	$(document).ready(function() {
 		createTable();
 		initEvent();
+		initApiCaseProject(null);
 		initApiCaseVersion(null);
-		initApiCaseInterface(null);
+		initApiCaseInterface($('#api-case-project').val(),null);
 		initApiCaseCase(null);
 	});
 	
 	function initEvent(){
+		$("#api-case-project").change(function(){
+			initApiCaseInterface($(this).val(),null);
+		});
 		$("#api-case-interface").change(function(){
 			var iid = $(this).val();
 			$.ajax({
@@ -440,8 +452,9 @@
   	      		$('#api-case-is-result0').prop("checked",true);
   	      		$("#resultDiv").hide();
   	      	}
+			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
-  	      	initApiCaseInterface(c.interfaceo.id);
+  	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
   	    	initApiCaseCase(c.link);
 		});
 		
@@ -494,6 +507,29 @@
 		});
 	}
 	
+	function initApiCaseProject(projectid){
+    	$.ajax({
+    		type:"get",
+    		async: false,
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(projectid == list[i].id || i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+    					}
+    				}
+    				$('#api-case-project').empty();
+    				$('#api-case-project').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
 	function initApiCaseVersion(versionid){
     	$.ajax({
     		type:"get",
@@ -516,10 +552,10 @@
     	});
     }
 	
-	function initApiCaseInterface(interfaceid){
+	function initApiCaseInterface(projectid, interfaceid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/interface/list/data",
+    		url:"<%=request.getContextPath()%>/api/interface/list/data/projectid=" + projectid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "<optgroup label=\"请选择...\">";
@@ -592,8 +628,9 @@
 		$('#api-case-is-result0').prop("checked",true);
 		$('#api-case-result').val("");
 		$("#resultDiv").hide();
+		initApiCaseProject(null);
     	initApiCaseVersion(null);
-    	initApiCaseInterface(null);
+    	initApiCaseInterface($('#api-case-project').val(),null);
     	initApiCaseCase(null);
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
