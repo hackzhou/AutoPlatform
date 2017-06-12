@@ -73,8 +73,14 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, @RequestParam("api-case-strategy") String strategy, 
 			@RequestParam("api-case-body") String body, @RequestParam("api-case-run") String run, @RequestParam("api-case-result") String result,
-			@RequestParam("api-case-case") String cases) {
+			@RequestParam("api-case-case") String cases, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-is-result") String isResult) {
 		try {
+			if("0".equals(isBody)){
+				body = null;
+			}
+			if("0".equals(isResult)){
+				result = null;
+			}
 			if(id == null || id.isEmpty()){
 				Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(cases), Integer.parseInt(run)));
 				if(pid != null){
