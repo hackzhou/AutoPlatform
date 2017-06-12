@@ -12,6 +12,13 @@ String.prototype.trim=function() {
     return this.replace(/(^\s*)|(\s*$)/g,'');
 }
 
+Array.prototype.contains = function(text) {
+	for (i in this) {
+		if (this[i] == text) return true;
+	}
+	return false;
+}
+
 String.format = function() {
 	if (arguments.length == 0)
 		return null;

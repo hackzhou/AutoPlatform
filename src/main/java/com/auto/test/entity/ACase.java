@@ -37,9 +37,15 @@ public class ACase implements Serializable{
 	
 	@Column(name="name")
 	private String name;
+	
+	@Column(name="link")
+	private String link;
 
 	@Column(name="body")
 	private String body;
+
+	@Column(name="result")
+	private String result;
 	
 	@Column(name="strategy")
 	private String strategy;
@@ -60,24 +66,28 @@ public class ACase implements Serializable{
 		super();
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer run) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
 		this.name = name;
 		this.body = body;
+		this.result = result;
 		this.strategy = strategy;
 		this.run = run;
+		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String strategy, Integer run) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer run) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
 		this.name = name;
 		this.body = body;
+		this.result = result;
 		this.strategy = strategy;
 		this.run = run;
+		this.link = link;
 	}
 	
 	public void update(ACase aCase) {
@@ -85,8 +95,10 @@ public class ACase implements Serializable{
 		this.versiono = aCase.getVersiono();
 		this.name = aCase.getName();
 		this.body = aCase.getBody();
+		this.result = aCase.getResult();
 		this.strategy = aCase.getStrategy();
 		this.run = aCase.getRun();
+		this.link = aCase.getLink();
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
@@ -114,6 +126,18 @@ public class ACase implements Serializable{
 	}
 	public void setVersiono(AVersion versiono) {
 		this.versiono = versiono;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
 	}
 	public String getBody() {
 		return body;
@@ -155,8 +179,8 @@ public class ACase implements Serializable{
 	@Override
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
-				+ ", body=" + body + ", strategy=" + strategy + ", run=" + run + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", run=" + run
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }

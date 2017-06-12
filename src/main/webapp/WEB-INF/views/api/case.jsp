@@ -23,6 +23,7 @@
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- page CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/plugins/bower_components/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
@@ -95,6 +96,20 @@
 	                        </div>
 	                      </div>
 	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
+	                        <i class="ti-star text-danger"></i>
+	                      </div>
+	                    </div>
+	                    <hr style="height:3px;border:none;border-top:3px dotted red;">
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点</span>
+				              <input type="text" id="api-case-strategy" name="api-case-strategy" value="" data-role="tagsinput" placeholder="添加字段">
+				            </div>
+	                      </div>
+	                    </div>
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -105,35 +120,50 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点</span>
-				              <input type="text" id="api-case-strategy" name="api-case-strategy" value="" data-role="tagsinput" placeholder="添加字段">
-				            </div>
+	                        <label class="col-sm-3 text-info text-center"><code>是否有请求体 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-body0" name="api-case-is-body" value="0" checked>没有</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-body1" name="api-case-is-body" value="1">有</label>
+                        	</div>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-case-name" name="api-case-name" class="form-control" placeholder="案例名称">
-	                        <i class="ti-star text-danger"></i>
-	                      </div>
-	                    </div>
-	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20" style="width:100%">
+	                      <div id="bodyDiv" class="col-md-12 m-b-20" style="width:100%;display: none">
 							<textarea autoHeight="true" name="api-case-body" id="api-case-body" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="请求体"></textarea>
                            </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
-								<button type="button" class="close" aria-hidden="true">
-									&times;
-								</button>
-								<span id="msg"></span>
-							</div>
+	                        <label class="col-sm-3 text-info text-center"><code>是否是新接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-result0" name="api-case-is-result" value="0" checked>不是</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-result1" name="api-case-is-result" value="1">是 </label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div id="resultDiv" class="col-md-12 m-b-20" style="width:100%;display: none">
+							<textarea autoHeight="true" name="api-case-result" id="api-case-result" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="验证结果"></textarea>
+                           </div>
+	                    </div>
+	                    <hr style="height:3px;border:none;border-top:3px dotted red;">
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>关联案例 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-case-case" name="api-case-case" class="form-control select2 select2-multiple" multiple="multiple" data-placeholder="请选择..." style="width: 80%;"></select>
+	                        </div>
 	                      </div>
 	                    </div>
 	                </form>
                   </div>
                   <div class="modal-footer">
+                  	<div id="msgDiv" class="alert alert-danger alert-dismissable text-center" style="display: none">
+						<button type="button" class="close" aria-hidden="true">
+							&times;
+						</button>
+						<span id="msg"></span>
+					</div>
                     <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseSave();">保存</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
@@ -217,6 +247,7 @@
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/multiselect/js/jquery.multi-select.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <!-- start - This is for export functionality only -->
@@ -250,6 +281,7 @@
 		initEvent();
 		initApiCaseVersion(null);
 		initApiCaseInterface(null);
+		initApiCaseCase(null);
 	});
 	
 	function initEvent(){
@@ -265,6 +297,18 @@
 	      	    	}
 	      	    }
 			});
+		});
+		$("#api-case-is-result0").change(function(){
+			$("#resultDiv").hide();
+		});
+		$("#api-case-is-result1").change(function(){
+			$("#resultDiv").show();
+		});
+		$("#api-case-is-body0").change(function(){
+			$("#bodyDiv").hide();
+		});
+		$("#api-case-is-body1").change(function(){
+			$("#bodyDiv").show();
 		});
 	}
 	
@@ -377,12 +421,28 @@
 			var c = $(this).data('data');
 			$('#api-case-id').val(c.id);
   	      	$('#api-case-name').val(c.name);
-  	  		$('#api-case-body').val(jsonFormat(c.body));
-  	  		$('#api-case-strategy').tagsinput('removeAll');
-  	      	$('#api-case-strategy').tagsinput('add', c.strategy);
-			$('#api-case-run' + c.run).prop("checked", true);
+  	      	$('#api-case-run' + c.run).prop("checked", true);
+  	      	$('#api-case-strategy').tagsinput('removeAll');
+	      	$('#api-case-strategy').tagsinput('add', c.strategy);
+  	      	if(c.body != null && c.body != ""){
+  	      		$('#api-case-is-body1').prop("checked",true);
+  	  			$('#api-case-body').val(jsonFormat(c.body));
+  	  			$("#bodyDiv").show();
+  	      	}else{
+  	      		$('#api-case-is-body0').prop("checked",true);
+  	      		$("#bodyDiv").hide();
+  	      	}
+			if(c.result != null && c.result != ""){
+				$('#api-case-is-result1').prop("checked",true);
+				$('#api-case-result').val(jsonFormat(c.result));
+				$("#resultDiv").show();
+			}else{
+  	      		$('#api-case-is-result0').prop("checked",true);
+  	      		$("#resultDiv").hide();
+  	      	}
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.id);
+  	    	initApiCaseCase(c.link);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -483,38 +543,78 @@
     	});
     }
 	
+	function initApiCaseCase(caseids){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/case/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "<optgroup label=\"请选择...\">";
+    				var selected = "";
+    				var list = data.data;
+    				if(caseids != null && caseids != ""){
+    					var caseidarr = caseids.split(",");
+    					for (var i = 0; i < caseidarr.length; i++) {
+							for (var j = 0; j < list.length; j++) {
+								if(caseidarr[i] == list[j].id){
+    								selected += "<option value='" + list[j].id + "'>[" + list[j].id +  "] " + list[j].name + "</option>";
+    								break;
+    							}
+							}
+						}
+    					for(var i = 0; i < list.length; i++){
+    						if(!caseidarr.contains(list[i].id)){
+        						optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
+    						}
+        				}
+    				}else{
+    					for(var i = 0; i < list.length; i++){
+        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
+        				}
+    				}
+    				optionstring += "</optgroup>";
+    				$('#api-case-case').empty();
+    				$('#api-case-case').append(selected + optionstring);
+    				$('#api-case-case').select2();
+    			}
+    		}
+    	});
+    }
+	
 	function initApiCaseModal(){
 		$('#api-case-id').val("");
 		$('#api-case-name').val("");
-		$('#api-case-body').val("");
 		$('#api-case-run1').prop("checked",true);
-    	$('#api-case-strategy').tagsinput('removeAll');
+		$('#api-case-strategy').tagsinput('removeAll');
+		$('#api-case-is-body0').prop("checked",true);
+		$('#api-case-body').val("");
+		$("#bodyDiv").hide();
+		$('#api-case-is-result0').prop("checked",true);
+		$('#api-case-result').val("");
+		$("#resultDiv").hide();
     	initApiCaseVersion(null);
     	initApiCaseInterface(null);
+    	initApiCaseCase(null);
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
     }
 	
 	function apiCaseSave(){
-    	if($('#api-case-name').val().trim() == ""){
+		if($('#api-case-name').val().trim() == ""){
 	    	showMsgDiv("请输入案例名称！");
     	}else{
-    		if($('#api-case-body').val().trim() == ""){
-    			apiCaseCreateUpdate();
-    		}else{
-    			$.ajax({
-        			type:"post",
-              		url:"<%=request.getContextPath()%>/api/case/is/json",
-              		data:$('#api-case-form').serialize(),
-              		success:function(data){
-              			if(data.responseCode == "0000"){
-              				apiCaseCreateUpdate();
-              			}else{
-              				showMsgDiv("您输入的JSON格式不正确！");
-              			}
-              	    }
-        		});
-    		}
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/case/is/json",
+          		data:$('#api-case-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				apiCaseCreateUpdate();
+          			}else{
+          				showMsgDiv("您输入的JSON格式不正确 => " + data.responseMsg);
+          			}
+          	    }
+    		});
     	}
     }
 	
