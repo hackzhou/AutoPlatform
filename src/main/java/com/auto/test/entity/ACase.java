@@ -2,6 +2,9 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -61,9 +66,17 @@ public class ACase implements Serializable{
 	
 	@Column(name="memo")
 	private String memo;
+	
+	@Transient
+	List<ACase> list = new LinkedList<ACase>();
 
 	public ACase() {
 		super();
+	}
+
+	public ACase(Integer id) {
+		super();
+		this.id = id;
 	}
 	
 	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer run) {
@@ -174,6 +187,12 @@ public class ACase implements Serializable{
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public List<ACase> getList() {
+		return list;
+	}
+	public void setList(List<ACase> list) {
+		this.list = list;
 	}
 
 	@Override

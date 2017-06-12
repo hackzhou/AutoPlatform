@@ -1,5 +1,6 @@
 package com.auto.test.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,18 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).list();
 		}
 		return null;
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<ACase> findByIds(List<Integer> cids) {
+		List<ACase> list = new ArrayList<ACase>();
+		if(cids != null && cids.size() > 0){
+			for (Integer cid : cids) {
+				list.add(new ACase(cid));
+			}
+		}
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("id", list)).list();
 	}
 
 }

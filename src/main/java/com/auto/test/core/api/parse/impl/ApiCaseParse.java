@@ -52,8 +52,10 @@ public class ApiCaseParse implements IApiCaseParse {
 					String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel);
 					logger.info("[AuthorB:" + authorB + "]");
 					for (ACase aCase : list) {
-						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
-						cachedThreadPool.execute(apiExecuteRun);
+						if(aCase.getRun().equals(1)){
+							ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
+							cachedThreadPool.execute(apiExecuteRun);
+						}
 					}
 				}
 			}

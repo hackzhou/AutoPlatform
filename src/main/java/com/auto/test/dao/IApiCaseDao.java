@@ -12,5 +12,7 @@ public interface IApiCaseDao extends IBaseDao<ACase> {
 	List<ACase> findByVersionId(Integer id);
 	
 	List<ACase> findByProjectVersion(Integer pid, Integer vid);
+	
+	List<ACase> findByIds(List<Integer> cids);
 
 }

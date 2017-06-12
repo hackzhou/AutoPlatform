@@ -1,6 +1,7 @@
 package com.auto.test.core.api.execute;
 
 import java.util.Date;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.ApiRunStatus;
@@ -45,81 +46,108 @@ public class ApiExecuteRun implements Runnable {
 
 	@Override
 	public void run() {
-		AResultDetail aResultDetail = new AResultDetail();
 		try {
-			aResultDetail.update(aCase);
-			aResultDetail.setVersion(version);
-			aResultDetail.setChannel(channel);
-			aResultDetail.setResulto(apiContext.getResult());
-			if(apiContext.getAccount() != null){
-				aResultDetail.setAccount(apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword());
+			runBody(aCase, new AResultDetail());
+			List<ACase> list = aCase.getList();
+			if(list != null && !list.isEmpty()){
+				for (ACase aCase : list) {
+					runBody(aCase, new AResultDetail());
+				}
 			}
-			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(urlA), authorA, version, channel));
-				aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(urlB), authorB, version, channel));
-			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(urlA), authorA, version, channel));
-				aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(urlB), authorB, version, channel));
-			}
-			IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
-			String[] ignore = null;
-			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
-				ignore = aCase.getStrategy().split(",");
-			}
-			if(new JSONCompare().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
-				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
-			}else{
-				aResultDetail.setStatus(ApiStatus.FAILURE.name());
-			}
-			apiResultDetailService.create(aResultDetail);
-			logger.info(aResultDetail.toString());
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
+		}
+	}
+	
+	private void runBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
+		try {
+			sendMessage(aCase, aResultDetail);
+			saveResultDetail(aCase, aResultDetail);
 		} finally {
-			try {
-				apiContext.setCount(apiContext.getCount() + 1);
-				AResult aResult = apiContext.getResult();
-				if(ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
-					aResult.setSuccess(aResult.getSuccess() + 1);
-				}
-				if(apiContext.getCount().equals(apiContext.getTotal())){
-					if(apiContext.getAccount() != null){
-						ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-						apiApplication.remove(apiContext.getAccount().getId());
-					}
-					IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-					aResult.setEndTime(new Date());
-					aResult.setStatus(ApiRunStatus.COMPLETE.name());
-					aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-					apiResultService.update(aResult);
-				}
-			} catch (Exception e2) {
-				throw e2;
+			runEnd(aResultDetail);
+		}
+	}
+	
+	private void saveResultDetail(ACase aCase, AResultDetail aResultDetail){
+		aResultDetail.update(aCase);
+		aResultDetail.setVersion(version);
+		aResultDetail.setChannel(channel);
+		aResultDetail.setResulto(apiContext.getResult());
+		if(apiContext.getAccount() != null){
+			aResultDetail.setAccount(apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword());
+		}
+		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
+		String[] ignore = null;
+		if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
+			ignore = aCase.getStrategy().split(",");
+		}
+		if(new JSONCompare().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+			aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+		}else{
+			aResultDetail.setStatus(ApiStatus.FAILURE.name());
+		}
+		apiResultDetailService.create(aResultDetail);
+		logger.info(aResultDetail.toString());
+	}
+	
+	private void runEnd(AResultDetail aResultDetail) throws Exception{
+		apiContext.setCount(apiContext.getCount() + 1);
+		AResult aResult = apiContext.getResult();
+		if(ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
+			aResult.setSuccess(aResult.getSuccess() + 1);
+		}
+		if(apiContext.getCount().equals(apiContext.getTotal())){
+			if(apiContext.getAccount() != null){
+				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+				apiApplication.remove(apiContext.getAccount().getId());
 			}
+			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+			aResult.setEndTime(new Date());
+			aResult.setStatus(ApiRunStatus.COMPLETE.name());
+			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+			apiResultService.update(aResult);
 		}
 	}
 	
-	private String getFullUrl(String url){
-		String desc = aCase.getInterfaceo().getDescription();
-		if(desc != null && desc.contains(Const.API_PLATFORM)){
-			return url + "/" + Const.API_PLATFORM + aCase.getInterfaceo().getUrl();
+	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
+		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
+		if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
+			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
+				aResultDetail.setResulta(aCase.getResult());
+			}else{
+				aResultDetail.setResulta(sendMessageGet(aCase, apiSendMessage, getFullUrl(aCase, urlA), authorA, version, channel));
+			}
+			aResultDetail.setResultb(sendMessageGet(aCase, apiSendMessage, getFullUrl(aCase, urlB), authorB, version, channel));
+		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
+			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
+				aResultDetail.setResulta(aCase.getResult());
+			}else{
+				aResultDetail.setResulta(sendMessagePost(aCase, apiSendMessage, getFullUrl(aCase, urlA), authorA, version, channel));
+			}
+			aResultDetail.setResultb(sendMessagePost(aCase, apiSendMessage, getFullUrl(aCase, urlB), authorB, version, channel));
 		}
-		return url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 	}
 	
-	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
+	private String sendMessageGet(ACase aCase, IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
 		logger.info("[Run][GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
 		logger.info(result);
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
+	private String sendMessagePost(ACase aCase, IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
 		logger.info("[Run][POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + aCase.getBody() + "]");
 		String result = apiSendMessage.sendPost(url, aCase.getBody(), author, channel, version);
 		logger.info(result);
 		return result;
+	}
+	
+	private String getFullUrl(ACase aCase, String url){
+		String desc = aCase.getInterfaceo().getDescription();
+		if(desc != null && desc.contains(Const.API_PLATFORM)){
+			return url + "/" + Const.API_PLATFORM + aCase.getInterfaceo().getUrl();
+		}
+		return url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
 	}
 
 	public ACase getaCase() {

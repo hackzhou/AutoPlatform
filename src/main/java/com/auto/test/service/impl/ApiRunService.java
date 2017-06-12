@@ -70,11 +70,15 @@ public class ApiRunService implements IApiRunService {
 		if(ApiRunType.PROJECT.equals(type)){
 			List<ACase> cList = caseDao.findByProjectVersion(runId, vId);
 			if(cList != null && !cList.isEmpty()){
+				for (ACase aCase : cList) {
+					aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
+				}
 				list.addAll(cList);
 			}
 		}else if(ApiRunType.CASE.equals(type)){
 			ACase aCase = caseDao.findById(runId);
 			if(aCase != null){
+				aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
 				list.add(aCase);
 			}
 		}
@@ -105,7 +109,7 @@ public class ApiRunService implements IApiRunService {
 		apiContext.setList(list);
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;
-		apiContext.setTotal(list.size() * len);
+		apiContext.setTotal(getCaseTotal(list, len));
 		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		return apiContext;
 	}
@@ -137,6 +141,28 @@ public class ApiRunService implements IApiRunService {
 		aResult.setStartTime(new Date());
 		resultDao.create(aResult);
 		return aResult;
+	}
+	
+	private List<Integer> getIdList(String ids){
+		List<Integer> idList = null;
+		if(ids != null && !ids.isEmpty()){
+			idList = new ArrayList<Integer>();
+			for (String s : ids.split(",")) {
+				idList.add(Integer.parseInt(s));
+			}
+		}
+		return idList;
+	}
+	
+	private Integer getCaseTotal(List<ACase> list, Integer len){
+		Integer total = 0;
+		if(list != null && !list.isEmpty()){
+			total = list.size();
+			for (ACase aCase : list) {
+				total += aCase.getList().size();
+			}
+		}
+		return total * len;
 	}
 	
 }
