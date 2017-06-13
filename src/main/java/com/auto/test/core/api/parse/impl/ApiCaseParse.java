@@ -42,41 +42,49 @@ public class ApiCaseParse implements IApiCaseParse {
 	@Override
 	public void execute(ApiContext apiContext) {
 		try {
-			List<ACase> list = apiContext.getList();
-			if(list != null && !list.isEmpty()){
-				String version = apiContext.getVersion().getVersion();
-				String channels = apiContext.getVersion().getChannel();
-				for (String channel : channels.split(",")) {
-					String authorA = setAuthor(apiContext.getAccount(), urlA, version, channel);
-					logger.info("[AuthorA:" + authorA + "]");
-					String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel);
-					logger.info("[AuthorB:" + authorB + "]");
-					for (ACase aCase : list) {
-						if(aCase.getRun().equals(1)){
-							ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
-							cachedThreadPool.execute(apiExecuteRun);
-						}
-					}
-				}
-			}
+			executeBody(apiContext);
 		} catch (Exception e) {
 			try {
-				if(apiContext.getAccount() != null){
-					ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-					apiApplication.remove(apiContext.getAccount().getId());
-				}
-				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-				AResult aResult = apiContext.getResult();
-				aResult.setEndTime(new Date());
-				aResult.setStatus(ApiRunStatus.COMPLETE.name());
-				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-				aResult.setMsg(e.getMessage().length() > 2048 ? e.getMessage().substring(0, 2048) : e.getMessage());
-				apiResultService.update(aResult);
-			} catch (Exception e2) {
-				throw e2;
+				executeFinal(apiContext, e.getMessage());
+			} catch (Exception ex) {
+				throw new BusinessException(ex.getMessage());
 			}
 			throw new BusinessException(e.getMessage());
 		}
+	}
+	
+	private void executeBody(ApiContext apiContext) throws Exception{
+		List<ACase> list = apiContext.getList();
+		if(list != null && !list.isEmpty()){
+			String version = apiContext.getVersion().getVersion();
+			String channels = apiContext.getVersion().getChannel();
+			for (String channel : channels.split(",")) {
+				String authorA = setAuthor(apiContext.getAccount(), urlA, version, channel);
+				logger.info("[AuthorA:" + authorA + "]");
+				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel);
+				logger.info("[AuthorB:" + authorB + "]");
+				for (ACase aCase : list) {
+					if(new Integer(1).equals(aCase.getRun())){
+						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
+						cachedThreadPool.execute(apiExecuteRun);
+					}
+				}
+			}
+		}
+	}
+	
+	private void executeFinal(ApiContext apiContext, String message) throws Exception{
+		if(apiContext.getAccount() != null){
+			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+			apiApplication.remove(apiContext.getAccount().getId());
+		}
+		IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+		AResult aResult = apiContext.getResult();
+		aResult.setEndTime(new Date());
+		aResult.setStatus(ApiRunStatus.COMPLETE.name());
+		aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+		aResult.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
+		apiResultService.update(aResult);
 	}
 	
 	private String setAuthor(AAccount aAccount, String url, String version, String channel) throws Exception{
