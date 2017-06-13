@@ -387,7 +387,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "15%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -396,7 +396,7 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "15%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -410,7 +410,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.strategy;
+						return tooltipJson(data.strategy);
 					}
 				},
 				{
@@ -481,7 +481,7 @@
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
-  	      	editApiCaseLink(c.link);
+  	      	editApiCaseLink(c.link,c.id);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -524,10 +524,10 @@
 		}
 		$('#api-case-count').val(1);
 		$('.del-link-case').attr({"disabled":"disabled"});
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null);
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null,null);
 	}
 	
-	function editApiCaseLink(link){
+	function editApiCaseLink(link, myid){
 		var count = parseInt($('#api-case-count').val());
 		if(count > 1){
 			for (var i = 2; i <= count; i++) {
@@ -536,14 +536,14 @@
 		}
 		$('#api-case-count').val(1);
 		if(link == null || link == ""){
-			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null);
+			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null,myid);
 		}else{
 			var arrlink = link.split(",");
 			for (var i = 1; i <= arrlink.length; i++) {
 				if(i != 1){
 					addApiCaseLink();
 				}
-				initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),i,arrlink[i-1]);
+				initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),i,arrlink[i-1],myid);
 			}
 		}
 		if($('#api-case-count').val() == "1"){
@@ -566,7 +566,7 @@
 		$('#api-case-form').append(String.format(html, count));
 		$('#api-case-count').val(count);
 		$('.del-link-case').removeAttr("disabled");
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null);
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null,null);
 	}
 	
 	function delApiCaseLink(){
@@ -704,7 +704,7 @@
     	});
     }
 	
-	function initApiCaseCase(projectid, versionid, index, cid){
+	function initApiCaseCase(projectid, versionid, index, cid, myid){
 		$.ajax({
     		type:"get",
     		url:"<%=request.getContextPath()%>/api/case/list/data/projectid=" + projectid + "/versionid=" + versionid,
@@ -714,16 +714,18 @@
     				var selected = "";
     				var list = data.data;
     				for (var i = 0; i < list.length; i++) {
-    					if(cid == null){
-    						if(i == 0){
-        						selected = "<option value='0'>无</option>";
+    					if(list[i].id != myid){
+    						if(cid == null){
+        						if(i == 0){
+            						selected = "<option value='0'>无</option>";
+            					}
+        					}else{
+        						if(cid == list[i].id || i == 0){
+        							selected = "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
+            					}
         					}
-    					}else{
-    						if(cid == list[i].id || i == 0){
-    							selected = "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
-        					}
+        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
     					}
-    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
     				}
     				optionstring += "</optgroup>";
     				$('#api-case-case' + index).empty();
