@@ -164,8 +164,8 @@
 	                        <div class="col-sm-2">
 	                        	<input type="hidden" id="api-case-count" name="api-case-count" value="1"/>
 	                        	<input type="hidden" id="api-case-link" name="api-case-link" value=""/>
-	                        	<button type="button" class="btn btn-info add-link-case" onclick="addApiCaseLink()">添加</button>
-	                        	<button type="button" class="btn btn-info del-link-case" onclick="delApiCaseLink()">删除</button>
+	                        	<button type="button" class="btn btn-success add-link-case" onclick="addApiCaseLink()">添加</button>
+	                        	<button type="button" class="btn btn-success del-link-case" onclick="delApiCaseLink()">删除</button>
 	                        </div>
 	                      </div>
 	                    </div>
