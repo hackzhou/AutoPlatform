@@ -216,7 +216,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return tooltipJsonByVersion(data.versiono.version, data.versiono.channel);
+						return tooltipJsonByVersion(data.version, data.channel);
 					}
 				},
 				{
