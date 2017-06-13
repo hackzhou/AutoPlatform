@@ -219,8 +219,8 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
@@ -241,8 +241,8 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";

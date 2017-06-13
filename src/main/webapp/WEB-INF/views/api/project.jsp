@@ -79,7 +79,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1">添加/更新 项目</h4>
+                    <h4 class="modal-title" id="exampleModalLabel1"><label class="text-inverse" id="project-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-project-form" class="form-horizontal form-material">
@@ -121,7 +121,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabelRun2">运行项目</h4>
+                    <h4 class="modal-title" id="exampleModalLabelRun2">项目-运行</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-project-run-form" class="form-horizontal form-material">
@@ -278,6 +278,7 @@
     
     function initTableEvent() {
 		$(".apiProjectEdit").on("click",function(){
+			$('#project-modal-lable').html("项目-编辑");
 			hideMsgDiv();
 			var p = $(this).data('data');
 			$('#api-project-id').val(p.id);
@@ -295,6 +296,14 @@
 			initApiProjectRun(pid);
 		});
 	}
+    
+    function initApiProjectModal(){
+    	$('#project-modal-lable').html("项目-添加");
+    	$('#api-project-id').val("");
+    	$('#api-project-name').val("");
+    	$('#api-project-path').val("");
+    	hideMsgDiv();
+    }
     
     function apiProjectRun(){
 		$.ajax({
@@ -325,7 +334,7 @@
       			if(data.responseCode == "0000"){
       				var optionstring = "<option value='0'>无</option>";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
+    				for(var i = list.length - 1; i >= 0; i--){
     					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
     				}
     				$('#api-project-run-account').empty();
@@ -343,8 +352,8 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(versionid == list[i].id || i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(versionid == list[i].id || i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
@@ -355,13 +364,6 @@
     			}
     		}
     	});
-    }
-    
-    function initApiProjectModal(){
-    	$('#api-project-id').val("");
-    	$('#api-project-name').val("");
-    	$('#api-project-path').val("");
-    	hideMsgDiv();
     }
     
     function apiProjectSave(){

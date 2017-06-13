@@ -79,7 +79,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel3">添加/更新 接口</h4>
+                    <h4 class="modal-title" id="exampleModalLabel3"><label class="text-inverse" id="interface-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-interface-form" class="form-horizontal form-material">
@@ -298,6 +298,7 @@
     
     function initTableEvent() {
 		$(".apiInterfaceEdit").on("click", function(){
+			$('#interface-modal-lable').html("接口-编辑");
 			hideMsgDiv();
 			var i = $(this).data('data');
 			$('#api-interface-id').val(i.id);
@@ -314,6 +315,17 @@
 		});
 	}
     
+    function initApiInterfaceModal(){
+    	$('#interface-modal-lable').html("接口-添加");
+    	$('#api-interface-id').val("");
+    	$('#api-interface-name').val("");
+    	$('#api-interface-url').val("");
+    	$('#api-interface-description').val("");
+    	initApiInterfaceProject(null);
+    	$('#api-interface-type').val("GET");
+    	hideMsgDiv();
+    }
+    
     function initApiInterfaceProject(projectid){
     	$.ajax({
     		type:"get",
@@ -322,8 +334,8 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(projectid == list[i].id || i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(projectid == list[i].id || i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
@@ -334,16 +346,6 @@
     			}
     		}
     	});
-    }
-    
-    function initApiInterfaceModal(){
-    	$('#api-interface-id').val("");
-    	$('#api-interface-name').val("");
-    	$('#api-interface-url').val("");
-    	$('#api-interface-description').val("");
-    	initApiInterfaceProject(null);
-    	$('#api-interface-type').val("GET");
-    	hideMsgDiv();
     }
     
     function apiInterfaceSave(){

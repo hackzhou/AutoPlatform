@@ -79,7 +79,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel4">添加/更新 账号</h4>
+                    <h4 class="modal-title" id="exampleModalLabel4"><label class="text-inverse" id="account-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-account-form" class="form-horizontal form-material">
@@ -241,6 +241,7 @@
     
     function initTableEvent() {
 		$(".apiAccountEdit").on("click", function(){
+			$('#account-modal-lable').html("账号-编辑");
 			hideMsgDiv();
 			var a = $(this).data('data');
 			$('#api-account-id').val(a.id);
@@ -255,6 +256,7 @@
 	}
     
     function initApiAccountModal(){
+    	$('#account-modal-lable').html("账号-添加");
     	$('#api-account-id').val("");
     	$('#api-account-loginname').val("");
     	$('#api-account-password').val("");

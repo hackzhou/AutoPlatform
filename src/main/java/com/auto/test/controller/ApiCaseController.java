@@ -57,6 +57,17 @@ public class ApiCaseController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getCaseDataByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
+		if(pid != null && !pid.isEmpty() && vid != null && !vid.isEmpty()){
+			List<ACase> list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
+			return successJson(list);
+		}else{
+			return successJson();
+		}
+	}
+	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getCaseById(@PathVariable("id") String id) {

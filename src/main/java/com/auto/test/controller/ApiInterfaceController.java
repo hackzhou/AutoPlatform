@@ -46,8 +46,12 @@ public class ApiInterfaceController extends BaseController{
 	@RequestMapping(value = "/list/data/projectid={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getDataByProject(@PathVariable("id") String id) {
-		List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
-		return successJson(list);
+		if(id != null && !id.isEmpty()){
+			List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
+			return successJson(list);
+		}else{
+			return successJson();
+		}
 	}
 	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)

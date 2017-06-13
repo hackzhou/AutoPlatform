@@ -72,7 +72,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel2">添加/更新 版本</h4>
+                    <h4 class="modal-title" id="exampleModalLabel2"><label class="text-inverse" id="version-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-version-form" class="form-horizontal form-material">
@@ -234,6 +234,7 @@
     
     function initTableEvent() {
 		$(".apiVersionEdit").on("click",function(){
+			$('#version-modal-lable').html("版本-编辑");
 			hideMsgDiv();
 			var v = $(this).data('data');
 			$('#api-version-id').val(v.id);
@@ -249,6 +250,7 @@
 	}
     
     function initApiVersionModal(){
+    	$('#version-modal-lable').html("版本-添加");
     	$('#api-version-id').val("");
     	$('#api-version-version').val("");
     	$('#api-version-channel').tagsinput('removeAll');

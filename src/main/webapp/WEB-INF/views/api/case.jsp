@@ -74,7 +74,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel5">添加/更新 案例</h4>
+                    <h4 class="modal-title" id="exampleModalLabel5"><label class="text-inverse" id="case-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-case-form" class="form-horizontal form-material">
@@ -184,7 +184,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabelRun1">运行案例</h4>
+                    <h4 class="modal-title" id="exampleModalLabelRun1">案例-运行</h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-case-run-form" class="form-horizontal form-material">
@@ -290,12 +290,16 @@
 		initApiCaseProject(null);
 		initApiCaseVersion(null);
 		initApiCaseInterface($('#api-case-project').val(),null);
-		initApiCaseCase(null);
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null);
 	});
 	
 	function initEvent(){
 		$("#api-case-project").change(function(){
 			initApiCaseInterface($(this).val(),null);
+			initApiCaseCase($(this).val(),$('#api-case-version').val(),null);
+		});
+		$("#api-case-version").change(function(){
+			initApiCaseCase($('#api-case-project').val(),$(this).val(),null);
 		});
 		$("#api-case-interface").change(function(){
 			var iid = $(this).val();
@@ -429,6 +433,7 @@
 	
 	function initTableEvent() {
 		$(".apiCaseEdit").on("click", function(){
+			$('#case-modal-lable').html("案例-编辑");
 			hideMsgDiv();
 			var c = $(this).data('data');
 			$('#api-case-id').val(c.id);
@@ -455,7 +460,7 @@
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
-  	    	initApiCaseCase(c.link);
+  	    	initApiCaseCase(c.interfaceo.projecto.id, c.versiono.id, c.link);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -468,6 +473,26 @@
 			initApiCaseRun(cid);
 		});
 	}
+	
+	function initApiCaseModal(){
+		$('#case-modal-lable').html("案例-添加");
+		$('#api-case-id').val("");
+		$('#api-case-name').val("");
+		$('#api-case-run1').prop("checked",true);
+		$('#api-case-strategy').tagsinput('removeAll');
+		$('#api-case-is-body0').prop("checked",true);
+		$('#api-case-body').val("");
+		$("#bodyDiv").hide();
+		$('#api-case-is-result0').prop("checked",true);
+		$('#api-case-result').val("");
+		$("#resultDiv").hide();
+		initApiCaseProject(null);
+    	initApiCaseVersion(null);
+    	initApiCaseInterface($('#api-case-project').val(),null);
+    	initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null);
+    	autoHeight($("#api-case-body")[0]);
+    	hideMsgDiv();
+    }
 	
 	function apiCaseRun(){
 		$.ajax({
@@ -497,7 +522,7 @@
       			if(data.responseCode == "0000"){
       				var optionstring = "<option value='0'>无</option>";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
+    				for(var i = list.length - 1; i >= 0; i--){
     					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
     				}
     				$('#api-case-run-account').empty();
@@ -516,8 +541,8 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(projectid == list[i].id || i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(projectid == list[i].id || i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
@@ -533,13 +558,14 @@
 	function initApiCaseVersion(versionid){
     	$.ajax({
     		type:"get",
+    		async: false,
     		url:"<%=request.getContextPath()%>/api/version/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(versionid == list[i].id || i == 0){
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(versionid == list[i].id || i == (list.length - 1)){
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
@@ -561,7 +587,7 @@
     				var optionstring = "<optgroup label=\"请选择...\">";
     				var selected = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
+    				for (var i = 0; i < list.length; i++) {
     					if(interfaceid == list[i].id || i == 0){
     						selected = "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
     						if(interfaceid == null){
@@ -579,10 +605,10 @@
     	});
     }
 	
-	function initApiCaseCase(caseids){
+	function initApiCaseCase(projectid, versionid, caseids){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/case/list/data",
+    		url:"<%=request.getContextPath()%>/api/case/list/data/projectid=" + projectid + "/versionid=" + versionid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "<optgroup label=\"请选择...\">";
@@ -598,13 +624,13 @@
     							}
 							}
 						}
-    					for(var i = 0; i < list.length; i++){
+    					for (var i = 0; i < list.length; i++) {
     						if(!caseidarr.contains(list[i].id)){
         						optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
     						}
         				}
     				}else{
-    					for(var i = 0; i < list.length; i++){
+    					for (var i = 0; i < list.length; i++) {
         					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
         				}
     				}
@@ -615,25 +641,6 @@
     			}
     		}
     	});
-    }
-	
-	function initApiCaseModal(){
-		$('#api-case-id').val("");
-		$('#api-case-name').val("");
-		$('#api-case-run1').prop("checked",true);
-		$('#api-case-strategy').tagsinput('removeAll');
-		$('#api-case-is-body0').prop("checked",true);
-		$('#api-case-body').val("");
-		$("#bodyDiv").hide();
-		$('#api-case-is-result0').prop("checked",true);
-		$('#api-case-result').val("");
-		$("#resultDiv").hide();
-		initApiCaseProject(null);
-    	initApiCaseVersion(null);
-    	initApiCaseInterface($('#api-case-project').val(),null);
-    	initApiCaseCase(null);
-    	autoHeight($("#api-case-body")[0]);
-    	hideMsgDiv();
     }
 	
 	function apiCaseSave(){
