@@ -84,7 +84,7 @@
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否运行 <i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-run1" name="api-case-run" value="1" checked>运行 </label>
-                          		<label class="radio-inline"><input type="radio" id="api-case-run0" name="api-case-run" value="0">不运行 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-run0" name="api-case-run" value="0">不运行(关联后运行一次) </label>
                         	</div>
 	                      </div>
 	                    </div>
@@ -157,9 +157,15 @@
 	                    <hr style="height:3px;border:none;border-top:3px dotted red;">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>关联案例 <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-case-case" name="api-case-case" class="form-control select2 select2-multiple" multiple="multiple" data-placeholder="请选择..." style="width: 80%;"></select>
+	                        <label class="col-sm-2 text-info text-center"><code>关联案例（1） <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-8">
+		                        <select id="api-case-case1" name="api-case-case1" class="form-control select2" style="width: 100%;"></select>
+	                        </div>
+	                        <div class="col-sm-2">
+	                        	<input type="hidden" id="api-case-count" name="api-case-count" value="1"/>
+	                        	<input type="hidden" id="api-case-link" name="api-case-link" value=""/>
+	                        	<button type="button" class="btn btn-info add-link-case" onclick="addApiCaseLink()">添加</button>
+	                        	<button type="button" class="btn btn-info del-link-case" onclick="delApiCaseLink()">删除</button>
 	                        </div>
 	                      </div>
 	                    </div>
@@ -218,6 +224,7 @@
                   <th>名称</th>
                   <th>请求体</th>
                   <th>非验证点</th>
+                  <th>关联案例</th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -290,16 +297,16 @@
 		initApiCaseProject(null);
 		initApiCaseVersion(null);
 		initApiCaseInterface($('#api-case-project').val(),null);
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null,null);
+		initApiCaseLink();
 	});
 	
 	function initEvent(){
 		$("#api-case-project").change(function(){
 			initApiCaseInterface($(this).val(),null);
-			initApiCaseCase($(this).val(),$('#api-case-version').val(),null,null);
+			initApiCaseLink();
 		});
 		$("#api-case-version").change(function(){
-			initApiCaseCase($('#api-case-project').val(),$(this).val(),null,null);
+			initApiCaseLink();
 		});
 		$("#api-case-interface").change(function(){
 			var iid = $(this).val();
@@ -326,6 +333,11 @@
 		$("#api-case-is-body1").change(function(){
 			$("#bodyDiv").show();
 		});
+		if(parseInt($('#api-case-count').val()) > 1){
+			$('.del-link-case').removeAttr("disabled");
+		}else{
+			$('.del-link-case').attr({"disabled":"disabled"});
+		}
 	}
 	
 	function createTable() {
@@ -348,7 +360,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -402,8 +414,17 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return (data.link == null || data.link == "") ? "-" : data.link;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -412,7 +433,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 8 ],
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -460,7 +481,7 @@
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
-  	    	initApiCaseCase(c.interfaceo.projecto.id, c.versiono.id, c.link, c.id);
+  	      	editApiCaseLink(c.link);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -489,10 +510,88 @@
 		initApiCaseProject(null);
     	initApiCaseVersion(null);
     	initApiCaseInterface($('#api-case-project').val(),null);
-    	initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null,null);
+    	initApiCaseLink();
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
     }
+	
+	function initApiCaseLink(){
+		var count = parseInt($('#api-case-count').val());
+		if(count > 1){
+			for (var i = 2; i <= count; i++) {
+				$("#link-case-" + i).remove();
+			}
+		}
+		$('#api-case-count').val(1);
+		$('.del-link-case').attr({"disabled":"disabled"});
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null);
+	}
+	
+	function editApiCaseLink(link){
+		var count = parseInt($('#api-case-count').val());
+		if(count > 1){
+			for (var i = 2; i <= count; i++) {
+				$("#link-case-" + i).remove();
+			}
+		}
+		$('#api-case-count').val(1);
+		if(link == null || link == ""){
+			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null);
+		}else{
+			var arrlink = link.split(",");
+			for (var i = 1; i <= arrlink.length; i++) {
+				if(i != 1){
+					addApiCaseLink();
+				}
+				initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),i,arrlink[i-1]);
+			}
+		}
+		if($('#api-case-count').val() == "1"){
+			$('.del-link-case').attr({"disabled":"disabled"});
+		}else{
+			$('.del-link-case').removeAttr("disabled");
+		}
+	}
+	
+	function addApiCaseLink(){
+		var html = "<div id=\"link-case-{0}\" class=\"form-group\">" + 
+					"<div class=\"col-md-12 m-b-20\">" + 
+						"<label class=\"col-sm-2 text-info text-center\"><code>关联案例（{0}）<i class=\"fa fa-chevron-right text-danger\"></i></code></label>" + 
+						"<div class=\"col-sm-8\">" + 
+							"<select id=\"api-case-case{0}\" name=\"api-case-case{0}\" class=\"form-control select2\" style=\"width: 100%;\"></select>" + 
+						"</div>" + 
+					"</div>" + 
+				"</div>";
+		var count = parseInt($('#api-case-count').val()) + 1;
+		$('#api-case-form').append(String.format(html, count));
+		$('#api-case-count').val(count);
+		$('.del-link-case').removeAttr("disabled");
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null);
+	}
+	
+	function delApiCaseLink(){
+		var count = parseInt($('#api-case-count').val());
+		if(count > 1){
+			$("#link-case-" + count).remove();
+			$('#api-case-count').val(count - 1);
+			if(count == 2){
+				$('.del-link-case').attr({"disabled":"disabled"});
+			}
+		}
+	}
+	
+	function countApiCaseLink(){
+		var result = "";
+		var count = parseInt($('#api-case-count').val());
+		for (var i = 1; i <= count; i++) {
+			result += $('#api-case-case' + i).val() + ",";
+		}
+		result = result.replace(/0,/g, "");
+		if(result[result.length-1] == ','){
+			result = result.substring(0, result.length-1);
+		}
+		$('#api-case-link').val(result);
+	}
 	
 	function apiCaseRun(){
 		$.ajax({
@@ -605,50 +704,41 @@
     	});
     }
 	
-	function initApiCaseCase(projectid, versionid, caseids, myid){
-    	$.ajax({
+	function initApiCaseCase(projectid, versionid, index, cid){
+		$.ajax({
     		type:"get",
     		url:"<%=request.getContextPath()%>/api/case/list/data/projectid=" + projectid + "/versionid=" + versionid,
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				var optionstring = "<optgroup label=\"请选择...\">";
+    				var optionstring = "<optgroup label=\"请选择...\"><option value='0'>无</option>";
     				var selected = "";
     				var list = data.data;
-    				if(caseids != null && caseids != ""){
-    					var caseidarr = caseids.split(",");
-    					for (var i = 0; i < caseidarr.length; i++) {
-							for (var j = 0; j < list.length; j++) {
-								if(caseidarr[i] == list[j].id){
-    								selected += "<option value='" + list[j].id + "'>[" + list[j].id +  "] " + list[j].name + "</option>";
-    								break;
-    							}
-							}
-						}
-    					for (var i = 0; i < list.length; i++) {
-    						if(!caseidarr.contains(list[i].id) && list[i].id != myid){
-        						optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
-    						}
-        				}
-    				}else{
-    					for (var i = 0; i < list.length; i++) {
-    						if(list[i].id != myid){
-	        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
-    						}
-        				}
+    				for (var i = 0; i < list.length; i++) {
+    					if(cid == null){
+    						if(i == 0){
+        						selected = "<option value='0'>无</option>";
+        					}
+    					}else{
+    						if(cid == list[i].id || i == 0){
+    							selected = "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
+        					}
+    					}
+    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
     				}
     				optionstring += "</optgroup>";
-    				$('#api-case-case').empty();
-    				$('#api-case-case').append(selected + optionstring);
-    				$('#api-case-case').select2();
+    				$('#api-case-case' + index).empty();
+    				$('#api-case-case' + index).append(selected + optionstring);
+    				$('#api-case-case' + index).select2();
     			}
     		}
     	});
-    }
+	}
 	
 	function apiCaseSave(){
 		if($('#api-case-name').val().trim() == ""){
 	    	showMsgDiv("请输入案例名称！");
     	}else{
+    		countApiCaseLink();
     		$.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/case/is/json",
