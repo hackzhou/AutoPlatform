@@ -50,8 +50,8 @@ function tooltipJson(text){
 		return text;
 	}
 	var glance = "";
-	if(text.length > 30) {
-		glance = text.substring(0, 30) + "...";
+	if(text.length > 20) {
+		glance = text.substring(0, 20) + "...";
 	}else{
 		glance = text;
 	}
@@ -59,6 +59,20 @@ function tooltipJson(text){
 	var json = JSON.stringify(jsonObj, null, '\t');
 	var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'>{1}</div>";
 	return String.format(html, json, glance);
+}
+
+function tooltipText(text){
+	if(text == null || text.length == 0){
+		return text;
+	}
+	var glance = "";
+	if(text.length > 15) {
+		glance = text.substring(0, 15) + "...";
+	}else{
+		glance = text;
+	}
+	var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'>{1}</div>";
+	return String.format(html, text, glance);
 }
 
 function tooltipJsonByVersion(version, channel){

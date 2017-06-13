@@ -410,7 +410,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return tooltipJson(data.strategy);
+						return tooltipText(data.strategy);
 					}
 				},
 				{
