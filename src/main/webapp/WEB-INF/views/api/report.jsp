@@ -208,7 +208,8 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
-							var html = "<b style='color:{0}'>" + (Math.round(data.success / data.total * 10000) / 100.00) + "%</b>";
+							var per = Math.round(data.success / data.total * 10000) / 100.00;
+							var html = "<b style='color:{0}'>" + per + "%</b>";
 							if(data.success == data.total){
 								return String.format(html, "green");
 							}else{
@@ -244,14 +245,14 @@
 					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
 							if(data.msg == null || data.msg == ""){
-								var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-list text-inverse m-r-10\"></i></a>";
+								var html = "<a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-list text-inverse m-r-15\"></i></a>";
 								return String.format(html, data.id);
 							}else{
-								var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-10\"></i></a>";
+								var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-15\"></i></a>";
 								return String.format(html, data.msg);
 							}
 						}else {
-							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-spin fa-spinner text-success m-r-10\"></i></a>";
+							return "<a href=\"#\" data-toggle=\"tooltip\" data-original-title=\"Detail\"><i class=\"fa fa-spin fa-spinner text-success m-r-15\"></i></a>";
 						}
 					}
 				}

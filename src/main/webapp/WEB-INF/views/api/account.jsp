@@ -227,7 +227,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiAccountEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiAccountEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiAccountDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}

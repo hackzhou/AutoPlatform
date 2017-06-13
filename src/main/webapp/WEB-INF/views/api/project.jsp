@@ -263,8 +263,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i></a>"
-							 + "<a href=\"#\" data-id='{0}' class='apiProjectDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiProjectDel'><i class=\"fa fa-close text-danger m-r-15\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
