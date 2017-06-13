@@ -182,6 +182,9 @@
 						if(data.endTime == null || data.endTime == ""){
 							return "-";
 						}
+						if(data.startTime == data.endTime){
+							return "<1秒";
+						}
 						return String.duration(new Date(data.startTime), new Date(data.endTime));
 					}
 				},

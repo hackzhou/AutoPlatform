@@ -234,7 +234,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.account;
+						return (data.account == null || data.account == "") ? "-" : data.account;
 					}
 				},
 				{
