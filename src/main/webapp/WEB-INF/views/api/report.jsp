@@ -208,7 +208,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
-							var html = "<b style='color:{0}'>" + (Math.round(data.success / data.total * 10000) / 100.00 + "%") + "</b>";
+							var html = "<b style='color:{0}'>" + (Math.round(data.success / data.total * 10000) / 100.00) + "%</b>";
 							if(data.success == data.total){
 								return String.format(html, "green");
 							}else{
