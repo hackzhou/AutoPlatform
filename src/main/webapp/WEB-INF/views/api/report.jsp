@@ -57,6 +57,7 @@
                   <th>状态</th>
                   <th>运行时长</th>
                   <th><b style='color:green'>成功</b>/<b style='color:red'>失败</b>/<b style='color:blue'>总数</b></th>
+                  <th><b style='color:violet'>成功率</b></th>
                   <th>运行人</th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -129,7 +130,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -138,7 +139,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -173,7 +174,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -201,8 +202,25 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						if("COMPLETE" == data.status){
+							var html = "<b style='color:{0}'>" + (Math.round(data.success / data.total * 10000) / 100.00 + "%") + "</b>";
+							if(data.success == data.total){
+								return String.format(html, "green");
+							}else{
+								return String.format(html, "red");
+							}
+						}
+						return "-";
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -211,7 +229,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 8 ],
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -220,7 +238,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 9 ],
+					"aTargets" : [ 10 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
