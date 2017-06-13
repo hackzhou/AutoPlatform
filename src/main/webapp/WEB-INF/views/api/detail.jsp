@@ -298,6 +298,8 @@
 			diffUsingJS(0);
 			if(data.strategy != null && data.strategy != ""){
 				$("#ignores").html("（忽略字段：" + data.strategy + "）");
+			}else{
+				$("#ignores").html("");
 			}
 		});
 	}
