@@ -401,7 +401,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return tooltipJson(data.body);
+						return (data.body == null || data.body == "") ? "-" : tooltipJson(data.body);
 					}
 				},
 				{
@@ -410,7 +410,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return tooltipText(data.strategy);
+						return (data.strategy == null || data.strategy == "") ? "-" : tooltipText(data.strategy);
 					}
 				},
 				{

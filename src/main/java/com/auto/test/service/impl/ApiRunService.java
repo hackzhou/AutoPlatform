@@ -159,7 +159,9 @@ public class ApiRunService implements IApiRunService {
 		if(list != null && !list.isEmpty()){
 			total = list.size();
 			for (ACase aCase : list) {
-				total += aCase.getList().size();
+				if(aCase.getList() != null){
+					total += aCase.getList().size();
+				}
 			}
 		}
 		return total * len;

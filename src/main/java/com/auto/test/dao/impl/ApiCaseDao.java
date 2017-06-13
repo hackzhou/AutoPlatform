@@ -41,15 +41,17 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 		return null;
 	}
 
-	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<ACase> findByIds(List<Integer> cids) {
 		List<ACase> list = new ArrayList<ACase>();
 		if(cids != null && cids.size() > 0){
 			for (Integer cid : cids) {
-				list.add(new ACase(cid));
+				ACase aCase = this.findById(cid);
+				if(aCase != null){
+					list.add(aCase);
+				}
 			}
-			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("id", list)).list();
+			return list;
 		}
 		return null;
 	}

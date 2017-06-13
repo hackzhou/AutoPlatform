@@ -207,7 +207,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.description;
+						return (data.description == null || data.description == "") ? "-" : data.description;
 					}
 				},
 				{

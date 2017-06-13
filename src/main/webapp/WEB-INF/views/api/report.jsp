@@ -206,7 +206,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.runby;
+						return (data.runby == null || data.runby == "") ? "-" : data.runby;
 					}
 				},
 				{

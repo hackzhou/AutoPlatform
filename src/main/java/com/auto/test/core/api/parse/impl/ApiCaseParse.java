@@ -47,8 +47,10 @@ public class ApiCaseParse implements IApiCaseParse {
 			try {
 				executeFinal(apiContext, e.getMessage());
 			} catch (Exception ex) {
+				ex.printStackTrace();
 				throw new BusinessException(ex.getMessage());
 			}
+			e.printStackTrace();
 			throw new BusinessException(e.getMessage());
 		}
 	}

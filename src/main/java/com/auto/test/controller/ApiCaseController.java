@@ -41,6 +41,7 @@ public class ApiCaseController extends BaseController{
 			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request));
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
 	}

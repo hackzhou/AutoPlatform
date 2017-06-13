@@ -48,6 +48,7 @@ public class ApiProjectController extends BaseController{
 			runService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request));
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
 	}
