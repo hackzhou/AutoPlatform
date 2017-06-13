@@ -71,13 +71,15 @@ public class ApiRunService implements IApiRunService {
 			List<ACase> cList = caseDao.findByProjectVersion(runId, vId);
 			if(cList != null && !cList.isEmpty()){
 				for (ACase aCase : cList) {
-					aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
+					if(new Integer(1).equals(aCase.getRun())){
+						aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
+						list.add(aCase);
+					}
 				}
-				list.addAll(cList);
 			}
 		}else if(ApiRunType.CASE.equals(type)){
 			ACase aCase = caseDao.findById(runId);
-			if(aCase != null){
+			if(aCase != null && new Integer(1).equals(aCase.getRun())){
 				aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
 				list.add(aCase);
 			}
