@@ -290,16 +290,16 @@
 		initApiCaseProject(null);
 		initApiCaseVersion(null);
 		initApiCaseInterface($('#api-case-project').val(),null);
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null);
+		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null,null);
 	});
 	
 	function initEvent(){
 		$("#api-case-project").change(function(){
 			initApiCaseInterface($(this).val(),null);
-			initApiCaseCase($(this).val(),$('#api-case-version').val(),null);
+			initApiCaseCase($(this).val(),$('#api-case-version').val(),null,null);
 		});
 		$("#api-case-version").change(function(){
-			initApiCaseCase($('#api-case-project').val(),$(this).val(),null);
+			initApiCaseCase($('#api-case-project').val(),$(this).val(),null,null);
 		});
 		$("#api-case-interface").change(function(){
 			var iid = $(this).val();
@@ -460,7 +460,7 @@
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
-  	    	initApiCaseCase(c.interfaceo.projecto.id, c.versiono.id, c.link);
+  	    	initApiCaseCase(c.interfaceo.projecto.id, c.versiono.id, c.link, c.id);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -489,7 +489,7 @@
 		initApiCaseProject(null);
     	initApiCaseVersion(null);
     	initApiCaseInterface($('#api-case-project').val(),null);
-    	initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null);
+    	initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),null,null);
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
     }
@@ -605,7 +605,7 @@
     	});
     }
 	
-	function initApiCaseCase(projectid, versionid, caseids){
+	function initApiCaseCase(projectid, versionid, caseids, myid){
     	$.ajax({
     		type:"get",
     		url:"<%=request.getContextPath()%>/api/case/list/data/projectid=" + projectid + "/versionid=" + versionid,
@@ -625,13 +625,15 @@
 							}
 						}
     					for (var i = 0; i < list.length; i++) {
-    						if(!caseidarr.contains(list[i].id)){
+    						if(!caseidarr.contains(list[i].id) && list[i].id != myid){
         						optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
     						}
         				}
     				}else{
     					for (var i = 0; i < list.length; i++) {
-        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
+    						if(list[i].id != myid){
+	        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + "</option>";
+    						}
         				}
     				}
     				optionstring += "</optgroup>";
