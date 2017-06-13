@@ -49,8 +49,9 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 			for (Integer cid : cids) {
 				list.add(new ACase(cid));
 			}
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("id", list)).list();
 		}
-		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.in("id", list)).list();
+		return null;
 	}
 
 }
