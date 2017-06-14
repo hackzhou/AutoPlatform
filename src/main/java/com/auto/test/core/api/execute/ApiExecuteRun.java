@@ -110,7 +110,7 @@ public class ApiExecuteRun implements Runnable {
 			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 			apiResultService.update(aResult);
 		}
-		logger.info("[Run]==>" + aResultDetail.toString());
+		logger.info("[Run][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
 	}
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
@@ -119,30 +119,30 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA), authorA, version, channel));
+				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA), authorA, version, channel, aCase.getId()));
 			}
-			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB), authorB, version, channel));
+			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB), authorB, version, channel, aCase.getId()));
 		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA), aCase.getBody(), authorA, version, channel));
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA), aCase.getBody(), authorA, version, channel, aCase.getId()));
 			}
-			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB), aCase.getBody(), authorB, version, channel));
+			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB), aCase.getBody(), authorB, version, channel, aCase.getId()));
 		}
 	}
 	
-	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
-		logger.info("[Run]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
+	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid) throws Exception{
+		logger.info("[Run][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
-		logger.info("[Run]==>" + result);
+		logger.info("[Run][" + runid + "]==>" + result);
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel) throws Exception{
-		logger.info("[Run]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
+	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid) throws Exception{
+		logger.info("[Run][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = apiSendMessage.sendPost(url, body, author, channel, version);
-		logger.info("[Run]==>" + result);
+		logger.info("[Run][" + runid + "]==>" + result);
 		return result;
 	}
 	
