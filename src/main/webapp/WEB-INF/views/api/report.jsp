@@ -148,7 +148,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "17%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -157,7 +157,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -241,7 +241,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 10 ],
 					"mData" : null,
 					"sClass" : "text-center",

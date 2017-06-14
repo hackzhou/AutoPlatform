@@ -166,7 +166,7 @@
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "5%",
+					"sWidth" : "8%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -175,7 +175,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "14%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -184,7 +184,7 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "3%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -193,7 +193,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "15%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -211,7 +211,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -220,7 +220,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
