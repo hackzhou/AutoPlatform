@@ -133,16 +133,16 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
-		logger.info("[Run][GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
+		logger.info("[Run]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
-		logger.info("[Run]" + result);
+		logger.info("[Run]==>" + result);
 		return result;
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel) throws Exception{
-		logger.info("[Run][POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
+		logger.info("[Run]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = apiSendMessage.sendPost(url, body, author, channel, version);
-		logger.info("[Run]" + result);
+		logger.info("[Run]==>" + result);
 		return result;
 	}
 	

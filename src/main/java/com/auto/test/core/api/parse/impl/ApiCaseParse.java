@@ -62,9 +62,9 @@ public class ApiCaseParse implements IApiCaseParse {
 			String channels = apiContext.getVersion().getChannel();
 			for (String channel : channels.split(",")) {
 				String authorA = setAuthor(apiContext.getAccount(), urlA, version, channel);
-				logger.info("[AuthorA:" + authorA + "]");
+				logger.info("[Author]==>[A:" + authorA + "]");
 				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel);
-				logger.info("[AuthorB:" + authorB + "]");
+				logger.info("[Author]==>[B:" + authorB + "]");
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
@@ -101,31 +101,31 @@ public class ApiCaseParse implements IApiCaseParse {
 	
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
-		logger.info("[Author][POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
+		logger.info("[Author]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
 		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
-			logger.info("[Author]" + login.toString());
+			logger.info("[Author]==>" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
-				logger.info("[Author][POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
+				logger.info("[Author]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
 				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
-					logger.info("[Author]" + accessToken.toString());
+					logger.info("[Author]==>" + accessToken.toString());
 					if("200".equals(accessToken.getCode())){
 						return accessToken.getData().getAccessToken();
 					}else{
-						throw new BusinessException(accessToken.getMessage());
+						throw new BusinessException("[Author]==>" + accessToken.getMessage());
 					}
 				}else{
-					throw new BusinessException("[Author]获取AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
+					throw new BusinessException("[Author]==>获取AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
 				}
 			}else{
-				throw new BusinessException(login.getMessage());
+				throw new BusinessException("[Author]==>" + login.getMessage());
 			}
 		}else{
-			throw new BusinessException("[Author]登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
+			throw new BusinessException("[Author]==>登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
 		}
 	}
 	
