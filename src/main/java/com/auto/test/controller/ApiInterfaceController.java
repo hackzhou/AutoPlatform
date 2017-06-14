@@ -77,7 +77,7 @@ public class ApiInterfaceController extends BaseController{
 		if(list == null || list.isEmpty()){
 			return successJson();
 		}
-		return failedJson("接口[" + url + "]已存在！");
+		return failedJson("该项目下接口[" + url + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
