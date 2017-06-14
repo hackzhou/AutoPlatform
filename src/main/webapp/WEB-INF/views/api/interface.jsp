@@ -361,6 +361,8 @@
 	    	showMsgDiv("请输入接口名称！");
     	}else if(iurl == ""){
 	    	showMsgDiv("请输入接口地址！");
+    	}else if(iurl[0] != "/"){
+    		showMsgDiv("请输入合法的接口地址！");
     	}else{
     		$.ajax({
     			type:"post",
