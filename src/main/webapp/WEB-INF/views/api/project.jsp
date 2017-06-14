@@ -373,7 +373,7 @@
 	    	showMsgDiv("请输入项目名称！");
     	}else if(ppath == null || ppath == ""){
     		showMsgDiv("请输入项目地址！");
-    	}else if(ppath[0] != "/"){
+    	}else if(ppath[0] != "/" || ppath[ppath.length-1] == "/"){
     		showMsgDiv("请输入合法的项目地址！");
     	}else{
     		$.ajax({
