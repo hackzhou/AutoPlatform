@@ -47,7 +47,6 @@ public class ApiExecuteRun implements Runnable {
 	@Override
 	public void run() {
 		try {
-			System.out.println(aCase.toString());
 			oneRunBody(aCase, new AResultDetail());
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
