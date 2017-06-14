@@ -91,7 +91,6 @@ public class ApiExecuteRun implements Runnable {
 			aResultDetail.setStatus(ApiStatus.FAILURE.name());
 		}
 		apiResultDetailService.create(aResultDetail);
-		logger.info(aResultDetail.toString());
 	}
 	
 	private void runFinal(AResultDetail aResultDetail) throws Exception{
@@ -111,6 +110,7 @@ public class ApiExecuteRun implements Runnable {
 			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 			apiResultService.update(aResult);
 		}
+		logger.info("[Run]==>" + aResultDetail.toString());
 	}
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
