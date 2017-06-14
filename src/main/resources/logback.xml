@@ -34,6 +34,8 @@
      		<!-- <charset>UTF-8</charset> -->
 		</encoder>
 	</appender>
+	
+	<logger name="org" level="ERROR" />
 
 	<root level="info">
 		<appender-ref ref="STDOUT" />
