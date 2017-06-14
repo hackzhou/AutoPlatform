@@ -5,6 +5,7 @@ import java.util.Set;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class JSONCompare {
 	
@@ -12,11 +13,27 @@ public class JSONCompare {
 //		String s1 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":166948,\"useAmount\":2035.0,\"userType\":1}}";
 //		String s2 = "{\"code\":200,\"data\":{\"loginname\":\"13151815253\",\"phone\":\"13151815253\",\"headImg\":\"http://192.168.101.242/cdn/c7ea/1334/16a3/4de7/b3da/426c/802a/5b05/c7ea133416a34de7b3da426c802a5b05.png\",\"nicknameFlag\":false,\"nickname\":\"zhouzhou\",\"userId\":37,\"useAmount\":1.31451443E8,\"userType\":1}}";
 //		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
+//		String s1 = "{\"code\": 200,\"data\":[{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
+//		String s2 = "{\"code\": 200,\"data\":[{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
+//		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
+		
 		String s1 = "{\"code\": 200,\"data\":[{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
-		String s2 = "{\"code\": 200,\"data\":[{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
-		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
+		String s2 = "{\"code\": 200,\"data\":[{\"createTime\": \"2017年03月20日 21:09\",\"changeMoney\": 2820,\"name\": \"梦想飞镖\"},{\"name\": \"平台\",\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521},{\"changeMoney\": 500,\"name\": \"梦想飞镖\",\"createTime\": \"2017年03月20日 21:09\"}]}";
+		String s3 = "{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"}";
+		String s4 = "{\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521,\"name\": \"平台\"}";
+		System.out.println(new JSONCompare().sortJson(s1));
+		System.out.println(new JSONCompare().sortJson(s2));
+		System.out.println(new JSONCompare().sortJson(s3));
+		System.out.println(new JSONCompare().sortJson(s4));
 	}
 	
+	/**
+	 * JSON Compare
+	 * @param json1
+	 * @param json2
+	 * @param ignore
+	 * @return
+	 */
 	public boolean compareJson(String json1, String json2, String[] ignore){
 		if(json1 == null || json2 == null){
 			return false;
@@ -101,6 +118,49 @@ public class JSONCompare {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * JSON Sort
+	 * @param json
+	 * @return
+	 */
+	public String sortJson(String json){
+		try {
+			if(json != null && !json.isEmpty()){
+				Object obj = JSON.parse(json);
+				sortJson(obj);
+				return JSON.toJSONString(obj, SerializerFeature.SortField);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
+	public void sortJson(Object json){
+		try {
+			if(json instanceof JSONObject){
+				sortJson((JSONObject) json);
+			}else if(json instanceof JSONArray){
+				sortJson((JSONArray) json);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sortJson(JSONObject json) {
+		Set<String> set = json.keySet();
+		if(set != null && set.size() > 0){
+			for (String s : set) {
+				sortJson(json.get(s));
+			}
+		}
+	}
+	
+	public void sortJson(JSONArray json) {
+		json.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
 	}
 
 }

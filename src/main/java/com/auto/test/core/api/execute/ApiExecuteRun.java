@@ -82,7 +82,10 @@ public class ApiExecuteRun implements Runnable {
 		if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
 			ignore = aCase.getStrategy().split(",");
 		}
-		if(new JSONCompare().compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+		JSONCompare jsonCompare = (JSONCompare) SpringContext.getBean("jsonCompare");
+		aResultDetail.setResulta(jsonCompare.sortJson(aResultDetail.getResulta()));
+		aResultDetail.setResultb(jsonCompare.sortJson(aResultDetail.getResultb()));
+		if(jsonCompare.compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
 			aResultDetail.setStatus(ApiStatus.SUCCESS.name());
 		}else{
 			aResultDetail.setStatus(ApiStatus.FAILURE.name());
@@ -132,14 +135,14 @@ public class ApiExecuteRun implements Runnable {
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel) throws Exception{
 		logger.info("[Run][GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
-		logger.info(result);
+		logger.info("[Run]" + result);
 		return result;
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel) throws Exception{
 		logger.info("[Run][POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = apiSendMessage.sendPost(url, body, author, channel, version);
-		logger.info(result);
+		logger.info("[Run]" + result);
 		return result;
 	}
 	
