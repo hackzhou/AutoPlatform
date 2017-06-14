@@ -27,4 +27,10 @@ public class ApiInterfaceDao extends AbstractHibernateDao<AInterface> implements
 	public List<AInterface> findByUrl(String url) {
 		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("url", url)).list();
 	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<AInterface> findByProjectUrl(Integer id, String url) {
+		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(id))).add(Restrictions.eq("url", url)).list();
+	}
 }

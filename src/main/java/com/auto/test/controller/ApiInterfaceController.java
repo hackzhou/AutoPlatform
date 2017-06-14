@@ -66,14 +66,14 @@ public class ApiInterfaceController extends BaseController{
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-url") String url) {
+	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-project") String project) {
 		if(id != null && !id.isEmpty()){
 			AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 			if(aInterface != null && aInterface.getUrl() != null && aInterface.getUrl().equals(url)){
 				return successJson();
 			}
 		}
-		List<AInterface> list = interfaceService.findByUrl(url);
+		List<AInterface> list = interfaceService.findByProjectUrl(Integer.parseInt(project), url);
 		if(list == null || list.isEmpty()){
 			return successJson();
 		}
