@@ -4,15 +4,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ThreadPool {
-	private static ExecutorService cachedThreadPool = null;
+	
+	private static class SingletonFactory {
+		private static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+	}
 	
 	public ThreadPool(){
 	}
 
 	public static ExecutorService getInstance(){
-		if(cachedThreadPool == null){
-			cachedThreadPool = Executors.newCachedThreadPool();
-		}
-		return cachedThreadPool;
+		return SingletonFactory.cachedThreadPool;
 	}
 }
