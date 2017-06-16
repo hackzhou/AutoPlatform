@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-06-07 09:30:12
+Date: 2017-06-16 09:35:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,6 +27,7 @@ CREATE TABLE `a_result_detail` (
   `type` varchar(255) COLLATE utf8_bin NOT NULL,
   `url` varchar(2083) COLLATE utf8_bin NOT NULL,
   `description` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+  `strategy` varchar(2048) COLLATE utf8_bin DEFAULT NULL,
   `body` text COLLATE utf8_bin,
   `resulta` text COLLATE utf8_bin,
   `resultb` text COLLATE utf8_bin,
@@ -38,4 +39,4 @@ CREATE TABLE `a_result_detail` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
