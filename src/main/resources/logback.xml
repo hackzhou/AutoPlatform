@@ -30,12 +30,10 @@
 		</encoder>
 	</appender>
 	
-	<logger name="org" addtivity="false">
-		<level value="ERROR" />
-		<appender-ref ref="STDOUT" />
-	</logger>
-
-	<root level="info">
+	<logger name="org.hibernate" level="ERROR" />
+	<logger name="org.springframework" level="ERROR" />
+	
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
