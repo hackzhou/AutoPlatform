@@ -30,7 +30,7 @@
 		</encoder>
 	</appender>
 	
-	<logger name="org" additivity="false">
+	<logger name="org" addtivity="false">
 		<level value="ERROR" />
 		<appender-ref ref="STDOUT" />
 	</logger>
