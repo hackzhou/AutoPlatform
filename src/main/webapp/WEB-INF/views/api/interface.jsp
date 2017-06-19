@@ -349,17 +349,17 @@
     }
     
     function apiInterfaceSave(){
-    	var iproject = $('#api-interface-project').val().trim();
-    	var itype = $('#api-interface-type').val().trim();
-    	var iname = $('#api-interface-name').val().trim();
-    	var iurl = $('#api-interface-url').val().trim();
-    	if(iproject == ""){
+    	var iproject = $('#api-interface-project').val();
+    	var itype = $('#api-interface-type').val();
+    	var iname = $('#api-interface-name').val();
+    	var iurl = $('#api-interface-url').val();
+    	if(iproject == null || iproject.trim() == ""){
 	    	showMsgDiv("请选择接口项目！");
-    	}else if(itype == ""){
+    	}else if(itype == null || itype.trim() == ""){
 	    	showMsgDiv("请选择接口类型！");
-    	}else if(iname == ""){
+    	}else if(iname == null || iname.trim() == ""){
 	    	showMsgDiv("请输入接口名称！");
-    	}else if(iurl == ""){
+    	}else if(iurl == null || iurl.trim() == ""){
 	    	showMsgDiv("请输入接口地址！");
     	}else if(iurl[0] != "/" || iurl[iurl.length-1] == "/"){
     		showMsgDiv("请输入合法的接口地址！");

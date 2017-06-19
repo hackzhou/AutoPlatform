@@ -737,9 +737,19 @@
 	}
 	
 	function apiCaseSave(){
-		if($('#api-case-name').val().trim() == ""){
+		var cproject = $('#api-case-project').val();
+		var cversion = $('#api-case-version').val();
+		var cname = $('#api-case-name').val();
+		var cinterface = $('#api-case-interface').val();
+		if(cproject == null || cproject.trim() == ""){
+	    	showMsgDiv("请选择项目！");
+    	}else if(cversion == null || cversion.trim() == ""){
+	    	showMsgDiv("请选择版本！");
+    	}else if(cname == null || cname.trim() == ""){
 	    	showMsgDiv("请输入案例名称！");
-    	}else{
+    	}else if(cinterface == null || cinterface.trim() == ""){
+	    	showMsgDiv("请选择接口！");
+    	}else {
     		countApiCaseLink();
     		$.ajax({
     			type:"post",

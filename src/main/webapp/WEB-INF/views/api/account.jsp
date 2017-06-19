@@ -264,11 +264,11 @@
     }
     
     function apiAccountSave(){
-    	var aloginname = $('#api-account-loginname').val().trim();
-    	var apassword = $('#api-account-password').val().trim();
-    	if(aloginname == ""){
+    	var aloginname = $('#api-account-loginname').val();
+    	var apassword = $('#api-account-password').val();
+    	if(aloginname == null || aloginname.trim() == ""){
 	    	showMsgDiv("请输入账号名称！");
-    	}else if(apassword == ""){
+    	}else if(apassword == null || apassword.trim() == ""){
 	    	showMsgDiv("请输入账号密码！");
     	}else{
     		$.ajax({

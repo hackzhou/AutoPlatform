@@ -186,12 +186,12 @@
 	}
 	
 	function apiCopyCase(){
-		var cproject = $('#api-copy-project').val().trim();
-		var cversiona = $('#api-copy-version-a').val().trim();
-		var cversionb = $('#api-copy-version-b').val().trim();
-		if(cproject == null || cproject == ""){
+		var cproject = $('#api-copy-project').val();
+		var cversiona = $('#api-copy-version-a').val();
+		var cversionb = $('#api-copy-version-b').val();
+		if(cproject == null || cproject.trim() == ""){
 			showMsgDiv("项目不能为空！");
-		}else if(cversiona == null || cversiona == ""){
+		}else if(cversiona == null || cversiona.trim() == ""){
 			showMsgDiv("版本号不能为空！");
 		}else if(cversiona == cversionb){
 			showMsgDiv("案例复制版本号不能相同！");

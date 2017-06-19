@@ -258,11 +258,11 @@
     }
     
     function apiVersionSave(){
-    	var vversion = $('#api-version-version').val().trim();
-    	var vchannel = $('#api-version-channel').val().trim();
-    	if(vversion == ""){
+    	var vversion = $('#api-version-version').val();
+    	var vchannel = $('#api-version-channel').val();
+    	if(vversion == null || vversion.trim() == ""){
 	    	showMsgDiv("请输入版本号！");
-    	}else if(vchannel == ""){
+    	}else if(vchannel == null || vchannel.trim() == ""){
 	    	showMsgDiv("请输入版本渠道号！");
     	}else{
     		$.ajax({
