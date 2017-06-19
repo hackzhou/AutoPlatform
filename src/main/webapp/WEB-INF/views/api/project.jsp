@@ -306,22 +306,27 @@
     }
     
     function apiProjectRun(){
-		$.ajax({
-			type:"post",
-      		url:"<%=request.getContextPath()%>/api/project/run",
-      		data:$('#api-project-run-form').serialize(),
-      		success:function(data){
-      			if(data.responseCode == "0000"){
-      				swal({
-      					title: "成功!",
-      					text: "运行项目成功.",
-      					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
-      				});
-      			}else{
-      				swal("错误", data.responseMsg, "error");
-      			}
-      	    }
-		});
+    	var prunversion = $('#api-project-run-version').val();
+    	if(prunversion == null || prunversion.trim() == ""){
+	    	swal("错误", "请选择运行版本！", "error");
+    	}else {
+    		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/project/run",
+          		data:$('#api-project-run-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				swal({
+          					title: "成功!",
+          					text: "运行项目成功.",
+          					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
+          				});
+          			}else{
+          				swal("错误", data.responseMsg, "error");
+          			}
+          	    }
+    		});
+    	}
 	}
     
     function initApiProjectRun(pid){
