@@ -30,16 +30,19 @@ public class ApiSettingController extends BaseController{
 	@RequestMapping(value = "/copy", method = RequestMethod.POST)
 	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("api-copy-project") String project, @RequestParam("api-copy-version-a") String versiona, @RequestParam("api-copy-version-b") String versionb) throws Exception {
 		if(project == null || project.isEmpty()){
+			logger.error("[Setting]==>批量复制案例[项目不能为空！]");
 			return failMsg("项目不能为空！", "api/setting");
 		}
 		if(versiona == null || versiona.isEmpty()){
+			logger.error("[Setting]==>批量复制案例[版本号不能为空！]");
 			return failMsg("版本号不能为空！", "api/setting");
 		}
 		if(versiona.equals(versionb)){
+			logger.error("[Setting]==>批量复制案例[案例复制版本号不能相同！]");
 			return failMsg("案例复制版本号不能相同！", "api/setting");
 		}
 		caseService.copyCase(Integer.parseInt(project), Integer.parseInt(versiona), Integer.parseInt(versionb));
-		logger.info("[Setting]==>批量复制案例[project=" + project + ",versiona=" + versiona + ",versionb=" + versionb + "]");
+		logger.info("[Setting]==>批量复制案例成功[project=" + project + ",versiona=" + versiona + ",versionb=" + versionb + "]");
 		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	

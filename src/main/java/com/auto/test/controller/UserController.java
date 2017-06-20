@@ -28,10 +28,12 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme, @RequestParam("hiddenjump") String jump) {
 		if(username == null || username.isEmpty()){
-			return failMsg("请您输入用户名!", "login");
+			logger.error("[UserLogin]==>登录用户[请您输入用户名！]");
+			return failMsg("请您输入用户名！", "login");
 		}
 		if(password == null || password.isEmpty()){
-			return failLogin(username, null, "请您输入密码!", "login");
+			logger.error("[UserLogin]==>登录用户[请您输入密码！]");
+			return failLogin(username, null, "请您输入密码！", "login");
 		}
 		AUser aUser = userService.isLogin(username, StrUtil.encryptByMD5(password));
 		if(aUser != null){
@@ -97,22 +99,28 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("password2") String password2) {
 		if(username == null || username.isEmpty()){
-			return failMsg("请您输入用户名!", "register");
+			logger.error("[UserRegister]==>用户注册[请您输入用户名！]");
+			return failMsg("请您输入用户名！", "register");
 		}
 		if(email == null || email.isEmpty()){
-			return failLogin(username, null, "请您输入邮箱!", "register");
+			logger.error("[UserRegister]==>用户注册[请您输入邮箱！]");
+			return failLogin(username, null, "请您输入邮箱！", "register");
 		}
 		if(!StrUtil.checkEmail(email)){
-			return failLogin(username, null, "邮箱格式不正确!", "register");
+			logger.error("[UserRegister]==>用户注册[邮箱格式不正确！]");
+			return failLogin(username, null, "邮箱格式不正确！", "register");
 		}
 		if(password == null || password.isEmpty()){
-			return failLogin(username, email, "请您输入密码!", "register");
+			logger.error("[UserRegister]==>用户注册[请您输入密码！]");
+			return failLogin(username, email, "请您输入密码！", "register");
 		}
 		if(password2 == null || password2.isEmpty()){
-			return failLogin(username, email, "请您再次输入密码!", "register");
+			logger.error("[UserRegister]==>用户注册[请您再次输入密码！]");
+			return failLogin(username, email, "请您再次输入密码！", "register");
 		}
 		if(!password.equals(password2)){
-			return failLogin(username, email, "两次输入的密码不一样!", "register");
+			logger.error("[UserRegister]==>用户注册[两次输入的密码不一样！]");
+			return failLogin(username, email, "两次输入的密码不一样！", "register");
 		}
 		List<AUser> list = userService.findByName(username);
 		if(list != null && !list.isEmpty()){
@@ -121,7 +129,7 @@ public class UserController extends BaseController{
 		}
 		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
 		request.getSession().setAttribute("user", aUser);
-		logger.info("[UserRegister]==>注册用户[" + getCurrentUserName(request) + "]");
+		logger.info("[UserRegister]==>用户注册[" + getCurrentUserName(request) + "]");
 		return success("index", getCurrentUserName(request));
 	}
 	
