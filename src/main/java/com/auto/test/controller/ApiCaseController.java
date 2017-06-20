@@ -37,22 +37,27 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> runCase(HttpServletRequest request, @RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
 		try {
+			logger.info("[Case]==>运行案例[id=" + runid + ",account=" + account + ",user=" + getCurrentUserName(request) + "]");
 			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request));
+			logger.info("[Case]==>运行案例成功！");
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return failedJson(logger, e.getMessage());
+			logger.error("[Case]==>运行案例失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllCase(HttpServletRequest request) {
+		logger.info("[Case]==>请求页面[api/case],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/case", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllCaseData() {
+		logger.info("[Case]==>获取所有案例数据！");
 		List<ACase> list = caseService.findAll();
 		return successJson(list);
 	}
@@ -60,6 +65,7 @@ public class ApiCaseController extends BaseController{
 	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getCaseDataByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
+		logger.info("[Case]==>获取案例[project=" + pid + ",version=" + vid + "]数据！");
 		if(pid != null && !pid.isEmpty() && vid != null && !vid.isEmpty()){
 			List<ACase> list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
 			return successJson(list);
@@ -74,9 +80,11 @@ public class ApiCaseController extends BaseController{
 		ACase aCase = caseService.findById(Integer.parseInt(id));
 		if(aCase != null){
 			aCase.setBody(jsonFormat(aCase.getBody(), true));
+			logger.info("[Case]==>获取案例[id=" + id + "]数据！");
 			return successJson(aCase);
 		}
-		return failedJson(logger, "该案例[id=" + id + "]不存在！");
+		logger.error("[Case]==>获取案例[id=" + id + "]不存在！");
+		return failedJson("获取案例[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -93,22 +101,27 @@ public class ApiCaseController extends BaseController{
 				result = null;
 			}
 			if(id == null || id.isEmpty()){
-				Integer pid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(run)));
-				if(pid != null){
+				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(run)));
+				if(cid != null){
+					logger.info("[Case]==>添加案例[id=" + cid + ",name=" + name + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "添加案例[name=" + name + "]失败！");
+					logger.error("[Case]==>添加案例[name=" + name + "]失败！");
+					return failedJson("添加案例[name=" + name + "]失败！");
 				}
 			}else{
 				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(run)));
 				if(aCase != null){
+					logger.info("[Case]==>更新案例[id=" + id + ",name=" + name + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "更新案例[id=" + id + "]失败！");
+					logger.error("[Case]==>更新案例[id=" + id + ",name=" + name + "]失败！");
+					return failedJson("更新案例[id=" + id + ",name=" + name + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Case]==>添加/更新案例失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -117,9 +130,11 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> deleteCase(@PathVariable("id") String id) {
 		try {
 			caseService.delete(Integer.parseInt(id));
+			logger.error("[Case]==>删除案例[id=" + id + "]成功！");
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Case]==>删除案例失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -133,9 +148,11 @@ public class ApiCaseController extends BaseController{
 			if("1".equals(isResult)){
 				JSON.parseObject(result);
 			}
+			logger.error("[Case]==>JSON数据验证成功！");
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Case]==>JSON数据验证失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	

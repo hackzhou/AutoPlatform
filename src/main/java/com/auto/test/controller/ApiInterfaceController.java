@@ -32,12 +32,14 @@ public class ApiInterfaceController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllInterface(HttpServletRequest request) {
+		logger.info("[Interface]==>请求页面[api/interface],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/interface", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllInterfaceData() {
+		logger.info("[Interface]==>获取所有接口数据！");
 		List<AInterface> list = interfaceService.findAll();
 		return successJson(list);
 	}
@@ -45,6 +47,7 @@ public class ApiInterfaceController extends BaseController{
 	@RequestMapping(value = "/list/data/projectid={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getDataByProject(@PathVariable("id") String id) {
+		logger.info("[Interface]==>获取接口[project=" + id + "]数据！");
 		if(id != null && !id.isEmpty()){
 			List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
 			return successJson(list);
@@ -58,9 +61,11 @@ public class ApiInterfaceController extends BaseController{
 	public Map<String, Object> getInterfaceById(@PathVariable("id") String id) {
 		AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 		if(aInterface != null){
+			logger.info("[Interface]==>获取接口[id=" + id + "]数据！");
 			return successJson(aInterface);
 		}
-		return failedJson(logger, "接口[id=" + id + "]不存在！");
+		logger.error("[Interface]==>获取接口[id=" + id + "]不存在！");
+		return failedJson("获取接口[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -69,14 +74,17 @@ public class ApiInterfaceController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 			if(aInterface != null && aInterface.getUrl() != null && aInterface.getUrl().equals(url)){
+				logger.info("[Interface]==>更新时验证项目下接口[url=" + url + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AInterface> list = interfaceService.findByProjectUrl(Integer.parseInt(project), url);
 		if(list == null || list.isEmpty()){
+			logger.info("[Interface]==>更新时验证项目下接口[url=" + url + "]不存在！");
 			return successJson();
 		}
-		return failedJson(logger, "该项目下接口[url=" + url + "]已存在！");
+		logger.error("[Interface]==>更新时验证项目下接口[url=" + url + "]已存在！");
+		return failedJson("更新时验证项目下接口[url=" + url + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -84,22 +92,27 @@ public class ApiInterfaceController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-project") String project, @RequestParam("api-interface-name") String name, @RequestParam("api-interface-type") String type, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-description") String description) {
 		try {
 			if(id == null || id.isEmpty()){
-				Integer pid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
-				if(pid != null){
+				Integer iid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
+				if(iid != null){
+					logger.info("[Interface]==>添加接口[id=" + iid + ",url=" + url + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "添加接口[url=" + url + "]失败！");
+					logger.error("[Interface]==>添加接口[url=" + url + "]失败！");
+					return failedJson("添加接口[url=" + url + "]失败！");
 				}
 			}else{
 				AInterface aInterface = interfaceService.update(new AInterface(Integer.parseInt(id), Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
 				if(aInterface != null){
+					logger.info("[Interface]==>更新接口[id=" + id + ",url=" + url + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "更新接口[id=" + id + "]失败！");
+					logger.error("[Interface]==>更新接口[id=" + id + ",url=" + url + "]失败！");
+					return failedJson("更新接口[id=" + id + ",url=" + url + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Interface]==>添加/更新接口失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -114,9 +127,11 @@ public class ApiInterfaceController extends BaseController{
 				}
 			}
 			interfaceService.delete(Integer.parseInt(id));
+			logger.error("[Interface]==>删除接口[id=" + id + "]以及接口下案例成功！");
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Interface]==>删除接口失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	

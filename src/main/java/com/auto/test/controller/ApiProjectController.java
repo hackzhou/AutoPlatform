@@ -44,22 +44,27 @@ public class ApiProjectController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> runProject(HttpServletRequest request, @RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-version") String version, @RequestParam("api-project-run-account") String account) {
 		try {
+			logger.info("[Project]==>运行项目[id=" + runid + ",account=" + account + ",version=" + version + ",user=" + getCurrentUserName(request) + "]");
 			runService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request));
+			logger.info("[Project]==>运行项目成功！");
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return failedJson(logger, e.getMessage());
+			logger.error("[Project]==>运行项目失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllProject(HttpServletRequest request) {
+		logger.info("[Project]==>请求页面[api/project],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/project", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllProjectData() {
+		logger.info("[Project]==>获取所有项目数据！");
 		List<AProject> projectList = projectService.findAll();
 		return successJson(projectList);
 	}
@@ -69,9 +74,11 @@ public class ApiProjectController extends BaseController{
 	public Map<String, Object> getProjectById(@PathVariable("id") String id) {
 		AProject aProject = projectService.findById(Integer.parseInt(id));
 		if(aProject != null){
+			logger.info("[Project]==>获取项目[id=" + id + "]数据！");
 			return successJson(aProject);
 		}
-		return failedJson(logger, "项目[id=" + id + "]不存在！");
+		logger.error("[Project]==>获取项目[id=" + id + "]不存在！");
+		return failedJson("获取项目[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -80,14 +87,17 @@ public class ApiProjectController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AProject aProject = projectService.findById(Integer.parseInt(id));
 			if(aProject != null && aProject.getName() != null && aProject.getName().equals(name)){
+				logger.info("[Project]==>更新时验证项目[name=" + name + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AProject> projectList = projectService.findByName(name);
 		if(projectList == null || projectList.isEmpty()){
+			logger.info("[Project]==>更新时验证项目[name=" + name + "]不存在！");
 			return successJson();
 		}
-		return failedJson(logger, "项目[name=" + name + "]已存在！");
+		logger.error("[Project]==>更新时验证项目[name=" + name + "]已存在！");
+		return failedJson("更新时验证项目[name=" + name + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -97,20 +107,25 @@ public class ApiProjectController extends BaseController{
 			if(id == null || id.isEmpty()){
 				Integer pid = projectService.create(new AProject(name.trim(), path.trim()));
 				if(pid != null){
+					logger.info("[Project]==>添加项目[id=" + pid + ",name=" + name + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "添加项目[name=" + name + "]失败！");
+					logger.error("[Project]==>添加项目[name=" + name + "]失败！");
+					return failedJson("添加项目[name=" + name + "]失败！");
 				}
 			}else{
 				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), path.trim()));
 				if(aProject != null){
+					logger.info("[Project]==>更新项目[id=" + id + ",name=" + name + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "更新项目[id=" + id + "]失败！");
+					logger.error("[Project]==>更新项目[id=" + id + ",name=" + name + "]失败！");
+					return failedJson("更新项目[id=" + id + ",name=" + name + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Project]==>添加/更新项目失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -132,9 +147,11 @@ public class ApiProjectController extends BaseController{
 				}
 			}
 			projectService.delete(Integer.parseInt(id));
+			logger.error("[Project]==>删除项目[id=" + id + "]以及项目下接口/案例成功！");
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Project]==>删除项目失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	

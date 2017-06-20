@@ -50,14 +50,16 @@ public class UserController extends BaseController{
 					cookie.setMaxAge(maxAge);
 					response.addCookie(cookie);
 				}
+				logger.info("[UserLogin]==>登录用户[" + aUser.getUsername() + "]");
 				return success("redirect:" + jump, getCurrentUserName(request));
 			} catch (Exception e) {
 				cleanCookie(request, response);
-				logger.error(e.getMessage(), e);
+				logger.error("[UserLogin]==>登录失败[" + e.getMessage() + "]", e);
 				return failMsg(e.getMessage(), "login");
 			}
 		}else{
-			return failMsg("用户名或密码有误，请重新输入!", "login");
+			logger.info("[UserLogin]==>用户名或密码有误，请重新输入！");
+			return failMsg("用户名或密码有误，请重新输入！", "login");
 		}
 	}
 	
@@ -78,6 +80,7 @@ public class UserController extends BaseController{
 			AUser aUser = userService.isLogin(username, password);
 			if(aUser != null){
 				request.getSession().setAttribute("user", aUser);
+				logger.info("[UserLoginCookie]==>自动登录用户[" + aUser.getUsername() + "]");
 				return success("redirect:" + jump, getCurrentUserName(request));
 			}
 		}
@@ -86,6 +89,7 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/logout")
 	public ModelAndView loginout(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("[UserLogout]==>登出用户[" + getCurrentUserName(request) + "]");
 		request.getSession().invalidate();
 		cleanCookie(request, response);
 		return success("redirect:/", null);
@@ -117,6 +121,7 @@ public class UserController extends BaseController{
 		}
 		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
 		request.getSession().setAttribute("user", aUser);
+		logger.info("[UserRegister]==>注册用户[" + getCurrentUserName(request) + "]");
 		return success("index", getCurrentUserName(request));
 	}
 	

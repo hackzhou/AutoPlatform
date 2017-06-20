@@ -2,6 +2,9 @@ package com.auto.test.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,12 +16,14 @@ import com.auto.test.service.IApiCaseService;
 @Controller
 @RequestMapping(value = "api/setting")
 public class ApiSettingController extends BaseController{
+	private Logger logger = LoggerFactory.getLogger(ApiSettingController.class);
 	
 	@Resource
 	private IApiCaseService caseService;
 
 	@RequestMapping(value = "/list")
 	public ModelAndView getAllSetting(HttpServletRequest request) {
+		logger.info("[Setting]==>请求页面[api/setting],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/setting", getCurrentUserName(request));
 	}
 	
@@ -34,6 +39,7 @@ public class ApiSettingController extends BaseController{
 			return failMsg("案例复制版本号不能相同！", "api/setting");
 		}
 		caseService.copyCase(Integer.parseInt(project), Integer.parseInt(versiona), Integer.parseInt(versionb));
+		logger.info("[Setting]==>批量复制案例[project=" + project + ",versiona=" + versiona + ",versionb=" + versionb + "]");
 		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	

@@ -32,12 +32,14 @@ public class ApiVersionController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllVersion(HttpServletRequest request) {
+		logger.info("[Version]==>请求页面[api/version],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/version", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllVersionData() {
+		logger.info("[Version]==>获取所有版本数据！");
 		List<AVersion> list = versionService.findAll();
 		return successJson(list);
 	}
@@ -47,9 +49,11 @@ public class ApiVersionController extends BaseController{
 	public Map<String, Object> getVersionById(@PathVariable("id") String id) {
 		AVersion aVersion = versionService.findById(Integer.parseInt(id));
 		if(aVersion != null){
+			logger.info("[Version]==>获取版本[id=" + id + "]数据！");
 			return successJson(aVersion);
 		}
-		return failedJson(logger, "版本[id=" + id + "]不存在！");
+		logger.error("[Version]==>获取版本[id=" + id + "]不存在！");
+		return failedJson("获取版本[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -58,14 +62,17 @@ public class ApiVersionController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AVersion aVersion = versionService.findById(Integer.parseInt(id));
 			if(aVersion != null && aVersion.getVersion() != null && aVersion.getVersion().equals(version)){
+				logger.info("[Version]==>更新时验证版本[version=" + version + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AVersion> list = versionService.findByVersion(version);
 		if(list == null || list.isEmpty()){
+			logger.info("[Version]==>更新时验证版本[version=" + version + "]不存在！");
 			return successJson();
 		}
-		return failedJson(logger, "版本[version=" + version + "]已存在！");
+		logger.error("[Version]==>更新时验证版本[version=" + version + "]已存在！");
+		return failedJson("更新时验证版本[version=" + version + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -73,22 +80,27 @@ public class ApiVersionController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
 		try {
 			if(id == null || id.isEmpty()){
-				Integer pid = versionService.create(new AVersion(version.trim(), trimArray(channel)));
-				if(pid != null){
+				Integer vid = versionService.create(new AVersion(version.trim(), trimArray(channel)));
+				if(vid != null){
+					logger.info("[Version]==>添加版本[id=" + vid + ",version=" + version + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "添加版本[version=" + version + "]失败！");
+					logger.error("[Version]==>添加版本[version=" + version + "]失败！");
+					return failedJson("添加版本[version=" + version + "]失败！");
 				}
 			}else{
 				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), trimArray(channel)));
 				if(aVersion != null){
+					logger.info("[Version]==>更新版本[id=" + id + ",version=" + version + "]成功！");
 					return successJson();
 				}else{
-					return failedJson(logger, "更新版本[id=" + id + "]失败！");
+					logger.error("[Version]==>更新版本[id=" + id + ",version=" + version + "]失败！");
+					return failedJson("更新版本[id=" + id + ",version=" + version + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error("[Version]==>添加/更新版本失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -103,9 +115,12 @@ public class ApiVersionController extends BaseController{
 				}
 			}
 			versionService.delete(Integer.parseInt(id));
+			logger.error("[Version]==>删除版本[id=" + id + "]以及版本下案例成功！");
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(logger, e.getMessage());
+			logger.error(e.getMessage());
+			logger.error("[Version]==>删除版本失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
 		}
 	}
 	

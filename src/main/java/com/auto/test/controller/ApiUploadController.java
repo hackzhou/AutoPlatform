@@ -26,7 +26,6 @@ import com.auto.test.utils.ExcelUtil;
 @RestController
 @RequestMapping(value = "api/upload")
 public class ApiUploadController extends BaseController{
-	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiUploadController.class);
 	
 	@Resource
@@ -42,11 +41,13 @@ public class ApiUploadController extends BaseController{
         }
 		List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
 		interfaceService.exportApiInterface(list);
+		logger.info("[Upload]==>批量导入接口！");
 		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/fileDownload", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> download(HttpServletRequest request) throws Exception {
+		logger.info("[Upload]==>下载批量导入接口模板！");
 		File file = ResourceUtils.getFile("classpath:template/ExportIntetface.xlsx");
 		String fileName = new String("接口批量导入模板.xlsx".getBytes("UTF-8"),"iso-8859-1");
 		HttpHeaders headers = new HttpHeaders();

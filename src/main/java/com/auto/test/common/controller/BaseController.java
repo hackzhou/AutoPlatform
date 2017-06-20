@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,11 +58,6 @@ public class BaseController implements MessageSourceAware {
 		return map;
 	}
 	
-	public Map<String, Object> failedJson(Logger logger, String message) {
-		logger.error(message);
-		return failedJson(message);
-	}
-	
 	public ModelAndView success(List<?> results, int count, String viewName) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(viewName);
@@ -103,7 +97,7 @@ public class BaseController implements MessageSourceAware {
 		mv.addAllObjects(map);
 		return mv;
 	}
-
+	
 	public ModelAndView success(Object data, String viewName, String username) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(viewName);
