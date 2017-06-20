@@ -25,7 +25,6 @@ import com.auto.test.service.IApiRunService;
 @Controller
 @RequestMapping(value = "api/case")
 public class ApiCaseController extends BaseController{
-	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiCaseController.class);
 	
 	@Resource
@@ -42,7 +41,7 @@ public class ApiCaseController extends BaseController{
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -77,7 +76,7 @@ public class ApiCaseController extends BaseController{
 			aCase.setBody(jsonFormat(aCase.getBody(), true));
 			return successJson(aCase);
 		}
-		return failedJson("该案例不存在！");
+		return failedJson(logger, "该案例[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -98,18 +97,18 @@ public class ApiCaseController extends BaseController{
 				if(pid != null){
 					return successJson();
 				}else{
-					return failedJson("添加案例失败！");
+					return failedJson(logger, "添加案例[name=" + name + "]失败！");
 				}
 			}else{
 				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(run)));
 				if(aCase != null){
 					return successJson();
 				}else{
-					return failedJson("更新案例失败！");
+					return failedJson(logger, "更新案例[id=" + id + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -120,7 +119,7 @@ public class ApiCaseController extends BaseController{
 			caseService.delete(Integer.parseInt(id));
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -136,7 +135,7 @@ public class ApiCaseController extends BaseController{
 			}
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	

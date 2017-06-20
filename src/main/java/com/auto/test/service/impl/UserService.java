@@ -3,8 +3,6 @@ package com.auto.test.service.impl;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IUserDao;
 import com.auto.test.entity.AUser;
@@ -12,8 +10,6 @@ import com.auto.test.service.IUserService;
 
 @Service("userService")
 public class UserService implements IUserService {
-	@SuppressWarnings("unused")
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Resource(name="userDao")
 	private IUserDao dao;

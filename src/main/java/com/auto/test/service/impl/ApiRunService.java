@@ -28,8 +28,7 @@ import com.auto.test.service.IApiRunService;
 
 @Service("apiRunService")
 public class ApiRunService implements IApiRunService {
-	@SuppressWarnings("unused")
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger(ApiRunService.class);
 	
 	@Resource(name="apiProjectDao")
 	private IApiProjectDao projectDao;
@@ -61,7 +60,7 @@ public class ApiRunService implements IApiRunService {
 	private void isNotRunAccount(Integer accountId){
 		ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 		if(accountId != null && apiApplication.contain(accountId)){
-			throw new BusinessException("该账号正在使用，请稍后运行！");
+			throw throwException(logger, "该账号[id=" + accountId + "]正在使用，请稍后运行！");
 		}
 	}
 	
@@ -85,7 +84,7 @@ public class ApiRunService implements IApiRunService {
 			}
 		}
 		if(list.isEmpty()){
-			throw new BusinessException("运行[案例]未找到！");
+			throw throwException(logger, "运行[案例]未找到！");
 		}
 		return list;
 	}
@@ -98,7 +97,7 @@ public class ApiRunService implements IApiRunService {
 			aVersion = list.get(0).getVersiono();
 		}
 		if(aVersion == null){
-			throw new BusinessException("运行[版本/渠道号]未找到！");
+			throw throwException(logger, "运行[版本/渠道号]未找到！");
 		}
 		return aVersion;
 	}
@@ -167,6 +166,11 @@ public class ApiRunService implements IApiRunService {
 			}
 		}
 		return total * len;
+	}
+	
+	public BusinessException throwException(Logger logger, String message){
+		logger.error(message);
+		return new BusinessException(message);
 	}
 	
 }

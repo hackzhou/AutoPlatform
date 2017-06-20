@@ -56,6 +56,7 @@ public class ApiExecuteRun implements Runnable {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 			throw new BusinessException(e.getMessage());
 		}
 	}

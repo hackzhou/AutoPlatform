@@ -26,7 +26,6 @@ import com.auto.test.service.IApiRunService;
 @RestController
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
-	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
 	
 	@Resource
@@ -49,7 +48,7 @@ public class ApiProjectController extends BaseController{
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -72,7 +71,7 @@ public class ApiProjectController extends BaseController{
 		if(aProject != null){
 			return successJson(aProject);
 		}
-		return failedJson("项目不存在！");
+		return failedJson(logger, "项目[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -88,7 +87,7 @@ public class ApiProjectController extends BaseController{
 		if(projectList == null || projectList.isEmpty()){
 			return successJson();
 		}
-		return failedJson("项目[" + name + "]已存在！");
+		return failedJson(logger, "项目[name=" + name + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -100,18 +99,18 @@ public class ApiProjectController extends BaseController{
 				if(pid != null){
 					return successJson();
 				}else{
-					return failedJson("添加项目失败！");
+					return failedJson(logger, "添加项目[name=" + name + "]失败！");
 				}
 			}else{
 				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), path.trim()));
 				if(aProject != null){
 					return successJson();
 				}else{
-					return failedJson("更新项目失败！");
+					return failedJson(logger, "更新项目[id=" + id + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -135,7 +134,7 @@ public class ApiProjectController extends BaseController{
 			projectService.delete(Integer.parseInt(id));
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	

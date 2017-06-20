@@ -22,7 +22,6 @@ import com.auto.test.service.IApiVersionService;
 @RestController
 @RequestMapping(value = "api/version")
 public class ApiVersionController extends BaseController{
-	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiVersionController.class);
 	
 	@Resource
@@ -50,7 +49,7 @@ public class ApiVersionController extends BaseController{
 		if(aVersion != null){
 			return successJson(aVersion);
 		}
-		return failedJson("版本不存在！");
+		return failedJson(logger, "版本[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -66,7 +65,7 @@ public class ApiVersionController extends BaseController{
 		if(list == null || list.isEmpty()){
 			return successJson();
 		}
-		return failedJson("版本[" + version + "]已存在！");
+		return failedJson(logger, "版本[version=" + version + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -78,18 +77,18 @@ public class ApiVersionController extends BaseController{
 				if(pid != null){
 					return successJson();
 				}else{
-					return failedJson("添加版本失败！");
+					return failedJson(logger, "添加版本[version=" + version + "]失败！");
 				}
 			}else{
 				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), trimArray(channel)));
 				if(aVersion != null){
 					return successJson();
 				}else{
-					return failedJson("更新版本失败！");
+					return failedJson(logger, "更新版本[id=" + id + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -106,7 +105,7 @@ public class ApiVersionController extends BaseController{
 			versionService.delete(Integer.parseInt(id));
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	

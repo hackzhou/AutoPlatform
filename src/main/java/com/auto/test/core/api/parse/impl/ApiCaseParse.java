@@ -48,10 +48,10 @@ public class ApiCaseParse implements IApiCaseParse {
 				executeFinal(apiContext, e.getMessage());
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				throw new BusinessException(ex.getMessage());
+				throw throwException(logger, ex.getMessage());
 			}
 			e.printStackTrace();
-			throw new BusinessException(e.getMessage());
+			throw throwException(logger, e.getMessage());
 		}
 	}
 	
@@ -116,17 +116,23 @@ public class ApiCaseParse implements IApiCaseParse {
 					if("200".equals(accessToken.getCode())){
 						return accessToken.getData().getAccessToken();
 					}else{
-						throw new BusinessException("[Author][" + type + "]==>" + accessToken.getMessage());
+						throw throwException(logger, "[Author][" + type + "]==>" + accessToken.getMessage());
 					}
 				}else{
-					throw new BusinessException("[Author][" + type + "]==>获取AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
+					throw throwException(logger, "[Author][" + type + "]==>获取AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
 				}
 			}else{
-				throw new BusinessException("[Author][" + type + "]==>" + login.getMessage());
+				throw throwException(logger, "[Author][" + type + "]==>" + login.getMessage());
 			}
 		}else{
-			throw new BusinessException("[Author][" + type + "]==>登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
+			throw throwException(logger, "[Author][" + type + "]==>登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
 		}
+	}
+	
+	@Override
+	public BusinessException throwException(Logger logger, String message){
+		logger.error(message);
+		return new BusinessException(message);
 	}
 	
 }

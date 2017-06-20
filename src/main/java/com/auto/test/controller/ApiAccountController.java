@@ -20,7 +20,6 @@ import com.auto.test.service.IApiAccountService;
 @RestController
 @RequestMapping(value = "api/account")
 public class ApiAccountController extends BaseController{
-	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(ApiAccountController.class);
 
 	@Resource
@@ -45,7 +44,7 @@ public class ApiAccountController extends BaseController{
 		if(aAccount != null){
 			return successJson(aAccount);
 		}
-		return failedJson("该账号不存在！");
+		return failedJson(logger, "该账号[id=" + id + "]不存在！");
 	}
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
@@ -61,7 +60,7 @@ public class ApiAccountController extends BaseController{
 		if(list == null || list.isEmpty()){
 			return successJson();
 		}
-		return failedJson("该账号[" + loginname + "]已存在！");
+		return failedJson(logger, "该账号[loginname=" + loginname + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -73,18 +72,18 @@ public class ApiAccountController extends BaseController{
 				if(pid != null){
 					return successJson();
 				}else{
-					return failedJson("添加账号失败！");
+					return failedJson(logger, "添加账号[loginname=" + loginname + "]失败！");
 				}
 			}else{
 				AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname.trim(), password.trim()));
 				if(aAccount != null){
 					return successJson();
 				}else{
-					return failedJson("更新账号失败！");
+					return failedJson(logger, "更新账号[id=" + id + "]失败！");
 				}
 			}
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
@@ -95,7 +94,7 @@ public class ApiAccountController extends BaseController{
 			accountService.delete(Integer.parseInt(id));
 			return successJson();
 		} catch (Exception e) {
-			return failedJson(e.getMessage());
+			return failedJson(logger, e.getMessage());
 		}
 	}
 	
