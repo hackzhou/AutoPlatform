@@ -4,7 +4,11 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.auto.test.dao.IApiCaseDao;
+import com.auto.test.dao.IApiInterfaceDao;
 import com.auto.test.dao.IApiProjectDao;
+import com.auto.test.entity.ACase;
+import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
 
@@ -14,6 +18,12 @@ public class ApiProjectService implements IApiProjectService {
 	@Resource(name="apiProjectDao")
 	private IApiProjectDao dao;
 
+	@Resource(name="apiInterfaceDao")
+	private IApiInterfaceDao daoInterface;
+	
+	@Resource(name="apiCaseDao")
+	private IApiCaseDao daoCase;
+	
 	@Override
 	public List<AProject> findAll() {
 		return dao.findAllOrder();
@@ -57,6 +67,24 @@ public class ApiProjectService implements IApiProjectService {
 		if(id != null){
 			dao.deleteById(id);
 		}
+	}
+
+	@Override
+	public void deleteCascade(Integer id) throws Exception {
+		List<AInterface> interList = daoInterface.findByProjectId(id);
+		if(interList != null && !interList.isEmpty()){
+			List<ACase> caseList = null;
+			for (AInterface aInterface : interList) {
+				caseList = daoCase.findByInterfaceId(aInterface.getId());
+				if(caseList != null && !caseList.isEmpty()){
+					for (ACase aCase : caseList) {
+						daoCase.delete(aCase);
+					}
+				}
+				daoInterface.delete(aInterface);
+			}
+		}
+		delete(id);
 	}
 
 }

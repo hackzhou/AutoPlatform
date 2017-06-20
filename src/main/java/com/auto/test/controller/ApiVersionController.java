@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.entity.ACase;
 import com.auto.test.entity.AVersion;
-import com.auto.test.service.IApiCaseService;
 import com.auto.test.service.IApiVersionService;
 
 @RestController
@@ -26,9 +24,6 @@ public class ApiVersionController extends BaseController{
 	
 	@Resource
 	private IApiVersionService versionService;
-	
-	@Resource
-	private IApiCaseService caseService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllVersion(HttpServletRequest request) {
@@ -108,13 +103,7 @@ public class ApiVersionController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> deleteVersion(@PathVariable("id") String id) {
 		try {
-			List<ACase> caseList = caseService.findByVersionId(Integer.parseInt(id));
-			if(caseList != null && !caseList.isEmpty()){
-				for (ACase aCase : caseList) {
-					caseService.delete(aCase);
-				}
-			}
-			versionService.delete(Integer.parseInt(id));
+			versionService.deleteCascade(Integer.parseInt(id));
 			logger.error("[Version]==>删除版本[id=" + id + "]以及版本下案例成功！");
 			return successJson();
 		} catch (Exception e) {

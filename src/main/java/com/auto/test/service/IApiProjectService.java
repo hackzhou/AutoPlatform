@@ -18,5 +18,7 @@ public interface IApiProjectService{
 	AProject update(AProject aProject);
 	
 	void delete(Integer id);
+	
+	void deleteCascade(Integer id) throws Exception;
 
 }

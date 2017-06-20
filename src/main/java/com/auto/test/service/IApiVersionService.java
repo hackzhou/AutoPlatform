@@ -18,5 +18,7 @@ public interface IApiVersionService{
 	AVersion update(AVersion aVersion);
 	
 	void delete(Integer id);
+	
+	void deleteCascade(Integer id) throws Exception;
 
 }

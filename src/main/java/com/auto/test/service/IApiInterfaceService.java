@@ -27,4 +27,6 @@ public interface IApiInterfaceService{
 
 	void delete(Integer id);
 
+	void deleteCascade(Integer id) throws Exception;
+
 }

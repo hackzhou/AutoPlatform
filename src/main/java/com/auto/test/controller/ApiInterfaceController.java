@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
-import com.auto.test.service.IApiCaseService;
 import com.auto.test.service.IApiInterfaceService;
 
 @RestController
@@ -26,9 +24,6 @@ public class ApiInterfaceController extends BaseController{
 	
 	@Resource
 	private IApiInterfaceService interfaceService;
-	
-	@Resource
-	private IApiCaseService caseService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllInterface(HttpServletRequest request) {
@@ -120,13 +115,7 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> deleteInterface(@PathVariable("id") String id) {
 		try {
-			List<ACase> caseList = caseService.findByInterfaceId(Integer.parseInt(id));
-			if(caseList != null && !caseList.isEmpty()){
-				for (ACase aCase : caseList) {
-					caseService.delete(aCase);
-				}
-			}
-			interfaceService.delete(Integer.parseInt(id));
+			interfaceService.deleteCascade(Integer.parseInt(id));
 			logger.error("[Interface]==>删除接口[id=" + id + "]以及接口下案例成功！");
 			return successJson();
 		} catch (Exception e) {

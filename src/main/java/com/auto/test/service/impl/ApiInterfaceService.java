@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiInterfaceDao;
+import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.service.IApiInterfaceService;
 
@@ -13,6 +15,9 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	
 	@Resource(name="apiInterfaceDao")
 	private IApiInterfaceDao dao;
+	
+	@Resource(name="apiCaseDao")
+	private IApiCaseDao daoCase;
 
 	@Override
 	public List<AInterface> findAll() {
@@ -74,6 +79,17 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		if(id != null){
 			dao.deleteById(id);
 		}
+	}
+	
+	@Override
+	public void deleteCascade(Integer id) throws Exception{
+		List<ACase> caseList = daoCase.findByInterfaceId(id);
+		if(caseList != null && !caseList.isEmpty()){
+			for (ACase aCase : caseList) {
+				daoCase.delete(aCase);
+			}
+		}
+		delete(id);
 	}
 
 	@Override

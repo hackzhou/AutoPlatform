@@ -15,11 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.entity.ACase;
-import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
-import com.auto.test.service.IApiCaseService;
-import com.auto.test.service.IApiInterfaceService;
 import com.auto.test.service.IApiProjectService;
 import com.auto.test.service.IApiRunService;
 
@@ -30,12 +26,6 @@ public class ApiProjectController extends BaseController{
 	
 	@Resource
 	private IApiProjectService projectService;
-	
-	@Resource
-	private IApiInterfaceService interfaceService;
-	
-	@Resource
-	private IApiCaseService caseService;
 	
 	@Resource
 	private IApiRunService runService;
@@ -133,20 +123,7 @@ public class ApiProjectController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
 		try {
-			List<AInterface> interList = interfaceService.findByProjectId(Integer.parseInt(id));
-			if(interList != null && !interList.isEmpty()){
-				List<ACase> caseList = null;
-				for (AInterface aInterface : interList) {
-					caseList = caseService.findByInterfaceId(aInterface.getId());
-					if(caseList != null && !caseList.isEmpty()){
-						for (ACase aCase : caseList) {
-							caseService.delete(aCase);
-						}
-					}
-					interfaceService.delete(aInterface);
-				}
-			}
-			projectService.delete(Integer.parseInt(id));
+			projectService.deleteCascade(Integer.parseInt(id));
 			logger.error("[Project]==>删除项目[id=" + id + "]以及项目下接口/案例成功！");
 			return successJson();
 		} catch (Exception e) {

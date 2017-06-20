@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiVersionDao;
+import com.auto.test.entity.ACase;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiVersionService;
 
@@ -13,6 +15,9 @@ public class ApiVersionService implements IApiVersionService {
 	
 	@Resource(name="apiVersionDao")
 	private IApiVersionDao dao;
+	
+	@Resource(name="apiCaseDao")
+	private IApiCaseDao daoCase;
 
 	@Override
 	public List<AVersion> findAll() {
@@ -57,6 +62,17 @@ public class ApiVersionService implements IApiVersionService {
 		if(id != null){
 			dao.deleteById(id);
 		}
+	}
+
+	@Override
+	public void deleteCascade(Integer id) throws Exception {
+		List<ACase> caseList = daoCase.findByVersionId(id);
+		if(caseList != null && !caseList.isEmpty()){
+			for (ACase aCase : caseList) {
+				daoCase.delete(aCase);
+			}
+		}
+		delete(id);
 	}
 
 }
