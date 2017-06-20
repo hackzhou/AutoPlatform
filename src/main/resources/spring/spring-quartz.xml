@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd ">
+
+	<task:scheduled-tasks scheduler="apiAutoScheduler">
+		<task:scheduled ref="apiAutoTask" method="autoRun" cron="*/5 * * * * ?" />
+	</task:scheduled-tasks>
+	<bean id="apiAutoTask" class="com.auto.test.quartz.ApiAutoTask" />
+	<task:scheduler id="apiAutoScheduler" pool-size="20"  />
+	
+</beans>
