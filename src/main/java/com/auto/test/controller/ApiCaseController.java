@@ -120,6 +120,7 @@ public class ApiCaseController extends BaseController{
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Case]==>添加/更新案例失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -130,9 +131,10 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> deleteCase(@PathVariable("id") String id) {
 		try {
 			caseService.delete(Integer.parseInt(id));
-			logger.error("[Case]==>删除案例[id=" + id + "]成功！");
+			logger.info("[Case]==>删除案例[id=" + id + "]成功！");
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Case]==>删除案例失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -148,9 +150,10 @@ public class ApiCaseController extends BaseController{
 			if("1".equals(isResult)){
 				JSON.parseObject(result);
 			}
-			logger.error("[Case]==>JSON数据验证成功！");
+			logger.info("[Case]==>JSON数据验证成功！");
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Case]==>JSON数据验证失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}

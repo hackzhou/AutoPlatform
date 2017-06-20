@@ -106,6 +106,7 @@ public class ApiInterfaceController extends BaseController{
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Interface]==>添加/更新接口失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -116,9 +117,10 @@ public class ApiInterfaceController extends BaseController{
 	public Map<String, Object> deleteInterface(@PathVariable("id") String id) {
 		try {
 			interfaceService.deleteCascade(Integer.parseInt(id));
-			logger.error("[Interface]==>删除接口[id=" + id + "]以及接口下案例成功！");
+			logger.info("[Interface]==>删除接口[id=" + id + "]以及接口下案例成功！");
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Interface]==>删除接口失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}

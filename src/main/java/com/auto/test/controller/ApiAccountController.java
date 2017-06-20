@@ -94,6 +94,7 @@ public class ApiAccountController extends BaseController{
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Account]==>添加/更新测试账号失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -104,9 +105,10 @@ public class ApiAccountController extends BaseController{
 	public Map<String, Object> deleteAccount(@PathVariable("id") String id) {
 		try {
 			accountService.delete(Integer.parseInt(id));
-			logger.error("[Account]==>删除测试账号[id=" + id + "]成功！");
+			logger.info("[Account]==>删除测试账号[id=" + id + "]成功！");
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Account]==>删除测试账号失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}

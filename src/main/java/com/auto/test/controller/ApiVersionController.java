@@ -94,6 +94,7 @@ public class ApiVersionController extends BaseController{
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Version]==>添加/更新版本失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -104,10 +105,10 @@ public class ApiVersionController extends BaseController{
 	public Map<String, Object> deleteVersion(@PathVariable("id") String id) {
 		try {
 			versionService.deleteCascade(Integer.parseInt(id));
-			logger.error("[Version]==>删除版本[id=" + id + "]以及版本下案例成功！");
+			logger.info("[Version]==>删除版本[id=" + id + "]以及版本下案例成功！");
 			return successJson();
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			e.printStackTrace();
 			logger.error("[Version]==>删除版本失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}

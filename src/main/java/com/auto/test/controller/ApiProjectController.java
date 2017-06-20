@@ -114,6 +114,7 @@ public class ApiProjectController extends BaseController{
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Project]==>添加/更新项目失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
@@ -124,9 +125,10 @@ public class ApiProjectController extends BaseController{
 	public Map<String, Object> deleteProject(@PathVariable("id") String id) {
 		try {
 			projectService.deleteCascade(Integer.parseInt(id));
-			logger.error("[Project]==>删除项目[id=" + id + "]以及项目下接口/案例成功！");
+			logger.info("[Project]==>删除项目[id=" + id + "]以及项目下接口/案例成功！");
 			return successJson();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("[Project]==>删除项目失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}

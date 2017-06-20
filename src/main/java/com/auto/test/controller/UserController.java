@@ -35,7 +35,6 @@ public class UserController extends BaseController{
 		}
 		AUser aUser = userService.isLogin(username, StrUtil.encryptByMD5(password));
 		if(aUser != null){
-			logger.info(aUser.toString());
 			try {
 				request.getSession().setAttribute("user", aUser);
 				if("1".equals(rememberme)){
@@ -58,7 +57,7 @@ public class UserController extends BaseController{
 				return failMsg(e.getMessage(), "login");
 			}
 		}else{
-			logger.info("[UserLogin]==>用户名或密码有误，请重新输入！");
+			logger.error("[UserLogin]==>用户名或密码有误，请重新输入！");
 			return failMsg("用户名或密码有误，请重新输入！", "login");
 		}
 	}
@@ -117,6 +116,7 @@ public class UserController extends BaseController{
 		}
 		List<AUser> list = userService.findByName(username);
 		if(list != null && !list.isEmpty()){
+			logger.error("[UserRegister]==>用户已经注册[" + username + "]");
 			return failMsg("[" + username + "]已经注册!", "register");
 		}
 		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
