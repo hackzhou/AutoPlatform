@@ -155,6 +155,7 @@
                   <th>测试账号</th>
                   <th><b style='color:green'>是否运行</b></th>
                   <th><b style='color:red'>触发时间</b></th>
+                  <th>创建人</th>
                   <th>创建日期</th>
                   <th>操作</th>
                 </tr>
@@ -234,7 +235,7 @@
 					}
 				},
 				{
-					"sWidth" : "15%",
+					"sWidth" : "10%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -243,7 +244,7 @@
 					}
 				},
 				{
-					"sWidth" : "15%",
+					"sWidth" : "10%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -287,12 +288,21 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+						return data.runby == null ? "-" : data.runby;
 					}
 				},
 				{
 					"sWidth" : "10%",
 					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
