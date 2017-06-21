@@ -2,7 +2,6 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -32,8 +30,21 @@ public class ATask implements Serializable{
 	@NotFound(action = NotFoundAction.IGNORE)
 	private AProject projecto;
 	
-	@Column(name="run")
-	private Integer run;
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="version_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private AVersion versiono;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name="account_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private AAccount accounto;
+	
+	@Column(name="run_flag")
+	private Integer runFlag;
+	
+	@Column(name="run_time")
+	private Date runTime;
 	
 	@Column(name="runby")
 	private String runby;
@@ -53,7 +64,10 @@ public class ATask implements Serializable{
 	
 	public void update(ATask aTask) {
 		this.projecto = aTask.getProjecto();
-		this.run = aTask.getRun();
+		this.versiono = aTask.getVersiono();
+		this.accounto = aTask.getAccounto();
+		this.runFlag = aTask.getRunFlag();
+		this.runTime = aTask.getRunTime();
 		this.runby = aTask.getRunby();
 		this.updateTime = new Date();
 		this.memo = aTask.getMemo();
@@ -71,11 +85,29 @@ public class ATask implements Serializable{
 	public void setProjecto(AProject projecto) {
 		this.projecto = projecto;
 	}
-	public Integer getRun() {
-		return run;
+	public AVersion getVersiono() {
+		return versiono;
 	}
-	public void setRun(Integer run) {
-		this.run = run;
+	public void setVersiono(AVersion versiono) {
+		this.versiono = versiono;
+	}
+	public AAccount getAccounto() {
+		return accounto;
+	}
+	public void setAccounto(AAccount accounto) {
+		this.accounto = accounto;
+	}
+	public Integer getRunFlag() {
+		return runFlag;
+	}
+	public void setRunFlag(Integer runFlag) {
+		this.runFlag = runFlag;
+	}
+	public Date getRunTime() {
+		return runTime;
+	}
+	public void setRunTime(Date runTime) {
+		this.runTime = runTime;
 	}
 	public String getRunby() {
 		return runby;
@@ -104,7 +136,8 @@ public class ATask implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ATask [id=" + id + ", projecto=" + projecto + ", run=" + run + ", runby=" + runby + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
+				+ ", runFlag=" + runFlag + ", runTime=" + runTime + ", runby=" + runby + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 }
