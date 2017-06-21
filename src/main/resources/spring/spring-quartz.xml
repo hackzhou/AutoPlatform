@@ -8,7 +8,7 @@
            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd ">
 
 	<task:scheduled-tasks scheduler="apiAutoScheduler">
-		<task:scheduled ref="apiAutoTask" method="autoRun" cron="*/5 * * * * ?" />
+		<task:scheduled ref="apiAutoTask" method="autoRun" cron="0 0/1 * * * ?" />
 	</task:scheduled-tasks>
 	<bean id="apiAutoTask" class="com.auto.test.quartz.ApiAutoTask" />
 	<task:scheduler id="apiAutoScheduler" pool-size="20"  />

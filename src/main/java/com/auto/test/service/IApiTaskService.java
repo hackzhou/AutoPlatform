@@ -9,6 +9,8 @@ public interface IApiTaskService{
 	
 	List<ATask> findAll();
 	
+	List<ATask> findByTime(String time);
+
 	ATask findById(Integer id);
 	
 	Integer create(ATask aTask);

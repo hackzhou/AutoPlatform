@@ -57,17 +57,17 @@ public class ApiAccountController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AAccount aAccount = accountService.findById(Integer.parseInt(id));
 			if(aAccount != null && aAccount.getLoginname() != null && aAccount.getLoginname().equals(loginname)){
-				logger.info("[Account]==>更新时验证测试账号[loginname=" + loginname + "]是本身！");
+				logger.info("[Account]==>验证测试账号[loginname=" + loginname + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AAccount> list = accountService.findByName(loginname);
 		if(list == null || list.isEmpty()){
-			logger.info("[Account]==>更新时验证测试账号[loginname=" + loginname + "]不存在！");
+			logger.info("[Account]==>验证测试账号[loginname=" + loginname + "]不存在！");
 			return successJson();
 		}
-		logger.error("[Account]==>更新时验证测试账号[loginname=" + loginname + "]已存在！");
-		return failedJson("更新时验证测试账号[loginname=" + loginname + "]已存在！");
+		logger.error("[Account]==>验证测试账号[loginname=" + loginname + "]已存在！");
+		return failedJson("验证测试账号[loginname=" + loginname + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)

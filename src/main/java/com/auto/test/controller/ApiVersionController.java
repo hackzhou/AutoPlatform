@@ -57,17 +57,17 @@ public class ApiVersionController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AVersion aVersion = versionService.findById(Integer.parseInt(id));
 			if(aVersion != null && aVersion.getVersion() != null && aVersion.getVersion().equals(version)){
-				logger.info("[Version]==>更新时验证版本[version=" + version + "]是本身！");
+				logger.info("[Version]==>验证版本[version=" + version + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AVersion> list = versionService.findByVersion(version);
 		if(list == null || list.isEmpty()){
-			logger.info("[Version]==>更新时验证版本[version=" + version + "]不存在！");
+			logger.info("[Version]==>验证版本[version=" + version + "]不存在！");
 			return successJson();
 		}
-		logger.error("[Version]==>更新时验证版本[version=" + version + "]已存在！");
-		return failedJson("更新时验证版本[version=" + version + "]已存在！");
+		logger.error("[Version]==>验证版本[version=" + version + "]已存在！");
+		return failedJson("验证版本[version=" + version + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)

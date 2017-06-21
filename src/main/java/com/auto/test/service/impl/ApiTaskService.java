@@ -20,6 +20,11 @@ public class ApiTaskService implements IApiTaskService {
 	}
 
 	@Override
+	public List<ATask> findByTime(String time) {
+		return dao.findByTime(time);
+	}
+	
+	@Override
 	public ATask findById(Integer id) {
 		return dao.findById(id);
 	}

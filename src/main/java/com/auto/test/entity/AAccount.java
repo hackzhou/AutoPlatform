@@ -37,7 +37,10 @@ public class AAccount implements Serializable{
 	public AAccount() {
 		super();
 	}
-	
+	public AAccount(Integer id) {
+		super();
+		this.id = id;
+	}
 	public AAccount(String loginname, String password) {
 		super();
 		this.loginname = loginname;

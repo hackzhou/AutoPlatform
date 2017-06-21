@@ -77,17 +77,17 @@ public class ApiProjectController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AProject aProject = projectService.findById(Integer.parseInt(id));
 			if(aProject != null && aProject.getName() != null && aProject.getName().equals(name)){
-				logger.info("[Project]==>更新时验证项目[name=" + name + "]是本身！");
+				logger.info("[Project]==>验证项目[name=" + name + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AProject> projectList = projectService.findByName(name);
 		if(projectList == null || projectList.isEmpty()){
-			logger.info("[Project]==>更新时验证项目[name=" + name + "]不存在！");
+			logger.info("[Project]==>验证项目[name=" + name + "]不存在！");
 			return successJson();
 		}
-		logger.error("[Project]==>更新时验证项目[name=" + name + "]已存在！");
-		return failedJson("更新时验证项目[name=" + name + "]已存在！");
+		logger.error("[Project]==>验证项目[name=" + name + "]已存在！");
+		return failedJson("验证项目[name=" + name + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)

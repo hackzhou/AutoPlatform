@@ -14,6 +14,7 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td align="center">接口自动化：</td>
@@ -23,6 +24,7 @@
 		<td><a href="${pageContext.request.contextPath}/api/account/list">测试账号</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/case/list">接口案例</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/report/list">接口报告</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/api/task/list">定时任务</a><br/></td>
 		<td><a href="${pageContext.request.contextPath}/api/setting/list">接口设置</a><br/></td>
 	</tr>
 	<tr>
@@ -34,9 +36,11 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td align="center">测试工具：</td>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>

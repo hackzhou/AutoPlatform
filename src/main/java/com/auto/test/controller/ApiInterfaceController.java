@@ -69,17 +69,17 @@ public class ApiInterfaceController extends BaseController{
 		if(id != null && !id.isEmpty()){
 			AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 			if(aInterface != null && aInterface.getUrl() != null && aInterface.getUrl().equals(url)){
-				logger.info("[Interface]==>更新时验证项目下接口[url=" + url + "]是本身！");
+				logger.info("[Interface]==>验证项目下接口[url=" + url + "]是本身！");
 				return successJson();
 			}
 		}
 		List<AInterface> list = interfaceService.findByProjectUrl(Integer.parseInt(project), url);
 		if(list == null || list.isEmpty()){
-			logger.info("[Interface]==>更新时验证项目下接口[url=" + url + "]不存在！");
+			logger.info("[Interface]==>验证项目下接口[url=" + url + "]不存在！");
 			return successJson();
 		}
-		logger.error("[Interface]==>更新时验证项目下接口[url=" + url + "]已存在！");
-		return failedJson("更新时验证项目下接口[url=" + url + "]已存在！");
+		logger.error("[Interface]==>验证项目下接口[url=" + url + "]已存在！");
+		return failedJson("验证项目下接口[url=" + url + "]已存在！");
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)

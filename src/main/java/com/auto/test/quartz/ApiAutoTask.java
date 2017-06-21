@@ -1,5 +1,7 @@
 package com.auto.test.quartz;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -21,10 +23,11 @@ public class ApiAutoTask {
 	
 	public void autoRun() throws Exception {
 		if(Const.IP_ONLINE.equals(Const.IP_CURRENT)){
+			String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
 			List<ATask> list = apiTaskService.findAll();
 			if(list != null && !list.isEmpty()){
 				for (ATask aTask : list) {
-					if(new Integer(1).equals(aTask.getRunFlag())){
+					if(new Integer(1).equals(aTask.getRunFlag()) && currentTime.equals(aTask.getRunTime())){
 						Integer pid = aTask.getProjecto().getId();
 						Integer aid = aTask.getAccounto().getId();
 						Integer vid = aTask.getVersiono().getId();

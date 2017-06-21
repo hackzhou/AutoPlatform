@@ -14,6 +14,7 @@
 				<li><a href="${pageContext.request.contextPath}/api/case/list"><i class="ti-write m-r-10"></i> 案例</a></li>
 				<li><a href="${pageContext.request.contextPath}/api/report/list"><i class="ti-book m-r-10"></i> 报告</a></li>
 				<li role="separator" class="divider"></li>
+				<li><a href="${pageContext.request.contextPath}/api/task/list"><i class="ti-timer m-r-10"></i> 任务</a></li>
 				<li><a href="${pageContext.request.contextPath}/api/setting/list"><i class="ti-settings m-r-10"></i> 设置</a></li>
 			</ul>
 			</li>

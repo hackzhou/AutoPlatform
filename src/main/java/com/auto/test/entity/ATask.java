@@ -44,7 +44,7 @@ public class ATask implements Serializable{
 	private Integer runFlag;
 	
 	@Column(name="run_time")
-	private Date runTime;
+	private String runTime;
 	
 	@Column(name="runby")
 	private String runby;
@@ -62,6 +62,38 @@ public class ATask implements Serializable{
 		super();
 	}
 	
+	public ATask(String pid, String vid, String aid, Integer runFlag, String runTime, String runby) {
+		super();
+		if(pid != null && !pid.isEmpty()){
+			this.projecto = new AProject(Integer.parseInt(pid));
+		}
+		if(vid != null && !vid.isEmpty()){
+			this.versiono = new AVersion(Integer.parseInt(vid));
+		}
+		if(aid != null && !aid.isEmpty() && !"0".equals(aid)){
+			this.accounto = new AAccount(Integer.parseInt(aid));
+		}
+		this.runFlag = runFlag;
+		this.runTime = runTime;
+		this.runby = runby;
+	}
+	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, String runTime, String runby) {
+		super();
+		this.id = id;
+		if(pid != null && !pid.isEmpty()){
+			this.projecto = new AProject(Integer.parseInt(pid));
+		}
+		if(vid != null && !vid.isEmpty()){
+			this.versiono = new AVersion(Integer.parseInt(vid));
+		}
+		if(aid != null && !aid.isEmpty()){
+			this.accounto = new AAccount(Integer.parseInt(aid));
+		}
+		this.runFlag = runFlag;
+		this.runTime = runTime;
+		this.runby = runby;
+	}
+
 	public void update(ATask aTask) {
 		this.projecto = aTask.getProjecto();
 		this.versiono = aTask.getVersiono();
@@ -103,10 +135,10 @@ public class ATask implements Serializable{
 	public void setRunFlag(Integer runFlag) {
 		this.runFlag = runFlag;
 	}
-	public Date getRunTime() {
+	public String getRunTime() {
 		return runTime;
 	}
-	public void setRunTime(Date runTime) {
+	public void setRunTime(String runTime) {
 		this.runTime = runTime;
 	}
 	public String getRunby() {
