@@ -56,8 +56,11 @@ public class ApiCaseParse implements IApiCaseParse {
 			String version = apiContext.getVersion().getVersion();
 			String channels = apiContext.getVersion().getChannel();
 			for (String channel : channels.split(",")) {
-				String authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "A");
-				logger.info("[Author][A]==>[" + authorA + "]");
+				String authorA = null;
+				if(apiContext.isBool()){
+					authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "A");
+					logger.info("[Author][A]==>[" + authorA + "]");
+				}
 				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "B");
 				logger.info("[Author][B]==>[" + authorB + "]");
 				for (ACase aCase : list) {

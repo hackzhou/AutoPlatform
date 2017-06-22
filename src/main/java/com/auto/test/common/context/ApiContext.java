@@ -16,6 +16,7 @@ public class ApiContext {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ApiContext.class);
 
+	private boolean bool;
 	private Integer count;
 	private Integer total;
 	
@@ -32,6 +33,12 @@ public class ApiContext {
 		this.count = 0;
 	}
 
+	public boolean isBool() {
+		return bool;
+	}
+	public void setBool(boolean bool) {
+		this.bool = bool;
+	}
 	public Integer getCount() {
 		return count;
 	}

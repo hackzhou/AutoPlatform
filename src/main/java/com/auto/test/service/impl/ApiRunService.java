@@ -112,7 +112,17 @@ public class ApiRunService implements IApiRunService {
 		Integer len = aVersion.getChannel().split(",").length;
 		apiContext.setTotal(getCaseTotal(list, len));
 		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
+		apiContext.setBool(isRunOnline(list));
 		return apiContext;
+	}
+	
+	private boolean isRunOnline(List<ACase> list){
+		for (ACase aCase : list) {
+			if(aCase.getResult() == null || aCase.getResult().isEmpty()){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private AResult createApiResult(ApiRunType type, Integer runId, String runby, ApiContext apiContext) throws Exception{
