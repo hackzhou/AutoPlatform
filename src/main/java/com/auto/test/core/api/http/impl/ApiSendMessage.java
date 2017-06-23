@@ -7,15 +7,13 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
 public class ApiSendMessage implements IApiSendMessage {
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ApiSendMessage.class);
+	private static final String PATH = "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
+	private static final String DATA = "-->[Data:%s]";
 	
 	@Override
 	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
@@ -35,7 +33,7 @@ public class ApiSendMessage implements IApiSendMessage {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{
-				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
+				throw new BusinessException(response.getStatusLine().getStatusCode() + String.format(PATH, "GET", url, author, version, channel));
 			}
 		} finally {
 			if(response != null){
@@ -64,7 +62,7 @@ public class ApiSendMessage implements IApiSendMessage {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{
-				throw new BusinessException(String.valueOf(response.getStatusLine().getStatusCode()));
+				throw new BusinessException(response.getStatusLine().getStatusCode() + String.format(PATH, "POST", url, author, version, channel) + String.format(DATA, data));
 			}
 		} finally {
 			if(response != null){

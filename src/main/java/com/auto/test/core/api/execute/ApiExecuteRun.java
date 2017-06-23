@@ -64,13 +64,15 @@ public class ApiExecuteRun implements Runnable {
 	private void oneRunBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		try {
 			sendMessage(aCase, aResultDetail);
-			saveResultDetail(aCase, aResultDetail);
+			saveResultDetailSuccess(aCase, aResultDetail);
+		} catch (Exception e) {
+			saveResultDetailFail(aCase, aResultDetail, subMessageData(e.getMessage()));
 		} finally {
 			runFinal(aResultDetail);
 		}
 	}
 	
-	private void saveResultDetail(ACase aCase, AResultDetail aResultDetail){
+	private void saveResultDetailSuccess(ACase aCase, AResultDetail aResultDetail){
 		aResultDetail.update(aCase);
 		aResultDetail.setVersion(version);
 		aResultDetail.setChannel(channel);
@@ -94,10 +96,31 @@ public class ApiExecuteRun implements Runnable {
 		apiResultDetailService.create(aResultDetail);
 	}
 	
+	private void saveResultDetailFail(ACase aCase, AResultDetail aResultDetail, String message){
+		aResultDetail.update(aCase);
+		aResultDetail.setVersion(version);
+		aResultDetail.setChannel(channel);
+		aResultDetail.setResulto(apiContext.getResult());
+		if(apiContext.getAccount() != null){
+			aResultDetail.setAccount(apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword());
+		}
+		aResultDetail.setStatus(ApiStatus.FAILURE.name());
+		aResultDetail.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
+		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
+		apiResultDetailService.create(aResultDetail);
+	}
+	
+	private String subMessageData(String text){
+		if(text.indexOf("-->[Data:") > 0){
+			return text.substring(0, text.indexOf("-->[Data:"));
+		}
+		return text;
+	}
+	
 	private void runFinal(AResultDetail aResultDetail) throws Exception{
 		apiContext.setCount(apiContext.getCount() + 1);
 		AResult aResult = apiContext.getResult();
-		if(ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
+		if(aResultDetail != null && ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
 			aResult.setSuccess(aResult.getSuccess() + 1);
 		}
 		if(apiContext.getCount().equals(apiContext.getTotal())){
@@ -111,7 +134,9 @@ public class ApiExecuteRun implements Runnable {
 			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 			apiResultService.update(aResult);
 		}
-		logger.info("[Run][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
+		if(aResultDetail != null && aResultDetail.getCaseo() != null){
+			logger.info("[Run][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
+		}
 	}
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{

@@ -279,8 +279,17 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
-						return String.format(html, data.id, JSON.stringify(data));
+						if(data.msg == null || data.msg == ""){
+							var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
+							return String.format(html, data.id, JSON.stringify(data));
+						}else{
+							var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-15\"></i></a>";
+							if(data.body == null || data.body == ""){
+								return String.format(html, data.msg);
+							}else{
+								return String.format(html, data.msg + "-->[Data:" + data.body + "]");
+							}
+						}
 					}
 				}
     		],
@@ -301,6 +310,10 @@
 			}else{
 				$("#ignores").html("");
 			}
+		});
+		
+		$(".alertError").on("click", function(){
+			swal("错误", $(this).data('data'), "error");
 		});
 	}
 
