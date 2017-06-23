@@ -100,14 +100,14 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 		logger.info("[Author][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
-		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version);
+		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version, true);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
 			logger.info("[Author][" + type + "]==>" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
 				logger.info("[Author][" + type + "]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
-				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version);
+				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version, true);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[Author][" + type + "]==>" + accessToken.toString());

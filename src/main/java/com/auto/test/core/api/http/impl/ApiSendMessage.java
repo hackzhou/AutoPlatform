@@ -51,7 +51,7 @@ public class ApiSendMessage implements IApiSendMessage {
 	}
 
 	@Override
-	public String sendPost(String url, String data, String author, String channel, String version) throws Exception{
+	public String sendPost(String url, String data, String author, String channel, String version, boolean bool) throws Exception{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		try {
@@ -67,7 +67,11 @@ public class ApiSendMessage implements IApiSendMessage {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{
-				throw new BusinessException(response.getStatusLine().getStatusCode() + String.format(PATH, "POST", url, author, version, channel) + String.format(DATA, data));
+				if(bool){
+					throw new BusinessException(response.getStatusLine().getStatusCode() + String.format(PATH, "POST", url, author, version, channel) + String.format(DATA, data));
+				}else{
+					throw new BusinessException(response.getStatusLine().getStatusCode() + String.format(PATH, "POST", url, author, version, channel));
+				}
 			}
 		} finally {
 			if(response != null){

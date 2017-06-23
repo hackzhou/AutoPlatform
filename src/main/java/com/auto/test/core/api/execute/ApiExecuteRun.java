@@ -66,7 +66,7 @@ public class ApiExecuteRun implements Runnable {
 			sendMessage(aCase, aResultDetail);
 			saveResultDetailSuccess(aCase, aResultDetail);
 		} catch (Exception e) {
-			saveResultDetailFail(aCase, aResultDetail, subMessageData(e.getMessage()));
+			saveResultDetailFail(aCase, aResultDetail, e.getMessage());
 		} finally {
 			runFinal(aResultDetail);
 		}
@@ -108,13 +108,6 @@ public class ApiExecuteRun implements Runnable {
 		aResultDetail.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
 		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
 		apiResultDetailService.create(aResultDetail);
-	}
-	
-	private String subMessageData(String text){
-		if(text.indexOf("-->[Data:") > 0){
-			return text.substring(0, text.indexOf("-->[Data:"));
-		}
-		return text;
 	}
 	
 	private void runFinal(AResultDetail aResultDetail) throws Exception{
@@ -167,7 +160,7 @@ public class ApiExecuteRun implements Runnable {
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid) throws Exception{
 		logger.info("[Run][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
-		String result = apiSendMessage.sendPost(url, body, author, channel, version);
+		String result = apiSendMessage.sendPost(url, body, author, channel, version, false);
 		logger.info("[Run][" + runid + "]==>" + result);
 		return result;
 	}

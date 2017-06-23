@@ -6,6 +6,6 @@ public interface IApiSendMessage {
 	
 	String sendGet(String url, String author, String channel, String version) throws Exception;
 	
-	String sendPost(String url, String data, String author, String channel, String version) throws Exception;
+	String sendPost(String url, String data, String author, String channel, String version, boolean bool) throws Exception;
 
 }
