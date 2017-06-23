@@ -12,8 +12,13 @@ import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
 public class ApiSendMessage implements IApiSendMessage {
-	private static final String PATH = "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
-	private static final String DATA = "-->[Data:%s]";
+	private static final String APP_AUTHOR	= "Authorization";
+	private static final String APP_VERSION	= "App-Version";
+	private static final String APP_CHANNEL	= "App-Channel";
+	private static final String CONTENT_TYPE= "Content-Type";
+	private static final String CONTENT_JSON= "application/json; charset=UTF-8";
+	private static final String PATH		= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
+	private static final String DATA		= "-->[Data:%s]";
 	
 	@Override
 	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
@@ -26,9 +31,9 @@ public class ApiSendMessage implements IApiSendMessage {
 		CloseableHttpResponse response = null;
 		try {
 			HttpGet httpGet = new HttpGet(url);
-			httpGet.setHeader("Authorization", author);
-			httpGet.setHeader("App-Channel", channel);
-			httpGet.setHeader("App-Version", version);
+			httpGet.setHeader(APP_AUTHOR, author);
+			httpGet.setHeader(APP_VERSION, version);
+			httpGet.setHeader(APP_CHANNEL, channel);
 			response = httpclient.execute(httpGet);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
@@ -51,10 +56,10 @@ public class ApiSendMessage implements IApiSendMessage {
 		CloseableHttpResponse response = null;
 		try {
 			HttpPost httpPost = new HttpPost(url);
-			httpPost.setHeader("Content-Type", "application/json; charset=UTF-8");
-			httpPost.setHeader("Authorization", author);
-			httpPost.setHeader("App-Channel", channel);
-			httpPost.setHeader("App-Version", version);
+			httpPost.setHeader(CONTENT_TYPE, CONTENT_JSON);
+			httpPost.setHeader(APP_AUTHOR, author);
+			httpPost.setHeader(APP_VERSION, version);
+			httpPost.setHeader(APP_CHANNEL, channel);
 			if(data != null && !data.isEmpty()){
 				httpPost.setEntity(new StringEntity(data));
 			}
