@@ -56,7 +56,12 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-12">
+	              <div class="col-md-1">
+		            <div class="button-box">
+		              <button class="btn btn-block btn-outline btn-default">定时任务</button>
+		            </div>
+	              </div>
+	              <div class="col-md-11">
 	              	<!-- /.Create Task -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiTaskModal()" data-toggle="modal" data-target="#exampleModal7" data-whatever="@fat">添加定时任务</button>

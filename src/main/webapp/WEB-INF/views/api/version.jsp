@@ -50,7 +50,12 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-12">
+	              <div class="col-md-1">
+		            <div class="button-box">
+		              <button class="btn btn-block btn-outline btn-default">版本</button>
+		            </div>
+	              </div>
+	              <div class="col-md-11">
 	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">添加版本</button>

@@ -57,7 +57,12 @@
 					  </div>
 	                </div>
 	              </div> -->
-	              <div class="col-md-12">
+	              <div class="col-md-1">
+		            <div class="button-box">
+		              <button class="btn btn-block btn-outline btn-default">项目</button>
+		            </div>
+	              </div>
+	              <div class="col-md-11">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">添加项目</button>
