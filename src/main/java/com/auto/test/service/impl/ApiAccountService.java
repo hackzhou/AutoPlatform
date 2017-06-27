@@ -5,7 +5,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiAccountDao;
+import com.auto.test.dao.IApiTaskDao;
 import com.auto.test.entity.AAccount;
+import com.auto.test.entity.ATask;
 import com.auto.test.service.IApiAccountService;
 
 @Service("apiAccountService")
@@ -13,6 +15,9 @@ public class ApiAccountService implements IApiAccountService {
 	
 	@Resource(name="apiAccountDao")
 	private IApiAccountDao dao;
+	
+	@Resource(name="apiTaskDao")
+	private IApiTaskDao taskDao;
 
 	@Override
 	public List<AAccount> findAll() {
@@ -57,6 +62,17 @@ public class ApiAccountService implements IApiAccountService {
 		if(id != null){
 			dao.deleteById(id);
 		}
+	}
+
+	@Override
+	public void deleteCascade(Integer id) throws Exception {
+		List<ATask> taskList = taskDao.findByAccount(id);
+		if(taskList != null && !taskList.isEmpty()){
+			for (ATask aTask : taskList) {
+				taskDao.delete(aTask);
+			}
+		}
+		delete(id);
 	}
 
 }

@@ -18,5 +18,7 @@ public interface IApiAccountService{
 	AAccount update(AAccount aAccount);
 	
 	void delete(Integer id);
+	
+	void deleteCascade(Integer id) throws Exception;
 
 }

@@ -302,7 +302,8 @@
     function apiAccountDel(aid){
     	swal({
 			title: "你确定吗？",
-			text: "删除之后无法恢复，谨慎操作！",
+			text: "删除之后无法恢复，谨慎操作！<br/>该账号下[<b class=\"text-danger\">定时任务</b>]也将被删除！",
+			html: true,
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",

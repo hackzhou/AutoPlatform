@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiInterfaceDao;
 import com.auto.test.dao.IApiProjectDao;
+import com.auto.test.dao.IApiTaskDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
+import com.auto.test.entity.ATask;
 import com.auto.test.service.IApiProjectService;
 
 @Service("apiProjectService")
@@ -23,6 +25,9 @@ public class ApiProjectService implements IApiProjectService {
 	
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao daoCase;
+	
+	@Resource(name="apiTaskDao")
+	private IApiTaskDao taskDao;
 	
 	@Override
 	public List<AProject> findAll() {
@@ -82,6 +87,12 @@ public class ApiProjectService implements IApiProjectService {
 					}
 				}
 				daoInterface.delete(aInterface);
+			}
+		}
+		List<ATask> taskList = taskDao.findByProject(id);
+		if(taskList != null && !taskList.isEmpty()){
+			for (ATask aTask : taskList) {
+				taskDao.delete(aTask);
 			}
 		}
 		delete(id);

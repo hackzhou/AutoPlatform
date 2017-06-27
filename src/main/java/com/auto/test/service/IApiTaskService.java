@@ -9,6 +9,12 @@ public interface IApiTaskService{
 	
 	List<ATask> findAll();
 	
+	List<ATask> findByProject(Integer pid);
+
+	List<ATask> findByVersion(Integer vid);
+	
+	List<ATask> findByAccount(Integer aid);
+	
 	List<ATask> findByTime(String time);
 
 	ATask findById(Integer id);

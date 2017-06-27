@@ -5,8 +5,10 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiCaseDao;
+import com.auto.test.dao.IApiTaskDao;
 import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
+import com.auto.test.entity.ATask;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiVersionService;
 
@@ -18,6 +20,9 @@ public class ApiVersionService implements IApiVersionService {
 	
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao daoCase;
+	
+	@Resource(name="apiTaskDao")
+	private IApiTaskDao taskDao;
 
 	@Override
 	public List<AVersion> findAll() {
@@ -70,6 +75,12 @@ public class ApiVersionService implements IApiVersionService {
 		if(caseList != null && !caseList.isEmpty()){
 			for (ACase aCase : caseList) {
 				daoCase.delete(aCase);
+			}
+		}
+		List<ATask> taskList = taskDao.findByVersion(id);
+		if(taskList != null && !taskList.isEmpty()){
+			for (ATask aTask : taskList) {
+				taskDao.delete(aTask);
 			}
 		}
 		delete(id);

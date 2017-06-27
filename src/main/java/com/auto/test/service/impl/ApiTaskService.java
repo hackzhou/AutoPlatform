@@ -18,6 +18,21 @@ public class ApiTaskService implements IApiTaskService {
 	public List<ATask> findAll() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public List<ATask> findByProject(Integer pid) {
+		return dao.findByProject(pid);
+	}
+
+	@Override
+	public List<ATask> findByVersion(Integer vid) {
+		return dao.findByVersion(vid);
+	}
+
+	@Override
+	public List<ATask> findByAccount(Integer aid) {
+		return dao.findByAccount(aid);
+	}
 
 	@Override
 	public List<ATask> findByTime(String time) {
