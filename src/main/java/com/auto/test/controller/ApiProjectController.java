@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.ApiRunType;
+import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
@@ -27,15 +28,13 @@ public class ApiProjectController extends BaseController{
 	@Resource
 	private IApiProjectService projectService;
 	
-	@Resource
-	private IApiRunService runService;
-	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> runProject(HttpServletRequest request, @RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-version") String version, @RequestParam("api-project-run-account") String account) {
 		try {
 			logger.info("[Project]==>运行项目[id=" + runid + ",account=" + account + ",version=" + version + ",user=" + getCurrentUserName(request) + "]");
-			runService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request));
+			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
+			apiRunService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request));
 			logger.info("[Project]==>运行项目成功！");
 			return successJson();
 		} catch (Exception e) {

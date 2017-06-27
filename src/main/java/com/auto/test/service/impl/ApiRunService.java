@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
@@ -26,7 +25,6 @@ import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiRunService;
 
-@Service("apiRunService")
 public class ApiRunService implements IApiRunService {
 	private Logger logger = LoggerFactory.getLogger(ApiRunService.class);
 	

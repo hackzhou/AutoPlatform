@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.SpringContext;
 import com.auto.test.entity.ATask;
 import com.auto.test.service.IApiRunService;
 import com.auto.test.service.IApiTaskService;
@@ -17,9 +18,6 @@ public class ApiAutoTask {
 	
 	@Resource
 	private IApiTaskService apiTaskService;
-	
-	@Resource
-	private IApiRunService runService;
 	
 	public void autoRun() throws Exception {
 		if(Const.IP_ONLINE.equals(Const.IP_CURRENT)){
@@ -32,7 +30,8 @@ public class ApiAutoTask {
 						Integer aid = aTask.getAccounto().getId();
 						Integer vid = aTask.getVersiono().getId();
 						logger.info("[Task]==>定时任务运行项目[id=" + pid + ",account=" + aid + ",version=" + vid + ",user=" + aTask.getRunby() + "]");
-						runService.run(ApiRunType.PROJECT, pid, aid, vid, aTask.getRunby());
+						IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
+						apiRunService.run(ApiRunType.PROJECT, pid, aid, vid, aTask.getRunby());
 						logger.info("[Task]==>定时任务运行项目成功！");
 					}
 				}

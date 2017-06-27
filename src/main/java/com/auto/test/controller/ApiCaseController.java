@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.ApiRunType;
+import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
@@ -30,15 +31,13 @@ public class ApiCaseController extends BaseController{
 	@Resource
 	private IApiCaseService caseService;
 	
-	@Resource
-	private IApiRunService runService;
-
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> runCase(HttpServletRequest request, @RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
 		try {
 			logger.info("[Case]==>运行案例[id=" + runid + ",account=" + account + ",user=" + getCurrentUserName(request) + "]");
-			runService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request));
+			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
+			apiRunService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request));
 			logger.info("[Case]==>运行案例成功！");
 			return successJson();
 		} catch (Exception e) {
