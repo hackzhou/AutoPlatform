@@ -114,13 +114,13 @@ public class ApiCaseParse implements IApiCaseParse {
 					if("200".equals(accessToken.getCode())){
 						return accessToken.getData().getAccessToken();
 					}else{
-						throw new BusinessException("[登录权限][" + type + "]==>AccessToken失败！[" + accessToken.getMessage() + "]");
+						throw new BusinessException("[登录权限][" + type + "]==>AccessToken失败！[" + accessToken.getMessage() + "][" + data2 + "][" + data + "]");
 					}
 				}else{
 					throw new BusinessException("[登录权限][" + type + "]==>请求AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
 				}
 			}else{
-				throw new BusinessException("[登录权限][" + type + "]==>登录失败！[" + login.getMessage() + "]");
+				throw new BusinessException("[登录权限][" + type + "]==>登录失败！[" + login.getMessage() + "][" + data + "]");
 			}
 		}else{
 			throw new BusinessException("[登录权限][" + type + "]==>请求登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
