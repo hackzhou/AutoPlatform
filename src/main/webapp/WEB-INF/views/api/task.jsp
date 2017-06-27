@@ -155,7 +155,7 @@
                   <th>测试账号</th>
                   <th><b style='color:green'>是否运行</b></th>
                   <th><b style='color:red'>触发时间</b></th>
-                  <th>创建人</th>
+                  <th>设置人</th>
                   <th>创建日期</th>
                   <th>操作</th>
                 </tr>
