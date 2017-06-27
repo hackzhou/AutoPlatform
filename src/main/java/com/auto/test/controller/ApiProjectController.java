@@ -16,9 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
-import com.auto.test.service.IApiRunService;
 
 @RestController
 @RequestMapping(value = "api/project")

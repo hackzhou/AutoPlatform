@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
+import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.entity.ATask;
-import com.auto.test.service.IApiRunService;
 import com.auto.test.service.IApiTaskService;
 
 public class ApiAutoTask {

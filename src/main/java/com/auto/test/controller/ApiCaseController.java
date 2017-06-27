@@ -17,11 +17,11 @@ import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiCaseService;
-import com.auto.test.service.IApiRunService;
 
 @Controller
 @RequestMapping(value = "api/case")

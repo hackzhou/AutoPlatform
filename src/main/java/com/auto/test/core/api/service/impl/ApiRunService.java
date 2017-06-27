@@ -1,4 +1,4 @@
-package com.auto.test.service.impl;
+package com.auto.test.core.api.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +14,7 @@ import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.parse.IApiCaseParse;
+import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.dao.IApiAccountDao;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiProjectDao;
@@ -23,7 +24,6 @@ import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
-import com.auto.test.service.IApiRunService;
 
 public class ApiRunService implements IApiRunService {
 	private Logger logger = LoggerFactory.getLogger(ApiRunService.class);

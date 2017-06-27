@@ -1,4 +1,4 @@
-package com.auto.test.service;
+package com.auto.test.core.api.service;
 
 import com.auto.test.common.constant.ApiRunType;
 
