@@ -445,7 +445,7 @@
       		url:"<%=request.getContextPath()%>/api/account/list/data",
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				var optionstring = "<option value='0'>无</option>";
+      				var optionstring = "";
     				var list = data.data;
     				for(var i = list.length - 1; i >= 0; i--){
     					if(accountid == list[i].id){
@@ -455,7 +455,7 @@
     					}
     				}
     				$('#api-task-account').empty();
-    				$('#api-task-account').append(optionstring);
+    				$('#api-task-account').append(optionstring + "<option value='0'>无</option>");
       			}
       	    }
 		});
