@@ -229,7 +229,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return (data.runby == null || data.runby == "") ? "-" : data.runby;
+						return (data.runby == null || data.runby == "") ? "-" : (data.runby.indexOf("Auto") == 0 ? "<b style='color:aqua'>Auto</b>" + data.runby.substr(4) : data.runby);
 					}
 				},
 				{
