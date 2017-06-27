@@ -39,6 +39,11 @@ public class ApiCaseService implements IApiCaseService {
 	public ACase findById(Integer id) {
 		return dao.findById(id);
 	}
+	
+	@Override
+	public List<ACase> findByIds(List<Integer> cids) {
+		return dao.findByIds(cids);
+	}
 
 	@Override
 	public Integer create(ACase aCase) {

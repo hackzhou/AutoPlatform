@@ -15,33 +15,33 @@ import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.core.api.service.IApiRunService;
-import com.auto.test.dao.IApiAccountDao;
-import com.auto.test.dao.IApiCaseDao;
-import com.auto.test.dao.IApiProjectDao;
-import com.auto.test.dao.IApiResultDao;
-import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
+import com.auto.test.service.IApiAccountService;
+import com.auto.test.service.IApiCaseService;
+import com.auto.test.service.IApiProjectService;
+import com.auto.test.service.IApiResultService;
+import com.auto.test.service.IApiVersionService;
 
 public class ApiRunService implements IApiRunService {
 	private Logger logger = LoggerFactory.getLogger(ApiRunService.class);
 	
-	@Resource(name="apiProjectDao")
-	private IApiProjectDao projectDao;
+	@Resource
+	private IApiProjectService projectService;
 	
-	@Resource(name="apiCaseDao")
-	private IApiCaseDao caseDao;
+	@Resource
+	private IApiCaseService caseService;
 	
-	@Resource(name="apiVersionDao")
-	private IApiVersionDao versionDao;
+	@Resource
+	private IApiVersionService versionService;
 	
-	@Resource(name="apiAccountDao")
-	private IApiAccountDao accountDao;
+	@Resource
+	private IApiAccountService accountService;
 
-	@Resource(name="apiResultDao")
-	private IApiResultDao resultDao;
+	@Resource
+	private IApiResultService resultService;
 
 	@Override
 	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) throws Exception{
@@ -65,19 +65,19 @@ public class ApiRunService implements IApiRunService {
 	private List<ACase> getRunCases(ApiRunType type, Integer runId, Integer vId){
 		List<ACase> list = new ArrayList<ACase>();
 		if(ApiRunType.PROJECT.equals(type)){
-			List<ACase> cList = caseDao.findByProjectVersion(runId, vId);
+			List<ACase> cList = caseService.findByProjectVersion(runId, vId);
 			if(cList != null && !cList.isEmpty()){
 				for (ACase aCase : cList) {
 					if(new Integer(1).equals(aCase.getRun())){
-						aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
+						aCase.setList(caseService.findByIds(getIdList(aCase.getLink())));
 						list.add(aCase);
 					}
 				}
 			}
 		}else if(ApiRunType.CASE.equals(type)){
-			ACase aCase = caseDao.findById(runId);
+			ACase aCase = caseService.findById(runId);
 			if(aCase != null && new Integer(1).equals(aCase.getRun())){
-				aCase.setList(caseDao.findByIds(getIdList(aCase.getLink())));
+				aCase.setList(caseService.findByIds(getIdList(aCase.getLink())));
 				list.add(aCase);
 			}
 		}
@@ -90,7 +90,7 @@ public class ApiRunService implements IApiRunService {
 	private AVersion getApiVersion(List<ACase> list, ApiRunType type, Integer versionId){
 		AVersion aVersion = null;
 		if(ApiRunType.PROJECT.equals(type)){
-			aVersion = versionDao.findById(versionId);
+			aVersion = versionService.findById(versionId);
 		}else if(ApiRunType.CASE.equals(type)){
 			aVersion = list.get(0).getVersiono();
 		}
@@ -103,7 +103,7 @@ public class ApiRunService implements IApiRunService {
 	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion) throws Exception{
 		ApiContext apiContext = new ApiContext();
 		if(accountId != null){
-			apiContext.setAccount(accountDao.findById(accountId));
+			apiContext.setAccount(accountService.findById(accountId));
 		}
 		apiContext.setList(list);
 		apiContext.setVersion(aVersion);
@@ -126,14 +126,14 @@ public class ApiRunService implements IApiRunService {
 	private AResult createApiResult(ApiRunType type, Integer runId, String runby, ApiContext apiContext) throws Exception{
 		AResult aResult = new AResult();
 		if(ApiRunType.PROJECT.equals(type)){
-			AProject aProject = projectDao.findById(runId);
+			AProject aProject = projectService.findById(runId);
 			if(aProject != null){
 				apiContext.setProject(aProject);
 				aResult.setProjecto(aProject);
 				aResult.setName(String.format(Const.RUN_PROJECT_NAME, aProject.getName()));
 			}
 		}else if(ApiRunType.CASE.equals(type)){
-			ACase aCase = caseDao.findById(runId);
+			ACase aCase = caseService.findById(runId);
 			if(aCase != null){
 				apiContext.setProject(aCase.getInterfaceo().getProjecto());
 				aResult.setProjecto(aCase.getInterfaceo().getProjecto());
@@ -148,7 +148,7 @@ public class ApiRunService implements IApiRunService {
 		aResult.setTotal(apiContext.getTotal());
 		aResult.setCreateTime(new Date());
 		aResult.setStartTime(new Date());
-		resultDao.create(aResult);
+		resultService.create(aResult);
 		return aResult;
 	}
 	
