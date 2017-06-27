@@ -128,7 +128,7 @@ public class ApiExecuteRun implements Runnable {
 			apiResultService.update(aResult);
 		}
 		if(aResultDetail != null && aResultDetail.getCaseo() != null){
-			logger.info("[Run][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
+			logger.info("[主体运行][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
 		}
 	}
 	
@@ -152,16 +152,16 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid) throws Exception{
-		logger.info("[Run][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
+		logger.info("[主体运行][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(url, author, channel, version);
-		logger.info("[Run][" + runid + "]==>" + result);
+		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid) throws Exception{
-		logger.info("[Run][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
+		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = apiSendMessage.sendPost(url, body, author, channel, version, false);
-		logger.info("[Run][" + runid + "]==>" + result);
+		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}
 	

@@ -58,11 +58,11 @@ public class ApiCaseParse implements IApiCaseParse {
 			for (String channel : channels.split(",")) {
 				String authorA = null;
 				if(apiContext.isBool()){
-					authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "A");
-					logger.info("[Author][A]==>[" + authorA + "]");
+					authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "线上");
+					logger.info("[登录权限][线上]==>[" + authorA + "]");
 				}
-				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "B");
-				logger.info("[Author][B]==>[" + authorB + "]");
+				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "线下");
+				logger.info("[登录权限][线下]==>[" + authorB + "]");
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
@@ -99,31 +99,31 @@ public class ApiCaseParse implements IApiCaseParse {
 	
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
-		logger.info("[Author][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
+		logger.info("[登录权限][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
 		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version, true);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
-			logger.info("[Author][" + type + "]==>" + login.toString());
+			logger.info("[登录权限][" + type + "]==>" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
-				logger.info("[Author][" + type + "]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
+				logger.info("[登录权限][" + type + "]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
 				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version, true);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
-					logger.info("[Author][" + type + "]==>" + accessToken.toString());
+					logger.info("[登录权限][" + type + "]==>" + accessToken.toString());
 					if("200".equals(accessToken.getCode())){
 						return accessToken.getData().getAccessToken();
 					}else{
-						throw new BusinessException("[Author][" + type + "]==>AccessToken失败！[" + accessToken.getMessage() + "]");
+						throw new BusinessException("[登录权限][" + type + "]==>AccessToken失败！[" + accessToken.getMessage() + "]");
 					}
 				}else{
-					throw new BusinessException("[Author][" + type + "]==>请求AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
+					throw new BusinessException("[登录权限][" + type + "]==>请求AccessToken失败！[" + url + GlobalValueConfig.getConfig("uri.user.accessToken") + "][" + data2 + "][" + data + "]");
 				}
 			}else{
-				throw new BusinessException("[Author][" + type + "]==>登录失败！[" + login.getMessage() + "]");
+				throw new BusinessException("[登录权限][" + type + "]==>登录失败！[" + login.getMessage() + "]");
 			}
 		}else{
-			throw new BusinessException("[Author][" + type + "]==>请求登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
+			throw new BusinessException("[登录权限][" + type + "]==>请求登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
 		}
 	}
 	
