@@ -568,7 +568,12 @@
 		$('#api-case-form').append(String.format(html, count));
 		$('#api-case-count').val(count);
 		$('.del-link-case').removeAttr("disabled");
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null,null);
+		var caseid = $('#api-case-id').val();
+		if(caseid == null || caseid == ""){
+			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null,null);
+		}else{
+			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),count,null,caseid);
+		}
 	}
 	
 	function delApiCaseLink(){
