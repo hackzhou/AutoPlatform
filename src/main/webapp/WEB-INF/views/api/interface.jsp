@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Data Table</h4> -->
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>接口</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -57,12 +57,7 @@
 					  </div>
 	                </div>
 	              </div> -->
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">接口</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Interface -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModal3" data-whatever="@fat">添加接口</button>
@@ -119,12 +114,13 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-interface-url" name="api-interface-url" class="form-control" placeholder="接口地址">
-	                        <i class="ti-star text-danger"></i>
+	                        <i class="ti-star text-danger m-r-10"></i><label class="text-info">(格式：/xxx/yyy)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="接口描述">
+	                        <label class="text-info">(如果填写api_platform，则运行时项目地址为/api_platform)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">

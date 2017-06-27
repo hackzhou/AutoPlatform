@@ -46,7 +46,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Data Table</h4> -->
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>定时任务</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -56,12 +56,7 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">定时任务</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Task -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiTaskModal()" data-toggle="modal" data-target="#exampleModal7" data-whatever="@fat">添加定时任务</button>

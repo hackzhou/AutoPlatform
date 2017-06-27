@@ -50,7 +50,7 @@
             <div class="checkbox checkbox-primary pull-left p-t-0">
               <input id="rememberme" name="rememberme" type="hidden" value="0">
               <input id="remember" name="remember" type="checkbox">
-              <label for="remember"> Remember me </label>
+              <label for="remember"> Remember me (ten days)</label>
             </div>
           </div>
         </div>

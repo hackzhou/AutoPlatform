@@ -43,6 +43,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>案例</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -52,12 +53,7 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">案例</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Case -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModal5" data-whatever="@fat">添加案例</button>
@@ -148,10 +144,11 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><code>是否是新接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
-                          	<div class="radio-list">
+                          	<div class="col-sm-2 radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-is-result0" name="api-case-is-result" value="0" checked>不是</label>
                           		<label class="radio-inline"><input type="radio" id="api-case-is-result1" name="api-case-is-result" value="1">是 </label>
                         	</div>
+                        	<label class="col-sm-7 text-info">(单次运行的所有案例全为"是"，则不请求线上！)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -606,10 +603,11 @@
       		success:function(data){
       			if(data.responseCode == "0000"){
       				swal({
-      					title: "成功!",
-      					text: "运行案例成功.",
-      					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
-      				});
+						title: "成功!",
+						html: true,
+						text: "<a href=\"${pageContext.request.contextPath}/api/report/list\">查看报告</a>",
+						imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
+					});
       			}else{
       				swal("错误", data.responseMsg, "error");
       			}
@@ -624,13 +622,13 @@
       		url:"<%=request.getContextPath()%>/api/account/list/data",
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				var optionstring = "<option value='0'>无</option>";
+      				var optionstring = "";
     				var list = data.data;
     				for(var i = list.length - 1; i >= 0; i--){
     					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
     				}
     				$('#api-case-run-account').empty();
-    				$('#api-case-run-account').append(optionstring);
+    				$('#api-case-run-account').append(optionstring + "<option value='0'>无</option>");
       			}
       	    }
 		});

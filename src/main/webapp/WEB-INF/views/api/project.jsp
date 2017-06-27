@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Data Table</h4> -->
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>项目</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -57,12 +57,7 @@
 					  </div>
 	                </div>
 	              </div> -->
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">项目</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">添加项目</button>
@@ -98,7 +93,8 @@
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-project-path" name="api-project-path" class="form-control" placeholder="项目地址">
-	                        <i class="ti-star text-danger"></i>
+	                        <i class="ti-star text-danger m-r-10"></i>
+	                        <label class="text-info">(请求地址=域名[IP+端口]+<b class="text-danger">项目地址</b>+接口地址)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -323,7 +319,8 @@
           			if(data.responseCode == "0000"){
           				swal({
           					title: "成功!",
-          					text: "运行项目成功.",
+          					html: true,
+    						text: "<a href=\"${pageContext.request.contextPath}/api/report/list\">查看报告</a>",
           					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
           				});
           			}else{
@@ -342,13 +339,13 @@
       		url:"<%=request.getContextPath()%>/api/account/list/data",
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				var optionstring = "<option value='0'>无</option>";
+      				var optionstring = "";
     				var list = data.data;
     				for(var i = list.length - 1; i >= 0; i--){
     					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
     				}
     				$('#api-project-run-account').empty();
-    				$('#api-project-run-account').append(optionstring);
+    				$('#api-project-run-account').append(optionstring + "<option value='0'>无</option>");
       			}
       	    }
 		});

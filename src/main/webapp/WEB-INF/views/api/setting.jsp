@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Dashboard Setting</h4> -->
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>设置</b></span></h4>
         </div>
       </div>
       <div class="row">

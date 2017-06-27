@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <!-- <h4 class="page-title">Data Table</h4> -->
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>测试账号</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -57,12 +57,7 @@
 					  </div>
 	                </div>
 	              </div> -->
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">测试账号</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Account -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModal4" data-whatever="@fat">添加账号</button>
@@ -92,7 +87,7 @@
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-account-id" name="api-account-id" value="">
 	                        <input type="text" id="api-account-loginname" name="api-account-loginname" class="form-control" placeholder="账号名称">
-	                        <i class="ti-star text-danger"></i>
+	                        <i class="ti-star text-danger m-r-10"></i><label class="text-info">(通常会使用同一个库，所以使用同一个账号测试！)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">

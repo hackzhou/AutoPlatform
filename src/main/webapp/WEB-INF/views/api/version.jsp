@@ -41,6 +41,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>版本</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -50,12 +51,7 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-1">
-		            <div class="button-box">
-		              <button class="btn btn-block btn-outline btn-default">版本</button>
-		            </div>
-	              </div>
-	              <div class="col-md-11">
+	              <div class="col-md-12">
 	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">添加版本</button>
@@ -92,6 +88,7 @@
 	                      <div class="input-group m-b-20"> <span class="input-group-addon">版本渠道号</span>
 			              	<input type="text" id="api-version-channel" name="api-version-channel" value="" data-role="tagsinput" placeholder="添加渠道号">
 			              </div>
+		              	  <i class="ti-star text-danger m-r-10"></i><label class="text-info">(版本对应多个渠道号，运行时各渠道号分别运行！)</label>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
