@@ -155,7 +155,8 @@
                   <th>测试账号</th>
                   <th><b style='color:green'>是否运行</b></th>
                   <th><b style='color:red'>触发时间</b></th>
-                  <th>设置人</th>
+                  <th>创建人</th>
+                  <th>更新人</th>
                   <th>创建日期</th>
                   <th>操作</th>
                 </tr>
@@ -244,7 +245,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -262,7 +263,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -274,7 +275,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -283,8 +284,17 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 6 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.createby == null ? "-" : data.createby;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -293,7 +303,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 7 ],
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -302,7 +312,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 8 ],
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
