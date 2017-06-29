@@ -131,7 +131,8 @@
                 <tr>
                   <th>ID</th>
                   <th>测试账号</th>
-                  <th>账号密码</th>
+                  <th><b style='color:green'>密码</b>/<b style='color:violet'>Token</b></th>
+                  <th><b style='color:blue'>类型</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -209,7 +210,7 @@
     
 	function initToken(text){
 		$('#api-account-loginname-label').html("(仅作为标示)");
-		$('#api-account-password-label').html("(可填写一个[线下]或者两个[线上,线下](*逗号分隔))");
+		$('#api-account-password-label').html("(可填写一个[线下]或者两个[线上,线下](*逗号分隔即可))");
 		$('#api-account-password').prop("placeholder", "Token");
 		if(text != null){
 			$('#api-account-password').val(text);
@@ -229,7 +230,7 @@
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "15%",
+					"sWidth" : "10%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -238,7 +239,7 @@
 					}
 				},
 				{
-					"sWidth" : "25%",
+					"sWidth" : "20%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -247,17 +248,38 @@
 					}
 				},
 				{
-					"sWidth" : "25%",
+					"sWidth" : "40%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.password;
+						if(data.token == "0"){
+							return "<b style='color:green'>" + data.password + "</b>";
+						}else if(data.token == "1"){
+							return "<b style='color:violet'>" + data.password.replace(/,/g, "<br/>") + "</b>";
+						}else{
+							return "-";
+						}
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "10%",
 					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						if(data.token == "0"){
+							return "<b style='color:green'>密码</b>";
+						}else if(data.token == "1"){
+							return "<b style='color:violet'>Token</b>";
+						}else{
+							return "-";
+						}
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -265,8 +287,8 @@
 					}
 				},
 				{
-					"sWidth" : "15%",
-					"aTargets" : [ 4 ],
+					"sWidth" : "10%",
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -329,38 +351,44 @@
     	}else{
     		if(atoken == "1"){
     			apassword = apassword.replace(/\，/g, ",").trim();
-    			if(getCountByString(apassword, ",") > 1 || getCountByString(apassword, " ") > 0){
+    			if(getCountByString(apassword, ",") > 1 || apassword.indexOf(",") == 0 || apassword.substr(apassword.length-1, 1) == ","){
     		    	showMsgDiv("Token格式不正确！");
         		}else{
     	    		$('#api-account-password').val(apassword);
+    	    		apiAccountCreateUpdate();
         		}
+    		}else{
+    			apiAccountCreateUpdate();
     		}
-    		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/account/repeat",
-          		data:$('#api-account-form').serialize(),
-          		success:function(data){
-          	    	if(data.responseCode == "0000"){
-          	    		hideMsgDiv();
-          	    		$('#exampleModal4').modal('hide');
-          	    		$.ajax({
-          	    			type:"post",
-          	          		url:"<%=request.getContextPath()%>/api/account/create/update",
-          	          		data:$('#api-account-form').serialize(),
-          	          		success:function(data){
-          	          			if(data.responseCode == "0000"){
-          	          				$('#api-account-table').dataTable()._fnAjaxUpdate();
-          	          			}else{
-          	          				swal("错误", data.responseMsg, "error");
-          	          			}
-          	          	    }
-          	    		});
-          	    	}else{
-          	    		showMsgDiv(data.responseMsg);
-          			}
-          	    }
-    		});
     	}
+    }
+    
+    function apiAccountCreateUpdate(){
+    	$.ajax({
+			type:"post",
+      		url:"<%=request.getContextPath()%>/api/account/repeat",
+      		data:$('#api-account-form').serialize(),
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    		hideMsgDiv();
+      	    		$('#exampleModal4').modal('hide');
+      	    		$.ajax({
+      	    			type:"post",
+      	          		url:"<%=request.getContextPath()%>/api/account/create/update",
+      	          		data:$('#api-account-form').serialize(),
+      	          		success:function(data){
+      	          			if(data.responseCode == "0000"){
+      	          				$('#api-account-table').dataTable()._fnAjaxUpdate();
+      	          			}else{
+      	          				swal("错误", data.responseMsg, "error");
+      	          			}
+      	          	    }
+      	    		});
+      	    	}else{
+      	    		showMsgDiv(data.responseMsg);
+      			}
+      	    }
+		});
     }
     
     function apiAccountDel(aid){

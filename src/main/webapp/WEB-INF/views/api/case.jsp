@@ -380,12 +380,12 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "25%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.interfaceo.url;
+						return "[" + data.interfaceo.type + "]" + data.interfaceo.url;
 					}
 				},
 				{
@@ -416,7 +416,7 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "7%",
 					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -425,7 +425,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -434,7 +434,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "5%",
 					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",

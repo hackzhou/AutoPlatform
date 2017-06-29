@@ -223,7 +223,7 @@
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "20%",
+					"sWidth" : "10%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -232,7 +232,7 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "30%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -241,7 +241,7 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "30%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -259,7 +259,7 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "10%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",

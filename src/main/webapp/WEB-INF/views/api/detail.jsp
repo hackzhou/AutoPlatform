@@ -101,7 +101,7 @@
                   <th>渠道号</th>
                   <th>测试账号</th>
                   <th>请求体</th>
-                  <th>状态</th>
+                  <th><b style='color:blue'>状态</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -235,7 +235,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return (data.account == null || data.account == "") ? "-" : data.account;
+						return (data.account == null || data.account == "") ? "-" : tooltipText(data.account);
 					}
 				},
 				{
