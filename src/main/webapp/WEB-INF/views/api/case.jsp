@@ -416,7 +416,7 @@
 					}
 				},
 				{
-					"sWidth" : "7%",
+					"sWidth" : "5%",
 					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -425,7 +425,7 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "10%",
 					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
