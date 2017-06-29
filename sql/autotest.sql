@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-06-19 09:30:47
+Date: 2017-06-29 18:20:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,11 +23,12 @@ CREATE TABLE `a_account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `loginname` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `token` varchar(1) COLLATE utf8_bin NOT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Table structure for a_case
@@ -47,7 +48,7 @@ CREATE TABLE `a_case` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Table structure for a_interface
@@ -64,7 +65,7 @@ CREATE TABLE `a_interface` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Table structure for a_project
@@ -101,7 +102,7 @@ CREATE TABLE `a_result` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Table structure for a_result_detail
@@ -120,6 +121,7 @@ CREATE TABLE `a_result_detail` (
   `resulta` text COLLATE utf8_bin,
   `resultb` text COLLATE utf8_bin,
   `status` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `msg` varchar(2048) COLLATE utf8_bin DEFAULT NULL,
   `version` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `channel` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
   `account` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -127,7 +129,26 @@ CREATE TABLE `a_result_detail` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Table structure for a_task
+-- ----------------------------
+DROP TABLE IF EXISTS `a_task`;
+CREATE TABLE `a_task` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `version_id` int(11) NOT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `run_flag` int(1) NOT NULL,
+  `run_time` varchar(5) COLLATE utf8_bin NOT NULL,
+  `createby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `runby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Table structure for a_user
@@ -157,4 +178,4 @@ CREATE TABLE `a_version` (
   `update_time` datetime DEFAULT NULL,
   `memo` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
