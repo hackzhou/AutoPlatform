@@ -107,3 +107,9 @@ function showMsgDiv(msgStr){
 function hideMsgDiv(){
 	$("#msgDiv").hide();
 }
+
+function getCountByString(text, str){
+	var regex = new RegExp(str, 'g');
+	var result = text.match(regex);
+	return !result ? 0 : result.length;
+}

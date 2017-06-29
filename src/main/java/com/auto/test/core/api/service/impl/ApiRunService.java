@@ -109,8 +109,17 @@ public class ApiRunService implements IApiRunService {
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;
 		apiContext.setTotal(getCaseTotal(list, len));
-		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		apiContext.setBool(isRunOnline(list));
+		if(apiContext.getAccount() != null && "1".equals(apiContext.getAccount().getToken())){
+			int index = apiContext.getAccount().getPassword().split(",").length;
+			if(index > 2){
+				throw throwException(logger, "Token[格式错误]-[" + apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword() + "]");
+			}
+			if(apiContext.isBool() && index != 2){
+				throw throwException(logger, "Token[线上未设置]-[" + apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword() + "]");
+			}
+		}
+		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		return apiContext;
 	}
 	

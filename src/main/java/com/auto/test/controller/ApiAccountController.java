@@ -72,10 +72,10 @@ public class ApiAccountController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {
+	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-token") String token, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {
 		try {
 			if(id == null || id.isEmpty()){
-				Integer aid = accountService.create(new AAccount(loginname.trim(), password.trim()));
+				Integer aid = accountService.create(new AAccount(token.trim(), loginname.trim(), password.trim()));
 				if(aid != null){
 					logger.info("[Account]==>添加测试账号[id=" + aid + ",loginname=" + loginname + "]成功！");
 					return successJson();
@@ -84,7 +84,7 @@ public class ApiAccountController extends BaseController{
 					return failedJson("添加测试账号[loginname=" + loginname + "]失败！");
 				}
 			}else{
-				AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), loginname.trim(), password.trim()));
+				AAccount aAccount = accountService.update(new AAccount(Integer.parseInt(id), token.trim(), loginname.trim(), password.trim()));
 				if(aAccount != null){
 					logger.info("[Account]==>更新测试账号[id=" + id + ",loginname=" + loginname + "]成功！");
 					return successJson();

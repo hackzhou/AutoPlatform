@@ -25,6 +25,9 @@ public class AAccount implements Serializable{
 	@Column(name="password")
 	private String password;
 	
+	@Column(name="token")
+	private String token;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
@@ -41,21 +44,24 @@ public class AAccount implements Serializable{
 		super();
 		this.id = id;
 	}
-	public AAccount(String loginname, String password) {
+	public AAccount(String token, String loginname, String password) {
 		super();
 		this.loginname = loginname;
 		this.password = password;
+		this.token = token;
 	}
-	public AAccount(Integer id, String loginname, String password) {
+	public AAccount(Integer id, String token, String loginname, String password) {
 		super();
 		this.id = id;
 		this.loginname = loginname;
 		this.password = password;
+		this.token = token;
 	}
 
 	public void update(AAccount aAccount) {
 		this.loginname = aAccount.getLoginname();
 		this.password = aAccount.getPassword();
+		this.token = aAccount.getToken();
 		this.updateTime = new Date();
 		this.memo = aAccount.getMemo();
 	}
@@ -78,6 +84,12 @@ public class AAccount implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -96,11 +108,11 @@ public class AAccount implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "AAccount [id=" + id + ", loginname=" + loginname + ", password=" + password + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AAccount [id=" + id + ", loginname=" + loginname + ", password=" + password + ", token=" + token
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 
 }

@@ -57,12 +57,25 @@ public class ApiCaseParse implements IApiCaseParse {
 			String channels = apiContext.getVersion().getChannel();
 			for (String channel : channels.split(",")) {
 				String authorA = null;
-				if(apiContext.isBool()){
-					authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "线上");
-					logger.info("[登录权限][线上]==>[" + authorA + "]");
+				String authorB = null;
+				if(apiContext.getAccount() != null){
+					if("1".equals(apiContext.getAccount().getToken())){
+						String token = apiContext.getAccount().getPassword();
+						if(token.contains(",")){
+							authorA = token.split(",")[0];
+							authorB = token.split(",")[1];
+						}else{
+							authorB = token;
+						}
+					}else{
+						if(apiContext.isBool()){
+							authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "线上");
+							logger.info("[登录权限][线上]==>[" + authorA + "]");
+						}
+						authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "线下");
+						logger.info("[登录权限][线下]==>[" + authorB + "]");
+					}
 				}
-				String authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "线下");
-				logger.info("[登录权限][线下]==>[" + authorB + "]");
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
@@ -88,13 +101,10 @@ public class ApiCaseParse implements IApiCaseParse {
 	}
 	
 	private String setAuthor(AAccount aAccount, String url, String version, String channel, String type) throws Exception{
-		if(aAccount != null){
-			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-			apiApplication.add(aAccount.getId());
-			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-			return sendMessage(apiSendMessage, url, aAccount, version, channel, type);
-		}
-		return "";
+		ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+		apiApplication.add(aAccount.getId());
+		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
+		return sendMessage(apiSendMessage, url, aAccount, version, channel, type);
 	}
 	
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{

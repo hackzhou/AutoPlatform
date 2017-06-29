@@ -75,7 +75,7 @@
           <div class="white-box">
             <!-- /.modal -->
             <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog" role="document" style="width: 800px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -83,17 +83,26 @@
                   </div>
                   <div class="modal-body">
                     <form id="api-account-form" class="form-horizontal form-material">
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>类型 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-account-token0" name="api-account-token" value="0" checked>账号/密码 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-account-token1" name="api-account-token" value="1">Token </label>
+                        	</div>
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-account-id" name="api-account-id" value="">
 	                        <input type="text" id="api-account-loginname" name="api-account-loginname" class="form-control" placeholder="账号名称">
-	                        <i class="ti-star text-danger m-r-10"></i><label class="text-info">(通常会使用同一个库，所以使用同一个账号测试！)</label>
+	                        <i class="ti-star text-danger m-r-10"></i><label id="api-account-loginname-label" class="text-info"></label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-account-password" name="api-account-password" class="form-control" placeholder="账号密码">
-	                        <i class="ti-star text-danger"></i>
+	                        <i class="ti-star text-danger m-r-10"></i><label id="api-account-password-label" class="text-info"></label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -173,7 +182,41 @@
 
     $(document).ready(function(){
     	createTable();
+    	initEvent();
+    	initPwd(null);
     });
+    
+    function initEvent(){
+    	$(":radio").change(function(){
+    		if($(this).val() == "0"){
+    			initPwd(null);
+    		}else if($(this).val() == "1"){
+    			initToken(null);
+    		}
+    	});
+    }
+    
+    function initPwd(text){
+    	$('#api-account-loginname-label').html("(通常会使用同一个库，所以使用同一个账号测试！)");
+		$('#api-account-password-label').html("");
+		$('#api-account-password').prop("placeholder", "账号密码");
+		if(text != null){
+			$('#api-account-password').val(text);
+		}else{
+			$('#api-account-password').val("");
+		}
+    }
+    
+	function initToken(text){
+		$('#api-account-loginname-label').html("(仅作为标示)");
+		$('#api-account-password-label').html("(可填写一个[线下]或者两个[线上,线下](*逗号分隔))");
+		$('#api-account-password').prop("placeholder", "Token");
+		if(text != null){
+			$('#api-account-password').val(text);
+		}else{
+			$('#api-account-password').val("");
+		}
+    }
 
     function createTable() {
     	$('#api-account-table').dataTable().fnDestroy();
@@ -246,7 +289,13 @@
 			var a = $(this).data('data');
 			$('#api-account-id').val(a.id);
 	      	$('#api-account-loginname').val(a.loginname);
-	      	$('#api-account-password').val(a.password);
+	      	if(a.token == "0"){
+	      		$('#api-account-token0').prop("checked",true);
+	        	initPwd(a.password);
+	      	}else if(a.token == "1"){
+	      		$('#api-account-token1').prop("checked",true);
+	        	initToken(a.password);
+	      	}
 		});
 		
 		$(".apiAccountDel").on("click", function(){
@@ -260,17 +309,32 @@
     	$('#api-account-id').val("");
     	$('#api-account-loginname').val("");
     	$('#api-account-password').val("");
+    	$('#api-account-token0').prop("checked",true);
+    	initPwd(null);
     	hideMsgDiv();
     }
     
     function apiAccountSave(){
+    	var atoken = $('input[name="api-account-token"]:checked').val();
     	var aloginname = $('#api-account-loginname').val();
     	var apassword = $('#api-account-password').val();
     	if(aloginname == null || aloginname.trim() == ""){
 	    	showMsgDiv("请输入账号名称！");
-    	}else if(apassword == null || apassword.trim() == ""){
+    	}else if(atoken == null || atoken.trim() == ""){
+	    	showMsgDiv("请选择账号类型！");
+    	}else if(atoken == "0" && (apassword == null || apassword.trim() == "")){
 	    	showMsgDiv("请输入账号密码！");
+    	}else if(atoken == "1" && (apassword == null || apassword.trim() == "")){
+	    	showMsgDiv("请输入账号Token！");
     	}else{
+    		if(atoken == "1"){
+    			apassword = apassword.replace(/\，/g, ",").trim();
+    			if(getCountByString(apassword, ",") > 1 || getCountByString(apassword, " ") > 0){
+    		    	showMsgDiv("Token格式不正确！");
+        		}else{
+    	    		$('#api-account-password').val(apassword);
+        		}
+    		}
     		$.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/account/repeat",
