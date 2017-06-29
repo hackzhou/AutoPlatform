@@ -46,6 +46,9 @@ public class ATask implements Serializable{
 	@Column(name="run_time")
 	private String runTime;
 	
+	@Column(name="createby")
+	private String createby;
+
 	@Column(name="runby")
 	private String runby;
 	
@@ -62,7 +65,7 @@ public class ATask implements Serializable{
 		super();
 	}
 	
-	public ATask(String pid, String vid, String aid, Integer runFlag, String runTime, String runby) {
+	public ATask(String pid, String vid, String aid, Integer runFlag, String runTime, String createby) {
 		super();
 		if(pid != null && !pid.isEmpty()){
 			this.projecto = new AProject(Integer.parseInt(pid));
@@ -75,7 +78,8 @@ public class ATask implements Serializable{
 		}
 		this.runFlag = runFlag;
 		this.runTime = runTime;
-		this.runby = runby;
+		this.createby = createby;
+		this.runby = createby;
 	}
 	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, String runTime, String runby) {
 		super();
@@ -141,6 +145,12 @@ public class ATask implements Serializable{
 	public void setRunTime(String runTime) {
 		this.runTime = runTime;
 	}
+	public String getCreateby() {
+		return createby;
+	}
+	public void setCreateby(String createby) {
+		this.createby = createby;
+	}
 	public String getRunby() {
 		return runby;
 	}
@@ -169,7 +179,7 @@ public class ATask implements Serializable{
 	@Override
 	public String toString() {
 		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
-				+ ", runFlag=" + runFlag + ", runTime=" + runTime + ", runby=" + runby + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", runFlag=" + runFlag + ", runTime=" + runTime + ", createby=" + createby + ", runby=" + runby
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 }
