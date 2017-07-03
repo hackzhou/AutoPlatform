@@ -65,7 +65,7 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getCaseDataByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
 		logger.info("[Case]==>获取案例[project=" + pid + ",version=" + vid + "]数据！");
-		if(pid != null && !pid.isEmpty() && vid != null && !vid.isEmpty()){
+		if(!isNull(pid) && !isNull(vid)){
 			List<ACase> list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
 			return successJson(list);
 		}else{
@@ -99,7 +99,7 @@ public class ApiCaseController extends BaseController{
 			if("0".equals(isResult)){
 				result = null;
 			}
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(run)));
 				if(cid != null){
 					logger.info("[Case]==>添加案例[id=" + cid + ",name=" + name + "]成功！");

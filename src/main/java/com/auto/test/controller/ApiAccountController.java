@@ -54,7 +54,7 @@ public class ApiAccountController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getAccountByName(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname) {
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			AAccount aAccount = accountService.findById(Integer.parseInt(id));
 			if(aAccount != null && aAccount.getLoginname() != null && aAccount.getLoginname().equals(loginname)){
 				logger.info("[Account]==>验证测试账号[loginname=" + loginname + "]是本身！");
@@ -74,7 +74,7 @@ public class ApiAccountController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-account-id") String id, @RequestParam("api-account-token") String token, @RequestParam("api-account-loginname") String loginname, @RequestParam("api-account-password") String password) {
 		try {
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer aid = accountService.create(new AAccount(token.trim(), loginname.trim(), trimArray(password)));
 				if(aid != null){
 					logger.info("[Account]==>添加测试账号[id=" + aid + ",loginname=" + loginname + "]成功！");

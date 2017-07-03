@@ -194,5 +194,12 @@ public class BaseController implements MessageSourceAware {
 		}
 		return "";
 	}
+	
+	protected boolean isNull(String text){
+		if(text == null || text.trim().isEmpty() || "null".equals(text)){
+			return true;
+		}
+		return false;
+	}
 
 }

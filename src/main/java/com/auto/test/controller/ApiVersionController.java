@@ -54,7 +54,7 @@ public class ApiVersionController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getVersionByVersion(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version) {
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			AVersion aVersion = versionService.findById(Integer.parseInt(id));
 			if(aVersion != null && aVersion.getVersion() != null && aVersion.getVersion().equals(version)){
 				logger.info("[Version]==>验证版本[version=" + version + "]是本身！");
@@ -74,7 +74,7 @@ public class ApiVersionController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
 		try {
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer vid = versionService.create(new AVersion(version.trim(), trimArray(channel)));
 				if(vid != null){
 					logger.info("[Version]==>添加版本[id=" + vid + ",version=" + version + "]成功！");

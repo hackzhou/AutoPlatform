@@ -43,7 +43,7 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getDataByProject(@PathVariable("id") String id) {
 		logger.info("[Interface]==>获取接口[project=" + id + "]数据！");
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
 			return successJson(list);
 		}else{
@@ -66,7 +66,7 @@ public class ApiInterfaceController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getInterfaceByUrl(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-project") String project) {
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			AInterface aInterface = interfaceService.findById(Integer.parseInt(id));
 			if(aInterface != null && aInterface.getUrl() != null && aInterface.getUrl().equals(url)){
 				logger.info("[Interface]==>验证项目下接口[url=" + url + "]是本身！");
@@ -86,7 +86,7 @@ public class ApiInterfaceController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-interface-id") String id, @RequestParam("api-interface-project") String project, @RequestParam("api-interface-name") String name, @RequestParam("api-interface-type") String type, @RequestParam("api-interface-url") String url, @RequestParam("api-interface-description") String description) {
 		try {
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer iid = interfaceService.create(new AInterface(Integer.parseInt(project), name.trim(), type.trim(), url.trim(), description.trim()));
 				if(iid != null){
 					logger.info("[Interface]==>添加接口[id=" + iid + ",url=" + url + "]成功！");

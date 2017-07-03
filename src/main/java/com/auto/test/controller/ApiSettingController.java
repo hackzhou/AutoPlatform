@@ -29,11 +29,11 @@ public class ApiSettingController extends BaseController{
 	
 	@RequestMapping(value = "/copy", method = RequestMethod.POST)
 	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("api-copy-project") String project, @RequestParam("api-copy-version-a") String versiona, @RequestParam("api-copy-version-b") String versionb) throws Exception {
-		if(project == null || project.isEmpty()){
+		if(isNull(project)){
 			logger.error("[Setting]==>批量复制案例[项目不能为空！]");
 			return failMsg("项目不能为空！", "api/setting");
 		}
-		if(versiona == null || versiona.isEmpty()){
+		if(isNull(versiona)){
 			logger.error("[Setting]==>批量复制案例[版本号不能为空！]");
 			return failMsg("版本号不能为空！", "api/setting");
 		}

@@ -42,7 +42,7 @@ public class ApiTaskController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getTaskByTime(@RequestParam("api-task-id") String id, @RequestParam("api-task-time") String time) {
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			ATask aTask = apiTaskService.findById(Integer.parseInt(id));
 			if(aTask != null && aTask.getRunTime() != null && aTask.getRunTime().equals(time)){
 				logger.info("[Task]==>验证定时任务[time=" + time + "]是本身！");
@@ -64,7 +64,7 @@ public class ApiTaskController extends BaseController{
 			@RequestParam("api-task-time") String time, @RequestParam("api-task-project") String project, @RequestParam("api-task-version") String version, 
 			@RequestParam("api-task-account") String account) {
 		try {
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer tid = apiTaskService.create(new ATask(project, version, account, Integer.parseInt(run), time, getCurrentUserName(request)));
 				if(tid != null){
 					logger.info("[Task]==>添加定时任务[id=" + tid + ",project=" + project + ",time=" + time + "]成功！");

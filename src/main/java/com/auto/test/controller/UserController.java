@@ -27,11 +27,11 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberme") String rememberme, @RequestParam("hiddenjump") String jump) {
-		if(username == null || username.isEmpty()){
+		if(isNull(username)){
 			logger.error("[UserLogin]==>登录用户[请您输入用户名！]");
 			return failMsg("请您输入用户名！", "login");
 		}
-		if(password == null || password.isEmpty()){
+		if(isNull(password)){
 			logger.error("[UserLogin]==>登录用户[请您输入密码！]");
 			return failLogin(username, null, "请您输入密码！", "login");
 		}
@@ -98,11 +98,11 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("password2") String password2) {
-		if(username == null || username.isEmpty()){
+		if(isNull(username)){
 			logger.error("[UserRegister]==>用户注册[请您输入用户名！]");
 			return failMsg("请您输入用户名！", "register");
 		}
-		if(email == null || email.isEmpty()){
+		if(isNull(email)){
 			logger.error("[UserRegister]==>用户注册[请您输入邮箱！]");
 			return failLogin(username, null, "请您输入邮箱！", "register");
 		}
@@ -110,11 +110,11 @@ public class UserController extends BaseController{
 			logger.error("[UserRegister]==>用户注册[邮箱格式不正确！]");
 			return failLogin(username, null, "邮箱格式不正确！", "register");
 		}
-		if(password == null || password.isEmpty()){
+		if(isNull(password)){
 			logger.error("[UserRegister]==>用户注册[请您输入密码！]");
 			return failLogin(username, email, "请您输入密码！", "register");
 		}
-		if(password2 == null || password2.isEmpty()){
+		if(isNull(password2)){
 			logger.error("[UserRegister]==>用户注册[请您再次输入密码！]");
 			return failLogin(username, email, "请您再次输入密码！", "register");
 		}

@@ -73,7 +73,7 @@ public class ApiProjectController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getProjectByName(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name) {
-		if(id != null && !id.isEmpty()){
+		if(!isNull(id)){
 			AProject aProject = projectService.findById(Integer.parseInt(id));
 			if(aProject != null && aProject.getName() != null && aProject.getName().equals(name)){
 				logger.info("[Project]==>验证项目[name=" + name + "]是本身！");
@@ -93,7 +93,7 @@ public class ApiProjectController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name, @RequestParam("api-project-path") String path) {
 		try {
-			if(id == null || id.isEmpty()){
+			if(isNull(id)){
 				Integer pid = projectService.create(new AProject(name.trim(), path.trim()));
 				if(pid != null){
 					logger.info("[Project]==>添加项目[id=" + pid + ",name=" + name + "]成功！");
