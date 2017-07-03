@@ -54,9 +54,9 @@
 	</dependency>
 	<!-- javassist -->
 	<dependency>
-	    <groupId>javassist</groupId>
+	    <groupId>org.javassist</groupId>
 	    <artifactId>javassist</artifactId>
-	    <version>3.12.1.GA</version>
+	    <version>3.21.0-GA</version>
 	</dependency>
   	<!-- hibernate5 -->
   	<dependency>

@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
+
+	<bean class="com.auto.test.common.config.GlobalValueConfig" init-method="init"/>
+	
+    <bean id="context" class="com.auto.test.common.context.SpringContext"/>
+    <bean id="apiApplication" class="com.auto.test.common.context.ApiApplication"/>
+    
+	<bean id="apiCaseParse" class="com.auto.test.core.api.parse.impl.ApiCaseParse" scope="prototype"/>
+	<bean id="apiSendMessage" class="com.auto.test.core.api.http.impl.ApiSendMessage" scope="prototype"/>
+	<bean id="jsonCompare" class="com.auto.test.core.api.compare.JSONCompare" scope="prototype"/>
+	<bean id="apiRunService" class="com.auto.test.core.api.service.impl.ApiRunService" scope="prototype"/>
+	
+</beans>
