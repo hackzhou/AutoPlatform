@@ -90,27 +90,27 @@
 	              <div class="form-group">
 	                <label class="col-sm-2 text-info text-center">案例复制：</label>
 	                <div class="col-sm-2">
-	                  <label class="col-sm-3 text-center"><code>项目 <i class="fa fa-chevron-right text-info"></i></code></label>
-                      <div class="col-sm-9">
-                       <select id="api-copy-project" name="api-copy-project" class="form-select" style="width: 80%;"></select>
+	                  <label class="col-sm-4 text-center"><code>项目 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-8">
+                       <select id="api-copy-project" name="api-copy-project" class="form-select" style="width: 90%;"></select>
                       </div>
 	                </div>
 	                <div class="col-sm-1">
 	                	<label class="col-sm-12 text-center"><i class="fa fa-th-large text-success"></i></label>
 	                </div>
 	                <div class="col-sm-2">
-	                  <label class="col-sm-3 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
-                      <div class="col-sm-9">
-                       <select id="api-copy-version-a" name="api-copy-version-a" class="form-select" style="width: 80%;"></select>
+	                  <label class="col-sm-4 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-8">
+                       <select id="api-copy-version-a" name="api-copy-version-a" class="form-select" style="width: 90%;"></select>
                       </div>
 	                </div>
 	                <div class="col-sm-1">
 	                	<label class="col-sm-12 text-center"><i class="fa fa-arrow-right text-success"></i></label>
 	                </div>
 	                <div class="col-sm-2">
-	                  <label class="col-sm-3 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
-                      <div class="col-sm-9">
-                       <select id="api-copy-version-b" name="api-copy-version-b" class="form-select" style="width: 80%;"></select>
+	                  <label class="col-sm-4 text-center"><code>版本 <i class="fa fa-chevron-right text-info"></i></code></label>
+                      <div class="col-sm-8">
+                       <select id="api-copy-version-b" name="api-copy-version-b" class="form-select" style="width: 90%;"></select>
                       </div>
 	                </div>
 	                <div class="col-sm-2">

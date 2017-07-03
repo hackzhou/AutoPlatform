@@ -380,7 +380,7 @@
 					}
 				},
 				{
-					"sWidth" : "25%",
+					"sWidth" : "20%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -398,7 +398,7 @@
 					}
 				},
 				{
-					"sWidth" : "15%",
+					"sWidth" : "12%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -416,7 +416,7 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "8%",
 					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -425,7 +425,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "12%",
 					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -434,13 +434,13 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "8%",
 					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i></a>"
-							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger m-r-15\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>";
 						if(data.run == 1){
 							html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
 						}

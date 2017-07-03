@@ -302,7 +302,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "12%",
 					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -311,7 +311,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
