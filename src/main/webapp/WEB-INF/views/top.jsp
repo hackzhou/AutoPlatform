@@ -20,6 +20,7 @@
 			</li>
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs m-r-10">UI自动化</b> </a>
 			<ul class="dropdown-menu dropdown-user animated flipInY">
+				<li><a href="${pageContext.request.contextPath}/ui/code/page"><i class="fa fa-file-code-o m-r-10"></i> 编码</a></li>
 				<li><a href="#"><i class="ti-briefcase m-r-10"></i> 敬请期待</a></li>
 			</ul>
 			</li>
