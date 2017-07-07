@@ -100,7 +100,7 @@ public class Class<T, V> implements MyInterface {
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
-<!--Wave Effects -->
+<!--Code Mirror -->
 <script src="${pageContext.request.contextPath}/js/codemirror.js"></script>
 <script src="${pageContext.request.contextPath}/js/matchbrackets.js"></script>
 <script src="${pageContext.request.contextPath}/js/show-hint.js"></script>
