@@ -52,7 +52,7 @@
 				<input type="hidden" id="ui-code-id" name="ui-code-id" value="">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
-					<div><textarea id="ui-code" name="ui-code">
+					<div><textarea id="ui-code">
 package temp002;
 
 public class Hello {
