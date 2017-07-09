@@ -42,40 +42,25 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b></span></h4>
         </div>
         <div class="button-box text-right">
-          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-btn"></button>
+          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-btn" onclick="uiCodeSave();"></button>
+          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-btn" onclick="uiCodeRun();">运行</button>
         </div>
       </div>
       <div class="row">
 		<div class="col-sm-12">
 			<form id="ui-code-form" class="form-horizontal form-material">
+				<input type="hidden" id="ui-code-id" name="ui-code-id" value="">
+				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
-					<div><textarea id="java-code">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
+					<div><textarea id="ui-code" name="ui-code">
+package temp002;
 
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
+public class Hello {
+	
+	public void execute(){
+		System.out.println("Hello World !!!");
+	}
+	
 }</textarea></div>
 				</div>
 			</form>
@@ -112,14 +97,34 @@ public class Class<T, V> implements MyInterface {
     	initCodeMirror();
     });
 
+    var javaEditor;
     function initCodeMirror(){
-    	var javaEditor = CodeMirror.fromTextArea(document.getElementById("java-code"), {
+    	javaEditor = CodeMirror.fromTextArea(document.getElementById("ui-code"), {
 			lineNumbers: true,
             matchBrackets: true,
             mode: "text/x-java"
 		});
     	var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    }
+    
+    function uiCodeSave(){
+    	$('#ui-code-java').val(javaEditor.getValue());
+    	$.ajax({
+  			type:"post",
+        		url:"<%=request.getContextPath()%>/ui/code/create/update",
+        		data:$('#ui-code-form').serialize(),
+        		success:function(data){
+        			if(data.responseCode == "0000"){
+        			}else{
+        				swal("错误", data.responseMsg, "error");
+        			}
+        	    }
+  		});
+	}
+    
+    function uiCodeRun(){
+    	alert(javaEditor.getValue());
     }
     
 </script>
