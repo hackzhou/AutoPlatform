@@ -10,6 +10,7 @@ public class UiThreadPool {
 	}
 	
 	private UiThreadPool(){
+		super();
 	}
 
 	public static ExecutorService getInstance(){

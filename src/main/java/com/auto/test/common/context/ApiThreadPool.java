@@ -10,6 +10,7 @@ public class ApiThreadPool {
 	}
 	
 	private ApiThreadPool(){
+		super();
 	}
 
 	public static ExecutorService getInstance(){
