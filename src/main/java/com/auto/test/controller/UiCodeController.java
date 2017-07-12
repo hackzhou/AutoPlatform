@@ -139,7 +139,7 @@ public class UiCodeController extends BaseController{
 	public static String randomClassName(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'T'");
 		StringBuffer sb = new StringBuffer("A" + sdf.format(new Date()));
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 4; i++) {
 			if((int)(Math.random() * 10) % 2 == 0){
 				sb.append((int)(Math.random() * 10));
 			}else{
