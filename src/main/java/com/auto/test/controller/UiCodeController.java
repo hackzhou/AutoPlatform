@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.core.ui.DynamicEngine;
+import com.auto.test.core.ui.DynaCompileExe;
 import com.auto.test.entity.UCode;
 import com.auto.test.service.IUiCodeService;
 import com.auto.test.utils.FileUtil;
@@ -114,9 +115,8 @@ public class UiCodeController extends BaseController{
 		if(file.exists()){
 			String javaCode = fileUtil.readJavaFile(file);
 			logger.info("Run[" + Const.UI_CODE_PATH + File.separator + fileName + "]\r\n" + javaCode);
-			DynamicEngine de = new DynamicEngine();
-			Object instance = de.javaCodeToObject(className, javaCode);
-			logger.info("Run[" + instance + "]");
+			DynaCompileExe dce = (DynaCompileExe) SpringContext.getBean("dynaCompileExe");
+			dce.execute(className, javaCode);
 			return successJson();
 		}else{
 			logger.error("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");

@@ -1,4 +1,4 @@
-package com.auto.test.core.ui;
+package com.auto.test.core.ui.dynamic;
 
 import java.net.URI;
 import javax.tools.JavaFileObject;

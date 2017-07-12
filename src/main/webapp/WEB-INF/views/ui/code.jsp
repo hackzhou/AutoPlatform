@@ -157,7 +157,7 @@
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
-   		        				swal("成功", "运行成功！", "success");
+   		        				swal("成功", "已运行！", "success");
    		        			}else{
    		        				swal("错误", data.responseMsg, "error");
    		        			}

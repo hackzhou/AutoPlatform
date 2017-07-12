@@ -14,4 +14,6 @@
 	<bean id="jsonCompare" class="com.auto.test.core.api.compare.JSONCompare" scope="prototype"/>
 	<bean id="apiRunService" class="com.auto.test.core.api.service.impl.ApiRunService" scope="prototype"/>
 	
+	<bean id="dynaCompileExe" class="com.auto.test.core.ui.DynaCompileExe" scope="prototype"/>
+	
 </beans>

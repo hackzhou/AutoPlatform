@@ -1,4 +1,4 @@
-package com.auto.test.core.ui;
+package com.auto.test.core.ui.dynamic;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class DynamicEngine {
 		this.classpath = sb.toString();
 	}
 	
-	public Object javaCodeToObject(String fullClassName, String javaCode) {
+	public Object javaCodeCompileExe(String fullClassName, String javaCode) {
 		Object instance = null;
 		ClassFileManager fileManager = null;
 		DynamicClassLoader dynamicClassLoader = null;

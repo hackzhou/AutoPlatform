@@ -10,7 +10,7 @@ import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
-import com.auto.test.common.context.ThreadPool;
+import com.auto.test.common.context.ApiThreadPool;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.execute.ApiExecuteRun;
 import com.auto.test.core.api.http.IApiSendMessage;
@@ -32,7 +32,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	
 	public ApiCaseParse(){
 		super();
-		cachedThreadPool = ThreadPool.getInstance();
+		cachedThreadPool = ApiThreadPool.getInstance();
 		urlA = GlobalValueConfig.getConfig("uri.production.environment");
 		urlB = GlobalValueConfig.getConfig("uri.advance.environment");
 		userLogin = GlobalValueConfig.getConfig("uri.user.login");
