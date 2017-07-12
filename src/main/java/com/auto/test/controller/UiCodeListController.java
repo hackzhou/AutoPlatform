@@ -29,13 +29,14 @@ public class UiCodeListController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getCode(HttpServletRequest request) {
+		logger.info("[CodeList]==>请求页面[ui/list],登录用户[" + getCurrentUserName(request) + "]");
 		return success("ui/list", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/list/data", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllCode() {
-		logger.info("[Code]==>获取所有UI编码数据！");
+		logger.info("[CodeList]==>获取所有UI编码数据！");
 		List<UCode> list = uiCodeService.findAll();
 		return successJson(list);
 	}
@@ -48,12 +49,12 @@ public class UiCodeListController extends BaseController{
 			if(uCode != null){
 				new FileUtil().delete(Const.UI_CODE_PATH, uCode.getCls());
 				uiCodeService.delete(Integer.parseInt(id));
-				logger.info("[Code]==>删除UI编码[id=" + id + "]成功！");
+				logger.info("[CodeList]==>删除UI编码[id=" + id + "]成功！");
 			}
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("[Code]==>删除UI编码失败[" + e.getMessage() + "]");
+			logger.error("[CodeList]==>删除UI编码失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
 	}
