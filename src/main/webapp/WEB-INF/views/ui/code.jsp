@@ -49,16 +49,24 @@
       <div class="row">
 		<div class="col-sm-12">
 			<form id="ui-code-form" class="form-horizontal form-material">
-				<input type="hidden" id="ui-code-id" name="ui-code-id" value="">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
 					<div><textarea id="ui-code">
-package temp002;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Date;
+import com.alibaba.fastjson.JSON;
+import com.auto.test.common.constant.Const;
 
 public class Hello {
+	private static Logger logger = LoggerFactory.getLogger(Hello.class);
 	
-	public void execute(){
+	public static void main(String[] args) {
+		logger.info("Hello log test !!!");
 		System.out.println("Hello World !!!");
+		System.out.println(new Date());
+		System.out.println(Const.AUTO_PLATFORM);
+		System.out.println(JSON.parseObject("{\"A\":\"B\"}").toJSONString());
 	}
 	
 }</textarea></div>
@@ -95,6 +103,7 @@ public class Hello {
     $(document).ready(function(){
     	$('#ui-code-action-btn').html("添加-保存");
     	initCodeMirror();
+    	initDefaultCode();
     });
 
     var javaEditor;
@@ -106,6 +115,20 @@ public class Hello {
 		});
     	var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    }
+    
+    function initDefaultCode(){
+    	$.ajax({
+  			type:"get",
+        		url:"<%=request.getContextPath()%>/ui/code/default/code",
+        		success:function(data){
+        			if(data.responseCode == "0000"){
+        				javaEditor.setValue(data.data);
+        			}else{
+        				swal("错误", data.responseMsg, "error");
+        			}
+        	    }
+  		});
     }
     
     function uiCodeSave(){
@@ -124,7 +147,18 @@ public class Hello {
 	}
     
     function uiCodeRun(){
-    	alert(javaEditor.getValue());
+    	$('#ui-code-java').val(javaEditor.getValue());
+    	$.ajax({
+  			type:"post",
+        		url:"<%=request.getContextPath()%>/ui/code/run",
+        		data:$('#ui-code-form').serialize(),
+        		success:function(data){
+        			if(data.responseCode == "0000"){
+        			}else{
+        				swal("错误", data.responseMsg, "error");
+        			}
+        	    }
+  		});
     }
     
 </script>

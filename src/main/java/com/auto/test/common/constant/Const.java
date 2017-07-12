@@ -1,5 +1,6 @@
 package com.auto.test.common.constant;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -12,9 +13,10 @@ public class Const {
 	public static final String RUN_PROJECT_NAME		= "项目[%s]";
 	public static final String RUN_CASE_NAME		= "案例[%s]";
 
-	public static final String AUTO_PLATFORM		= "AutoPlatform";
-	public static final String UI_CODE_TEMP			= "code";
 	public static final String API_PLATFORM			= "api_platform";
+	public static final String UI_CODE_TEMP			= "code";
+	public static final String AUTO_PLATFORM		= "AutoPlatform";
+	public static final String UI_CODE_PATH			= System.getProperty("user.home") + File.separator + AUTO_PLATFORM + File.separator + UI_CODE_TEMP;
 	
 	public static final String DATE_FORAMT_1		= "yyyy-MM-dd HH:mm:ss";
 	

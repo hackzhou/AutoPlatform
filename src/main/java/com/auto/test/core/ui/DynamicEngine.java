@@ -1,0 +1,107 @@
+package com.auto.test.core.ui;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import javax.tools.JavaFileObject;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+
+public class DynamicEngine {
+	
+	private String classpath;
+	private URLClassLoader parentClassLoader;
+	
+	public DynamicEngine() {
+		super();
+		this.parentClassLoader = (URLClassLoader) this.getClass().getClassLoader();
+		this.buildClassPath();
+	}
+	
+	private void buildClassPath() {
+		this.classpath = null;
+		StringBuilder sb = new StringBuilder();
+		for (URL url : this.parentClassLoader.getURLs()) {
+			String p = url.getFile();
+			sb.append(p).append(File.pathSeparator);
+		}
+		this.classpath = sb.toString();
+	}
+	
+	public Object javaCodeToObject(String fullClassName, String javaCode) {
+		Object instance = null;
+		ClassFileManager fileManager = null;
+		DynamicClassLoader dynamicClassLoader = null;
+		try {
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+			fileManager = new ClassFileManager(compiler.getStandardFileManager(diagnostics, null, null));
+			List<JavaFileObject> jfiles = new ArrayList<JavaFileObject>();
+			jfiles.add(new CharSequenceJavaFileObject(fullClassName, javaCode));
+			List<String> options = new ArrayList<String>();
+			options.add("-encoding");
+			options.add("UTF-8");
+			options.add("-classpath");
+			options.add(this.classpath);
+			JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, jfiles);
+			boolean success = task.call();
+			if (success) {
+				JavaClassObject jco = fileManager.getJavaClassObject();
+				dynamicClassLoader = new DynamicClassLoader(this.parentClassLoader);
+				Class<?> clazz = dynamicClassLoader.loadClass(fullClassName, jco);
+				instance = clazz.newInstance();
+				Method m = clazz.getMethod("main", String[].class);
+				m.invoke(instance, (Object) new String[]{});
+			}else{
+				String error = "";
+				for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
+					error = error + compilePrint(diagnostic);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(dynamicClassLoader != null){
+					dynamicClassLoader.close();
+				}
+				if(fileManager != null){
+					fileManager.close();
+				}
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return instance;
+	}
+	
+	private String compilePrint(Diagnostic<?> diagnostic) {
+		System.out.println("Code:" + diagnostic.getCode());
+		System.out.println("Kind:" + diagnostic.getKind());
+		System.out.println("Position:" + diagnostic.getPosition());
+		System.out.println("Start Position:" + diagnostic.getStartPosition());
+		System.out.println("End Position:" + diagnostic.getEndPosition());
+		System.out.println("Source:" + diagnostic.getSource());
+		System.out.println("Message:" + diagnostic.getMessage(null));
+		System.out.println("LineNumber:" + diagnostic.getLineNumber());
+		System.out.println("ColumnNumber:" + diagnostic.getColumnNumber());
+		StringBuffer res = new StringBuffer();
+		res.append("Code:[" + diagnostic.getCode() + "]\n");
+		res.append("Kind:[" + diagnostic.getKind() + "]\n");
+		res.append("Position:[" + diagnostic.getPosition() + "]\n");
+		res.append("Start Position:[" + diagnostic.getStartPosition() + "]\n");
+		res.append("End Position:[" + diagnostic.getEndPosition() + "]\n");
+		res.append("Source:[" + diagnostic.getSource() + "]\n");
+		res.append("Message:[" + diagnostic.getMessage(null) + "]\n");
+		res.append("LineNumber:[" + diagnostic.getLineNumber() + "]\n");
+		res.append("ColumnNumber:[" + diagnostic.getColumnNumber() + "]\n");
+		return res.toString();
+	}
+	
+}
