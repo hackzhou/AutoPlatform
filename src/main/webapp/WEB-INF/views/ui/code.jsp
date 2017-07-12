@@ -98,6 +98,7 @@
     	javaEditor = CodeMirror.fromTextArea(document.getElementById("ui-code"), {
 			lineNumbers: true,
             matchBrackets: true,
+            indentUnit: 4,
             mode: "text/x-java"
 		});
     	var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
