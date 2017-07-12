@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,27 +36,43 @@ public class UiCodeController extends BaseController{
 		return success("ui/code", getCurrentUserName(request));
 	}
 	
-	@RequestMapping(value = "/default/code", method = RequestMethod.GET)
+	@RequestMapping(value = "/page/cls={cls}", method = RequestMethod.GET)
+	public ModelAndView getUiCodeClass(HttpServletRequest request, @PathVariable("cls") String cls) {
+		return success(cls, "ui/code", getCurrentUserName(request));
+	}
+	
+	@RequestMapping(value = "/default/code/cls={cls}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getDefaultCodeData() {
-		String className = getRandomClassName();
-		StringBuffer data = new StringBuffer();
-		data.append("import org.slf4j.Logger;").append("\r\n");
-		data.append("import org.slf4j.LoggerFactory;").append("\r\n");
-		data.append("import java.util.Date;").append("\r\n");
-		data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
-		data.append("import com.auto.test.common.constant.Const;").append("\r\n").append("\r\n");
-		data.append("public class ").append(className).append(" {").append("\r\n");
-		data.append("\t").append("private static Logger logger = LoggerFactory.getLogger(").append(className).append(".class);").append("\r\n").append("\r\n");
-		data.append("\t").append("public static void main(String[] args) {").append("\r\n");
-		data.append("\t\t").append("logger.info(\"Hello log test !!!\");").append("\r\n");
-		data.append("\t\t").append("System.out.println(\"Hello World !!!\");").append("\r\n");
-		data.append("\t\t").append("System.out.println(new Date());").append("\r\n");
-		data.append("\t\t").append("System.out.println(Const.AUTO_PLATFORM);").append("\r\n");
-		data.append("\t\t").append("System.out.println(JSON.parseObject(\"{\\\"A\\\":\\\"B\\\"}\").toJSONString());").append("\r\n");
-		data.append("\t").append("}").append("\r\n");
-		data.append("}").append("\r\n");
-		return successJson(data.toString());
+	public Map<String, Object> getDefaultCodeData(@PathVariable("cls") String cls) {
+		if(cls == null || cls.isEmpty()){
+			String className = getRandomClassName();
+			StringBuffer data = new StringBuffer();
+			data.append("import org.slf4j.Logger;").append("\r\n");
+			data.append("import org.slf4j.LoggerFactory;").append("\r\n");
+			data.append("import java.util.Date;").append("\r\n");
+			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
+			data.append("import com.auto.test.common.constant.Const;").append("\r\n").append("\r\n");
+			data.append("public class ").append(className).append(" {").append("\r\n");
+			data.append("\t").append("private static Logger logger = LoggerFactory.getLogger(").append(className).append(".class);").append("\r\n").append("\r\n");
+			data.append("\t").append("public static void main(String[] args) {").append("\r\n");
+			data.append("\t\t").append("logger.info(\"" + className + " Start...\");").append("\r\n");
+			data.append("\t\t").append("\r\n");
+			data.append("\t\t").append("logger.info(\"" + className + " End...\");").append("\r\n");
+			data.append("\t").append("}").append("\r\n");
+			data.append("}").append("\r\n");
+			return successJson(data.toString());
+		}else{
+			String fileName = cls + ".java";
+			FileUtil fileUtil = new FileUtil();
+			File file = fileUtil.getFile(Const.UI_CODE_PATH, fileName);
+			if(file.exists()){
+				String javaCode = fileUtil.readJavaFile(file);
+				return successJson(javaCode);
+			}else{
+				logger.error("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
+				return failedJson("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
+			}
+		}
 	}
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
@@ -73,7 +90,7 @@ public class UiCodeController extends BaseController{
 				return successJson();
 			}else{
 				logger.error("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
+				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
 			}
 		}else{
 			if(fileUtil.writeJavaFile(Const.UI_CODE_PATH, fileName, code)){
@@ -82,7 +99,7 @@ public class UiCodeController extends BaseController{
 				return successJson();
 			}else{
 				logger.error("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
+				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
 			}
 		}
 	}
@@ -103,7 +120,7 @@ public class UiCodeController extends BaseController{
 			return successJson();
 		}else{
 			logger.error("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-			return failedJson("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
+			return failedJson("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
 		}
 	}
 	
@@ -132,13 +149,6 @@ public class UiCodeController extends BaseController{
 		return sb.toString();
 	}
 	
-	public File[] concat(File[] a, File[] b) {
-		File[] c = new File[a.length + b.length];
-		System.arraycopy(a, 0, c, 0, a.length);
-		System.arraycopy(b, 0, c, a.length, b.length);
-		return c;
-	}
-	
 	private String subStr(String text, String start, String end){
 		if(text != null && !text.isEmpty()){
 			if(text.contains(start)){
@@ -148,5 +158,12 @@ public class UiCodeController extends BaseController{
 			}
 		}
 		return "";
+	}
+	
+	public File[] concat(File[] a, File[] b) {
+		File[] c = new File[a.length + b.length];
+		System.arraycopy(a, 0, c, 0, a.length);
+		System.arraycopy(b, 0, c, a.length, b.length);
+		return c;
 	}
 }

@@ -17,6 +17,8 @@
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
+<!--alerts CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -39,11 +41,11 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b></span></h4>
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b><label id="ui-code-title-lable"></label></span></h4>
         </div>
         <div class="button-box text-right">
-          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-btn" onclick="uiCodeSave();"></button>
-          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-btn" onclick="uiCodeRun();">运行</button>
+          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
+          <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
         </div>
       </div>
       <div class="row">
@@ -51,25 +53,7 @@
 			<form id="ui-code-form" class="form-horizontal form-material">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
-					<div><textarea id="ui-code">
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.Date;
-import com.alibaba.fastjson.JSON;
-import com.auto.test.common.constant.Const;
-
-public class Hello {
-	private static Logger logger = LoggerFactory.getLogger(Hello.class);
-	
-	public static void main(String[] args) {
-		logger.info("Hello log test !!!");
-		System.out.println("Hello World !!!");
-		System.out.println(new Date());
-		System.out.println(Const.AUTO_PLATFORM);
-		System.out.println(JSON.parseObject("{\"A\":\"B\"}").toJSONString());
-	}
-	
-}</textarea></div>
+					<div><textarea id="ui-code"></textarea></div>
 				</div>
 			</form>
 		</div>
@@ -91,6 +75,9 @@ public class Hello {
 <script src="${pageContext.request.contextPath}/eliteadmin/js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/waves.js"></script>
+<!-- Sweet-Alert  -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <!--Code Mirror -->
@@ -101,9 +88,9 @@ public class Hello {
 <script>
 
     $(document).ready(function(){
-    	$('#ui-code-action-btn').html("添加-保存");
     	initCodeMirror();
-    	initDefaultCode();
+    	var cls = "${data}";
+    	initDefaultCode(cls);
     });
 
     var javaEditor;
@@ -117,32 +104,42 @@ public class Hello {
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     }
     
-    function initDefaultCode(){
+    function initDefaultCode(cls){
+    	if(cls == null || cls == ""){
+    		$('#ui-code-action-save').html("保存");
+    		$('#ui-code-action-run').html("保存并运行");
+    		$('#ui-code-title-lable').html("（新文件）");
+    	}else{
+    		$('#ui-code-action-save').html("更新");
+    		$('#ui-code-action-run').html("更新并运行");
+    		$('#ui-code-title-lable').html("（文件：" + cls + ".java）");
+    	}
     	$.ajax({
   			type:"get",
-        		url:"<%=request.getContextPath()%>/ui/code/default/code",
-        		success:function(data){
-        			if(data.responseCode == "0000"){
-        				javaEditor.setValue(data.data);
-        			}else{
-        				swal("错误", data.responseMsg, "error");
-        			}
-        	    }
+       		url:"<%=request.getContextPath()%>/ui/code/default/code/cls=" + cls,
+       		success:function(data){
+       			if(data.responseCode == "0000"){
+       				javaEditor.setValue(data.data);
+       			}else{
+       				swal("错误", data.responseMsg, "error");
+       			}
+       	    }
   		});
     }
     
-    function uiCodeSave(){
+    function uiCodeSave(flag){
     	$('#ui-code-java').val(javaEditor.getValue());
     	$.ajax({
   			type:"post",
-        		url:"<%=request.getContextPath()%>/ui/code/create/update",
-        		data:$('#ui-code-form').serialize(),
-        		success:function(data){
-        			if(data.responseCode == "0000"){
-        			}else{
-        				swal("错误", data.responseMsg, "error");
-        			}
-        	    }
+       		url:"<%=request.getContextPath()%>/ui/code/create/update",
+       		data:$('#ui-code-form').serialize(),
+       		success:function(data){
+       			if(data.responseCode == "0000"){
+       				swal("成功", "保存成功！", "success");
+       			}else{
+       				swal("错误", data.responseMsg, "error");
+       			}
+       	    }
   		});
 	}
     
@@ -150,14 +147,26 @@ public class Hello {
     	$('#ui-code-java').val(javaEditor.getValue());
     	$.ajax({
   			type:"post",
-        		url:"<%=request.getContextPath()%>/ui/code/run",
-        		data:$('#ui-code-form').serialize(),
-        		success:function(data){
-        			if(data.responseCode == "0000"){
-        			}else{
-        				swal("错误", data.responseMsg, "error");
-        			}
-        	    }
+       		url:"<%=request.getContextPath()%>/ui/code/create/update",
+       		data:$('#ui-code-form').serialize(),
+       		success:function(data){
+       			if(data.responseCode == "0000"){
+       				$.ajax({
+       		  			type:"post",
+   		        		url:"<%=request.getContextPath()%>/ui/code/run",
+   		        		data:$('#ui-code-form').serialize(),
+   		        		success:function(data){
+   		        			if(data.responseCode == "0000"){
+   		        				swal("成功", "运行成功！", "success");
+   		        			}else{
+   		        				swal("错误", data.responseMsg, "error");
+   		        			}
+   		        	    }
+       		  		});
+       			}else{
+       				swal("错误", data.responseMsg, "error");
+       			}
+       	    }
   		});
     }
     
