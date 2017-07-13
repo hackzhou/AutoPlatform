@@ -96,13 +96,15 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	public void exportApiInterface(List<AInterface> list) {
 		if(list != null && !list.isEmpty()){
 			for (AInterface aInterface : list) {
-				List<AInterface> interList = findByProjectUrl(aInterface.getProjecto().getId(), aInterface.getUrl());
-				if(interList != null && !interList.isEmpty()){
-					AInterface aInterfaceDB = interList.get(0);
-					aInterfaceDB.update(aInterface);
-					update(aInterfaceDB);
-				}else{
-					create(aInterface);
+				if(aInterface.getProjecto() != null && aInterface.getType() != null && aInterface.getName() != null && aInterface.getUrl() != null){
+					List<AInterface> interList = findByProjectUrl(aInterface.getProjecto().getId(), aInterface.getUrl());
+					if(interList != null && !interList.isEmpty()){
+						AInterface aInterfaceDB = interList.get(0);
+						aInterfaceDB.update(aInterface);
+						update(aInterfaceDB);
+					}else{
+						create(aInterface);
+					}
 				}
 			}
 		}
