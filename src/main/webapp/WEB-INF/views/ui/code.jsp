@@ -152,7 +152,7 @@
        		success:function(data){
        			if(data.responseCode == "0000"){
        				swal("成功", "保存成功！", "success");
-       				hrefCodeCls();
+       				hrefCodeCls(data.data);
        			}else{
        				swal("错误", data.responseMsg, "error");
        			}
@@ -175,7 +175,7 @@
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
    		        				swal("成功", "已运行！", "success");
-   		        				hrefCodeCls();
+   		        				hrefCodeCls(data.data);
    		        			}else{
    		        				swal("错误", data.responseMsg, "error");
    		        			}
@@ -188,10 +188,11 @@
   		});
     }
     
-    function hrefCodeCls(){
+    function hrefCodeCls(name){
     	var cls = "${data}";
+    	alert(cls);
     	if(cls == null || cls == ""){
-			$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
+			$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
 		}
     }
     
