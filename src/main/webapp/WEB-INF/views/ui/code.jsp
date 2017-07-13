@@ -58,6 +58,18 @@
 			</form>
 		</div>
 	  </div>
+	  <div class="row">
+	  	<div class="col-sm-12">
+	  	  <form class="form-horizontal">
+	  	  	<div class="form-group">
+              <label class="col-md-12">运行结果</label>
+              <div class="col-md-12">
+                <textarea id="ui-code-result" class="form-control" rows="15"></textarea>
+              </div>
+            </div>
+	  	  </form>
+	  	</div>
+	  </div>
       <!-- /.container-fluid -->
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
     </div>
@@ -121,6 +133,9 @@
        		success:function(data){
        			if(data.responseCode == "0000"){
        				javaEditor.setValue(data.data);
+       				if(data.data2 != null){
+	       				$('#ui-code-result').html(data.data2);
+       				}
        			}else{
        				swal("错误", data.responseMsg, "error");
        			}

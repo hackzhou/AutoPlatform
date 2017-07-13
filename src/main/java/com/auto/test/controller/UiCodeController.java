@@ -50,32 +50,41 @@ public class UiCodeController extends BaseController{
 		if(cls == null || cls.isEmpty()){
 			String className = getRandomClassName();
 			StringBuffer data = new StringBuffer();
-			data.append("import org.slf4j.Logger;").append("\r\n");
 			data.append("import org.slf4j.LoggerFactory;").append("\r\n");
+			data.append("import com.auto.test.core.ui.log.Log;").append("\r\n");
 			data.append("import java.util.Date;").append("\r\n");
 			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
 			data.append("import com.auto.test.common.constant.Const;").append("\r\n").append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
-			data.append("\t").append("private static Logger logger = LoggerFactory.getLogger(").append(className).append(".class);").append("\r\n").append("\r\n");
+			data.append("\t").append("public static Log log = new Log(LoggerFactory.getLogger(").append(className).append(".class));").append("\r\n").append("\r\n");
 			data.append("\t").append("public static void main(String[] args) {").append("\r\n");
-			data.append("\t\t").append("logger.info(\"" + className + " Start...\");").append("\r\n");
+			data.append("\t\t").append("log.info(\"" + className + " Start...\");").append("\r\n");
 			data.append("\t\t").append("\r\n");
-			data.append("\t\t").append("logger.info(\"" + className + " End...\");").append("\r\n");
+			data.append("\t\t").append("log.info(\"" + className + " End...\");").append("\r\n");
 			data.append("\t").append("}").append("\r\n");
+			data.append("\t").append("\r\n");
 			data.append("}").append("\r\n");
 			logger.info("[Code]==>Init:\r\n" + data.toString());
 			return successJson(data.toString());
 		}else{
+			String path = Const.UI_CODE_PATH + File.separator + cls;
 			String fileName = cls + ".java";
 			FileUtil fileUtil = new FileUtil();
-			File file = fileUtil.getFile(Const.UI_CODE_PATH, fileName);
+			File file = fileUtil.getFile(path, fileName);
 			if(file.exists()){
 				String javaCode = fileUtil.readJavaFile(file);
-				logger.info("[Code]==>Init:\r\n" + javaCode);
+				logger.info("[Code]==>InitCode:\r\n" + javaCode);
+				String logName = fileUtil.getLastLogFile(path);
+				if(logName != null && !logName.isEmpty()){
+					File logFile = fileUtil.getFile(path, logName);
+					String logText = fileUtil.readJavaFile(logFile);
+					logger.info("[Code]==>InitLog:\r\n" + logText);
+					return successJson(javaCode, logText);
+				}
 				return successJson(javaCode);
 			}else{
-				logger.error("[Code]==>文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-				return failedJson("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
+				logger.error("[Code]==>文件不存在" + "[" + path + File.separator + fileName + "]");
+				return failedJson("文件不存在" + "[" + path + File.separator + "\r\n" + fileName + "]");
 			}
 		}
 	}
@@ -83,28 +92,30 @@ public class UiCodeController extends BaseController{
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-java") String code) {
-		String fileName = subStr(code, "class", "\\{") + ".java";
-		logger.info("[Code]==>Save[" + Const.UI_CODE_PATH + File.separator + fileName + "]\r\n" + code);
+		String className = subStr(code, "class", "\\{");
+		String path = Const.UI_CODE_PATH + File.separator + className;
+		String fileName = className + ".java";
+		logger.info("[Code]==>Save[" + path + File.separator + fileName + "]\r\n" + code);
 		List<UCode> codeList = uiCodeService.findByCls(fileName);
 		FileUtil fileUtil = new FileUtil();
 		if(codeList != null && !codeList.isEmpty()){
-			fileUtil.delete(Const.UI_CODE_PATH, fileName);
-			if(fileUtil.writeJavaFile(Const.UI_CODE_PATH, fileName, code)){
-				UCode uCode = new UCode(codeList.get(0).getId(), Const.UI_CODE_PATH, fileName, getCurrentUserName(request));
+			fileUtil.deleteFile(path, fileName);
+			if(fileUtil.writeJavaFile(path, fileName, code)){
+				UCode uCode = new UCode(codeList.get(0).getId(), path, fileName, getCurrentUserName(request));
 				uiCodeService.update(uCode);
 				return successJson();
 			}else{
-				logger.error("[Code]==>文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
+				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
+				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
 			}
 		}else{
-			if(fileUtil.writeJavaFile(Const.UI_CODE_PATH, fileName, code)){
-				UCode uCode = new UCode(null, Const.UI_CODE_PATH, fileName, getCurrentUserName(request));
+			if(fileUtil.writeJavaFile(path, fileName, code)){
+				UCode uCode = new UCode(null, path, fileName, getCurrentUserName(request));
 				uiCodeService.create(uCode);
 				return successJson();
 			}else{
-				logger.error("[Code]==>文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-				return failedJson("文件保存失败" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
+				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
+				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
 			}
 		}
 	}
@@ -113,18 +124,19 @@ public class UiCodeController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
+		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";
 		FileUtil fileUtil = new FileUtil();
-		File file = fileUtil.getFile(Const.UI_CODE_PATH, fileName);
+		File file = fileUtil.getFile(path, fileName);
 		if(file.exists()){
 			String javaCode = fileUtil.readJavaFile(file);
-			logger.info("[Code]==>Run[" + Const.UI_CODE_PATH + File.separator + fileName + "]\r\n" + javaCode);
+			logger.info("[Code]==>Run[" + path + File.separator + fileName + "]\r\n" + javaCode);
 			DynaCompileExe dce = (DynaCompileExe) SpringContext.getBean("dynaCompileExe");
 			dce.execute(className, javaCode);
 			return successJson();
 		}else{
-			logger.error("[Code]==>文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + fileName + "]");
-			return failedJson("文件不存在" + "[" + Const.UI_CODE_PATH + File.separator + "\r\n" + fileName + "]");
+			logger.error("[Code]==>文件不存在" + "[" + path + File.separator + fileName + "]");
+			return failedJson("文件不存在" + "[" + path + File.separator + "\r\n" + fileName + "]");
 		}
 	}
 	
@@ -141,8 +153,8 @@ public class UiCodeController extends BaseController{
 	}
 	
 	public static String randomClassName(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss'T'");
-		StringBuffer sb = new StringBuffer("A" + sdf.format(new Date()));
+		SimpleDateFormat sdf = new SimpleDateFormat("'A'yyyyMMddHHmmss'T'");
+		StringBuffer sb = new StringBuffer(sdf.format(new Date()));
 		for (int i = 0; i < 4; i++) {
 			if((int)(Math.random() * 10) % 2 == 0){
 				sb.append((int)(Math.random() * 10));

@@ -2,13 +2,18 @@ package com.auto.test.core.ui.dynamic;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import com.auto.test.common.constant.Const;
+import com.auto.test.utils.FileUtil;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
@@ -39,6 +44,7 @@ public class DynamicEngine {
 		ClassFileManager fileManager = null;
 		DynamicClassLoader dynamicClassLoader = null;
 		try {
+			String path = Const.UI_CODE_PATH + File.separator + fullClassName;
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 			fileManager = new ClassFileManager(compiler.getStandardFileManager(diagnostics, null, null));
@@ -58,11 +64,14 @@ public class DynamicEngine {
 				instance = clazz.newInstance();
 				Method m = clazz.getMethod("main", String[].class);
 				m.invoke(instance, (Object) new String[]{});
+				Field field = clazz.getField("log");
+				new FileUtil().writeJavaFile(path, getCurrentDate() + "_success.log", field.get(instance).toString());
 			}else{
-				String error = "";
+				StringBuffer error = new StringBuffer();
 				for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
-					error = error + compilePrint(diagnostic);
+					error.append(compilePrint(diagnostic));
 				}
+				new FileUtil().writeJavaFile(path, getCurrentDate() + "_error.log", error.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,6 +88,11 @@ public class DynamicEngine {
 			}
 		}
 		return instance;
+	}
+	
+	private String getCurrentDate(){
+		SimpleDateFormat sdf = new SimpleDateFormat("'A'yyyyMMddHHmmss");
+		return sdf.format(new Date());
 	}
 	
 	private String compilePrint(Diagnostic<?> diagnostic) {

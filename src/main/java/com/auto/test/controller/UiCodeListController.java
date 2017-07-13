@@ -1,5 +1,6 @@
 package com.auto.test.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.UCode;
@@ -47,7 +47,7 @@ public class UiCodeListController extends BaseController{
 		try {
 			UCode uCode = uiCodeService.findById(Integer.parseInt(id));
 			if(uCode != null){
-				new FileUtil().delete(Const.UI_CODE_PATH, uCode.getCls());
+				new FileUtil().deleteDir(Const.UI_CODE_PATH + File.separator + uCode.getCls().replaceAll(".java", ""));
 				uiCodeService.delete(Integer.parseInt(id));
 				logger.info("[CodeList]==>删除UI编码[id=" + id + "]成功！");
 			}
