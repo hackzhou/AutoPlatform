@@ -151,6 +151,7 @@
        		data:$('#ui-code-form').serialize(),
        		success:function(data){
        			if(data.responseCode == "0000"){
+       				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
        				swal("成功", "保存成功！", "success");
        			}else{
        				swal("错误", data.responseMsg, "error");
@@ -173,6 +174,7 @@
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
+   		        				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
    		        				swal("成功", "已运行！", "success");
    		        			}else{
    		        				swal("错误", data.responseMsg, "error");

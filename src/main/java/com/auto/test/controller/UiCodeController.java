@@ -103,7 +103,7 @@ public class UiCodeController extends BaseController{
 			if(fileUtil.writeJavaFile(path, fileName, code)){
 				UCode uCode = new UCode(codeList.get(0).getId(), path, fileName, getCurrentUserName(request));
 				uiCodeService.update(uCode);
-				return successJson();
+				return successJson(className);
 			}else{
 				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
 				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
@@ -112,7 +112,7 @@ public class UiCodeController extends BaseController{
 			if(fileUtil.writeJavaFile(path, fileName, code)){
 				UCode uCode = new UCode(null, path, fileName, getCurrentUserName(request));
 				uiCodeService.create(uCode);
-				return successJson();
+				return successJson(className);
 			}else{
 				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
 				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
@@ -133,7 +133,7 @@ public class UiCodeController extends BaseController{
 			logger.info("[Code]==>Run[" + path + File.separator + fileName + "]\r\n" + javaCode);
 			DynaCompileExe dce = (DynaCompileExe) SpringContext.getBean("dynaCompileExe");
 			dce.execute(className, javaCode);
-			return successJson();
+			return successJson(className);
 		}else{
 			logger.error("[Code]==>文件不存在" + "[" + path + File.separator + fileName + "]");
 			return failedJson("文件不存在" + "[" + path + File.separator + "\r\n" + fileName + "]");
