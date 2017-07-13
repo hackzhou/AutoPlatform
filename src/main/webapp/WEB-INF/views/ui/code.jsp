@@ -143,7 +143,7 @@
   		});
     }
     
-    function uiCodeSave(flag){
+    function uiCodeSave(){
     	$('#ui-code-java').val(javaEditor.getValue());
     	$.ajax({
   			type:"post",
@@ -151,8 +151,8 @@
        		data:$('#ui-code-form').serialize(),
        		success:function(data){
        			if(data.responseCode == "0000"){
-       				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
        				swal("成功", "保存成功！", "success");
+       				hrefCodeCls();
        			}else{
        				swal("错误", data.responseMsg, "error");
        			}
@@ -174,8 +174,8 @@
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
-   		        				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
    		        				swal("成功", "已运行！", "success");
+   		        				hrefCodeCls();
    		        			}else{
    		        				swal("错误", data.responseMsg, "error");
    		        			}
@@ -186,6 +186,13 @@
        			}
        	    }
   		});
+    }
+    
+    function hrefCodeCls(){
+    	var cls = "${data}";
+    	if(cls == null || cls == ""){
+			$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + data.data);
+		}
     }
     
 </script>
