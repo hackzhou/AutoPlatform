@@ -106,15 +106,15 @@ public class DynamicEngine {
 		System.out.println("LineNumber:" + diagnostic.getLineNumber());
 		System.out.println("ColumnNumber:" + diagnostic.getColumnNumber());
 		StringBuffer res = new StringBuffer();
-		res.append("Code:[" + diagnostic.getCode() + "]\n");
-		res.append("Kind:[" + diagnostic.getKind() + "]\n");
-		res.append("Position:[" + diagnostic.getPosition() + "]\n");
-		res.append("Start Position:[" + diagnostic.getStartPosition() + "]\n");
-		res.append("End Position:[" + diagnostic.getEndPosition() + "]\n");
-		res.append("Source:[" + diagnostic.getSource() + "]\n");
-		res.append("Message:[" + diagnostic.getMessage(null) + "]\n");
-		res.append("LineNumber:[" + diagnostic.getLineNumber() + "]\n");
-		res.append("ColumnNumber:[" + diagnostic.getColumnNumber() + "]\n");
+		res.append("Code:[" + diagnostic.getCode() + "]\r\n");
+		res.append("Kind:[" + diagnostic.getKind() + "]\r\n");
+		res.append("Position:[" + diagnostic.getPosition() + "]\r\n");
+		res.append("Start Position:[" + diagnostic.getStartPosition() + "]\r\n");
+		res.append("End Position:[" + diagnostic.getEndPosition() + "]\r\n");
+		res.append("Source:[" + diagnostic.getSource() + "]\r\n");
+		res.append("Message:[" + diagnostic.getMessage(null) + "]\r\n");
+		res.append("LineNumber:[" + diagnostic.getLineNumber() + "]\r\n");
+		res.append("ColumnNumber:[" + diagnostic.getColumnNumber() + "]\r\n");
 		return res.toString();
 	}
 	
