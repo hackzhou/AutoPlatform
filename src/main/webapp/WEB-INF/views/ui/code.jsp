@@ -151,7 +151,7 @@
        		data:$('#ui-code-form').serialize(),
        		success:function(data){
        			if(data.responseCode == "0000"){
-       				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", "确定并跳转！", data.data);
+       				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", data.data);
        			}else{
        				swal("错误", data.responseMsg, "error");
        			}
@@ -174,9 +174,9 @@
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
-   		        				hrefCodeCls("成功", "已运行！", "success", "确定并刷新！", cls);
+   		        				hrefCodeCls("成功", "已运行！", "success", cls);
    		        			}else{
-   		        				hrefCodeCls("错误", data.responseMsg, "error", "确定！", cls);
+   		        				hrefCodeCls("错误", data.responseMsg, "error", cls);
    		        			}
    		        	    }
        		  		});
@@ -187,7 +187,13 @@
   		});
     }
     
-    function hrefCodeCls(title, text, type, btntext, name){
+    function hrefCodeCls(title, text, type, name){
+    	var btntext = null;
+    	if(isCls()){
+			btntext = "确定并跳转！";
+		}else{
+			btntext = "确定并刷新！";
+		}
 		swal({
 			title: title,
 			text: text,
@@ -196,13 +202,20 @@
 			confirmButtonText: btntext,
 			closeOnConfirm: false
   		},function(){
-  			var cls = "${data}";
-  	    	if(cls == null || cls == ""){
+  	    	if(isCls()){
   				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
   			}else{
   				window.location.reload();
   			}
   		});
+    }
+    
+    function isCls(){
+    	var cls = "${data}";
+    	if(cls == null || cls == ""){
+			return true;
+		}
+    	return false;
     }
     
 </script>
