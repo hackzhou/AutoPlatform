@@ -187,9 +187,9 @@
   		});
     }
     
-    function hrefCodeCls(title, text, type, name){
+    function hrefCodeCls(title, text, type, cls){
     	var btntext = null;
-    	if(isCls()){
+    	if(isClsData()){
 			btntext = "确定并跳转！";
 		}else{
 			btntext = "确定并刷新！";
@@ -202,17 +202,17 @@
 			confirmButtonText: btntext,
 			closeOnConfirm: false
   		},function(){
-  	    	if(isCls()){
-  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
+  	    	if(isClsData()){
+  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + cls);
   			}else{
   				window.location.reload();
   			}
   		});
     }
     
-    function isCls(){
-    	var cls = "${data}";
-    	if(cls == null || cls == ""){
+    function isClsData(){
+    	var clsdata = "${data}";
+    	if(clsdata == null || clsdata == ""){
 			return true;
 		}
     	return false;
