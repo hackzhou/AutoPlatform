@@ -33,7 +33,7 @@ public class DynamicEngine {
 	
 	private void buildClassPath() {
 		this.classpath = null;
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		for (URL url : this.parentClassLoader.getURLs()) {
 			String p = url.getFile();
 			sb.append(p).append(File.pathSeparator);
