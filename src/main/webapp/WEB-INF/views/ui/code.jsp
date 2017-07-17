@@ -62,9 +62,9 @@
 	  	<div class="col-sm-12">
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
-              <label class="col-md-12">运行结果</label>
+              <label class="col-md-12">最新运行结果显示</label>
               <div class="col-md-12">
-                <textarea id="ui-code-result" class="form-control" rows="15"></textarea>
+                <textarea id="ui-code-result" class="form-control" rows="15">运行完刷新显示...</textarea>
               </div>
             </div>
 	  	  </form>
@@ -151,8 +151,7 @@
        		data:$('#ui-code-form').serialize(),
        		success:function(data){
        			if(data.responseCode == "0000"){
-       				swal("成功", "保存成功！", "success");
-       				hrefCodeCls(data.data);
+       				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", "确定并跳转！", data.data);
        			}else{
        				swal("错误", data.responseMsg, "error");
        			}
@@ -168,16 +167,16 @@
        		data:$('#ui-code-form').serialize(),
        		success:function(data){
        			if(data.responseCode == "0000"){
+       				var cls = data.data;
        				$.ajax({
        		  			type:"post",
    		        		url:"<%=request.getContextPath()%>/ui/code/run",
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
-   		        				swal("成功", "已运行！", "success");
-   		        				hrefCodeCls(data.data);
+   		        				hrefCodeCls("成功", "已运行！", "success", "确定并跳转！", cls);
    		        			}else{
-   		        				swal("错误", data.responseMsg, "error");
+   		        				hrefCodeCls("错误", data.responseMsg, "error", "确定！", cls);
    		        			}
    		        	    }
        		  		});
@@ -188,12 +187,20 @@
   		});
     }
     
-    function hrefCodeCls(name){
-    	var cls = "${data}";
-    	alert(cls);
-    	if(cls == null || cls == ""){
-			$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
-		}
+    function hrefCodeCls(title, text, type, btntext, name){
+		swal({
+			title: title,
+			text: text,
+			type: type,
+			showCancelButton: false,
+			confirmButtonText: btntext,
+			closeOnConfirm: false
+  		},function(){
+  			var cls = "${data}";
+  	    	if(cls == null || cls == ""){
+  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
+  			}
+  		});
     }
     
 </script>

@@ -52,9 +52,10 @@ public class UiCodeController extends BaseController{
 			StringBuffer data = new StringBuffer();
 			data.append("import org.slf4j.LoggerFactory;").append("\r\n");
 			data.append("import com.auto.test.core.ui.log.Log;").append("\r\n");
-			data.append("import java.util.Date;").append("\r\n");
-			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
-			data.append("import com.auto.test.common.constant.Const;").append("\r\n").append("\r\n");
+//			data.append("import java.util.Date;").append("\r\n");
+//			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
+//			data.append("import com.auto.test.common.constant.Const;").append("\r\n");
+			data.append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
 			data.append("\t").append("public static Log log = new Log(LoggerFactory.getLogger(").append(className).append(".class));").append("\r\n").append("\r\n");
 			data.append("\t").append("public static void main(String[] args) {").append("\r\n");

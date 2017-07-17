@@ -81,13 +81,9 @@ public class FileUtil {
 						if(file.endsWith(".log")){
 							String[] nameArr = file.split("_");
 							Date d = sdf.parse(nameArr[0]);
-							endName = nameArr[1];
-							if(date == null){
+							if(date == null || d.getTime() > date.getTime()){
 								date = d;
-							}else{
-								if(d.getTime() > date.getTime()){
-									date = d;
-								}
+								endName = nameArr[1];
 							}
 						}
 					}
