@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.Const;
 import com.auto.test.utils.FileUtil;
 import javax.tools.JavaFileObject;
@@ -19,7 +21,7 @@ import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 
 public class DynamicEngine {
-	
+	private Logger logger = LoggerFactory.getLogger(DynamicEngine.class);
 	private String classpath;
 	private URLClassLoader parentClassLoader;
 	
@@ -96,15 +98,6 @@ public class DynamicEngine {
 	}
 	
 	private String compilePrint(Diagnostic<?> diagnostic) {
-		System.out.println("Code:" + diagnostic.getCode());
-		System.out.println("Kind:" + diagnostic.getKind());
-		System.out.println("Position:" + diagnostic.getPosition());
-		System.out.println("Start Position:" + diagnostic.getStartPosition());
-		System.out.println("End Position:" + diagnostic.getEndPosition());
-		System.out.println("Source:" + diagnostic.getSource());
-		System.out.println("Message:" + diagnostic.getMessage(null));
-		System.out.println("LineNumber:" + diagnostic.getLineNumber());
-		System.out.println("ColumnNumber:" + diagnostic.getColumnNumber());
 		StringBuffer res = new StringBuffer();
 		res.append("Code:[" + diagnostic.getCode() + "]\r\n");
 		res.append("Kind:[" + diagnostic.getKind() + "]\r\n");
@@ -115,6 +108,7 @@ public class DynamicEngine {
 		res.append("Message:[" + diagnostic.getMessage(null) + "]\r\n");
 		res.append("LineNumber:[" + diagnostic.getLineNumber() + "]\r\n");
 		res.append("ColumnNumber:[" + diagnostic.getColumnNumber() + "]\r\n");
+		logger.error(res.toString());
 		return res.toString();
 	}
 	
