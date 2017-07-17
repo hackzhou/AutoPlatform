@@ -174,7 +174,7 @@
    		        		data:$('#ui-code-form').serialize(),
    		        		success:function(data){
    		        			if(data.responseCode == "0000"){
-   		        				hrefCodeCls("成功", "已运行！", "success", "确定并跳转！", cls);
+   		        				hrefCodeCls("成功", "已运行！", "success", "确定并刷新！", cls);
    		        			}else{
    		        				hrefCodeCls("错误", data.responseMsg, "error", "确定！", cls);
    		        			}
