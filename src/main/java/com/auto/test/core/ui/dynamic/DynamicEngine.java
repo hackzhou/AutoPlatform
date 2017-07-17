@@ -64,8 +64,10 @@ public class DynamicEngine {
 				dynamicClassLoader = new DynamicClassLoader(this.parentClassLoader);
 				Class<?> clazz = dynamicClassLoader.loadClass(fullClassName, jco);
 				instance = clazz.newInstance();
-				Method m = clazz.getMethod("main", String[].class);
-				m.invoke(instance, (Object) new String[]{});
+				//Method m = clazz.getMethod("main", String[].class);
+				//m.invoke(instance, (Object) new String[]{});
+				Method m = clazz.getMethod("execute");
+				m.invoke(instance);
 				Field field = clazz.getField("log");
 				new FileUtil().writeJavaFile(path, getCurrentDate() + "_success.log", field.get(instance).toString());
 			}else{

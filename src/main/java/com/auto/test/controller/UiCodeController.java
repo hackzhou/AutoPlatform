@@ -58,7 +58,8 @@ public class UiCodeController extends BaseController{
 			data.append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
 			data.append("\t").append("public static Log log = new Log(LoggerFactory.getLogger(").append(className).append(".class));").append("\r\n").append("\r\n");
-			data.append("\t").append("public static void main(String[] args) {").append("\r\n");
+			//data.append("\t").append("public static void main(String[] args) {").append("\r\n");
+			data.append("\t").append("public void execute() {").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " Start...\");").append("\r\n");
 			data.append("\t\t").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " End...\");").append("\r\n");
