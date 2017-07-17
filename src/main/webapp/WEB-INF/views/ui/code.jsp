@@ -199,6 +199,8 @@
   			var cls = "${data}";
   	    	if(cls == null || cls == ""){
   				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + name);
+  			}else{
+  				window.location.reload();
   			}
   		});
     }
