@@ -54,7 +54,7 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>文件</th>
+                  <th>文件(服务器)</th>
                   <th>创建人</th>
                   <th>创建时间</th>
                   <th>操作</th>
