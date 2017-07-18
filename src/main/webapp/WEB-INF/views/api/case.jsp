@@ -122,8 +122,11 @@
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-case-interface" name="api-case-interface" class="form-control select2" style="width: 80%;"></select>
+	                        <div class="col-sm-7">
+		                        <select id="api-case-interface" name="api-case-interface" class="form-control select2" style="width: 100%;"></select>
+	                        </div>
+	                        <div class="col-sm-2">
+	                        	<label class="text-info">"{X}"会替换请求体中值</label>
 	                        </div>
 	                      </div>
 	                    </div>
