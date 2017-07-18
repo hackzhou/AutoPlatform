@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
 import com.auto.test.common.constant.Const;
@@ -138,16 +140,16 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA), authorA, version, channel, aCase.getId()));
+				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));
 			}
-			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB), authorB, version, channel, aCase.getId()));
+			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId()));
 		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA), aCase.getBody(), authorA, version, channel, aCase.getId()));
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId()));
 			}
-			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB), aCase.getBody(), authorB, version, channel, aCase.getId()));
+			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId()));
 		}
 	}
 	
@@ -165,12 +167,29 @@ public class ApiExecuteRun implements Runnable {
 		return result;
 	}
 	
-	private String getFullUrl(ACase aCase, String url){
+	private String getFullUrl(ACase aCase, String url, String body){
+		String iUrl = aCase.getInterfaceo().getUrl();
+		String fullUrl = fillVariable(iUrl, body);
+		if(fullUrl != null){
+			iUrl = fullUrl;
+		}
 		String desc = aCase.getInterfaceo().getDescription();
 		if(desc != null && desc.contains(Const.API_PLATFORM)){
-			return url + "/" + Const.API_PLATFORM + aCase.getInterfaceo().getUrl();
+			return url + "/" + Const.API_PLATFORM + iUrl;
 		}
-		return url + apiContext.getProject().getPath() + aCase.getInterfaceo().getUrl();
+		return url + apiContext.getProject().getPath() + iUrl;
+	}
+	
+	public String fillVariable(String url, String body){
+		if(body != null && !body.isEmpty() && url != null && url.contains("{") && url.contains("}") && (url.indexOf("{") < url.indexOf("}"))){
+			String tempA = url.substring(url.indexOf("{"), url.indexOf("}") + 1);
+			String tempB = url.substring(url.indexOf("{") + 1, url.indexOf("}"));
+			JSONObject jsono = JSON.parseObject(body);
+			if(jsono != null && jsono.get(tempB) != null){
+				return url.replace(tempA, (String) jsono.get(tempB));
+			}
+		}
+		return null;
 	}
 
 	public ACase getaCase() {
