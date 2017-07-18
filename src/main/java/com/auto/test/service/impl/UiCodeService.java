@@ -16,7 +16,7 @@ public class UiCodeService implements IUiCodeService {
 
 	@Override
 	public List<UCode> findAll() {
-		return dao.findAll();
+		return dao.findAllOrder();
 	}
 
 	@Override
