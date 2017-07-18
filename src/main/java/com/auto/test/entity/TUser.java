@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="a_user")
-public class AUser implements Serializable{
+@Table(name="t_user")
+public class TUser implements Serializable{
 	private static final long serialVersionUID = -1008125737378657440L;
 
 	@Id
@@ -37,18 +37,18 @@ public class AUser implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
-	public AUser() {
+	public TUser() {
 		super();
 	}
 	
-	public AUser(String username, String password, String email) {
+	public TUser(String username, String password, String email) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
 	}
 	
-	public void update(AUser aUser) {
+	public void update(TUser aUser) {
 		this.username = aUser.getUsername();
 		this.password = aUser.getPassword();
 		this.email = aUser.getEmail();

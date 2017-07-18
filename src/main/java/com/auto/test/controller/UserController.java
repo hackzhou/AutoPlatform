@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.entity.AUser;
+import com.auto.test.entity.TUser;
 import com.auto.test.service.IUserService;
 import com.auto.test.utils.StrUtil;
 
@@ -35,7 +35,7 @@ public class UserController extends BaseController{
 			logger.error("[UserLogin]==>登录用户[请您输入密码！]");
 			return failLogin(username, null, "请您输入密码！", "login");
 		}
-		AUser aUser = userService.isLogin(username, StrUtil.encryptByMD5(password));
+		TUser aUser = userService.isLogin(username, StrUtil.encryptByMD5(password));
 		if(aUser != null){
 			try {
 				request.getSession().setAttribute("user", aUser);
@@ -78,7 +78,7 @@ public class UserController extends BaseController{
 					password = cookie.getValue();
 				}
 			}
-			AUser aUser = userService.isLogin(username, password);
+			TUser aUser = userService.isLogin(username, password);
 			if(aUser != null){
 				request.getSession().setAttribute("user", aUser);
 				logger.info("[UserLoginCookie]==>自动登录用户[" + aUser.getUsername() + "]");
@@ -122,12 +122,12 @@ public class UserController extends BaseController{
 			logger.error("[UserRegister]==>用户注册[两次输入的密码不一样！]");
 			return failLogin(username, email, "两次输入的密码不一样！", "register");
 		}
-		List<AUser> list = userService.findByName(username);
+		List<TUser> list = userService.findByName(username);
 		if(list != null && !list.isEmpty()){
 			logger.error("[UserRegister]==>用户已经注册[" + username + "]");
 			return failMsg("[" + username + "]已经注册!", "register");
 		}
-		AUser aUser = userService.create(new AUser(username, StrUtil.encryptByMD5(password), email));
+		TUser aUser = userService.create(new TUser(username, StrUtil.encryptByMD5(password), email));
 		request.getSession().setAttribute("user", aUser);
 		logger.info("[UserRegister]==>用户注册[" + getCurrentUserName(request) + "]");
 		return success("index", getCurrentUserName(request));

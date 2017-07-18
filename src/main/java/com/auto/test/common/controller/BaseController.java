@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.config.GlobalValueConfig;
-import com.auto.test.entity.AUser;
+import com.auto.test.entity.TUser;
 
 public class BaseController implements MessageSourceAware {
 
@@ -161,13 +161,13 @@ public class BaseController implements MessageSourceAware {
 		return start < 0 ? 0 : start;
 	}
 
-	protected AUser getCurrentUser(HttpServletRequest request) {
-		AUser user = (AUser) request.getSession().getAttribute("user");
+	protected TUser getCurrentUser(HttpServletRequest request) {
+		TUser user = (TUser) request.getSession().getAttribute("user");
 		return user;
 	}
 	
 	protected String getCurrentUserName(HttpServletRequest request) {
-		AUser user = (AUser) request.getSession().getAttribute("user");
+		TUser user = (TUser) request.getSession().getAttribute("user");
 		if(user != null){
 			return user.getUsername();
 		}

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IUserDao;
-import com.auto.test.entity.AUser;
+import com.auto.test.entity.TUser;
 import com.auto.test.service.IUserService;
 
 @Service("userService")
@@ -15,17 +15,17 @@ public class UserService implements IUserService {
 	private IUserDao dao;
 
 	@Override
-	public List<AUser> findAll() {
+	public List<TUser> findAll() {
 		return dao.findAll();
 	}
 
 	@Override
-	public AUser isLogin(String username, String password) {
+	public TUser isLogin(String username, String password) {
 		return dao.isLogin(username, password);
 	}
 
 	@Override
-	public AUser create(AUser aUser) {
+	public TUser create(TUser aUser) {
 		if(aUser != null){
 			aUser.setCreateTime(new Date());
 			return dao.create(aUser);
@@ -34,9 +34,9 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public AUser update(AUser aUser) {
+	public TUser update(TUser aUser) {
 		if(aUser != null){
-			AUser user = dao.findById(aUser.getId());
+			TUser user = dao.findById(aUser.getId());
 			if(user != null){
 				user.update(aUser);
 				dao.update(user);
@@ -52,7 +52,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public List<AUser> findByName(String username) {
+	public List<TUser> findByName(String username) {
 		return dao.findByName(username);
 	}
 

@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.auto.test.entity.AUser;
+import com.auto.test.entity.TUser;
 
 public class LoginFilter implements Filter {
 
@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
 		if (isStaticContent(request)) {
 			arg2.doFilter(arg0, arg1);
 		}else{
-			AUser user = (AUser) request.getSession().getAttribute("user");
+			TUser user = (TUser) request.getSession().getAttribute("user");
 			if(user == null){
 				HttpServletResponse response = (HttpServletResponse) arg1;
 				response.sendRedirect(request.getContextPath()+"/home/login?jump=" + request.getServletPath());

@@ -2,20 +2,20 @@ package com.auto.test.service;
 
 import java.util.List;
 import javax.transaction.Transactional;
-import com.auto.test.entity.AUser;
+import com.auto.test.entity.TUser;
 
 @Transactional
 public interface IUserService{
 	
-	List<AUser> findAll();
+	List<TUser> findAll();
 	
-	List<AUser> findByName(String username);
+	List<TUser> findByName(String username);
 	
-	AUser isLogin(String username, String password);
+	TUser isLogin(String username, String password);
 	
-	AUser create(AUser aUser);
+	TUser create(TUser aUser);
 	
-	AUser update(AUser aUser);
+	TUser update(TUser aUser);
 	
 	void delete(Integer id);
 
