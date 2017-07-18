@@ -134,7 +134,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.path + "\\" + data.cls;
+						return "<a href=\"${pageContext.request.contextPath}/ui/code/page/cls=" + data.cls.replace(/.java/g, "") + "\">" + data.path + "</a>";
 					}
 				},
 				{

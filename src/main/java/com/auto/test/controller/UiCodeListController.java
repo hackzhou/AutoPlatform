@@ -38,6 +38,11 @@ public class UiCodeListController extends BaseController{
 	public Map<String, Object> getAllCode() {
 		logger.info("[CodeList]==>获取所有UI编码数据！");
 		List<UCode> list = uiCodeService.findAll();
+		if(list != null && !list.isEmpty()){
+			for (UCode uCode : list) {
+				uCode.setPath(uCode.getPath().replace(System.getProperty("user.home"), "") + File.separator + uCode.getCls());
+			}
+		}
 		return successJson(list);
 	}
 	
