@@ -20,27 +20,31 @@ public class HttpClientManager {
 	
 	public HttpClientManager(){
 		this.connManager = disableSslVerification();
-		this.httpClient = HttpClients.custom().setConnectionManager(this.connManager).build();
+		if(this.connManager != null){
+			this.httpClient = HttpClients.custom().setConnectionManager(this.connManager).build();
+		}
 	}
 	
 	private PoolingHttpClientConnectionManager disableSslVerification() {
 		try {
-			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-				@Override
-				public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
+			TrustManager[] trustAllCerts = new TrustManager[] {
+				new X509TrustManager() {
+					@Override
+					public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
+						throws CertificateException {
+					}
+					
+					@Override
+					public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
+						throws CertificateException {
+					}
+					
+					@Override
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+						return null;
+					}
 				}
-				
-				@Override
-				public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
-				}
-				
-				@Override
-				public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-					return null;
-				}
-			}};
+			};
 			SSLContext sc = SSLContext.getInstance("SSL");
 			sc.init(null, trustAllCerts, new java.security.SecureRandom());
 			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()

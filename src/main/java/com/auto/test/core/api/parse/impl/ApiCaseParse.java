@@ -44,6 +44,9 @@ public class ApiCaseParse implements IApiCaseParse {
 
 	@Override
 	public void execute(ApiContext apiContext) throws Exception{
+		if(this.httpClientManager == null){
+			throw new BusinessException("[HTTP/HTTPS]请求管理初始化失败！");
+		}
 		try {
 			executeBody(apiContext);
 		} catch (Exception e) {
