@@ -15,12 +15,16 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 public class HttpClientManager {
+	private static final Integer MAX_TOTAL = 500;
+	private static final Integer MAX_PERROUTE = MAX_TOTAL / 2;
 	private CloseableHttpClient httpClient = null;
 	private PoolingHttpClientConnectionManager connManager = null;
 	
 	public HttpClientManager(){
 		this.connManager = disableSslVerification();
 		if(this.connManager != null){
+			this.connManager.setMaxTotal(MAX_TOTAL);
+			this.connManager.setDefaultMaxPerRoute(MAX_PERROUTE);
 			this.httpClient = HttpClients.custom().setConnectionManager(this.connManager).build();
 		}
 	}
