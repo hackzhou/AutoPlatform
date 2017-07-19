@@ -27,7 +27,7 @@ import com.auto.test.utils.FileUtil;
 @RestController
 @RequestMapping(value = "ui/code")
 public class UiCodeController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(UiCodeController.class);
+	private static Logger logger = LoggerFactory.getLogger(UiCodeController.class);
 	
 	@Resource
 	private IUiCodeService uiCodeService;

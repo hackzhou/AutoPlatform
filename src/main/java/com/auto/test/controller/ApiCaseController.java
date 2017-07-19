@@ -26,7 +26,7 @@ import com.auto.test.service.IApiCaseService;
 @Controller
 @RequestMapping(value = "api/case")
 public class ApiCaseController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiCaseController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiCaseController.class);
 	
 	@Resource
 	private IApiCaseService caseService;

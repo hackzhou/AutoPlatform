@@ -26,7 +26,7 @@ import com.auto.test.service.IApiResultService;
 import com.auto.test.service.IApiVersionService;
 
 public class ApiRunService implements IApiRunService {
-	private Logger logger = LoggerFactory.getLogger(ApiRunService.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiRunService.class);
 	
 	@Resource
 	private IApiProjectService projectService;

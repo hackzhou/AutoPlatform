@@ -20,7 +20,7 @@ import com.auto.test.service.IApiInterfaceService;
 @RestController
 @RequestMapping(value = "api/interface")
 public class ApiInterfaceController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiInterfaceController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiInterfaceController.class);
 	
 	@Resource
 	private IApiInterfaceService interfaceService;

@@ -20,7 +20,7 @@ import com.auto.test.service.IApiAccountService;
 @RestController
 @RequestMapping(value = "api/account")
 public class ApiAccountController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiAccountController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiAccountController.class);
 
 	@Resource
 	private IApiAccountService accountService;

@@ -21,7 +21,7 @@ import com.auto.test.service.IApiResultService;
 @Controller
 @RequestMapping(value = "api/report")
 public class ApiReportController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiReportController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiReportController.class);
 	
 	@Resource
 	private IApiResultService resultService;

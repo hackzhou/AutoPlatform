@@ -26,7 +26,7 @@ import com.auto.test.utils.ExcelUtil;
 @RestController
 @RequestMapping(value = "api/upload")
 public class ApiUploadController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiUploadController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiUploadController.class);
 	
 	@Resource
 	private IApiInterfaceService interfaceService;

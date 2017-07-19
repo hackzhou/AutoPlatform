@@ -22,7 +22,7 @@ import com.auto.test.utils.FileUtil;
 @RestController
 @RequestMapping(value = "ui/list")
 public class UiCodeListController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(UiCodeListController.class);
+	private static Logger logger = LoggerFactory.getLogger(UiCodeListController.class);
 	
 	@Resource
 	private IUiCodeService uiCodeService;

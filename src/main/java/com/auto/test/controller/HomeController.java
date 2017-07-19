@@ -11,7 +11,7 @@ import com.auto.test.common.controller.BaseController;
 @RestController
 @RequestMapping(value = "home")
 public class HomeController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/login")
 	public ModelAndView getLoginPage(HttpServletRequest request) {

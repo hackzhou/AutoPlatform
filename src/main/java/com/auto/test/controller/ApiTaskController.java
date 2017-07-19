@@ -20,7 +20,7 @@ import com.auto.test.service.IApiTaskService;
 @Controller
 @RequestMapping(value = "api/task")
 public class ApiTaskController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiTaskController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiTaskController.class);
 	
 	@Resource
 	private IApiTaskService apiTaskService;

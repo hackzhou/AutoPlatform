@@ -20,7 +20,7 @@ import com.auto.test.service.IApiVersionService;
 @RestController
 @RequestMapping(value = "api/version")
 public class ApiVersionController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiVersionController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiVersionController.class);
 	
 	@Resource
 	private IApiVersionService versionService;

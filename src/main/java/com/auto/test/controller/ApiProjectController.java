@@ -23,7 +23,7 @@ import com.auto.test.service.IApiProjectService;
 @RestController
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
 	
 	@Resource
 	private IApiProjectService projectService;

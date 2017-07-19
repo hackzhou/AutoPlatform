@@ -14,7 +14,7 @@ import com.auto.test.entity.ATask;
 import com.auto.test.service.IApiTaskService;
 
 public class ApiAutoTask {
-	private Logger logger = LoggerFactory.getLogger(ApiAutoTask.class);
+	private static Logger logger = LoggerFactory.getLogger(ApiAutoTask.class);
 	
 	@Resource
 	private IApiTaskService apiTaskService;

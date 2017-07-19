@@ -20,7 +20,7 @@ import com.auto.test.utils.StrUtil;
 @RestController
 @RequestMapping(value = "user")
 public class UserController extends BaseController{
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Resource
 	private IUserService userService;
