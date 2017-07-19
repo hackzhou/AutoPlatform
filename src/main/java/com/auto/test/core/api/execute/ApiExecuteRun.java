@@ -15,6 +15,7 @@ import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.compare.JSONCompare;
+import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
@@ -24,6 +25,7 @@ import com.auto.test.service.IApiResultService;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
+	private HttpClientManager httpClientManager = null;
 	private ApiContext apiContext = null;
 	private ACase aCase = null;
 	private String urlA = null;
@@ -33,9 +35,10 @@ public class ApiExecuteRun implements Runnable {
 	private String version = null;
 	private String channel = null;
 
-	public ApiExecuteRun(ApiContext apiContext, ACase aCase, String urlA, String urlB, 
-			String authorA, String authorB, String version, String channel) {
+	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
+			String urlA, String urlB, String authorA, String authorB, String version, String channel) {
 		super();
+		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
 		this.aCase = aCase;
 		this.urlA = urlA;
@@ -119,15 +122,21 @@ public class ApiExecuteRun implements Runnable {
 			aResult.setSuccess(aResult.getSuccess() + 1);
 		}
 		if(apiContext.getCount().equals(apiContext.getTotal())){
-			if(apiContext.getAccount() != null){
-				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-				apiApplication.remove(apiContext.getAccount().getId());
+			try {
+				if(apiContext.getAccount() != null){
+					ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+					apiApplication.remove(apiContext.getAccount().getId());
+				}
+				IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+				aResult.setEndTime(new Date());
+				aResult.setStatus(ApiRunStatus.COMPLETE.name());
+				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+				apiResultService.update(aResult);
+			} finally {
+				if(httpClientManager != null){
+					httpClientManager.close();
+				}
 			}
-			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-			aResult.setEndTime(new Date());
-			aResult.setStatus(ApiRunStatus.COMPLETE.name());
-			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-			apiResultService.update(aResult);
 		}
 		if(aResultDetail != null && aResultDetail.getCaseo() != null){
 			logger.info("[主体运行][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
@@ -155,14 +164,14 @@ public class ApiExecuteRun implements Runnable {
 	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
-		String result = apiSendMessage.sendGet(url, author, channel, version);
+		String result = apiSendMessage.sendGet(httpClientManager.getHttpClient(), url, author, channel, version);
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}
 	
 	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
-		String result = apiSendMessage.sendPost(url, body, author, channel, version, false);
+		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}

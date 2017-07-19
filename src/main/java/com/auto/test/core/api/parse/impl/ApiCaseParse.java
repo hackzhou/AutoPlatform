@@ -13,6 +13,7 @@ import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.context.ApiThreadPool;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.execute.ApiExecuteRun;
+import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.core.api.http.bean.AccessToken;
 import com.auto.test.core.api.http.bean.Login;
@@ -25,6 +26,7 @@ import com.auto.test.service.IApiResultService;
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
 	private ExecutorService cachedThreadPool = null;
+	private HttpClientManager httpClientManager = null;
 	private String urlA = null;
 	private String urlB = null;
 	private String userLogin = null;
@@ -32,11 +34,12 @@ public class ApiCaseParse implements IApiCaseParse {
 	
 	public ApiCaseParse(){
 		super();
-		cachedThreadPool = ApiThreadPool.getInstance();
-		urlA = GlobalValueConfig.getConfig("uri.production.environment");
-		urlB = GlobalValueConfig.getConfig("uri.advance.environment");
-		userLogin = GlobalValueConfig.getConfig("uri.user.login");
-		usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
+		this.cachedThreadPool = ApiThreadPool.getInstance();
+		this.urlA = GlobalValueConfig.getConfig("uri.production.environment");
+		this.urlB = GlobalValueConfig.getConfig("uri.advance.environment");
+		this.userLogin = GlobalValueConfig.getConfig("uri.user.login");
+		this.usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
+		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
 	}
 
 	@Override
@@ -78,7 +81,8 @@ public class ApiCaseParse implements IApiCaseParse {
 				}
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
-						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(apiContext, aCase, urlA, urlB, authorA, authorB, version, channel);
+						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
+								aCase, urlA, urlB, authorA, authorB, version, channel);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}
@@ -87,17 +91,23 @@ public class ApiCaseParse implements IApiCaseParse {
 	}
 	
 	private void executeFinal(ApiContext apiContext, String message) throws Exception{
-		if(apiContext.getAccount() != null){
-			ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
-			apiApplication.remove(apiContext.getAccount().getId());
+		try {
+			if(apiContext.getAccount() != null){
+				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
+				apiApplication.remove(apiContext.getAccount().getId());
+			}
+			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
+			AResult aResult = apiContext.getResult();
+			aResult.setEndTime(new Date());
+			aResult.setStatus(ApiRunStatus.COMPLETE.name());
+			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
+			aResult.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
+			apiResultService.update(aResult);
+		} finally {
+			if(httpClientManager != null){
+				httpClientManager.close();
+			}
 		}
-		IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-		AResult aResult = apiContext.getResult();
-		aResult.setEndTime(new Date());
-		aResult.setStatus(ApiRunStatus.COMPLETE.name());
-		aResult.setFail(aResult.getTotal() - aResult.getSuccess());
-		aResult.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
-		apiResultService.update(aResult);
 	}
 	
 	private String setAuthor(AAccount aAccount, String url, String version, String channel, String type) throws Exception{
@@ -110,14 +120,14 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 		logger.info("[登录权限][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
-		String result = apiSendMessage.sendPost(url + userLogin, data, "", channel, version, true);
+		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + userLogin, data, "", channel, version, true);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
 			logger.info("[登录权限][" + type + "]==>" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
 				logger.info("[登录权限][" + type + "]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
-				result = apiSendMessage.sendPost(url + usersAccessToken, data2, "", channel, version, true);
+				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + usersAccessToken, data2, "", channel, version, true);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[登录权限][" + type + "]==>" + accessToken.toString());

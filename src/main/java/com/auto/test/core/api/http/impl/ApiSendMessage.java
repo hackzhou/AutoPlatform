@@ -1,18 +1,10 @@
 package com.auto.test.core.api.http.impl;
 
-import java.security.cert.CertificateException;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.exception.BusinessException;
@@ -27,50 +19,8 @@ public class ApiSendMessage implements IApiSendMessage {
 	private static final String PATH		= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
 	private static final String DATA		= "-->[Data:%s]";
 	
-	static{
-		disableSslVerification();
-	}
-	
-	private static void disableSslVerification() {
-		try {
-			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-				@Override
-				public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
-				}
-				
-				@Override
-				public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
-				}
-				
-				@Override
-				public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-					return null;
-				}
-			}};
-			SSLContext sc = SSLContext.getInstance("SSL");
-			sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-			HostnameVerifier allHostsValid = new HostnameVerifier() {
-				public boolean verify(String hostname, SSLSession session) {
-					return true;
-				}
-			};
-			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
-	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
-		return JSON.parseObject(text, c);
-	}
-
-	@Override
-	public String sendGet(String url, String author, String channel, String version) throws Exception{
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+	public String sendGet(CloseableHttpClient httpclient, String url, String author, String channel, String version) throws Exception{
 		CloseableHttpResponse response = null;
 		try {
 			HttpGet httpGet = new HttpGet(url);
@@ -87,15 +37,11 @@ public class ApiSendMessage implements IApiSendMessage {
 			if(response != null){
 				response.close();
 			}
-			if(httpclient != null){
-				httpclient.close();
-			}
 		}
 	}
 
 	@Override
-	public String sendPost(String url, String data, String author, String channel, String version, boolean bool) throws Exception{
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+	public String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool) throws Exception{
 		CloseableHttpResponse response = null;
 		try {
 			HttpPost httpPost = new HttpPost(url);
@@ -120,10 +66,12 @@ public class ApiSendMessage implements IApiSendMessage {
 			if(response != null){
 				response.close();
 			}
-			if(httpclient != null){
-				httpclient.close();
-			}
 		}
+	}
+	
+	@Override
+	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
+		return JSON.parseObject(text, c);
 	}
 	
 }

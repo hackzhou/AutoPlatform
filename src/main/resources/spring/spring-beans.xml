@@ -10,6 +10,7 @@
     <bean id="apiApplication" class="com.auto.test.common.context.ApiApplication"/>
     
 	<bean id="apiCaseParse" class="com.auto.test.core.api.parse.impl.ApiCaseParse" scope="prototype"/>
+	<bean id="httpClientManager" class="com.auto.test.core.api.http.HttpClientManager" scope="prototype"/>
 	<bean id="apiSendMessage" class="com.auto.test.core.api.http.impl.ApiSendMessage" scope="prototype"/>
 	<bean id="jsonCompare" class="com.auto.test.core.api.compare.JSONCompare" scope="prototype"/>
 	<bean id="apiRunService" class="com.auto.test.core.api.service.impl.ApiRunService" scope="prototype"/>
