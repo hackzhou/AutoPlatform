@@ -1,5 +1,12 @@
 package com.auto.test.core.api.http.impl;
 
+import java.security.cert.CertificateException;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -19,6 +26,42 @@ public class ApiSendMessage implements IApiSendMessage {
 	private static final String CONTENT_JSON= "application/json; charset=UTF-8";
 	private static final String PATH		= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
 	private static final String DATA		= "-->[Data:%s]";
+	
+	static{
+		disableSslVerification();
+	}
+	
+	private static void disableSslVerification() {
+		try {
+			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+				@Override
+				public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+				}
+				
+				@Override
+				public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+				}
+				
+				@Override
+				public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+					return null;
+				}
+			}};
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HostnameVerifier allHostsValid = new HostnameVerifier() {
+				public boolean verify(String hostname, SSLSession session) {
+					return true;
+				}
+			};
+			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Override
 	public <T> T json2JavaBean(Class<T> c, String text) throws Exception{
