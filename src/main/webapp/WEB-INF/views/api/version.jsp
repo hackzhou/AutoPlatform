@@ -54,7 +54,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">添加版本</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModalVersion" data-whatever="@fat">添加版本</button>
 		            </div>
 	              </div>
 	            </div>
@@ -68,12 +68,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2">
+            <div class="modal fade" id="exampleModalVersion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelVersion">
               <div class="modal-dialog" role="document" style="width: 1000px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel2"><label class="text-inverse" id="version-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelVersion"><label class="text-inverse" id="version-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-version-form" class="form-horizontal form-material">
@@ -222,7 +222,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiVersionEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal2\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiVersionEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalVersion\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiVersionDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
@@ -274,7 +274,7 @@
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		hideMsgDiv();
-          	    		$('#exampleModal2').modal('hide');
+          	    		$('#exampleModalVersion').modal('hide');
           	    		$.ajax({
           	    			type:"post",
           	          		url:"<%=request.getContextPath()%>/api/version/create/update",

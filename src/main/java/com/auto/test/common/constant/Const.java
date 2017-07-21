@@ -19,6 +19,13 @@ public class Const {
 	public static final String UI_CODE_PATH			= System.getProperty("user.home") + File.separator + AUTO_PLATFORM + File.separator + UI_CODE_TEMP;
 	
 	public static final String DATE_FORAMT_1		= "yyyy-MM-dd HH:mm:ss";
+
+	public static final String PLATFORM_ANDROID		= "Android";
+	public static final String PLATFORM_IOS			= "iOS";
+	
+	public static final String KEYBOARD_RETURN		= "返回";
+	public static final String KEYBOARD_ENTER		= "回车";
+	public static final String KEYBOARD_SEARCH		= "搜索";
 	
 	public static String getCurrentIP(){
 		try {

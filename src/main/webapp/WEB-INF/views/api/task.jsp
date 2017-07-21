@@ -59,7 +59,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Task -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiTaskModal()" data-toggle="modal" data-target="#exampleModal7" data-whatever="@fat">添加定时任务</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiTaskModal()" data-toggle="modal" data-target="#exampleModalTask" data-whatever="@fat">添加定时任务</button>
 		            </div>
 	              </div>
 	            </div>
@@ -73,12 +73,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel7">
+            <div class="modal fade" id="exampleModalTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelTask">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel7"><label class="text-inverse" id="task-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelTask"><label class="text-inverse" id="task-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-task-form" class="form-horizontal form-material">
@@ -316,7 +316,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiTaskEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal7\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiTaskEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalTask\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiTaskDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
@@ -383,7 +383,7 @@
           		success:function(data){
           	    	if(data.responseCode == "0000"){
           	    		hideMsgDiv();
-          	    		$('#exampleModal7').modal('hide');
+          	    		$('#exampleModalTask').modal('hide');
           	    		$.ajax({
           	    			type:"post",
           	          		url:"<%=request.getContextPath()%>/api/task/create/update",

@@ -56,7 +56,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Case -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModal5" data-whatever="@fat">添加案例</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModalCase" data-whatever="@fat">添加案例</button>
 		            </div>
 	              </div>
 	            </div>
@@ -70,12 +70,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5">
+            <div class="modal fade" id="exampleModalCase" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelCase">
               <div class="modal-dialog" role="document" style="width: 1000px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel5"><label class="text-inverse" id="case-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelCase"><label class="text-inverse" id="case-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-case-form" class="form-horizontal form-material">
@@ -442,7 +442,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModal5\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-10\" data-toggle=\"modal\" data-target=\"#exampleModalCase\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger m-r-10\"></i></a>";
 						if(data.run == 1){
 							html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
@@ -779,7 +779,7 @@
 	
 	function apiCaseCreateUpdate(){
 		hideMsgDiv();
-		$('#exampleModal5').modal('hide');
+		$('#exampleModalCase').modal('hide');
 		$.ajax({
 			type:"post",
       		url:"<%=request.getContextPath()%>/api/case/create/update",

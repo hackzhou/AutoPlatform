@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Account -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModal4" data-whatever="@fat">添加账号</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModalAccount" data-whatever="@fat">添加账号</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,12 +74,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4">
+            <div class="modal fade" id="exampleModalAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelAccount">
               <div class="modal-dialog" role="document" style="width: 800px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel4"><label class="text-inverse" id="account-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelAccount"><label class="text-inverse" id="account-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-account-form" class="form-horizontal form-material">
@@ -292,7 +292,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiAccountEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal4\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiAccountEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalAccount\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiAccountDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
@@ -371,7 +371,7 @@
       		success:function(data){
       	    	if(data.responseCode == "0000"){
       	    		hideMsgDiv();
-      	    		$('#exampleModal4').modal('hide');
+      	    		$('#exampleModalAccount').modal('hide');
       	    		$.ajax({
       	    			type:"post",
       	          		url:"<%=request.getContextPath()%>/api/account/create/update",

@@ -45,12 +45,12 @@
         </div>
       </div>
       <!-- /.modal -->
-      <div class="modal fade" id="exampleModal6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel6">
+      <div class="modal fade" id="exampleModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDetail">
         <div class="modal-dialog" role="document" style="width: 100%;">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="exampleModalLabel6">结果对比<label class="text-danger" id="ignores"></label></h4>
+              <h4 class="modal-title" id="exampleModalLabelDetail">结果对比<label class="text-danger" id="ignores"></label></h4>
             </div>
             <div class="modal-body">
               <form id="api-result-detail-diff-form" class="form-horizontal form-material">
@@ -281,7 +281,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.msg == null || data.msg == ""){
-							var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal6\"></i></a>";
+							var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalDetail\"></i></a>";
 							return String.format(html, data.id, escape(JSON.stringify(data)));
 						}else{
 							var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-15\"></i></a>";

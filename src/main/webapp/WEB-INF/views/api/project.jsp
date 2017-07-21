@@ -60,7 +60,7 @@
 	              <div class="col-md-12">
 	              	<!-- /.Create Project -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModal1" data-whatever="@fat">添加项目</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initApiProjectModal()" data-toggle="modal" data-target="#exampleModalProject" data-whatever="@fat">添加项目</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,12 +74,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal fade" id="exampleModalProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelProject">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel1"><label class="text-inverse" id="project-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelProject"><label class="text-inverse" id="project-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
                     <form id="api-project-form" class="form-horizontal form-material">
@@ -264,7 +264,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModal1\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalProject\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiProjectDel'><i class=\"fa fa-close text-danger m-r-15\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><i class=\"fa fa-toggle-right text-success\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
@@ -390,7 +390,7 @@
           		success:function(data){
           			if(data.responseCode == "0000"){
           				hideMsgDiv();
-          	    		$('#exampleModal1').modal('hide');
+          	    		$('#exampleModalProject').modal('hide');
           	    		$.ajax({
           	    			type:"post",
           	          		url:"<%=request.getContextPath()%>/api/project/create/update",

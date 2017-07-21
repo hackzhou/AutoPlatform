@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>接口-接口</title>
+<title>UI-设备</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>接口</b></span></h4>
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>设备</b></span></h4>
         </div>
       </div>
       <!-- /row -->
@@ -49,18 +49,10 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <!-- <div class="col-md-3">
-	                <div class="form-group">
-					  <label class="control-label col-md-2">Name:</label>
-					  <div class="col-md-9">
-	                    <input type="text" class="form-control" placeholder="name">
-					  </div>
-	                </div>
-	              </div> -->
 	              <div class="col-md-12">
-	              	<!-- /.Create Interface -->
+	              	<!-- /.Create Device -->
 		            <div class="button-box text-right">
-		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModalInterface" data-whatever="@fat">添加接口</button>
+		              <button type="button" class="btn btn-info btn-outline" onclick="initUiDeviceModal()" data-toggle="modal" data-target="#exampleModalDevice" data-whatever="@fat">添加设备</button>
 		            </div>
 	              </div>
 	            </div>
@@ -74,53 +66,60 @@
         <div class="col-sm-12">
           <div class="white-box">
             <!-- /.modal -->
-            <div class="modal fade" id="exampleModalInterface" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelInterface">
-              <div class="modal-dialog" role="document">
+            <div class="modal fade" id="exampleModalDevice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDevice">
+              <div class="modal-dialog" role="document" style="width: 800px;">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabelInterface"><label class="text-inverse" id="interface-modal-lable"></label></h4>
+                    <h4 class="modal-title" id="exampleModalLabelDevice"><label class="text-inverse" id="device-modal-lable"></label></h4>
                   </div>
                   <div class="modal-body">
-                    <form id="api-interface-form" class="form-horizontal form-material">
+                    <form id="ui-device-form" class="form-horizontal form-material">
+                        <input type="hidden" id="ui-device-id" name="ui-device-id" value="">
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>项目 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>平台 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
-		                        <select id="api-interface-project" name="api-interface-project" class="form-select" style="width: 80%;"></select>
-	                        </div>
-	                      </div>
-	                    </div>
-	                    <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>类型 <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-interface-type" name="api-interface-type" class="form-select" style="width: 80%;">
-		                        	<option value="GET" selected="selected">GET</option>
-		                        	<option value="POST">POST</option>
-		                        	<option value="PUT">PUT</option>
-		                        	<option value="DELETE">DELETE</option>
+		                        <select id="ui-platform-name" name="ui-platform-name" class="form-select" style="width: 80%;">
+		                        	<option value="Android" selected="selected">Android</option>
+		                        	<option value="iOS">iOS</option>
 		                        </select>
 	                        </div>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="hidden" id="api-interface-id" name="api-interface-id" value="">
-	                        <input type="text" id="api-interface-name" name="api-interface-name" class="form-control" placeholder="接口名称">
-	                        <i class="ti-star text-danger"></i>
+	                        <input type="text" id="ui-platform-version" name="ui-platform-version" class="form-control" placeholder="平台版本">
+	                        <i class="ti-star text-danger m-r-10"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-interface-url" name="api-interface-url" class="form-control" placeholder="接口地址">
-	                        <i class="ti-star text-danger m-r-10"></i><label class="text-info">(格式：/xxx/yyy)</label>
+	                        <input type="text" id="ui-nickname" name="ui-nickname" class="form-control" placeholder="别名">
+	                        <i class="ti-star text-danger m-r-10"></i>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <input type="text" id="api-interface-description" name="api-interface-description" class="form-control" placeholder="接口描述">
-	                        <label class="text-info">(如果填写api_platform，则运行时项目地址为/api_platform)</label>
+	                        <input type="text" id="ui-device-name" name="ui-device-name" class="form-control" placeholder="设备名称">
+	                        <i class="ti-star text-danger m-r-10"></i>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="ui-device-udid" name="ui-device-udid" class="form-control" placeholder="UDID">
+	                        <i class="ti-star text-danger m-r-10"></i>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="ui-server-url" name="ui-server-url" class="form-control" placeholder="驱动服务">
+	                        <i class="ti-star text-danger m-r-10"></i>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <input type="text" id="ui-device-app" name="ui-device-app" class="form-control" placeholder="App">
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -136,7 +135,7 @@
 	                </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiInterfaceSave();">保存</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="uiDeviceSave();">保存</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
@@ -144,15 +143,17 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-interface-table" class="table table-striped">
+            <table id="ui-device-table" class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>项目</th>
-                  <th>名称</th>
-                  <th>类型</th>
-                  <th>地址</th>
-                  <th>描述</th>
+                  <th>平台</th>
+                  <th>平台版本</th>
+                  <th>别名</th>
+                  <th>设备名称</th>
+                  <th><b style='color:red'>UDID</b></th>
+                  <th>驱动服务</th>
+                  <th>App</th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -203,21 +204,20 @@
 
     $(document).ready(function(){
     	createTable();
-    	initApiInterfaceProject(null);
     });
-
+    
     function createTable() {
-    	$('#api-interface-table').dataTable().fnDestroy();
-    	$('#api-interface-table').DataTable({
+    	$('#ui-device-table').dataTable().fnDestroy();
+    	$('#ui-device-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/interface/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/ui/device/list/data",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "10%",
+					"sWidth" : "6%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -226,53 +226,71 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "6%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.projecto.name;
+						return data.platformName;
 					}
 				},
 				{
-					"sWidth" : "15%",
+					"sWidth" : "6%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.name;
+						return data.platformVersion;
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "10%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.type;
+						return data.nickname;
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "12%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.url;
+						return data.deviceName;
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "12%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return (data.description == null || data.description == "") ? "-" : data.description;
+						return data.udid;
+					}
+				},
+				{
+					"sWidth" : "18%",
+					"aTargets" : [ 6 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.serverUrl;
+					}
+				},
+				{
+					"sWidth" : "14%",
+					"aTargets" : [ 7 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return (data.app == null || data.app == "") ? "-" : data.app;
 					}
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 6 ],
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -280,13 +298,13 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
-					"aTargets" : [ 7 ],
+					"sWidth" : "6%",
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiInterfaceEdit'> <i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalInterface\"></i></a>"
-							 + "<a href=\"#\" data-id='{0}' class='apiInterfaceDel'><i class=\"fa fa-close text-danger\"></i></a>";
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='uiDeviceEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalDevice\"></i></a>"
+							 + "<a href=\"#\" data-id='{0}' class='uiDeviceDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}
 				}
@@ -298,105 +316,93 @@
     }
     
     function initTableEvent() {
-		$(".apiInterfaceEdit").on("click", function(){
-			$('#interface-modal-lable').html("接口-编辑");
+		$(".uiDeviceEdit").on("click", function(){
+			$('#device-modal-lable').html("设备-编辑");
 			hideMsgDiv();
-			var i = $(this).data('data');
-			$('#api-interface-id').val(i.id);
-      		$('#api-interface-name').val(i.name);
-      		$('#api-interface-url').val(i.url);
-      		$('#api-interface-description').val(i.description);
-      		$('#api-interface-type').val(i.type);
-      		initApiInterfaceProject(i.projecto.id);
+			var d = $(this).data('data');
+			$('#ui-device-id').val(d.id);
+			$('#ui-platform-name').val(d.platformName);
+			$('#ui-platform-version').val(d.platformVersion);
+			$('#ui-nickname').val(d.nickname);
+			$('#ui-device-name').val(d.deviceName);
+			$('#ui-device-udid').val(d.udid);
+			$('#ui-server-url').val(d.serverUrl);
+			$('#ui-device-app').val(d.app);
 		});
 		
-		$(".apiInterfaceDel").on("click", function(){
-			var iid = $(this).data('id');
-			apiInterfaceDel(iid);
+		$(".uiDeviceDel").on("click", function(){
+			var aid = $(this).data('id');
+			uiDeviceDel(aid);
 		});
 	}
     
-    function initApiInterfaceModal(){
-    	$('#interface-modal-lable').html("接口-添加");
-    	$('#api-interface-id').val("");
-    	$('#api-interface-name').val("");
-    	$('#api-interface-url').val("");
-    	$('#api-interface-description').val("");
-    	initApiInterfaceProject(null);
-    	$('#api-interface-type').val("GET");
+    function initUiDeviceModal(){
+    	$('#device-modal-lable').html("设备-添加");
+    	$('#ui-device-id').val("");
+		$('#ui-platform-name').val("Android");
+		$('#ui-platform-version').val("");
+		$('#ui-nickname').val("");
+		$('#ui-device-name').val("");
+		$('#ui-device-udid').val("");
+		$('#ui-server-url').val("");
+		$('#ui-device-app').val("");
     	hideMsgDiv();
     }
     
-    function initApiInterfaceProject(projectid){
-    	$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/api/project/list/data",
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				var optionstring = "";
-    				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(projectid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
-    				}
-    				$('#api-interface-project').empty();
-    				$('#api-interface-project').append(optionstring);
-    			}
-    		}
-    	});
-    }
+    function uiDeviceSave(){
+    	var platformName = $('#ui-platform-name').val();
+    	var platformVersion = $('#ui-platform-version').val();
+    	var nickname = $('#ui-nickname').val();
+    	var deviceName = $('#ui-device-name').val();
+    	var deviceUdid = $('#ui-device-udid').val();
+    	var serverUrl = $('#ui-server-url').val();
+       	if(platformName == null || platformName.trim() == ""){
+   	    	showMsgDiv("请选择平台！");
+       	}else if(platformName != "Android"){
+       		showMsgDiv("目前平台只支持Android！");
+       	}else if(platformVersion == null || platformVersion.trim() == ""){
+       		showMsgDiv("请输入平台版本！");
+       	}else if(nickname == null || nickname.trim() == ""){
+       		showMsgDiv("请输入别名！");
+       	}else if(deviceName == null || deviceName.trim() == ""){
+       		showMsgDiv("请输入设备名称！");
+       	}else if(deviceUdid == null || deviceUdid.trim() == ""){
+       		showMsgDiv("请输入设备Udid！");
+       	}else if(serverUrl == null || serverUrl.trim() == ""){
+       		showMsgDiv("请输入驱动服务！");
+       	}else{
+       		$.ajax({
+       			type:"post",
+       			url:"<%=request.getContextPath()%>/ui/device/repeat",
+       			data:$('#ui-device-form').serialize(),
+             		success:function(data){
+             			if(data.responseCode == "0000"){
+             				hideMsgDiv();
+             	    		$('#exampleModalDevice').modal('hide');
+             	    		$.ajax({
+             	    			type:"post",
+             	          		url:"<%=request.getContextPath()%>/ui/device/create/update",
+             	          		data:$('#ui-device-form').serialize(),
+             	          		success:function(data){
+             	          			if(data.responseCode == "0000"){
+             	          				$('#ui-device-table').dataTable()._fnAjaxUpdate();
+             	          			}else{
+             	          	    		swal("错误!", data.responseMsg, "error");
+             	          	    	}
+             	          	    }
+             	    		});
+             			}else{
+             	    		showMsgDiv(data.responseMsg);
+             	    	}
+             	    }
+       		});
+       	}
+	}
     
-    function apiInterfaceSave(){
-    	var iproject = $('#api-interface-project').val();
-    	var itype = $('#api-interface-type').val();
-    	var iname = $('#api-interface-name').val();
-    	var iurl = $('#api-interface-url').val();
-    	if(iproject == null || iproject.trim() == ""){
-	    	showMsgDiv("请选择接口项目！");
-    	}else if(itype == null || itype.trim() == ""){
-	    	showMsgDiv("请选择接口类型！");
-    	}else if(iname == null || iname.trim() == ""){
-	    	showMsgDiv("请输入接口名称！");
-    	}else if(iurl == null || iurl.trim() == ""){
-	    	showMsgDiv("请输入接口地址！");
-    	}else if(iurl[0] != "/" || iurl[iurl.length-1] == "/"){
-    		showMsgDiv("请输入合法的接口地址！");
-    	}else{
-    		$.ajax({
-    			type:"post",
-          		url:"<%=request.getContextPath()%>/api/interface/repeat",
-          		data:$('#api-interface-form').serialize(),
-          		success:function(data){
-          	    	if(data.responseCode == "0000"){
-          	    		hideMsgDiv();
-          	    		$('#exampleModalInterface').modal('hide');
-          	    		$.ajax({
-          	    			type:"post",
-          	          		url:"<%=request.getContextPath()%>/api/interface/create/update",
-          	          		data:$('#api-interface-form').serialize(),
-          	          		success:function(data){
-          	          			if(data.responseCode == "0000"){
-          	          				$('#api-interface-table').dataTable()._fnAjaxUpdate();
-          	          			}else{
-          	          	    		swal("错误!", data.responseMsg, "error");
-          	          	    	}
-          	          	    }
-          	    		});
-          	    	}else{
-          	    		showMsgDiv(data.responseMsg);
-          	    	}
-          	    }
-    		});
-    	}
-    }
-    
-    function apiInterfaceDel(iid){
+    function uiDeviceDel(did){
     	swal({
-    		title: "你确定吗？",
-			text: "删除之后无法恢复，谨慎操作！<br/>该接口下[<b class=\"text-danger\">案例</b>]也将被删除！",
+			title: "你确定吗？",
+			text: "删除之后无法恢复，谨慎操作！",
 			html: true,
 			type: "warning",
 			showCancelButton: true,
@@ -407,14 +413,14 @@
 		}, function(){
 			$.ajax({
 				type:"get",
-          		url:"<%=request.getContextPath()%>/api/interface/delete/id=" + iid,
+          		url:"<%=request.getContextPath()%>/ui/device/delete/id=" + did,
           		success:function(data){
           			if(data.responseCode == "0000"){
           	    		swal("成功", "删除成功！", "success");
           	    	}else{
           	    		swal("错误", data.responseMsg, "error");
           	    	}
-          	    	$('#api-interface-table').dataTable()._fnAjaxUpdate();
+          	    	$('#ui-device-table').dataTable()._fnAjaxUpdate();
           	    }
 			});
 		});
