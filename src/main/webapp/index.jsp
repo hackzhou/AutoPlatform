@@ -29,9 +29,9 @@
 	</tr>
 	<tr>
 		<td align="center">UI自动化：</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><a href="${pageContext.request.contextPath}/ui/device/list">UI设备</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/ui/code/page">UI编码</a><br/></td>
+		<td><a href="${pageContext.request.contextPath}/ui/list/list">编码列表</a><br/></td>
 		<td></td>
 		<td></td>
 		<td></td>
