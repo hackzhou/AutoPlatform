@@ -21,6 +21,7 @@ import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.core.ui.DynaCompileExe;
 import com.auto.test.entity.UCode;
+import com.auto.test.entity.UDevice;
 import com.auto.test.service.IUiCodeService;
 import com.auto.test.utils.FileUtil;
 
@@ -93,7 +94,7 @@ public class UiCodeController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-java") String code) {
+	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
 		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";
@@ -103,7 +104,7 @@ public class UiCodeController extends BaseController{
 		if(codeList != null && !codeList.isEmpty()){
 			fileUtil.deleteFile(path, fileName);
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(codeList.get(0).getId(), path, fileName, getCurrentUserName(request));
+				UCode uCode = new UCode(codeList.get(0).getId(), new UDevice(Integer.parseInt(device)), path, fileName, getCurrentUserName(request));
 				uiCodeService.update(uCode);
 				return successJson(className);
 			}else{
@@ -112,7 +113,7 @@ public class UiCodeController extends BaseController{
 			}
 		}else{
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(null, path, fileName, getCurrentUserName(request));
+				UCode uCode = new UCode(new UDevice(Integer.parseInt(device)), path, fileName, getCurrentUserName(request));
 				uiCodeService.create(uCode);
 				return successJson(className);
 			}else{
@@ -124,7 +125,7 @@ public class UiCodeController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-java") String code) {
+	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
 		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";

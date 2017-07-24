@@ -1,6 +1,7 @@
 package com.auto.test.controller;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +42,15 @@ public class ApiUploadController extends BaseController{
 			logger.error("[Upload]==>批量导入接口[文件不是Excel！]");
             return failMsg("文件不是Excel！", "api/setting");
         }
-		List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
-		interfaceService.exportApiInterface(list);
-		logger.info("[Upload]==>批量导入接口成功！");
-		return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
+		try {
+			List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
+			interfaceService.exportApiInterface(list);
+			logger.info("[Upload]==>批量导入接口成功！");
+			return success("success", "redirect:/api/setting/list", getCurrentUserName(request));
+		} catch (Exception e) {
+			logger.error("[Upload]==>批量导入接口失败！[" + e.getMessage() + "]");
+			return success(URLDecoder.decode("Error" + e.getMessage(), "UTF-8"), "redirect:/api/setting/list", getCurrentUserName(request));
+		}
 	}
 	
 	@RequestMapping(value = "/fileDownload", method = RequestMethod.GET)

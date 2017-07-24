@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.auto.test.common.constant.HttpType;
+import com.auto.test.common.exception.BusinessException;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.dao.IApiInterfaceDao;
+import com.auto.test.dao.IApiProjectDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
 import com.auto.test.service.IApiInterfaceService;
@@ -18,6 +21,9 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao daoCase;
+	
+	@Resource(name="apiProjectDao")
+	private IApiProjectDao projectDao;
 
 	@Override
 	public List<AInterface> findAll() {
@@ -96,17 +102,35 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	public void exportApiInterface(List<AInterface> list) {
 		if(list != null && !list.isEmpty()){
 			for (AInterface aInterface : list) {
-				if(aInterface.getProjecto() != null && aInterface.getType() != null && aInterface.getName() != null && aInterface.getUrl() != null){
-					List<AInterface> interList = findByProjectUrl(aInterface.getProjecto().getId(), aInterface.getUrl());
-					if(interList != null && !interList.isEmpty()){
-						AInterface aInterfaceDB = interList.get(0);
-						aInterfaceDB.update(aInterface);
-						update(aInterfaceDB);
+				if(aInterface.getProjecto() == null){
+					throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【所属项目】为空！");
+				}else if(aInterface.getType() == null){
+					throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【接口类型】为空！");
+				}else if(aInterface.getName() == null){
+					throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【接口名称】为空！");
+				}else if(aInterface.getUrl() == null){
+					throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【接口地址】为空！");
+				}else{
+					if(projectDao.findById(aInterface.getProjecto().getId()) == null){
+						throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【所属项目ID是" + aInterface.getProjecto().getId() + "】平台项目不存在！");
+					}else if(!HttpType.GET.name().equalsIgnoreCase(aInterface.getType()) && !HttpType.POST.name().equalsIgnoreCase(aInterface.getType())){
+						throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【接口类型不是" + HttpType.GET + "或者" + HttpType.POST + "】");
+					}else if(!aInterface.getUrl().startsWith("/") || aInterface.getUrl().endsWith("/")){
+						throw new BusinessException("【第" + aInterface.getMemo() + "行】发现【接口地址】格式错误！");
 					}else{
-						create(aInterface);
+						List<AInterface> interList = findByProjectUrl(aInterface.getProjecto().getId(), aInterface.getUrl());
+						if(interList != null && !interList.isEmpty()){
+							AInterface aInterfaceDB = interList.get(0);
+							aInterfaceDB.update(aInterface);
+							update(aInterfaceDB);
+						}else{
+							create(aInterface);
+						}
 					}
 				}
 			}
+		}else{
+			throw new BusinessException("文件数据为空！");
 		}
 	}
 

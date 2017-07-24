@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.auto.test.common.exception.BusinessException;
 import com.auto.test.entity.AInterface;
 import com.auto.test.entity.AProject;
 
@@ -45,7 +46,7 @@ public class ExcelUtil {
 	                String cellValue = trimStr(cell.getStringCellValue());
 	                switch (cell.getColumnIndex()) {
 	                	case 0:
-	                		aInterface.setProjecto(new AProject(getApiProjectID(cellValue)));
+	                		aInterface.setProjecto(new AProject(getApiProjectID(cellValue, row.getRowNum() + 1)));
 	                		break;
 	                	case 1:
 	                		aInterface.setName(cellValue);
@@ -63,6 +64,7 @@ public class ExcelUtil {
 		                    break;
 	                }
 	            }
+	            aInterface.setMemo(String.valueOf(row.getRowNum() + 1));
 	            list.add(aInterface);
 	        }
 		} finally {
@@ -76,11 +78,14 @@ public class ExcelUtil {
 		return list;
 	}
 	
-	private Integer getApiProjectID(String str) throws Exception{
-		if(str != null && str.contains("(") && str.contains(")")){
-			return Integer.parseInt(str.substring(str.indexOf("(") + 1, str.indexOf(")")));
+	private Integer getApiProjectID(String str, Integer row) throws Exception{
+		if(str != null){
+			str.replace("（", "(").replace("）", ")");
+			if(str.contains("(") && str.contains(")")){
+				return Integer.parseInt(str.substring(str.indexOf("(") + 1, str.indexOf(")")));
+			}
 		}
-		throw new Exception("项目ID获取失败！");
+		throw new BusinessException("【第" + row + "行】项目ID获取失败！");
 	}
 	
 	private String trimStr(String str){

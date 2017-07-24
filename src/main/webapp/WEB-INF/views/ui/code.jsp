@@ -26,7 +26,9 @@
 <!-- codemirror CSS -->
 <link href="${pageContext.request.contextPath}/css/codemirror.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/show-hint.css" rel="stylesheet">
-<style>.CodeMirror {border: 2px inset #dee;width: 100%;height: 100%;}</style>
+<style>
+.CodeMirror {border: 2px inset #dee;width: 100%;height: 100%;}
+</style>
 </head>
 <body>
 <!-- Preloader -->
@@ -44,6 +46,7 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b><label id="ui-code-title-lable"></label></span></h4>
         </div>
         <div class="button-box text-right">
+          <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
         </div>
@@ -51,6 +54,7 @@
       <div class="row">
 		<div class="col-sm-12">
 			<form id="ui-code-form" class="form-horizontal form-material">
+				<input type="hidden" id="ui-code-device" name="ui-code-device" value="">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
 					<div><textarea id="ui-code"></textarea></div>
@@ -94,7 +98,7 @@
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <!--Code Mirror -->
 <script src="${pageContext.request.contextPath}/js/codemirror.js"></script>
-<script src="${pageContext.request.contextPath}/js/matchbrackets.js"></script>
+<script src="${pageContext.request.contextPath}/js/matchbrackets.js"></script> 
 <script src="${pageContext.request.contextPath}/js/show-hint.js"></script>
 <script src="${pageContext.request.contextPath}/js/clike.js"></script>
 <script>
@@ -103,7 +107,31 @@
     	initCodeMirror();
     	var cls = "${data}";
     	initDefaultCode(cls);
+    	initUiDevice(null);
     });
+    
+    function initUiDevice(deviceid){
+    	$.ajax({
+    		type:"get",
+    		async: false,
+    		url:"<%=request.getContextPath()%>/ui/device/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "<option value='0' selected>请选择设备...</option>";
+    				var list = data.data;
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(deviceid == list[i].id){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
+    					}
+    				}
+    				$('#ui-code-device-sel').empty();
+    				$('#ui-code-device-sel').append(optionstring);
+    			}
+    		}
+    	});
+    }
 
     var javaEditor;
     function initCodeMirror(){
@@ -144,47 +172,59 @@
     }
     
     function uiCodeSave(){
-    	$('#ui-code-java').val(javaEditor.getValue());
-    	$.ajax({
-  			type:"post",
-       		url:"<%=request.getContextPath()%>/ui/code/create/update",
-       		data:$('#ui-code-form').serialize(),
-       		success:function(data){
-       			if(data.responseCode == "0000"){
-       				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", data.data);
-       			}else{
-       				swal("错误", data.responseMsg, "error");
-       			}
-       	    }
-  		});
+    	var dev = $('#ui-code-device-sel').val();
+    	if(dev == null || dev == "" || dev == "0"){
+    		swal("错误", "请选择设备！", "error");
+    	}else{
+    		$('#ui-code-device').val(dev);
+    		$('#ui-code-java').val(javaEditor.getValue());
+        	$.ajax({
+      			type:"post",
+           		url:"<%=request.getContextPath()%>/ui/code/create/update",
+           		data:$('#ui-code-form').serialize(),
+           		success:function(data){
+           			if(data.responseCode == "0000"){
+           				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", data.data);
+           			}else{
+           				swal("错误", data.responseMsg, "error");
+           			}
+           	    }
+      		});
+    	}
 	}
     
     function uiCodeRun(){
-    	$('#ui-code-java').val(javaEditor.getValue());
-    	$.ajax({
-  			type:"post",
-       		url:"<%=request.getContextPath()%>/ui/code/create/update",
-       		data:$('#ui-code-form').serialize(),
-       		success:function(data){
-       			if(data.responseCode == "0000"){
-       				var cls = data.data;
-       				$.ajax({
-       		  			type:"post",
-   		        		url:"<%=request.getContextPath()%>/ui/code/run",
-   		        		data:$('#ui-code-form').serialize(),
-   		        		success:function(data){
-   		        			if(data.responseCode == "0000"){
-   		        				hrefCodeCls("成功", "已运行！", "success", cls);
-   		        			}else{
-   		        				hrefCodeCls("错误", data.responseMsg, "error", cls);
-   		        			}
-   		        	    }
-       		  		});
-       			}else{
-       				swal("错误", data.responseMsg, "error");
-       			}
-       	    }
-  		});
+    	var dev = $('#ui-code-device-sel').val();
+    	if(dev == null || dev == "" || dev == "0"){
+    		swal("错误", "请选择设备！", "error");
+    	}else{
+    		$('#ui-code-device').val(dev);
+    		$('#ui-code-java').val(javaEditor.getValue());
+        	$.ajax({
+      			type:"post",
+           		url:"<%=request.getContextPath()%>/ui/code/create/update",
+           		data:$('#ui-code-form').serialize(),
+           		success:function(data){
+           			if(data.responseCode == "0000"){
+           				var cls = data.data;
+           				$.ajax({
+           		  			type:"post",
+       		        		url:"<%=request.getContextPath()%>/ui/code/run",
+       		        		data:$('#ui-code-form').serialize(),
+       		        		success:function(data){
+       		        			if(data.responseCode == "0000"){
+       		        				hrefCodeCls("成功", "已运行！", "success", cls);
+       		        			}else{
+       		        				hrefCodeCls("错误", data.responseMsg, "error", cls);
+       		        			}
+       		        	    }
+           		  		});
+           			}else{
+           				swal("错误", data.responseMsg, "error");
+           			}
+           	    }
+      		});
+    	}
     }
     
     function hrefCodeCls(title, text, type, cls){

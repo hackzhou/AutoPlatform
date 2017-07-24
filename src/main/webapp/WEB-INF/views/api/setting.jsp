@@ -170,9 +170,13 @@
 		}else{
 			hideMsgDiv();
 		}
-		var hdata = GetQueryString("data");
-		if(hdata == "success"){
-			swal("成功!", "批量更新成功！", "success");
+		var hdata = GetQueryStringChinese("data");
+		if(hdata != null && hdata != ""){
+			if(hdata == "success"){
+				swal("成功!", "批量更新成功！", "success");
+			}else if(hdata.indexOf("Error") == 0){
+				showMsgDiv(hdata);
+			}
 		}
 	});
 	
