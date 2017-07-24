@@ -46,7 +46,7 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b><label id="ui-code-title-lable"></label></span></h4>
         </div>
         <div class="button-box text-right">
-          <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="width: 20%;"></select>
+          <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="text-align: left;width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
         </div>
