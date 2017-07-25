@@ -36,6 +36,9 @@ public class UCode implements Serializable{
 	@Column(name="cls")
 	private String cls;
 	
+	@Column(name="description")
+	private String description;
+	
 	@Column(name="create_by")
 	private String createBy;
 	
@@ -55,19 +58,27 @@ public class UCode implements Serializable{
 		super();
 		this.id = id;
 	}
-	public UCode(Integer id, UDevice deviceo, String path, String cls, String createBy) {
+	public UCode(String cls, String description, String memo) {
+		super();
+		this.cls = cls;
+		this.description = description;
+		this.memo = memo;
+	}
+	public UCode(Integer id, UDevice deviceo, String path, String cls, String description, String createBy) {
 		super();
 		this.id = id;
 		this.deviceo = deviceo;
 		this.path = path;
 		this.cls = cls;
+		this.description = description;
 		this.createBy = createBy;
 	}
-	public UCode(UDevice deviceo, String path, String cls, String createBy) {
+	public UCode(UDevice deviceo, String path, String cls, String description, String createBy) {
 		super();
 		this.deviceo = deviceo;
 		this.path = path;
 		this.cls = cls;
+		this.description = description;
 		this.createBy = createBy;
 	}
 	
@@ -75,6 +86,7 @@ public class UCode implements Serializable{
 		this.path = uCode.getPath();
 		this.deviceo = uCode.getDeviceo();
 		this.cls = uCode.getCls();
+		this.description = uCode.getDescription();
 		this.createBy = uCode.getCreateBy();
 		this.updateTime = new Date();
 		this.memo = uCode.getMemo();
@@ -104,6 +116,12 @@ public class UCode implements Serializable{
 	public void setCls(String cls) {
 		this.cls = cls;
 	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public String getCreateBy() {
 		return createBy;
 	}
@@ -131,8 +149,9 @@ public class UCode implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "UCode [id=" + id + ", deviceo=" + deviceo + ", path=" + path + ", cls=" + cls + ", createBy=" + createBy
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "UCode [id=" + id + ", deviceo=" + deviceo + ", path=" + path + ", cls=" + cls + ", description="
+				+ description + ", createBy=" + createBy + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + "]";
 	}
 	
 }

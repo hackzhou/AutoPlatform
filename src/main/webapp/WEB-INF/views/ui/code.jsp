@@ -47,6 +47,7 @@
         </div>
         <div class="button-box text-right">
           <button type="button" class="btn btn-danger btn-outline" id="ui-code-action-list" onclick="uiCodeList();">列表</button>
+          <input id="ui-code-description" name="ui-code-description" class="btn btn-default btn-outline" type="text" style="text-align: left;width: 20%;" placeholder="请填写描述信息...">
           <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="text-align: left;width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
@@ -55,6 +56,7 @@
       <div class="row">
 		<div class="col-sm-12">
 			<form id="ui-code-form" class="form-horizontal form-material">
+				<input type="hidden" id="ui-code-desc" name="ui-code-desc" value="">
 				<input type="hidden" id="ui-code-device" name="ui-code-device" value="">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
@@ -106,8 +108,12 @@
 
     $(document).ready(function(){
     	initCodeMirror();
-    	var cls = "${data}";
-    	initDefaultCode(cls);
+    	var code = '${data}';
+    	if(code == null || code == ""){
+    		initDefaultCode(null);
+    	}else{
+    		initDefaultCode(JSON.parse(code));
+    	}
     });
     
     function initUiDevice(deviceid){
@@ -152,18 +158,21 @@
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     }
     
-    function initDefaultCode(cls){
-    	var clss = cls.split(",")[0];
-    	var device = cls.split(",")[1];
-    	initUiDevice(device);
-    	if(clss == null || clss == ""){
+    function initDefaultCode(code){
+    	var clss = "";
+    	if(code == null){
     		$('#ui-code-action-save').html("保存");
     		$('#ui-code-action-run').html("保存并运行");
     		$('#ui-code-title-lable').html("（新文件）");
+    		$('#ui-code-description').val("");
+    		initUiDevice(null);
     	}else{
+    		clss = code.cls;
     		$('#ui-code-action-save').html("更新");
     		$('#ui-code-action-run').html("更新并运行");
     		$('#ui-code-title-lable').html("（文件：" + clss + ".java）");
+    		$('#ui-code-description').val(code.description);
+    		initUiDevice(code.memo);
     	}
     	$.ajax({
   			type:"get",
@@ -183,9 +192,13 @@
     
     function uiCodeSave(){
     	var dev = $('#ui-code-device-sel').val();
-    	if(dev == null || dev == "" || dev == "0"){
+    	var desc = $('#ui-code-description').val();
+    	if(desc == null || desc.trim() == ""){
+    		swal("错误", "请填写描述信息！", "error");
+    	}else if(dev == null || dev == "" || dev == "0"){
     		swal("错误", "请选择设备！", "error");
-    	}else{
+    	}else {
+    		$('#ui-code-desc').val(desc);
     		$('#ui-code-device').val(dev);
     		$('#ui-code-java').val(javaEditor.getValue());
         	$.ajax({
@@ -193,8 +206,9 @@
            		url:"<%=request.getContextPath()%>/ui/code/create/update",
            		data:$('#ui-code-form').serialize(),
            		success:function(data){
+           			var code = data.data;
            			if(data.responseCode == "0000"){
-           				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", data.data);
+           				hrefCodeCls("成功", $('#ui-code-action-save').html() + "成功！", "success", code.id);
            			}else{
            				swal("错误", data.responseMsg, "error");
            			}
@@ -205,9 +219,13 @@
     
     function uiCodeRun(){
     	var dev = $('#ui-code-device-sel').val();
-    	if(dev == null || dev == "" || dev == "0"){
+    	var desc = $('#ui-code-description').val();
+    	if(desc == null || desc.trim() == ""){
+    		swal("错误", "请填写描述信息！", "error");
+    	}else if(dev == null || dev == "" || dev == "0"){
     		swal("错误", "请选择设备！", "error");
-    	}else{
+    	}else {
+    		$('#ui-code-desc').val(desc);
     		$('#ui-code-device').val(dev);
     		$('#ui-code-java').val(javaEditor.getValue());
         	$.ajax({
@@ -216,16 +234,16 @@
            		data:$('#ui-code-form').serialize(),
            		success:function(data){
            			if(data.responseCode == "0000"){
-           				var cls = data.data;
+           				var code = data.data;
            				$.ajax({
            		  			type:"post",
        		        		url:"<%=request.getContextPath()%>/ui/code/run",
        		        		data:$('#ui-code-form').serialize(),
        		        		success:function(data){
        		        			if(data.responseCode == "0000"){
-       		        				hrefCodeCls("成功", "已运行！", "success", cls);
+       		        				hrefCodeCls("成功", "已运行！", "success", code.id);
        		        			}else{
-       		        				hrefCodeCls("错误", data.responseMsg, "error", cls);
+       		        				hrefCodeCls("错误", data.responseMsg, "error", code.id);
        		        			}
        		        	    }
            		  		});
@@ -237,7 +255,7 @@
     	}
     }
     
-    function hrefCodeCls(title, text, type, cls){
+    function hrefCodeCls(title, text, type, codeId){
     	var btntext = null;
     	if(isClsData()){
 			btntext = "确定并跳转！";
@@ -253,9 +271,7 @@
 			closeOnConfirm: false
   		},function(){
   	    	if(isClsData()){
-  	    		var clss = cls.split(",")[0];
-  	      		var device = cls.split(",")[1];
-  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/device=' + device + '/cls=' + clss);
+  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/id=' + codeId);
   			}else{
   				window.location.reload();
   			}
@@ -263,9 +279,8 @@
     }
     
     function isClsData(){
-    	var cls = "${data}";
-    	var clss = cls.split(",")[0];
-    	if(clss == null || clss == ""){
+    	var code = '${data}';
+    	if(code == null || code == ""){
 			return true;
 		}
     	return false;

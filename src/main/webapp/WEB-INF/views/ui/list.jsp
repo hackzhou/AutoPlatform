@@ -56,6 +56,7 @@
                   <th>ID</th>
                   <th>设备</th>
                   <th>文件(服务器)</th>
+                  <th>描述</th>
                   <th>创建人</th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -139,31 +140,30 @@
 					}
 				},
 				{
-					"sWidth" : "40%",
+					"sWidth" : "30%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var devid = data.deviceo == null ? "" : data.deviceo.id;
-						return "<a href=\"${pageContext.request.contextPath}/ui/code/page/device=" + devid +"/cls=" + data.cls.replace(/.java/g, "") + "\">" + data.path + "</a>";
-					}
-				},
-				{
-					"sWidth" : "10%",
-					"aTargets" : [ 3 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return (data.createBy == null || data.createBy == "") ? "-" : data.createBy;
+						return "<a href=\"${pageContext.request.contextPath}/ui/code/page/id=" + data.id + "\">" + data.path + "</a>";
 					}
 				},
 				{
 					"sWidth" : "20%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return (data.description == null || data.createBy == "") ? "-" : data.description;
+					}
+				},
+				{
+					"sWidth" : "10%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+						return (data.createBy == null || data.createBy == "") ? "-" : data.createBy;
 					}
 				},
 				{
@@ -172,8 +172,16 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var devid = data.deviceo == null ? "" : data.deviceo.id;
-						var html = "<a href=\"${pageContext.request.contextPath}/ui/code/page/device=" + devid +"/cls=" + data.cls.replace(/.java/g, "") + "\"><i class=\"fa fa-pencil text-inverse m-r-15\"></i></a>"
+						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 6 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						var html = "<a href=\"${pageContext.request.contextPath}/ui/code/page/id=" + data.id + "\"><i class=\"fa fa-pencil text-inverse m-r-15\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='uiCodeListDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}

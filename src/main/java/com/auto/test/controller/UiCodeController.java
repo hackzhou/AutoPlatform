@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
@@ -39,10 +41,17 @@ public class UiCodeController extends BaseController{
 		return success("ui/code", getCurrentUserName(request));
 	}
 	
-	@RequestMapping(value = "/page/device={device}/cls={cls}", method = RequestMethod.GET)
-	public ModelAndView getUiCodeClass(HttpServletRequest request, @PathVariable("device") String device, @PathVariable("cls") String cls) {
-		logger.info("[Code]==>请求页面[ui/code],登录用户[" + getCurrentUserName(request) + "],cls[" + cls + "]");
-		return success((isNull(cls) ? "" : cls) + "," + (isNull(device) ? "0" : device), "ui/code", getCurrentUserName(request));
+	@RequestMapping(value = "/page/id={id}", method = RequestMethod.GET)
+	public ModelAndView getUiCodeClass(HttpServletRequest request, @PathVariable("id") String id) {
+		logger.info("[Code]==>请求页面[ui/code],登录用户[" + getCurrentUserName(request) + "],id[" + id + "]");
+		UCode uCode = uiCodeService.findById(Integer.parseInt(id));
+		if(uCode != null){
+			String device = uCode.getDeviceo() == null ? null : String.valueOf(uCode.getDeviceo().getId());
+			UCode code = new UCode(uCode.getCls().replace(".java", ""), uCode.getDescription(), device);
+			return success(JSON.toJSONString(code), "ui/code", getCurrentUserName(request));
+		}else{
+			return success("ui/code", getCurrentUserName(request));
+		}
 	}
 	
 	@RequestMapping(value = "/default/code/cls={cls}", method = RequestMethod.GET)
@@ -94,7 +103,7 @@ public class UiCodeController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
+	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-desc") String desc, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
 		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";
@@ -104,18 +113,18 @@ public class UiCodeController extends BaseController{
 		if(codeList != null && !codeList.isEmpty()){
 			fileUtil.deleteFile(path, fileName);
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(codeList.get(0).getId(), new UDevice(Integer.parseInt(device)), path, fileName, getCurrentUserName(request));
+				UCode uCode = new UCode(codeList.get(0).getId(), new UDevice(Integer.parseInt(device)), path, fileName, desc.trim(), getCurrentUserName(request));
 				uiCodeService.update(uCode);
-				return successJson(className + "," + device);
+				return successJson(uCode);
 			}else{
 				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
 				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
 			}
 		}else{
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(new UDevice(Integer.parseInt(device)), path, fileName, getCurrentUserName(request));
+				UCode uCode = new UCode(new UDevice(Integer.parseInt(device)), path, fileName, desc.trim(), getCurrentUserName(request));
 				uiCodeService.create(uCode);
-				return successJson(className + "," + device);
+				return successJson(uCode);
 			}else{
 				logger.error("[Code]==>文件保存失败" + "[" + path + File.separator + fileName + "]");
 				return failedJson("文件保存失败" + "[" + path + File.separator + "\r\n" + fileName + "]");
