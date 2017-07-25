@@ -46,7 +46,7 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b><label id="ui-code-title-lable"></label></span></h4>
         </div>
         <div class="button-box text-right">
-          <button type="button" class="btn btn-danger btn-outline" id="ui-code-action-list" onclick="uiCodeList();">列表</button>
+          <button type="button" class="btn btn-primary btn-circle" onclick="uiCodeList();"><i class="fa fa-list"></i> </button>
           <input id="ui-code-description" name="ui-code-description" class="btn btn-default btn-outline" type="text" style="text-align: left;width: 20%;" placeholder="请填写描述信息...">
           <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="text-align: left;width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
