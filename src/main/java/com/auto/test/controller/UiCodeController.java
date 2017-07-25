@@ -39,10 +39,10 @@ public class UiCodeController extends BaseController{
 		return success("ui/code", getCurrentUserName(request));
 	}
 	
-	@RequestMapping(value = "/page/cls={cls}", method = RequestMethod.GET)
-	public ModelAndView getUiCodeClass(HttpServletRequest request, @PathVariable("cls") String cls) {
+	@RequestMapping(value = "/page/device={device}/cls={cls}", method = RequestMethod.GET)
+	public ModelAndView getUiCodeClass(HttpServletRequest request, @PathVariable("device") String device, @PathVariable("cls") String cls) {
 		logger.info("[Code]==>请求页面[ui/code],登录用户[" + getCurrentUserName(request) + "],cls[" + cls + "]");
-		return success(cls, "ui/code", getCurrentUserName(request));
+		return success((isNull(cls) ? "" : cls) + "," + (isNull(device) ? "0" : device), "ui/code", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/default/code/cls={cls}", method = RequestMethod.GET)

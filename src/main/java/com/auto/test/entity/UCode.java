@@ -28,7 +28,7 @@ public class UCode implements Serializable{
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name="device_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	private UDevice device;
+	private UDevice deviceo;
 	
 	@Column(name="path")
 	private String path;
@@ -55,17 +55,17 @@ public class UCode implements Serializable{
 		super();
 		this.id = id;
 	}
-	public UCode(Integer id, UDevice device, String path, String cls, String createBy) {
+	public UCode(Integer id, UDevice deviceo, String path, String cls, String createBy) {
 		super();
 		this.id = id;
-		this.device = device;
+		this.deviceo = deviceo;
 		this.path = path;
 		this.cls = cls;
 		this.createBy = createBy;
 	}
-	public UCode(UDevice device, String path, String cls, String createBy) {
+	public UCode(UDevice deviceo, String path, String cls, String createBy) {
 		super();
-		this.device = device;
+		this.deviceo = deviceo;
 		this.path = path;
 		this.cls = cls;
 		this.createBy = createBy;
@@ -73,7 +73,7 @@ public class UCode implements Serializable{
 	
 	public void update(UCode uCode) {
 		this.path = uCode.getPath();
-		this.device = uCode.getDevice();
+		this.deviceo = uCode.getDeviceo();
 		this.cls = uCode.getCls();
 		this.createBy = uCode.getCreateBy();
 		this.updateTime = new Date();
@@ -86,11 +86,11 @@ public class UCode implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public UDevice getDevice() {
-		return device;
+	public UDevice getDeviceo() {
+		return deviceo;
 	}
-	public void setDevice(UDevice device) {
-		this.device = device;
+	public void setDeviceo(UDevice deviceo) {
+		this.deviceo = deviceo;
 	}
 	public String getPath() {
 		return path;
@@ -131,7 +131,7 @@ public class UCode implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "UCode [id=" + id + ", device=" + device + ", path=" + path + ", cls=" + cls + ", createBy=" + createBy
+		return "UCode [id=" + id + ", deviceo=" + deviceo + ", path=" + path + ", cls=" + cls + ", createBy=" + createBy
 				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 	

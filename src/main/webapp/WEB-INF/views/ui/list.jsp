@@ -54,6 +54,7 @@
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>设备</th>
                   <th>文件(服务器)</th>
                   <th>创建人</th>
                   <th>创建时间</th>
@@ -129,17 +130,27 @@
 					}
 				},
 				{
-					"sWidth" : "50%",
+					"sWidth" : "10%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "<a href=\"${pageContext.request.contextPath}/ui/code/page/cls=" + data.cls.replace(/.java/g, "") + "\">" + data.path + "</a>";
+						return data.deviceo == null ? "-" : tooltipJsonByVersion(data.deviceo.deviceName, data.deviceo.udid);
+					}
+				},
+				{
+					"sWidth" : "40%",
+					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						var devid = data.deviceo == null ? "" : data.deviceo.id;
+						return "<a href=\"${pageContext.request.contextPath}/ui/code/page/device=" + devid +"/cls=" + data.cls.replace(/.java/g, "") + "\">" + data.path + "</a>";
 					}
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 2 ],
+					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -148,7 +159,7 @@
 				},
 				{
 					"sWidth" : "20%",
-					"aTargets" : [ 3 ],
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -157,11 +168,12 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 4 ],
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"${pageContext.request.contextPath}/ui/code/page/cls=" + data.cls.replace(/.java/g, "") + "\"><i class=\"fa fa-pencil text-inverse m-r-15\"></i></a>"
+						var devid = data.deviceo == null ? "" : data.deviceo.id;
+						var html = "<a href=\"${pageContext.request.contextPath}/ui/code/page/device=" + devid +"/cls=" + data.cls.replace(/.java/g, "") + "\"><i class=\"fa fa-pencil text-inverse m-r-15\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='uiCodeListDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
 					}

@@ -46,6 +46,7 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>编码</b><label id="ui-code-title-lable"></label></span></h4>
         </div>
         <div class="button-box text-right">
+          <button type="button" class="btn btn-danger btn-outline" id="ui-code-action-list" onclick="uiCodeList();">列表</button>
           <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="text-align: left;width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
@@ -107,7 +108,6 @@
     	initCodeMirror();
     	var cls = "${data}";
     	initDefaultCode(cls);
-    	initUiDevice(null);
     });
     
     function initUiDevice(deviceid){
@@ -117,14 +117,21 @@
     		url:"<%=request.getContextPath()%>/ui/device/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				var optionstring = "<option value='0' selected>请选择设备...</option>";
+    				var bool = false;
+    				var optionstring = "";
     				var list = data.data;
     				for(var i = list.length - 1; i >= 0; i--){
     					if(deviceid == list[i].id){
+    						bool = true;
     						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
     					}else{
 	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
     					}
+    				}
+    				if(bool){
+    					optionstring = "<option value='0'>请选择设备...</option>" + optionstring;
+    				}else{
+    					optionstring = "<option value='0' selected>请选择设备...</option>" + optionstring;
     				}
     				$('#ui-code-device-sel').empty();
     				$('#ui-code-device-sel').append(optionstring);
@@ -146,18 +153,21 @@
     }
     
     function initDefaultCode(cls){
-    	if(cls == null || cls == ""){
+    	var clss = cls.split(",")[0];
+    	var device = cls.split(",")[1];
+    	initUiDevice(device);
+    	if(clss == null || clss == ""){
     		$('#ui-code-action-save').html("保存");
     		$('#ui-code-action-run').html("保存并运行");
     		$('#ui-code-title-lable').html("（新文件）");
     	}else{
     		$('#ui-code-action-save').html("更新");
     		$('#ui-code-action-run').html("更新并运行");
-    		$('#ui-code-title-lable').html("（文件：" + cls + ".java）");
+    		$('#ui-code-title-lable').html("（文件：" + clss + ".java）");
     	}
     	$.ajax({
   			type:"get",
-       		url:"<%=request.getContextPath()%>/ui/code/default/code/cls=" + cls,
+       		url:"<%=request.getContextPath()%>/ui/code/default/code/cls=" + clss,
        		success:function(data){
        			if(data.responseCode == "0000"){
        				javaEditor.setValue(data.data);
@@ -251,11 +261,16 @@
     }
     
     function isClsData(){
-    	var clsdata = "${data}";
-    	if(clsdata == null || clsdata == ""){
+    	var cls = "${data}";
+    	var clss = cls.split(",")[0];
+    	if(clss == null || clss == ""){
 			return true;
 		}
     	return false;
+    }
+    
+	function uiCodeList(){
+		$(location).attr('href', '${pageContext.request.contextPath}/ui/list/list');
     }
     
 </script>
