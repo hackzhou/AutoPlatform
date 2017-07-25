@@ -19,6 +19,10 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
 <!--alerts CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<!-- page CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/plugins/bower_components/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -48,16 +52,16 @@
         <div class="button-box text-right">
           <button type="button" class="btn btn-primary btn-circle" onclick="uiCodeList();"><i class="fa fa-list"></i> </button>
           <input id="ui-code-description" name="ui-code-description" class="btn btn-default btn-outline" type="text" style="text-align: left;width: 20%;" placeholder="请填写描述信息...">
-          <select id="ui-code-device-sel" name="ui-code-device-sel" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" style="text-align: left;width: 20%;"></select>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
+          <select id="ui-code-devices-sel" name="ui-code-devices-sel" class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="请选择设备..."></select>
         </div>
       </div>
       <div class="row">
 		<div class="col-sm-12">
 			<form id="ui-code-form" class="form-horizontal form-material">
 				<input type="hidden" id="ui-code-desc" name="ui-code-desc" value="">
-				<input type="hidden" id="ui-code-device" name="ui-code-device" value="">
+				<input type="hidden" id="ui-code-devices" name="ui-code-devices" value="">
 				<input type="hidden" id="ui-code-java" name="ui-code-java" value="">
 				<div class="form-group">
 					<div><textarea id="ui-code"></textarea></div>
@@ -99,6 +103,10 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/multiselect/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <!--Code Mirror -->
 <script src="${pageContext.request.contextPath}/js/codemirror.js"></script>
 <script src="${pageContext.request.contextPath}/js/matchbrackets.js"></script> 
@@ -116,34 +124,41 @@
     	}
     });
     
-    function initUiDevice(deviceid){
+    function initUiDevice(devices){
     	$.ajax({
     		type:"get",
     		async: false,
     		url:"<%=request.getContextPath()%>/ui/device/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				var bool = false;
-    				var optionstring = "";
+    				var optionstring = "<optgroup label=\"请选择设备...\">";
+    				var selected = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(deviceid == list[i].id){
-    						bool = true;
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].id + "_" + list[i].deviceName + "_" + list[i].udid + "</option>";
+    				for (var i = 0; i < list.length; i++) {
+    					if(isContain(devices, list[i].id)){
+    						selected += "<option value='" + list[i].id + "' selected>" + list[i].deviceName + "_" + list[i].udid + "</option>";
     					}
+    					optionstring += "<option value='" + list[i].id + "'>" + list[i].deviceName + "_" + list[i].udid + "</option>";
     				}
-    				if(bool){
-    					optionstring = "<option value='0'>请选择设备...</option>" + optionstring;
-    				}else{
-    					optionstring = "<option value='0' selected>请选择设备...</option>" + optionstring;
-    				}
-    				$('#ui-code-device-sel').empty();
-    				$('#ui-code-device-sel').append(optionstring);
+    				optionstring += "</optgroup>";
+    				$('#ui-code-devices-sel').empty();
+    				$('#ui-code-devices-sel').append(selected + optionstring);
+    				$('#ui-code-devices-sel').select2();
     			}
     		}
     	});
+    }
+    
+    function isContain(text, str){
+    	if(text != null){
+    		var arr = text.split(",");
+        	for (var i = 0; i < arr.length; i++) {
+        		if(arr[i] == str){
+        			return true;
+        		}
+        	}
+    	}
+    	return false;
     }
 
     var javaEditor;
@@ -172,7 +187,7 @@
     		$('#ui-code-action-run').html("更新并运行");
     		$('#ui-code-title-lable').html("（文件：" + clss + ".java）");
     		$('#ui-code-description').val(code.description);
-    		initUiDevice(code.memo);
+    		initUiDevice(code.devices);
     	}
     	$.ajax({
   			type:"get",
@@ -191,7 +206,7 @@
     }
     
     function uiCodeSave(){
-    	var dev = $('#ui-code-device-sel').val();
+    	var dev = $('#ui-code-devices-sel').val();
     	var desc = $('#ui-code-description').val();
     	if(desc == null || desc.trim() == ""){
     		swal("错误", "请填写描述信息！", "error");
@@ -199,7 +214,7 @@
     		swal("错误", "请选择设备！", "error");
     	}else {
     		$('#ui-code-desc').val(desc);
-    		$('#ui-code-device').val(dev);
+    		$('#ui-code-devices').val(dev);
     		$('#ui-code-java').val(javaEditor.getValue());
         	$.ajax({
       			type:"post",
@@ -218,7 +233,7 @@
 	}
     
     function uiCodeRun(){
-    	var dev = $('#ui-code-device-sel').val();
+    	var dev = $('#ui-code-devices-sel').val();
     	var desc = $('#ui-code-description').val();
     	if(desc == null || desc.trim() == ""){
     		swal("错误", "请填写描述信息！", "error");
@@ -226,7 +241,7 @@
     		swal("错误", "请选择设备！", "error");
     	}else {
     		$('#ui-code-desc').val(desc);
-    		$('#ui-code-device').val(dev);
+    		$('#ui-code-devices').val(dev);
     		$('#ui-code-java').val(javaEditor.getValue());
         	$.ajax({
       			type:"post",

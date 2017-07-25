@@ -136,7 +136,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.deviceo == null ? "-" : tooltipJsonByVersion(data.deviceo.deviceName, data.deviceo.udid);
+						return data.memo == null ? "-" : data.memo.replace(/,/g, "\r\n");
 					}
 				},
 				{

@@ -1,11 +1,14 @@
 package com.auto.test.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IUiCodeDao;
+import com.auto.test.dao.IUiDeviceDao;
 import com.auto.test.entity.UCode;
+import com.auto.test.entity.UDevice;
 import com.auto.test.service.IUiCodeService;
 
 @Service("uiCodeService")
@@ -13,6 +16,10 @@ public class UiCodeService implements IUiCodeService {
 	
 	@Resource(name="uiCodeDao")
 	private IUiCodeDao dao;
+	
+	@Resource(name="uiDeviceDao")
+	private IUiDeviceDao deviceDao;
+
 
 	@Override
 	public List<UCode> findAll() {
@@ -57,6 +64,21 @@ public class UiCodeService implements IUiCodeService {
 		if(id != null){
 			dao.deleteById(id);
 		}
+	}
+
+	@Override
+	public List<UDevice> findByDevices(String devices) {
+		List<UDevice> list = null;
+		if(devices != null && !devices.isEmpty()){
+			list = new ArrayList<UDevice>();
+			for (String dev : devices.split(",")) {
+				UDevice device= deviceDao.findById(Integer.parseInt(dev));
+				if(device != null){
+					list.add(device);
+				}
+			}
+		}
+		return list;
 	}
 
 }

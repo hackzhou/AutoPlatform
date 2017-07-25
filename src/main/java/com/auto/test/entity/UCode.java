@@ -2,18 +2,12 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="u_code")
@@ -25,10 +19,8 @@ public class UCode implements Serializable{
     @Column(name="id")
 	private Integer id;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name="device_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private UDevice deviceo;
+	@Column(name="devices")
+	private String devices;
 	
 	@Column(name="path")
 	private String path;
@@ -58,24 +50,24 @@ public class UCode implements Serializable{
 		super();
 		this.id = id;
 	}
-	public UCode(String cls, String description, String memo) {
+	public UCode(String cls, String description, String devices) {
 		super();
 		this.cls = cls;
 		this.description = description;
-		this.memo = memo;
+		this.devices = devices;
 	}
-	public UCode(Integer id, UDevice deviceo, String path, String cls, String description, String createBy) {
+	public UCode(Integer id, String devices, String path, String cls, String description, String createBy) {
 		super();
 		this.id = id;
-		this.deviceo = deviceo;
+		this.devices = devices;
 		this.path = path;
 		this.cls = cls;
 		this.description = description;
 		this.createBy = createBy;
 	}
-	public UCode(UDevice deviceo, String path, String cls, String description, String createBy) {
+	public UCode(String devices, String path, String cls, String description, String createBy) {
 		super();
-		this.deviceo = deviceo;
+		this.devices = devices;
 		this.path = path;
 		this.cls = cls;
 		this.description = description;
@@ -84,7 +76,7 @@ public class UCode implements Serializable{
 	
 	public void update(UCode uCode) {
 		this.path = uCode.getPath();
-		this.deviceo = uCode.getDeviceo();
+		this.devices = uCode.getDevices();
 		this.cls = uCode.getCls();
 		this.description = uCode.getDescription();
 		this.createBy = uCode.getCreateBy();
@@ -98,11 +90,11 @@ public class UCode implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public UDevice getDeviceo() {
-		return deviceo;
+	public String getDevices() {
+		return devices;
 	}
-	public void setDeviceo(UDevice deviceo) {
-		this.deviceo = deviceo;
+	public void setDevices(String devices) {
+		this.devices = devices;
 	}
 	public String getPath() {
 		return path;
@@ -149,7 +141,7 @@ public class UCode implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "UCode [id=" + id + ", deviceo=" + deviceo + ", path=" + path + ", cls=" + cls + ", description="
+		return "UCode [id=" + id + ", devices=" + devices + ", path=" + path + ", cls=" + cls + ", description="
 				+ description + ", createBy=" + createBy + ", createTime=" + createTime + ", updateTime=" + updateTime
 				+ ", memo=" + memo + "]";
 	}

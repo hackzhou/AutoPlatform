@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.core.ui.DynaCompileExe;
 import com.auto.test.entity.UCode;
-import com.auto.test.entity.UDevice;
 import com.auto.test.service.IUiCodeService;
 import com.auto.test.utils.FileUtil;
 
@@ -46,8 +44,7 @@ public class UiCodeController extends BaseController{
 		logger.info("[Code]==>请求页面[ui/code],登录用户[" + getCurrentUserName(request) + "],id[" + id + "]");
 		UCode uCode = uiCodeService.findById(Integer.parseInt(id));
 		if(uCode != null){
-			String device = uCode.getDeviceo() == null ? null : String.valueOf(uCode.getDeviceo().getId());
-			UCode code = new UCode(uCode.getCls().replace(".java", ""), uCode.getDescription(), device);
+			UCode code = new UCode(uCode.getCls().replace(".java", ""), uCode.getDescription(), uCode.getDevices());
 			return success(JSON.toJSONString(code), "ui/code", getCurrentUserName(request));
 		}else{
 			return success("ui/code", getCurrentUserName(request));
@@ -103,7 +100,7 @@ public class UiCodeController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-desc") String desc, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
+	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-desc") String desc, @RequestParam("ui-code-devices") String devices, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
 		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";
@@ -113,7 +110,7 @@ public class UiCodeController extends BaseController{
 		if(codeList != null && !codeList.isEmpty()){
 			fileUtil.deleteFile(path, fileName);
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(codeList.get(0).getId(), new UDevice(Integer.parseInt(device)), path, fileName, desc.trim(), getCurrentUserName(request));
+				UCode uCode = new UCode(codeList.get(0).getId(), trimArray(devices), path, fileName, desc.trim(), getCurrentUserName(request));
 				uiCodeService.update(uCode);
 				return successJson(uCode);
 			}else{
@@ -122,7 +119,7 @@ public class UiCodeController extends BaseController{
 			}
 		}else{
 			if(fileUtil.writeJavaFile(path, fileName, code)){
-				UCode uCode = new UCode(new UDevice(Integer.parseInt(device)), path, fileName, desc.trim(), getCurrentUserName(request));
+				UCode uCode = new UCode(trimArray(devices), path, fileName, desc.trim(), getCurrentUserName(request));
 				uiCodeService.create(uCode);
 				return successJson(uCode);
 			}else{

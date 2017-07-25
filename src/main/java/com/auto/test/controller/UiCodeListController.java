@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.UCode;
+import com.auto.test.entity.UDevice;
 import com.auto.test.service.IUiCodeService;
 import com.auto.test.utils.FileUtil;
 
@@ -41,6 +42,17 @@ public class UiCodeListController extends BaseController{
 		if(list != null && !list.isEmpty()){
 			for (UCode uCode : list) {
 				uCode.setPath(uCode.getPath().replace(System.getProperty("user.home"), "") + File.separator + uCode.getCls());
+				List<UDevice> devList = uiCodeService.findByDevices(uCode.getDevices());
+				if(devList != null && !devList.isEmpty()){
+					String udids = "";
+					for (UDevice uDevice : devList) {
+						udids += "," + uDevice.getUdid() ;
+					}
+					if(udids.startsWith(",")){
+						udids = udids.substring(1);
+					}
+					uCode.setMemo(udids);
+				}
 			}
 		}
 		return successJson(list);
