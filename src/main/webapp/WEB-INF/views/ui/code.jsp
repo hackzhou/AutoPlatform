@@ -253,7 +253,9 @@
 			closeOnConfirm: false
   		},function(){
   	    	if(isClsData()){
-  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/cls=' + cls);
+  	    		var clss = cls.split(",")[0];
+  	      		var device = cls.split(",")[1];
+  				$(location).attr('href', '${pageContext.request.contextPath}/ui/code/page/device=' + device + '/cls=' + clss);
   			}else{
   				window.location.reload();
   			}
