@@ -3,7 +3,7 @@ package com.auto.test.core.ui.driver.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.Const;
-import com.auto.test.core.ui.driver.IDriverExe;
+import com.auto.test.core.ui.driver.AbsDriverExe;
 import com.auto.test.entity.UDevice;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
-public class AndroidDriverExe implements IDriverExe {
+public class AndroidDriverExe extends AbsDriverExe {
 	private static final Logger logger = LoggerFactory.getLogger(AndroidDriverExe.class);
 	private DesiredCapabilities capabilities = null;
 	private UDevice device = null;
