@@ -96,4 +96,9 @@ public class ApiCaseService implements IApiCaseService {
 		}
 	}
 
+	@Override
+	public void evict(ACase aCase) {
+		dao.evict(aCase);
+	}
+
 }

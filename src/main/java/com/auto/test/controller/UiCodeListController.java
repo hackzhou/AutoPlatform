@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
+
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.entity.UCode;
@@ -41,7 +43,9 @@ public class UiCodeListController extends BaseController{
 		List<UCode> list = uiCodeService.findAll();
 		if(list != null && !list.isEmpty()){
 			for (UCode uCode : list) {
+				uiCodeService.evict(uCode);
 				uCode.setPath(uCode.getPath().replace(System.getProperty("user.home"), "") + File.separator + uCode.getCls());
+				uCode.setDescription(HtmlUtils.htmlEscape(uCode.getDescription()));
 				List<UDevice> devList = uiCodeService.findByDevices(uCode.getDevices());
 				if(devList != null && !devList.isEmpty()){
 					String udids = "";

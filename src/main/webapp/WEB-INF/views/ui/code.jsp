@@ -92,6 +92,9 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Base -->
+<script src="${pageContext.request.contextPath}/js/base.js"></script>
+<script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -186,7 +189,7 @@
     		$('#ui-code-action-save').html("更新");
     		$('#ui-code-action-run').html("更新并运行");
     		$('#ui-code-title-lable').html("（文件：" + clss + ".java）");
-    		$('#ui-code-description').val(code.description);
+    		$('#ui-code-description').val(HTMLDecode(code.description));
     		initUiDevice(code.devices);
     	}
     	$.ajax({
@@ -205,17 +208,24 @@
   		});
     }
     
-    function uiCodeSave(){
+    function uiCodeVerify(){
     	var dev = $('#ui-code-devices-sel').val();
     	var desc = $('#ui-code-description').val();
     	if(desc == null || desc.trim() == ""){
     		swal("错误", "请填写描述信息！", "error");
-    	}else if(dev == null || dev == "" || dev == "0"){
+    	}else if(dev == null || dev == ""){
     		swal("错误", "请选择设备！", "error");
     	}else {
     		$('#ui-code-desc').val(desc);
     		$('#ui-code-devices').val(dev);
     		$('#ui-code-java').val(javaEditor.getValue());
+    		return true;
+    	}
+    	return false;
+    }
+    
+    function uiCodeSave(){
+		if(uiCodeVerify()){
         	$.ajax({
       			type:"post",
            		url:"<%=request.getContextPath()%>/ui/code/create/update",
@@ -233,16 +243,7 @@
 	}
     
     function uiCodeRun(){
-    	var dev = $('#ui-code-devices-sel').val();
-    	var desc = $('#ui-code-description').val();
-    	if(desc == null || desc.trim() == ""){
-    		swal("错误", "请填写描述信息！", "error");
-    	}else if(dev == null || dev == "" || dev == "0"){
-    		swal("错误", "请选择设备！", "error");
-    	}else {
-    		$('#ui-code-desc').val(desc);
-    		$('#ui-code-devices').val(dev);
-    		$('#ui-code-java').val(javaEditor.getValue());
+    	if(uiCodeVerify()){
         	$.ajax({
       			type:"post",
            		url:"<%=request.getContextPath()%>/ui/code/create/update",

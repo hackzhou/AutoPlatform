@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
@@ -44,7 +45,7 @@ public class UiCodeController extends BaseController{
 		logger.info("[Code]==>请求页面[ui/code],登录用户[" + getCurrentUserName(request) + "],id[" + id + "]");
 		UCode uCode = uiCodeService.findById(Integer.parseInt(id));
 		if(uCode != null){
-			UCode code = new UCode(uCode.getCls().replace(".java", ""), uCode.getDescription(), uCode.getDevices());
+			UCode code = new UCode(uCode.getCls().replace(".java", ""), HtmlUtils.htmlEscape(uCode.getDescription()), uCode.getDevices());
 			return success(JSON.toJSONString(code), "ui/code", getCurrentUserName(request));
 		}else{
 			return success("ui/code", getCurrentUserName(request));

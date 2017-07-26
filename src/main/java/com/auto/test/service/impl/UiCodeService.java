@@ -81,4 +81,9 @@ public class UiCodeService implements IUiCodeService {
 		return list;
 	}
 
+	@Override
+	public void evict(UCode uCode) {
+		dao.evict(uCode);
+	}
+
 }

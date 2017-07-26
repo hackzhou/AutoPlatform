@@ -21,5 +21,7 @@ public interface IUiCodeService{
 	UCode update(UCode uCode);
 	
 	void delete(Integer id);
+
+	void evict(UCode uCode);
 	
 }

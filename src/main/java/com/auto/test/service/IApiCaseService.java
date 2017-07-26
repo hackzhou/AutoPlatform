@@ -28,5 +28,7 @@ public interface IApiCaseService{
 	void delete(Integer id);
 	
 	void copyCase(Integer pid, Integer vida, Integer vidb);
+	
+	void evict(ACase aCase);
 
 }

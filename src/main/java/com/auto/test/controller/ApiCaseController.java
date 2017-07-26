@@ -78,6 +78,7 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> getCaseById(@PathVariable("id") String id) {
 		ACase aCase = caseService.findById(Integer.parseInt(id));
 		if(aCase != null){
+			caseService.evict(aCase);
 			aCase.setBody(jsonFormat(aCase.getBody(), true));
 			logger.info("[Case]==>获取案例[id=" + id + "]数据！");
 			return successJson(aCase);
