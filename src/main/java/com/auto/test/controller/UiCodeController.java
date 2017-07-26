@@ -58,14 +58,13 @@ public class UiCodeController extends BaseController{
 		if(cls == null || cls.isEmpty()){
 			String className = getRandomClassName();
 			StringBuffer data = new StringBuffer();
-			data.append("import org.slf4j.LoggerFactory;").append("\r\n");
 			data.append("import com.auto.test.core.ui.log.Log;").append("\r\n");
 //			data.append("import java.util.Date;").append("\r\n");
 //			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
 //			data.append("import com.auto.test.common.constant.Const;").append("\r\n");
 			data.append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
-			data.append("\t").append("public static Log log = new Log(LoggerFactory.getLogger(").append(className).append(".class));").append("\r\n").append("\r\n");
+			data.append("\t").append("public static Log log = new Log(").append(className).append(".class);").append("\r\n").append("\r\n");
 			//data.append("\t").append("public static void main(String[] args) {").append("\r\n");
 			data.append("\t").append("public void execute() {").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " Start...\");").append("\r\n");
@@ -73,7 +72,7 @@ public class UiCodeController extends BaseController{
 			data.append("\t\t").append("log.info(\"" + className + " End...\");").append("\r\n");
 			data.append("\t").append("}").append("\r\n");
 			data.append("\t").append("\r\n");
-			data.append("}").append("\r\n");
+			data.append("}");
 			logger.info("[Code]==>Init:\r\n" + data.toString());
 			return successJson(data.toString());
 		}else{

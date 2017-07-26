@@ -3,6 +3,7 @@ package com.auto.test.core.ui.log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Log{
 	private static final String LOG_FORMAT = "%s [main] %s %s - %s";
@@ -10,9 +11,9 @@ public class Log{
 	private StringBuffer sb = null;
 	private SimpleDateFormat sdf = null;
 	
-	public Log(Logger logger) {
+	public Log(Class<?> c) {
 		super();
-		this.logger = logger;
+		this.logger = LoggerFactory.getLogger(c);
 		this.sb = new StringBuffer();
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	}
