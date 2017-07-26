@@ -51,10 +51,10 @@
         </div>
         <div class="button-box text-right">
           <button type="button" class="btn btn-primary btn-circle" onclick="uiCodeList();"><i class="fa fa-list"></i> </button>
-          <input id="ui-code-description" name="ui-code-description" class="btn btn-default btn-outline" type="text" style="text-align: left;width: 20%;" placeholder="请填写描述信息...">
+          <input id="ui-code-description" name="ui-code-description" class="btn btn-danger btn-outline" type="text" style="text-align: left;width: 25%;" placeholder="请填写描述信息...">
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-save" onclick="uiCodeSave();"></button>
           <button type="button" class="btn btn-info btn-outline" id="ui-code-action-run" onclick="uiCodeRun();"></button>
-          <select id="ui-code-devices-sel" name="ui-code-devices-sel" class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="请选择设备..."></select>
+          <select id="ui-code-devices-sel" name="ui-code-devices-sel" class="select2 btn-danger m-b-10 select2-multiple" multiple="multiple" data-placeholder="请选择设备..."></select>
         </div>
       </div>
       <div class="row">
