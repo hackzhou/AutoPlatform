@@ -59,13 +59,9 @@ public class UiCodeController extends BaseController{
 			String className = getRandomClassName();
 			StringBuffer data = new StringBuffer();
 			data.append("import com.auto.test.core.ui.log.Log;").append("\r\n");
-//			data.append("import java.util.Date;").append("\r\n");
-//			data.append("import com.alibaba.fastjson.JSON;").append("\r\n");
-//			data.append("import com.auto.test.common.constant.Const;").append("\r\n");
 			data.append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
 			data.append("\t").append("public static Log log = new Log(").append(className).append(".class);").append("\r\n").append("\r\n");
-			//data.append("\t").append("public static void main(String[] args) {").append("\r\n");
 			data.append("\t").append("public void execute() {").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " Start...\");").append("\r\n");
 			data.append("\t\t").append("\r\n");
