@@ -217,11 +217,25 @@
     		swal("错误", "请选择设备！", "error");
     	}else {
     		$('#ui-code-desc').val(desc);
-    		$('#ui-code-devices').val(dev);
+    		$('#ui-code-devices').val(removeRepeat(dev));
     		$('#ui-code-java').val(javaEditor.getValue());
     		return true;
     	}
     	return false;
+    }
+    
+	function removeRepeat(text){
+		if(typeof(text) != "undefined" && text != null){
+			var ret = [];
+    		var ar = text.toString().split(",");
+    		for (var i = 0, j = ar.length; i < j; i++) {
+    			if (ret.indexOf(ar[i]) === -1) {
+    				ret.push(ar[i]);
+    			}
+    		}
+    		return ret;
+    	}
+    	return null;
     }
     
     function uiCodeSave(){

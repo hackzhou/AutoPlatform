@@ -59,10 +59,15 @@ public class UiCodeController extends BaseController{
 			String className = getRandomClassName();
 			StringBuffer data = new StringBuffer();
 			data.append("import com.auto.test.core.ui.log.Log;").append("\r\n");
+			data.append("import com.auto.test.common.context.UiContext;").append("\r\n");
+			data.append("import com.auto.test.core.ui.driver.IDriverExe;").append("\r\n");
 			data.append("\r\n");
 			data.append("public class ").append(className).append(" {").append("\r\n");
-			data.append("\t").append("public static Log log = new Log(").append(className).append(".class);").append("\r\n").append("\r\n");
+			data.append("\t").append("private Log log = new Log(").append(className).append(".class);").append("\r\n");
+			data.append("\t").append("private UiContext context;//类实例化时被注入").append("\r\n");
+			data.append("\t").append("private IDriverExe driver;//驱动执行").append("\r\n").append("\r\n");
 			data.append("\t").append("public void execute() {").append("\r\n");
+			data.append("\t\t").append("driver = context.getDriver();").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " Start...\");").append("\r\n");
 			data.append("\t\t").append("\r\n");
 			data.append("\t\t").append("log.info(\"" + className + " End...\");").append("\r\n");
@@ -127,7 +132,7 @@ public class UiCodeController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-device") String device, @RequestParam("ui-code-java") String code) {
+	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-devices") String devices, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
 		String path = Const.UI_CODE_PATH + File.separator + className;
 		String fileName = className + ".java";
@@ -136,9 +141,15 @@ public class UiCodeController extends BaseController{
 		if(file.exists()){
 			String javaCode = fileUtil.readJavaFile(file);
 			logger.info("[Code]==>Run[" + path + File.separator + fileName + "]\r\n" + javaCode);
-			DynaCompileExe dce = (DynaCompileExe) SpringContext.getBean("dynaCompileExe");
-			dce.execute(className, javaCode);
-			return successJson();
+			List<UCode> list = uiCodeService.findByCls(fileName);
+			if(list != null && !list.isEmpty()){
+				DynaCompileExe dce = (DynaCompileExe) SpringContext.getBean("dynaCompileExe");
+				dce.execute(className, javaCode, list.get(0), uiCodeService.findByDevices(devices));
+				return successJson();
+			}else{
+				logger.error("[Code]==>文件存在但数据库无记录" + "[" + path + File.separator + fileName + "]");
+				return failedJson("文件存在但数据库无记录" + "[" + path + File.separator + "\r\n" + fileName + "]");
+			}
 		}else{
 			logger.error("[Code]==>文件不存在" + "[" + path + File.separator + fileName + "]");
 			return failedJson("文件不存在" + "[" + path + File.separator + "\r\n" + fileName + "]");

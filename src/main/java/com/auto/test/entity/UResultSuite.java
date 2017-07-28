@@ -2,17 +2,20 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="u_result_suite")
 public class UResultSuite implements Serializable{
-	private static final long serialVersionUID = 4479831202364582207L;
+	private static final long serialVersionUID = 2995474337489164786L;
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,29 +25,17 @@ public class UResultSuite implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="platform_name")
-	private String platformName;
+	@Column(name="total_count")
+	private Integer totalCount;
 	
-	@Column(name="platform_version")
-	private String platformVersion;
+	@Column(name="success_count")
+	private Integer successCount;
 	
-	@Column(name="device_name")
-	private String deviceName;
+	@Column(name="fail_count")
+	private Integer failCount;
 	
-	@Column(name="udid")
-	private String udid;
-	
-	@Column(name="total")
-	private Integer total;
-	
-	@Column(name="success")
-	private Integer success;
-	
-	@Column(name="fail")
-	private Integer fail;
-	
-	@Column(name="ignore")
-	private Integer ignore;
+	@Column(name="ignore_count")
+	private Integer ignoreCount;
 	
 	@Column(name="start_time")
 	private Date startTime;
@@ -61,6 +52,9 @@ public class UResultSuite implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
+	@Transient
+	private List<UResultCase> cases = new LinkedList<UResultCase>();
+	
 	public UResultSuite() {
 		super();
 	}
@@ -71,14 +65,10 @@ public class UResultSuite implements Serializable{
 
 	public void update(UResultSuite uResultSuite){
 		this.name = uResultSuite.getName();
-		this.platformName = uResultSuite.getPlatformName();
-		this.platformVersion = uResultSuite.getPlatformVersion();
-		this.deviceName = uResultSuite.getDeviceName();
-		this.udid = uResultSuite.getUdid();
-		this.total = uResultSuite.getTotal();
-		this.success = uResultSuite.getSuccess();
-		this.fail = uResultSuite.getFail();
-		this.ignore = uResultSuite.getIgnore();
+		this.totalCount = uResultSuite.getTotalCount();
+		this.successCount = uResultSuite.getSuccessCount();
+		this.failCount = uResultSuite.getFailCount();
+		this.ignoreCount = uResultSuite.getIgnoreCount();
 		this.startTime = uResultSuite.getStartTime();
 		this.endTime = uResultSuite.getEndTime();
 		this.updateTime = new Date();
@@ -97,53 +87,29 @@ public class UResultSuite implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPlatformName() {
-		return platformName;
+	public Integer getTotalCount() {
+		return totalCount;
 	}
-	public void setPlatformName(String platformName) {
-		this.platformName = platformName;
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
 	}
-	public String getPlatformVersion() {
-		return platformVersion;
+	public Integer getSuccessCount() {
+		return successCount;
 	}
-	public void setPlatformVersion(String platformVersion) {
-		this.platformVersion = platformVersion;
+	public void setSuccessCount(Integer successCount) {
+		this.successCount = successCount;
 	}
-	public String getDeviceName() {
-		return deviceName;
+	public Integer getFailCount() {
+		return failCount;
 	}
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
+	public void setFailCount(Integer failCount) {
+		this.failCount = failCount;
 	}
-	public String getUdid() {
-		return udid;
+	public Integer getIgnoreCount() {
+		return ignoreCount;
 	}
-	public void setUdid(String udid) {
-		this.udid = udid;
-	}
-	public Integer getTotal() {
-		return total;
-	}
-	public void setTotal(Integer total) {
-		this.total = total;
-	}
-	public Integer getSuccess() {
-		return success;
-	}
-	public void setSuccess(Integer success) {
-		this.success = success;
-	}
-	public Integer getFail() {
-		return fail;
-	}
-	public void setFail(Integer fail) {
-		this.fail = fail;
-	}
-	public Integer getIgnore() {
-		return ignore;
-	}
-	public void setIgnore(Integer ignore) {
-		this.ignore = ignore;
+	public void setIgnoreCount(Integer ignoreCount) {
+		this.ignoreCount = ignoreCount;
 	}
 	public Date getStartTime() {
 		return startTime;
@@ -175,13 +141,22 @@ public class UResultSuite implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public List<UResultCase> getCases() {
+		return cases;
+	}
+	public void setCases(List<UResultCase> cases) {
+		this.cases = cases;
+	}
+	public void addCase(UResultCase uResultCase) {
+		this.cases.add(uResultCase);
+	}
 	
 	@Override
 	public String toString() {
-		return "UResultSuite [id=" + id + ", name=" + name + ", platformName=" + platformName + ", platformVersion="
-				+ platformVersion + ", deviceName=" + deviceName + ", udid=" + udid + ", total=" + total + ", success="
-				+ success + ", fail=" + fail + ", ignore=" + ignore + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "UResultSuite [id=" + id + ", name=" + name + ", totalCount=" + totalCount + ", successCount="
+				+ successCount + ", failCount=" + failCount + ", ignoreCount=" + ignoreCount + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + "]";
 	}
 
 }

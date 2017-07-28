@@ -15,6 +15,7 @@ import javax.tools.ToolProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.UiContext;
 import com.auto.test.utils.FileUtil;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic;
@@ -41,7 +42,7 @@ public class DynamicEngine {
 		this.classpath = sb.toString();
 	}
 	
-	public Object javaCodeCompileExe(String fullClassName, String javaCode) {
+	public Object javaCodeCompileExe(String fullClassName, String javaCode, UiContext context) {
 		Object instance = null;
 		ClassFileManager fileManager = null;
 		DynamicClassLoader dynamicClassLoader = null;
@@ -66,10 +67,14 @@ public class DynamicEngine {
 				instance = clazz.newInstance();
 				//Method m = clazz.getMethod("main", String[].class);
 				//m.invoke(instance, (Object) new String[]{});
+				Field field = clazz.getDeclaredField("context");
+				field.setAccessible(true);
+				field.set(instance, context);
 				Method m = clazz.getMethod("execute");
 				m.invoke(instance);
-				Field field = clazz.getField("log");
-				new FileUtil().writeJavaFile(path, getCurrentDate() + "_success.log", field.get(instance).toString());
+				Field fieldLog = clazz.getDeclaredField("log");
+				fieldLog.setAccessible(true);
+				new FileUtil().writeJavaFile(path, getCurrentDate() + "_success.log", fieldLog.get(instance).toString());
 			}else{
 				StringBuffer error = new StringBuffer();
 				for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {

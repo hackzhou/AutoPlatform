@@ -33,9 +33,10 @@ public class AndroidDriverExe extends AbsDriverExe {
 	public AndroidDriverExe(UDevice device){
 		super();
 		this.device = device;
-		init();
+//		init();
 	}
 	
+	@Override
 	@SuppressWarnings("rawtypes")
 	public void init() {
 		capabilities = new DesiredCapabilities();
@@ -191,6 +192,8 @@ public class AndroidDriverExe extends AbsDriverExe {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("AndroidDriverExe:" + seconds);
+		super.sleep(seconds);
 	}
 	
 	@Override

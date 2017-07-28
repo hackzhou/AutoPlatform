@@ -155,7 +155,6 @@ public class ApiRunService implements IApiRunService {
 		aResult.setSuccess(0);
 		aResult.setFail(0);
 		aResult.setTotal(apiContext.getTotal());
-		aResult.setCreateTime(new Date());
 		aResult.setStartTime(new Date());
 		resultService.create(aResult);
 		return aResult;

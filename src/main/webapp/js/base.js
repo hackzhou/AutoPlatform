@@ -12,6 +12,15 @@ String.prototype.trim=function() {
     return this.replace(/(^\s*)|(\s*$)/g,'');
 }
 
+Array.prototype.indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, j = this.length; i < j; i++) {
+        if (this[i] === item) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 Array.prototype.contains = function(text) {
 	for (i in this) {
 		if (this[i] == text) return true;

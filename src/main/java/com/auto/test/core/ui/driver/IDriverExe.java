@@ -3,6 +3,8 @@ package com.auto.test.core.ui.driver;
 public interface IDriverExe {
 	
 	public boolean isElementPresent(String type, String locator);
+	
+	public void init();
 
 	public void keyboardClick(String keyName);
 	

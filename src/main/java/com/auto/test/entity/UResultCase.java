@@ -2,6 +2,8 @@ package com.auto.test.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -38,17 +41,29 @@ public class UResultCase implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="total")
-	private Integer total;
+	@Column(name="platform_name")
+	private String platformName;
 	
-	@Column(name="success")
-	private Integer success;
+	@Column(name="platform_version")
+	private String platformVersion;
 	
-	@Column(name="fail")
-	private Integer fail;
+	@Column(name="device_name")
+	private String deviceName;
 	
-	@Column(name="ignore")
-	private Integer ignore;
+	@Column(name="udid")
+	private String udid;
+	
+	@Column(name="total_count")
+	private Integer totalCount;
+	
+	@Column(name="success_count")
+	private Integer successCount;
+	
+	@Column(name="fail_count")
+	private Integer failCount;
+	
+	@Column(name="ignore_count")
+	private Integer ignoreCount;
 	
 	@Column(name="status")
 	private String status;
@@ -68,6 +83,9 @@ public class UResultCase implements Serializable{
 	@Column(name="memo")
 	private String memo;
 	
+	@Transient
+	private List<UResultStep> steps = new LinkedList<UResultStep>();
+	
 	public UResultCase() {
 		super();
 	}
@@ -80,10 +98,14 @@ public class UResultCase implements Serializable{
 		this.suiteo = uResultCase.getSuiteo();
 		this.codeo = uResultCase.getCodeo();
 		this.name = uResultCase.getName();
-		this.total = uResultCase.getTotal();
-		this.success = uResultCase.getSuccess();
-		this.fail = uResultCase.getFail();
-		this.ignore = uResultCase.getIgnore();
+		this.platformName = uResultCase.getPlatformName();
+		this.platformVersion = uResultCase.getPlatformVersion();
+		this.deviceName = uResultCase.getDeviceName();
+		this.udid = uResultCase.getUdid();
+		this.totalCount = uResultCase.getTotalCount();
+		this.successCount = uResultCase.getSuccessCount();
+		this.failCount = uResultCase.getFailCount();
+		this.ignoreCount = uResultCase.getIgnoreCount();
 		this.status = uResultCase.getStatus();
 		this.startTime = uResultCase.getStartTime();
 		this.endTime = uResultCase.getEndTime();
@@ -115,29 +137,53 @@ public class UResultCase implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getTotal() {
-		return total;
+	public String getPlatformName() {
+		return platformName;
 	}
-	public void setTotal(Integer total) {
-		this.total = total;
+	public void setPlatformName(String platformName) {
+		this.platformName = platformName;
 	}
-	public Integer getSuccess() {
-		return success;
+	public String getPlatformVersion() {
+		return platformVersion;
 	}
-	public void setSuccess(Integer success) {
-		this.success = success;
+	public void setPlatformVersion(String platformVersion) {
+		this.platformVersion = platformVersion;
 	}
-	public Integer getFail() {
-		return fail;
+	public String getDeviceName() {
+		return deviceName;
 	}
-	public void setFail(Integer fail) {
-		this.fail = fail;
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
 	}
-	public Integer getIgnore() {
-		return ignore;
+	public String getUdid() {
+		return udid;
 	}
-	public void setIgnore(Integer ignore) {
-		this.ignore = ignore;
+	public void setUdid(String udid) {
+		this.udid = udid;
+	}
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Integer getSuccessCount() {
+		return successCount;
+	}
+	public void setSuccessCount(Integer successCount) {
+		this.successCount = successCount;
+	}
+	public Integer getFailCount() {
+		return failCount;
+	}
+	public void setFailCount(Integer failCount) {
+		this.failCount = failCount;
+	}
+	public Integer getIgnoreCount() {
+		return ignoreCount;
+	}
+	public void setIgnoreCount(Integer ignoreCount) {
+		this.ignoreCount = ignoreCount;
 	}
 	public String getStatus() {
 		return status;
@@ -175,13 +221,24 @@ public class UResultCase implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public List<UResultStep> getSteps() {
+		return steps;
+	}
+	public void setSteps(List<UResultStep> steps) {
+		this.steps = steps;
+	}
+	public void addStep(UResultStep uResultStep) {
+		this.steps.add(uResultStep);
+	}
 	
 	@Override
 	public String toString() {
-		return "UResultCase [id=" + id + ", suiteo=" + suiteo + ", codeo=" + codeo + ", name=" + name + ", total="
-				+ total + ", success=" + success + ", fail=" + fail + ", ignore=" + ignore + ", status=" + status
-				+ ", startTime=" + startTime + ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", memo=" + memo + "]";
+		return "UResultCase [id=" + id + ", suiteo=" + suiteo + ", codeo=" + codeo + ", name=" + name
+				+ ", platformName=" + platformName + ", platformVersion=" + platformVersion + ", deviceName="
+				+ deviceName + ", udid=" + udid + ", totalCount=" + totalCount + ", successCount=" + successCount
+				+ ", failCount=" + failCount + ", ignoreCount=" + ignoreCount + ", status=" + status + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + ", steps=" + steps + "]";
 	}
-
+	
 }
