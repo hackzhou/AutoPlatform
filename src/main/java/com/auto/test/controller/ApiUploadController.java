@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import com.auto.test.common.bean.AInterfaceCase;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.entity.AInterface;
 import com.auto.test.service.IApiInterfaceService;
 import com.auto.test.utils.ExcelUtil;
 
@@ -43,7 +43,7 @@ public class ApiUploadController extends BaseController{
             return failMsg("文件不是Excel！", "api/setting");
         }
 		try {
-			List<AInterface> list = new ExcelUtil().readXls(file.getInputStream());
+			List<AInterfaceCase> list = new ExcelUtil().readXls(file.getInputStream());
 			interfaceService.exportApiInterface(list);
 			logger.info("[Upload]==>批量导入接口成功！");
 			return success("success", "redirect:/api/setting/list", getCurrentUserName(request));

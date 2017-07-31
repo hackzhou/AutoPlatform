@@ -82,10 +82,19 @@
                         <input type="hidden" id="api-case-id" name="api-case-id" value="">
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否默认 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-flag0" name="api-case-flag" value="0" checked>否</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-flag1" name="api-case-flag" value="1">是  <b class="text-info">(批量导入时创建或者覆盖)</b></label>
+                        	</div>
+	                      </div>
+	                    </div>
+                        <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否运行 <i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-run1" name="api-case-run" value="1" checked>运行 </label>
-                          		<label class="radio-inline"><input type="radio" id="api-case-run0" name="api-case-run" value="0">不运行(关联后运行一次) </label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-run0" name="api-case-run" value="0">不运行  <b class="text-info">(关联后运行一次)</b></label>
                         	</div>
 	                      </div>
 	                    </div>
@@ -226,7 +235,7 @@
                   <th>项目</th>
                   <th>版本</th>
                   <th>地址</th>
-                  <th>名称</th>
+                  <th>名称<b class="text-info">（默认）</b></th>
                   <th>请求体</th>
                   <th>非验证点</th>
                   <th>关联案例</th>
@@ -397,7 +406,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.name;
+						if(data.flag == 0){
+							return data.name;
+						}
+						return "<lable class='text-info'>" + data.name + "</label>";
 					}
 				},
 				{
@@ -465,6 +477,7 @@
 			$('#api-case-id').val(c.id);
   	      	$('#api-case-name').val(c.name);
   	      	$('#api-case-run' + c.run).prop("checked", true);
+  	      	$('#api-case-flag' + c.flag).prop("checked", true);
   	      	$('#api-case-strategy').tagsinput('removeAll');
 	      	$('#api-case-strategy').tagsinput('add', c.strategy);
   	      	if(c.body != null && c.body != ""){
@@ -505,6 +518,7 @@
 		$('#api-case-id').val("");
 		$('#api-case-name').val("");
 		$('#api-case-run1').prop("checked",true);
+		$('#api-case-flag0').prop("checked",true);
 		$('#api-case-strategy').tagsinput('removeAll');
 		$('#api-case-is-body0').prop("checked",true);
 		$('#api-case-body').val("");

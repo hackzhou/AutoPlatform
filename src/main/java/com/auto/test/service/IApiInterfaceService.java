@@ -2,6 +2,7 @@ package com.auto.test.service;
 
 import java.util.List;
 import javax.transaction.Transactional;
+import com.auto.test.common.bean.AInterfaceCase;
 import com.auto.test.entity.AInterface;
 
 @Transactional
@@ -17,7 +18,7 @@ public interface IApiInterfaceService{
 	
 	AInterface findById(Integer id);
 	
-	void exportApiInterface(List<AInterface> list);
+	void exportApiInterface(List<AInterfaceCase> list);
 	
 	Integer create(AInterface aInterface);
 	

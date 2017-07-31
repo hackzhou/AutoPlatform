@@ -8,6 +8,8 @@ import com.auto.test.entity.ACase;
 public interface IApiCaseDao extends IBaseDao<ACase> {
 	
 	List<ACase> findByInterfaceId(Integer id);
+	
+	List<ACase> findByInterfaceIdFlag(Integer id, Integer flag);
 
 	List<ACase> findByVersionId(Integer id);
 	

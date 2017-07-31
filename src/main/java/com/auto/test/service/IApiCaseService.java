@@ -11,6 +11,8 @@ public interface IApiCaseService{
 	
 	List<ACase> findByInterfaceId(Integer id);
 
+	List<ACase> findByInterfaceIdFlag(Integer id, Integer flag);
+
 	List<ACase> findByVersionId(Integer id);
 	
 	List<ACase> findByProjectVersion(Integer pid, Integer vid);

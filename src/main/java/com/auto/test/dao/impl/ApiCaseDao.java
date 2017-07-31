@@ -27,6 +27,12 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	public List<ACase> findByInterfaceIdFlag(Integer id, Integer flag) {
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("interfaceo", new AInterface(id))).add(Restrictions.eq("flag", flag)).list();
+	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
 	public List<ACase> findByVersionId(Integer id) {
 		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(id))).list();
 	}

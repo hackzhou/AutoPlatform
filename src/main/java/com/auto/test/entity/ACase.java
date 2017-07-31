@@ -53,6 +53,9 @@ public class ACase implements Serializable{
 	@Column(name="strategy")
 	private String strategy;
 	
+	@Column(name="flag")
+	private Integer flag;
+
 	@Column(name="run")
 	private Integer run;
 
@@ -77,7 +80,7 @@ public class ACase implements Serializable{
 		this.id = id;
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer run) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer flag, Integer run) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
@@ -85,10 +88,11 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.flag = flag;
 		this.run = run;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer run) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer flag, Integer run) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -97,6 +101,7 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.flag = flag;
 		this.run = run;
 		this.link = link;
 	}
@@ -108,6 +113,7 @@ public class ACase implements Serializable{
 		this.body = aCase.getBody();
 		this.result = aCase.getResult();
 		this.strategy = aCase.getStrategy();
+		this.flag = aCase.getFlag();
 		this.run = aCase.getRun();
 		this.link = aCase.getLink();
 		this.updateTime = new Date();
@@ -162,6 +168,12 @@ public class ACase implements Serializable{
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public Integer getFlag() {
+		return flag;
+	}
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
 	public Integer getRun() {
 		return run;
 	}
@@ -196,8 +208,9 @@ public class ACase implements Serializable{
 	@Override
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
-				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", run=" + run
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", flag="
+				+ flag + ", run=" + run + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
+				+ ", list=" + list + "]";
 	}
 
 }

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import com.auto.test.common.bean.AInterfaceCase;
 
 @Entity
 @Table(name="a_interface")
@@ -74,6 +75,14 @@ public class AInterface implements Serializable{
 		this.type = type;
 		this.url = url;
 		this.description = description;
+	}
+	public AInterface(AInterfaceCase aInterfaceCase) {
+		super();
+		this.projecto = new AProject(aInterfaceCase.getProject());
+		this.name = aInterfaceCase.getName();
+		this.type = aInterfaceCase.getType();
+		this.url = aInterfaceCase.getUrl();
+		this.description = aInterfaceCase.getDescription();
 	}
 
 	public void update(AInterface aInterface) {

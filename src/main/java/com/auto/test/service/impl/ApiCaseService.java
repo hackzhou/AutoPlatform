@@ -26,6 +26,11 @@ public class ApiCaseService implements IApiCaseService {
 	}
 	
 	@Override
+	public List<ACase> findByInterfaceIdFlag(Integer id, Integer flag) {
+		return dao.findByInterfaceIdFlag(id, flag);
+	}
+	
+	@Override
 	public List<ACase> findByVersionId(Integer id) {
 		return dao.findByVersionId(id);
 	}
