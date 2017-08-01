@@ -43,6 +43,11 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
+	public List<AInterface> findByMinProjectId() {
+		return dao.findByProjectId(dao.findMinCount());
+	}
+	
+	@Override
 	public List<AInterface> findByUrl(String url) {
 		return dao.findByUrl(url);
 	}

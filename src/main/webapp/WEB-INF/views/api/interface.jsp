@@ -49,15 +49,15 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <!-- <div class="col-md-3">
+	              <div class="col-md-3">
 	                <div class="form-group">
-					  <label class="control-label col-md-2">Name:</label>
-					  <div class="col-md-9">
-	                    <input type="text" class="form-control" placeholder="name">
+					  <label class="control-label text-center col-md-2">项目：</label>
+					  <div class="col-md-10">
+	                    <select id="api-interface-project-s" name="api-interface-project-s" class="form-select" style="width: 80%;"></select>
 					  </div>
 	                </div>
-	              </div> -->
-	              <div class="col-md-12">
+	              </div>
+	              <div class="col-md-9">
 	              	<!-- /.Create Interface -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiInterfaceModal()" data-toggle="modal" data-target="#exampleModalInterface" data-whatever="@fat">添加接口</button>
@@ -202,15 +202,23 @@
 <script>
 
     $(document).ready(function(){
-    	createTable();
+    	createTable(null);
+    	initEvent();
     	initApiInterfaceProject(null);
+    	initApiInterfaceProjectSearch();
     });
+    
+    function initEvent(){
+    	$("#api-interface-project-s").change(function(){
+    		createTable($(this).val());
+		});
+    }
 
-    function createTable() {
+    function createTable(pid) {
     	$('#api-interface-table').dataTable().fnDestroy();
     	$('#api-interface-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/interface/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/interface/list/data/pid=" + pid,
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
@@ -325,6 +333,28 @@
     	initApiInterfaceProject(null);
     	$('#api-interface-type').val("GET");
     	hideMsgDiv();
+    }
+    
+    function initApiInterfaceProjectSearch(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(i == (list.length - 1)){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+    					}
+    				}
+    				$('#api-interface-project-s').empty();
+    				$('#api-interface-project-s').append(optionstring);
+    			}
+    		}
+    	});
     }
     
     function initApiInterfaceProject(projectid){

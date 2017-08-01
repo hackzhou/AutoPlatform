@@ -27,6 +27,16 @@ public abstract class AbstractHibernateDao <T extends java.io.Serializable> impl
 	public final Integer findAllCount() {
 		return ((Long) getCurrentSession().createQuery("select count(*) from " + clazz.getName()).uniqueResult()).intValue();
 	}
+	
+	@Override
+	public Integer findMaxCount() {
+		return ((Integer) getCurrentSession().createQuery("select max(id) from " + clazz.getName()).uniqueResult()).intValue();
+	}
+
+	@Override
+	public Integer findMinCount() {
+		return ((Integer) getCurrentSession().createQuery("select min(id) from " + clazz.getName()).uniqueResult()).intValue();
+	}
 
 	@Override
 	public final T findById(final Integer id) {

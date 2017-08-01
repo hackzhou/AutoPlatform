@@ -20,4 +20,5 @@ public class ApiAccountDao extends AbstractHibernateDao<AAccount> implements IAp
 	public List<AAccount> findByName(String name) {
 		return getCurrentSession().createCriteria(AAccount.class).add(Restrictions.eq("loginname", name)).list();
 	}
+
 }

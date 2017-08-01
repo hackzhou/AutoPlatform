@@ -39,6 +39,19 @@ public class ApiInterfaceController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/pid={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getDataListByProject(@PathVariable("id") String id) {
+		logger.info("[Interface]==>获取接口[project=" + id + "]数据！");
+		if(!isNull(id)){
+			List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
+			return successJson(list);
+		}else{
+			List<AInterface> list = interfaceService.findByMinProjectId();
+			return successJson(list);
+		}
+	}
+	
 	@RequestMapping(value = "/list/data/projectid={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getDataByProject(@PathVariable("id") String id) {

@@ -7,6 +7,10 @@ public interface IBaseDao <T extends java.io.Serializable> {
 
 	Integer findAllCount();
 	
+	Integer findMaxCount();
+
+	Integer findMinCount();
+	
 	T findById(final Integer id);
 
     List<T> findAll();

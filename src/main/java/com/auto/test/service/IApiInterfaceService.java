@@ -12,6 +12,8 @@ public interface IApiInterfaceService{
 
 	List<AInterface> findByProjectId(Integer id);
 
+	List<AInterface> findByMinProjectId();
+
 	List<AInterface> findByUrl(String url);
 
 	List<AInterface> findByProjectUrl(Integer id, String url);
