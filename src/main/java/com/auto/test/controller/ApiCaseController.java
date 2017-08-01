@@ -1,5 +1,6 @@
 package com.auto.test.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -79,7 +80,7 @@ public class ApiCaseController extends BaseController{
 				list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
 			}
 		}
-		return successJson(list);
+		return successJson(list != null ? list : new ArrayList<ACase>());
 	}
 	
 	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
