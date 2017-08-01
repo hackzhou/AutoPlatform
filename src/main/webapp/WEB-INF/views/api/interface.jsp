@@ -239,7 +239,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.projecto.name;
+						return data.projecto == null ? "-" : data.projecto.name;
 					}
 				},
 				{

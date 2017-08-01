@@ -403,7 +403,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.interfaceo.projecto.name;
+						return (data.interfaceo == null || data.interfaceo.projecto == null) ? "-" : data.interfaceo.projecto.name;
 					}
 				},
 				{
@@ -412,7 +412,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return tooltipJsonByVersion(data.versiono.version, data.versiono.channel);
+						return data.versiono == null ? "-" : tooltipJsonByVersion(data.versiono.version, data.versiono.channel);
 					}
 				},
 				{
@@ -421,7 +421,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return "[" + data.interfaceo.type + "]" + data.interfaceo.url;
+						return data.interfaceo == null ? "-" : "[" + data.interfaceo.type + "]" + data.interfaceo.url;
 					}
 				},
 				{
