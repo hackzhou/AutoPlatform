@@ -155,13 +155,22 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	private void batchCase(Integer iid, AInterfaceCase aInterfaceCase){
+		Date d = null;
 		List<ACase> list = casedDao.findByInterfaceIdFlag(iid, 1);
 		if(list != null && !list.isEmpty()){
 			for (ACase aCase : list) {
+				d = aCase.getCreateTime();
 				casedDao.delete(aCase);
 			}
 		}
-		casedDao.create(new ACase(new AVersion(aInterfaceCase.getVersion()), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), null, null, null, 1, 1));
+		ACase c = new ACase(new AVersion(aInterfaceCase.getVersion()), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), null, null, null, 1, 1);
+		if(d == null){
+			c.setCreateTime(new Date());
+		}else{
+			c.setCreateTime(d);
+			c.setUpdateTime(new Date());
+		}
+		casedDao.create(c);
 	}
 	
 	private boolean isNull(String text){
