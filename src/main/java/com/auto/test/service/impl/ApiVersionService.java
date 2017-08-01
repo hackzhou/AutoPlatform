@@ -19,7 +19,7 @@ public class ApiVersionService implements IApiVersionService {
 	private IApiVersionDao dao;
 	
 	@Resource(name="apiCaseDao")
-	private IApiCaseDao daoCase;
+	private IApiCaseDao caseDao;
 	
 	@Resource(name="apiTaskDao")
 	private IApiTaskDao taskDao;
@@ -71,10 +71,10 @@ public class ApiVersionService implements IApiVersionService {
 
 	@Override
 	public void deleteCascade(Integer id) throws Exception {
-		List<ACase> caseList = daoCase.findByVersionId(id);
+		List<ACase> caseList = caseDao.findByVersionId(id);
 		if(caseList != null && !caseList.isEmpty()){
 			for (ACase aCase : caseList) {
-				daoCase.delete(aCase);
+				caseDao.delete(aCase);
 			}
 		}
 		List<ATask> taskList = taskDao.findByVersion(id);

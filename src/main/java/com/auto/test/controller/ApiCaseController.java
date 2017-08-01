@@ -61,6 +61,27 @@ public class ApiCaseController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/pid={pid}/vid={vid}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getCaseDataListByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
+		logger.info("[Case]==>获取案例[project=" + pid + ",version=" + vid + "]数据！");
+		List<ACase> list = null;
+		if(isNull(pid)){
+			if(isNull(vid)){
+				list = caseService.findByMinProjectMaxVersion();
+			}else{
+				list = caseService.findByMinProjectVersion(Integer.parseInt(vid));
+			}
+		}else{
+			if(isNull(vid)){
+				list = caseService.findByProjectMaxVersion(Integer.parseInt(pid));
+			}else{
+				list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
+			}
+		}
+		return successJson(list);
+	}
+	
 	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getCaseDataByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {

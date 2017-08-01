@@ -53,7 +53,23 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-12">
+	              <div class="col-md-3">
+	                <div class="form-group">
+					  <label class="control-label text-center col-md-2">项目：</label>
+					  <div class="col-md-10">
+	                    <select id="api-case-project-s" name="api-case-project-s" class="form-select" style="width: 80%;"></select>
+					  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-3">
+	                <div class="form-group">
+					  <label class="control-label text-center col-md-2">版本：</label>
+					  <div class="col-md-10">
+	                    <select id="api-case-version-s" name="api-case-version-s" class="form-select" style="width: 80%;"></select>
+					  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-6">
 	              	<!-- /.Create Case -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiCaseModal()" data-toggle="modal" data-target="#exampleModalCase" data-whatever="@fat">添加案例</button>
@@ -306,15 +322,23 @@
 	$('textarea[autoHeight]').autoHeight();
   
 	$(document).ready(function() {
-		createTable();
+		createTable(null, null);
 		initEvent();
 		initApiCaseProject(null);
+		initApiCaseProjectSearch();
 		initApiCaseVersion(null);
+		initApiCaseVersionSearch();
 		initApiCaseInterface($('#api-case-project').val(),null);
 		initApiCaseLink();
 	});
 	
 	function initEvent(){
+		$("#api-case-project-s").change(function(){
+    		createTable($(this).val(), $("#api-case-version-s").val());
+		});
+		$("#api-case-version-s").change(function(){
+    		createTable($("#api-case-project-s").val(), $(this).val());
+		});
 		$("#api-case-project").change(function(){
 			initApiCaseInterface($(this).val(),null);
 			initApiCaseLink();
@@ -354,11 +378,11 @@
 		}
 	}
 	
-	function createTable() {
+	function createTable(pid, vid) {
 		$('#api-case-table').dataTable().fnDestroy();
    		$('#api-case-table').DataTable({
 	   		responsive : false,
-	   		sAjaxSource : "<%=request.getContextPath()%>/api/case/list/data",
+	   		sAjaxSource : "<%=request.getContextPath()%>/api/case/list/data/pid=" + pid + "/vid=" + vid,
 	   		bProcessing : false,
 	   		"aaSorting": [
 	   			[0,'desc']
@@ -656,6 +680,29 @@
 		});
 	}
 	
+	function initApiCaseProjectSearch(){
+    	$.ajax({
+    		type:"get",
+    		async: false,
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = list.length - 1; i >= 0; i--){
+    					if(i == (list.length - 1)){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+    					}
+    				}
+    				$('#api-case-project-s').empty();
+    				$('#api-case-project-s').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
 	function initApiCaseProject(projectid){
     	$.ajax({
     		type:"get",
@@ -674,6 +721,29 @@
     				}
     				$('#api-case-project').empty();
     				$('#api-case-project').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
+	function initApiCaseVersionSearch(){
+    	$.ajax({
+    		type:"get",
+    		async: false,
+    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				for(var i = 0; i < list.length; i++){
+    					if(i == 0){
+    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+    					}else{
+	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+    					}
+    				}
+    				$('#api-case-version-s').empty();
+    				$('#api-case-version-s').append(optionstring);
     			}
     		}
     	});

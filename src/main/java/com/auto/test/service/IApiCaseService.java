@@ -17,6 +17,12 @@ public interface IApiCaseService{
 	
 	List<ACase> findByProjectVersion(Integer pid, Integer vid);
 
+	List<ACase> findByMinProjectVersion(Integer vid);
+	
+	List<ACase> findByProjectMaxVersion(Integer pid);
+
+	List<ACase> findByMinProjectMaxVersion();
+
 	ACase findById(Integer id);
 	
 	List<ACase> findByIds(List<Integer> cids);

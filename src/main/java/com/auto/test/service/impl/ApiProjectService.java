@@ -21,10 +21,10 @@ public class ApiProjectService implements IApiProjectService {
 	private IApiProjectDao dao;
 
 	@Resource(name="apiInterfaceDao")
-	private IApiInterfaceDao daoInterface;
+	private IApiInterfaceDao interfaceDao;
 	
 	@Resource(name="apiCaseDao")
-	private IApiCaseDao daoCase;
+	private IApiCaseDao caseDao;
 	
 	@Resource(name="apiTaskDao")
 	private IApiTaskDao taskDao;
@@ -76,17 +76,17 @@ public class ApiProjectService implements IApiProjectService {
 
 	@Override
 	public void deleteCascade(Integer id) throws Exception {
-		List<AInterface> interList = daoInterface.findByProjectId(id);
+		List<AInterface> interList = interfaceDao.findByProjectId(id);
 		if(interList != null && !interList.isEmpty()){
 			List<ACase> caseList = null;
 			for (AInterface aInterface : interList) {
-				caseList = daoCase.findByInterfaceId(aInterface.getId());
+				caseList = caseDao.findByInterfaceId(aInterface.getId());
 				if(caseList != null && !caseList.isEmpty()){
 					for (ACase aCase : caseList) {
-						daoCase.delete(aCase);
+						caseDao.delete(aCase);
 					}
 				}
-				daoInterface.delete(aInterface);
+				interfaceDao.delete(aInterface);
 			}
 		}
 		List<ATask> taskList = taskDao.findByProject(id);

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiCaseDao;
+import com.auto.test.dao.IApiProjectDao;
+import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiCaseService;
@@ -14,6 +16,12 @@ public class ApiCaseService implements IApiCaseService {
 	
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao dao;
+	
+	@Resource(name="apiProjectDao")
+	private IApiProjectDao projectDao;
+	
+	@Resource(name="apiVersionDao")
+	private IApiVersionDao versionDao;
 
 	@Override
 	public List<ACase> findAll() {
@@ -38,6 +46,21 @@ public class ApiCaseService implements IApiCaseService {
 	@Override
 	public List<ACase> findByProjectVersion(Integer pid, Integer vid) {
 		return dao.findByProjectVersion(pid, vid);
+	}
+	
+	@Override
+	public List<ACase> findByMinProjectVersion(Integer vid) {
+		return dao.findByProjectVersion(projectDao.findMinCount(), vid);
+	}
+
+	@Override
+	public List<ACase> findByProjectMaxVersion(Integer pid) {
+		return dao.findByProjectVersion(pid, versionDao.findMaxCount());
+	}
+	
+	@Override
+	public List<ACase> findByMinProjectMaxVersion() {
+		return dao.findByProjectVersion(projectDao.findMinCount(), versionDao.findMaxCount());
 	}
 	
 	@Override
