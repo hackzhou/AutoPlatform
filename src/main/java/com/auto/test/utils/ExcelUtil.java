@@ -47,7 +47,7 @@ public class ExcelUtil {
 	                String cellValue = trimStr(cell.getStringCellValue());
 	                switch (cell.getColumnIndex()) {
 	                	case 0:
-	                		aInterfaceCase.setProject(getApiID("项目", cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setProject(cellValue);
 	                		break;
 	                	case 1:
 	                		aInterfaceCase.setName(cellValue);
@@ -62,7 +62,7 @@ public class ExcelUtil {
 	                		aInterfaceCase.setDescription(cellValue);
 		                    break;
 	                	case 5:
-	                		aInterfaceCase.setVersion(getApiID("版本", cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setVersion(cellValue);
 		                    break;
 	                	case 6:
 	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
@@ -100,6 +100,7 @@ public class ExcelUtil {
 		return "";
 	}
 	
+	@SuppressWarnings("unused")
 	private Integer getApiID(String text, String str, Integer row) throws Exception{
 		if(str != null){
 			str = str.trim().replace("（", "(").replace("）", ")");

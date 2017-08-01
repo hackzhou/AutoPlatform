@@ -13,6 +13,7 @@ import com.auto.test.dao.IApiProjectDao;
 import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
+import com.auto.test.entity.AProject;
 import com.auto.test.entity.AVersion;
 import com.auto.test.service.IApiInterfaceService;
 
@@ -108,7 +109,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	public void exportApiInterface(List<AInterfaceCase> list) {
 		if(list != null && !list.isEmpty()){
 			for (AInterfaceCase aInterfaceCase : list) {
-				if(aInterfaceCase.getProject() == null){
+				if(isNull(aInterfaceCase.getProject())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【所属项目】为空！");
 				}else if(isNull(aInterfaceCase.getType())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口类型】为空！");
@@ -116,21 +117,27 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口名称】为空！");
 				}else if(isNull(aInterfaceCase.getUrl())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口地址】为空！");
-				}else if(aInterfaceCase.getVersion() == null){
+				}else if(isNull(aInterfaceCase.getVersion())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【案例版本】为空！");
 				}else{
-					if(projectDao.findById(aInterfaceCase.getProject()) == null){
-						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【所属项目ID是" + aInterfaceCase.getProject() + "】平台项目不存在！");
+					List<AProject> pList = projectDao.findByName(aInterfaceCase.getProject());
+					List<AVersion> vList = versionDao.findByVersion(aInterfaceCase.getVersion());
+					if(pList == null || pList.isEmpty()){
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现所属项目名称是【" + aInterfaceCase.getProject() + "】不存在！");
+					}else if(pList.size() != 1){
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现所属项目名称是【" + aInterfaceCase.getProject() + "】存在【" + pList.size() + "】个！");
+					}else if(vList == null || vList.isEmpty()){
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】所属版本号是【" + aInterfaceCase.getProject() + "】不存在！");
+					}else if(vList.size() != 1){
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】所属版本号是【" + aInterfaceCase.getProject() + "】存在【" + vList.size() + "】个！");
 					}else if(!HttpType.GET.name().equalsIgnoreCase(aInterfaceCase.getType()) && !HttpType.POST.name().equalsIgnoreCase(aInterfaceCase.getType())){
-						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口类型不是" + HttpType.GET + "或者" + HttpType.POST + "】");
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口类型不是【" + HttpType.GET + "或者" + HttpType.POST + "】");
 					}else if(!aInterfaceCase.getUrl().startsWith("/") || aInterfaceCase.getUrl().endsWith("/")){
-						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口地址】格式错误！");
-					}else if(versionDao.findById(aInterfaceCase.getVersion()) == null){
-						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】【所属版本ID是" + aInterfaceCase.getProject() + "】平台版本不存在！");
+						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口地址【格式】错误！");
 					}else{
 						try {
-							Integer iid = batchInterface(aInterfaceCase);
-							batchCase(iid, aInterfaceCase);
+							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId());
+							batchCase(aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
 						}
@@ -142,19 +149,19 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 	}
 	
-	private Integer batchInterface(AInterfaceCase aInterfaceCase){
-		List<AInterface> interList = findByProjectUrl(aInterfaceCase.getProject(), aInterfaceCase.getUrl());
+	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid){
+		List<AInterface> interList = findByProjectUrl(pid, aInterfaceCase.getUrl());
 		if(interList != null && !interList.isEmpty()){
 			AInterface aInterfaceDB = interList.get(0);
-			aInterfaceDB.update(new AInterface(aInterfaceCase));
+			aInterfaceDB.update(new AInterface(aInterfaceCase, pid));
 			update(aInterfaceDB);
 			return aInterfaceDB.getId();
 		}else{
-			return create(new AInterface(aInterfaceCase));
+			return create(new AInterface(aInterfaceCase, pid));
 		}
 	}
 	
-	private void batchCase(Integer iid, AInterfaceCase aInterfaceCase){
+	private void batchCase(AInterfaceCase aInterfaceCase, Integer iid, Integer vid){
 		Date d = null;
 		List<ACase> list = casedDao.findByInterfaceIdFlag(iid, 1);
 		if(list != null && !list.isEmpty()){
@@ -163,7 +170,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 				casedDao.delete(aCase);
 			}
 		}
-		ACase c = new ACase(new AVersion(aInterfaceCase.getVersion()), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), null, null, null, 1, 1);
+		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), null, null, null, 1, 1);
 		if(d == null){
 			c.setCreateTime(new Date());
 		}else{

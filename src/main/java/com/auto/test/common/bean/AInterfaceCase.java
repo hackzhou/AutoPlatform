@@ -1,23 +1,25 @@
 package com.auto.test.common.bean;
 
 public class AInterfaceCase {
-	private Integer project;
+	private String project;
 	private String name;
 	private String type;
 	private String url;
 	private String description;
-	private Integer version;
+	
+	private String version;
 	private String body;
+	
 	private Integer rowNum;
 	
 	public AInterfaceCase() {
 		super();
 	}
 	
-	public Integer getProject() {
+	public String getProject() {
 		return project;
 	}
-	public void setProject(Integer project) {
+	public void setProject(String project) {
 		this.project = project;
 	}
 	public String getName() {
@@ -44,10 +46,10 @@ public class AInterfaceCase {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Integer getVersion() {
+	public String getVersion() {
 		return version;
 	}
-	public void setVersion(Integer version) {
+	public void setVersion(String version) {
 		this.version = version;
 	}
 	public String getBody() {

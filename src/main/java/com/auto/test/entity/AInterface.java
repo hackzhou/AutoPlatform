@@ -76,9 +76,9 @@ public class AInterface implements Serializable{
 		this.url = url;
 		this.description = description;
 	}
-	public AInterface(AInterfaceCase aInterfaceCase) {
+	public AInterface(AInterfaceCase aInterfaceCase, Integer pid) {
 		super();
-		this.projecto = new AProject(aInterfaceCase.getProject());
+		this.projecto = new AProject(pid);
 		this.name = aInterfaceCase.getName();
 		this.type = aInterfaceCase.getType();
 		this.url = aInterfaceCase.getUrl();
