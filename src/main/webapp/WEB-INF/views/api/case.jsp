@@ -905,22 +905,23 @@
 		if(dropifyImg != null){
 			if(!dropifyImg.isImage()){
 				showMsgDiv("文件请选择图片！");
+			}else{
+				$.ajaxFileUpload({
+					type:"post",
+		      		url:"<%=request.getContextPath()%>/api/case/fileUpload",
+		      		secureuri:false,
+		      		fileElementId:'api-case-img',
+		      		dataType:'json',
+		      		success:function(data){
+		      			if(data.responseCode == "0000"){
+		      				$('#api-case-img-path').val(data.data);
+		      				apiCaseSave();
+		      			}else{
+		      				showMsgDiv(data.responseMsg);
+		      			}
+		      	    }
+				});
 			}
-			$.ajaxFileUpload({
-				type:"post",
-	      		url:"<%=request.getContextPath()%>/api/case/fileUpload",
-	      		secureuri:false,
-	      		fileElementId:'api-case-img',
-	      		dataType:'json',
-	      		success:function(data){
-	      			if(data.responseCode == "0000"){
-	      				$('#api-case-img-path').val(data.data);
-	      				apiCaseSave();
-	      			}else{
-	      				showMsgDiv(data.responseMsg);
-	      			}
-	      	    }
-			});
 		}else{
 			$('#api-case-img-path').val("");
 			apiCaseSave();
