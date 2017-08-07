@@ -98,7 +98,8 @@ public class ApiCaseController extends BaseController{
 			List<ACase> list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
 			return successJson(list);
 		}else{
-			return successJson();
+			List<ACase> list = caseService.findByMinProjectMaxVersion();
+			return successJson(list);
 		}
 	}
 	

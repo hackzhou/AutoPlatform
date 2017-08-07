@@ -350,8 +350,8 @@
 		initApiCaseProjectSearch();
 		initApiCaseVersion(null);
 		initApiCaseVersionSearch();
-		initApiCaseInterface($('#api-case-project').val(),null);
-		initApiCaseLink();
+		initApiCaseInterface(null,null);
+		initApiCaseLink(null,null);
 	});
 	
 	var dropifyImg;
@@ -385,10 +385,10 @@
 		});
 		$("#api-case-project").change(function(){
 			initApiCaseInterface($(this).val(),null);
-			initApiCaseLink();
+			initApiCaseLink($(this).val(),$("#api-case-version").val());
 		});
 		$("#api-case-version").change(function(){
-			initApiCaseLink();
+			initApiCaseLink($("#api-case-project").val(),$(this).val());
 		});
 		$("#api-case-interface").change(function(){
 			var iid = $(this).val();
@@ -612,13 +612,13 @@
 		removeDestroy();
 		initApiCaseProject(null);
     	initApiCaseVersion(null);
-    	initApiCaseInterface($('#api-case-project').val(),null);
-    	initApiCaseLink();
+    	initApiCaseInterface(null,null);
+    	initApiCaseLink(null,null);
     	autoHeight($("#api-case-body")[0]);
     	hideMsgDiv();
     }
 	
-	function initApiCaseLink(){
+	function initApiCaseLink(pid, vid){
 		var count = parseInt($('#api-case-count').val());
 		if(count > 1){
 			for (var i = 2; i <= count; i++) {
@@ -627,7 +627,7 @@
 		}
 		$('#api-case-count').val(1);
 		$('.del-link-case').attr({"disabled":"disabled"});
-		initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null,null);
+		initApiCaseCase(pid,vid,1,null,null);
 	}
 	
 	function editApiCaseLink(link, myid){
@@ -730,8 +730,10 @@
       			if(data.responseCode == "0000"){
       				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+        				}
     				}
     				$('#api-case-run-account').empty();
     				$('#api-case-run-account').append(optionstring + "<option value='0'>无</option>");
@@ -743,18 +745,19 @@
 	function initApiCaseProjectSearch(){
     	$.ajax({
     		type:"get",
-    		async: false,
     		url:"<%=request.getContextPath()%>/api/project/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-case-project-s').empty();
     				$('#api-case-project-s').append(optionstring);
@@ -766,18 +769,19 @@
 	function initApiCaseProject(projectid){
     	$.ajax({
     		type:"get",
-    		async: false,
     		url:"<%=request.getContextPath()%>/api/project/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(projectid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(projectid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-case-project').empty();
     				$('#api-case-project').append(optionstring);
@@ -789,18 +793,19 @@
 	function initApiCaseVersionSearch(){
     	$.ajax({
     		type:"get",
-    		async: false,
     		url:"<%=request.getContextPath()%>/api/version/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = 0; i < list.length; i++){
-    					if(i == 0){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(i == 0){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+        					}
+        				}
     				}
     				$('#api-case-version-s').empty();
     				$('#api-case-version-s').append(optionstring);
@@ -812,18 +817,19 @@
 	function initApiCaseVersion(versionid){
     	$.ajax({
     		type:"get",
-    		async: false,
     		url:"<%=request.getContextPath()%>/api/version/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(versionid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
+    				if(list != null){
+	    				for(var i = 0; i < list.length; i++){
+	    					if(versionid == list[i].id || i == 0){
+	    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+	    					}else{
+		    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+	    					}
+	    				}
     				}
     				$('#api-case-version').empty();
     				$('#api-case-version').append(optionstring);
@@ -841,14 +847,16 @@
     				var optionstring = "<optgroup label=\"请选择...\">";
     				var selected = "";
     				var list = data.data;
-    				for (var i = 0; i < list.length; i++) {
-    					if(interfaceid == list[i].id || i == 0){
-    						selected = "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
-    						if(interfaceid == null){
-	    						$('#api-case-name').val(list[i].name);
-    						}
-    					}
-    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
+    				if(list != null){
+	    				for (var i = 0; i < list.length; i++) {
+	    					if(interfaceid == list[i].id || i == 0){
+	    						selected = "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
+	    						if(interfaceid == null){
+		    						$('#api-case-name').val(list[i].name);
+	    						}
+	    					}
+	    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].type +  "] " + list[i].url + "</option>";
+	    				}
     				}
     				optionstring += "</optgroup>";
     				$('#api-case-interface').empty();
@@ -868,19 +876,21 @@
     				var optionstring = "<optgroup label=\"请选择...\"><option value='0'>无</option>";
     				var selected = "";
     				var list = data.data;
-    				for (var i = 0; i < list.length; i++) {
-    					if(list[i].id != myid){
-    						if(cid == null){
-        						if(i == 0){
-            						selected = "<option value='0'>无</option>";
+    				if(list != null){
+    					for (var i = 0; i < list.length; i++) {
+        					if(list[i].id != myid){
+        						if(cid == null){
+            						if(i == 0){
+                						selected = "<option value='0'>无</option>";
+                					}
+            					}else{
+            						if(cid == list[i].id || i == 0){
+            							selected = "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
+                					}
             					}
-        					}else{
-        						if(cid == list[i].id || i == 0){
-        							selected = "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
-            					}
+            					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
         					}
-        					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id +  "] " + list[i].name + " [" + list[i].interfaceo.type + "] " + list[i].interfaceo.url + "</option>";
-    					}
+        				}
     				}
     				optionstring += "</optgroup>";
     				$('#api-case-case' + index).empty();

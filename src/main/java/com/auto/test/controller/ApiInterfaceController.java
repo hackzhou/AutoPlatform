@@ -60,7 +60,8 @@ public class ApiInterfaceController extends BaseController{
 			List<AInterface> list = interfaceService.findByProjectId(Integer.parseInt(id));
 			return successJson(list);
 		}else{
-			return successJson();
+			List<AInterface> list = interfaceService.findByMinProjectId();
+			return successJson(list);
 		}
 	}
 	

@@ -341,8 +341,10 @@
       			if(data.responseCode == "0000"){
       				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+        				}
     				}
     				$('#api-project-run-account').empty();
     				$('#api-project-run-account').append(optionstring + "<option value='0'>无</option>");
@@ -359,12 +361,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(versionid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(versionid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+        					}
+        				}
     				}
     				$('#api-project-run-version').empty();
     				$('#api-project-run-version').append(optionstring);

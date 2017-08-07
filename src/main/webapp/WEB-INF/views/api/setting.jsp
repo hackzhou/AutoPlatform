@@ -223,12 +223,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-copy-project').empty();
     				$('#api-copy-project').append(optionstring);
@@ -245,12 +247,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+        					}
+        				}
     				}
     				$('#api-copy-version-a').empty();
     				$('#api-copy-version-a').append(optionstring);

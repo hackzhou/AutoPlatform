@@ -412,12 +412,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(projectid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(projectid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-task-project').empty();
     				$('#api-task-project').append(optionstring);
@@ -435,12 +437,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(versionid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(versionid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+        					}
+        				}
     				}
     				$('#api-task-version').empty();
     				$('#api-task-version').append(optionstring);
@@ -457,12 +461,14 @@
       			if(data.responseCode == "0000"){
       				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(accountid == list[i].id){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].loginname + "/" + list[i].password + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(accountid == list[i].id){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].loginname + "/" + list[i].password + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].loginname + "/" + list[i].password + "</option>";
+        					}
+        				}
     				}
     				$('#api-task-account').empty();
     				$('#api-task-account').append(optionstring + "<option value='0'>无</option>");

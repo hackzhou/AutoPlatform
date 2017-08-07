@@ -343,12 +343,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-interface-project-s').empty();
     				$('#api-interface-project-s').append(optionstring);
@@ -365,12 +367,14 @@
     			if(data.responseCode == "0000"){
     				var optionstring = "";
     				var list = data.data;
-    				for(var i = list.length - 1; i >= 0; i--){
-    					if(projectid == list[i].id || i == (list.length - 1)){
-    						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-    					}else{
-	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-    					}
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(projectid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
     				}
     				$('#api-interface-project').empty();
     				$('#api-interface-project').append(optionstring);
