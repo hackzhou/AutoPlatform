@@ -1,6 +1,12 @@
 package com.auto.test.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.ApiRunType;
@@ -64,7 +71,7 @@ public class ApiCaseController extends BaseController{
 	
 	@RequestMapping(value = "/list/data/pid={pid}/vid={vid}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getCaseDataListByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
+	public Map<String, Object> getCaseDataListByProjectVersion(HttpServletRequest request, @PathVariable("pid") String pid, @PathVariable("vid") String vid) {
 		logger.info("[Case]==>获取案例[project=" + pid + ",version=" + vid + "]数据！");
 		List<ACase> list = null;
 		if(isNull(pid)){
@@ -80,7 +87,7 @@ public class ApiCaseController extends BaseController{
 				list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
 			}
 		}
-		return successJson(list != null ? list : new ArrayList<ACase>());
+		return successJson(list != null ? caseImgUrl2Net(request, list) : new ArrayList<ACase>());
 	}
 	
 	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
@@ -114,7 +121,7 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, @RequestParam("api-case-strategy") String strategy, 
 			@RequestParam("api-case-flag") String flag, @RequestParam("api-case-run") String run, @RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result,
-			@RequestParam("api-case-link") String links, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-is-result") String isResult) {
+			@RequestParam("api-case-link") String links, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-is-result") String isResult, @RequestParam("api-case-img-path") String img) {
 		try {
 			if("0".equals(isBody)){
 				body = null;
@@ -123,7 +130,7 @@ public class ApiCaseController extends BaseController{
 				result = null;
 			}
 			if(isNull(id)){
-				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(flag), Integer.parseInt(run)));
+				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run)));
 				if(cid != null){
 					logger.info("[Case]==>添加案例[id=" + cid + ",name=" + name + "]成功！");
 					return successJson();
@@ -132,7 +139,15 @@ public class ApiCaseController extends BaseController{
 					return failedJson("添加案例[name=" + name + "]失败！");
 				}
 			}else{
-				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), Integer.parseInt(flag), Integer.parseInt(run)));
+				ACase tempCase = caseService.findById(Integer.parseInt(id));
+				if(tempCase != null){
+					String imgPath = tempCase.getImg();
+					if(imgPath != null && !imgPath.isEmpty() && (img == null || img.isEmpty())){
+						delImg(imgPath);
+						logger.info("[Case]==>删除图片[img=" + imgPath + "]成功！");
+					}
+				}
+				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run)));
 				if(aCase != null){
 					logger.info("[Case]==>更新案例[id=" + id + ",name=" + name + "]成功！");
 					return successJson();
@@ -152,8 +167,16 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> deleteCase(@PathVariable("id") String id) {
 		try {
-			caseService.delete(Integer.parseInt(id));
-			logger.info("[Case]==>删除案例[id=" + id + "]成功！");
+			ACase aCase = caseService.findById(Integer.parseInt(id));
+			if(aCase != null){
+				String img = aCase.getImg();
+				caseService.delete(Integer.parseInt(id));
+				logger.info("[Case]==>删除案例[id=" + id + "]成功！");
+				if(img != null && !img.isEmpty()){
+					delImg(img);
+					logger.info("[Case]==>删除图片[img=" + img + "]成功！");
+				}
+			}
 			return successJson();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -179,6 +202,70 @@ public class ApiCaseController extends BaseController{
 			logger.error("[Case]==>JSON数据验证失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
+	}
+	
+	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> fileUpload(HttpServletRequest request, @RequestParam("api-case-img") CommonsMultipartFile file) throws Exception {
+		if(file == null || file.isEmpty()){
+			return failedJson("上传文件为空！");
+		}else{
+			OutputStream os = null;
+			InputStream inputStream = null;
+			String rootPath = request.getSession().getServletContext().getRealPath("/").replace(request.getContextPath().replaceAll("/", "").replace("\\", ""), "ROOT");
+			String imgPath = rootPath + "images";
+			String fullPath = imgPath + File.separator + timeStamp() + file.getOriginalFilename();
+			try {
+				File tempFile = new File(rootPath);
+				if(!tempFile.exists() && !tempFile.isDirectory()){
+					return failedJson("[Case]==>文件上传[" + fullPath + "]路径错误！");
+				}
+				tempFile = new File(imgPath);
+				if(!tempFile.exists() && !tempFile.isDirectory()){
+					tempFile.mkdir();
+				}
+				inputStream = file.getInputStream();
+				int len;
+				byte[] bs = new byte[1024];
+				os = new FileOutputStream(fullPath);
+				while ((len = inputStream.read(bs)) != -1) {
+	                os.write(bs, 0, len);
+	            }
+			} finally {
+				if(os != null){
+					os.close();
+				}
+				if(inputStream != null){
+					inputStream.close();
+				}
+			}
+			return successJson(fullPath);
+		}
+	}
+	
+	private List<ACase> caseImgUrl2Net(HttpServletRequest request, List<ACase> list){
+		if(list != null && !list.isEmpty()){
+			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/images/";
+			for (ACase aCase : list) {
+				String img = aCase.getImg();
+				if(img != null && img.contains("images")){
+					aCase.setImg(url + img.split("images")[1].substring(1));
+				}
+			}
+		}
+		return list;
+	}
+	
+	private void delImg(String filePath){
+		File file = new File(filePath);
+		if(file.isFile() && file.exists()){
+			file.delete();
+		}
+	}
+	
+	private String timeStamp(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS'_'");
+		return sdf.format(new Date());
 	}
 	
 }

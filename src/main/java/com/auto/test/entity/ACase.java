@@ -53,6 +53,9 @@ public class ACase implements Serializable{
 	@Column(name="strategy")
 	private String strategy;
 	
+	@Column(name="img")
+	private String img;
+	
 	@Column(name="flag")
 	private Integer flag;
 
@@ -80,7 +83,7 @@ public class ACase implements Serializable{
 		this.id = id;
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer flag, Integer run) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
@@ -88,11 +91,12 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.img = img;
 		this.flag = flag;
 		this.run = run;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, Integer flag, Integer run) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -101,6 +105,7 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.img = img;
 		this.flag = flag;
 		this.run = run;
 		this.link = link;
@@ -113,6 +118,7 @@ public class ACase implements Serializable{
 		this.body = aCase.getBody();
 		this.result = aCase.getResult();
 		this.strategy = aCase.getStrategy();
+		this.img = aCase.getImg();
 		this.flag = aCase.getFlag();
 		this.run = aCase.getRun();
 		this.link = aCase.getLink();
@@ -168,6 +174,12 @@ public class ACase implements Serializable{
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	public Integer getFlag() {
 		return flag;
 	}
@@ -208,9 +220,9 @@ public class ACase implements Serializable{
 	@Override
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
-				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", flag="
-				+ flag + ", run=" + run + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
-				+ ", list=" + list + "]";
+				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", img=" + img
+				+ ", flag=" + flag + ", run=" + run + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + ", list=" + list + "]";
 	}
 
 }

@@ -17,6 +17,7 @@
 <link href="${pageContext.request.contextPath}/css/cdn/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Menu CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/plugins/bower_components/dropify/dist/css/dropify.min.css" rel="stylesheet" >
 <!-- animation CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/animate.css" rel="stylesheet">
 <!--alerts CSS -->
@@ -96,6 +97,7 @@
                   <div class="modal-body">
                     <form id="api-case-form" class="form-horizontal form-material">
                         <input type="hidden" id="api-case-id" name="api-case-id" value="">
+                        <input type="hidden" id="api-case-img-path" name="api-case-img-path" value="">
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否默认 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -200,6 +202,22 @@
 	                      </div>
 	                    </div>
 	                </form>
+	                <form id="api-case-img-form" class="form-horizontal form-material" action="${pageContext.request.contextPath}/api/case/fileUpload" method="POST" enctype="multipart/form-data">
+	                	<hr style="height:3px;border:none;border-top:3px dotted red;">
+	                	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>是否上传图片 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="col-sm-2 radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-img0" name="api-case-is-img" value="0" checked>否</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-is-img1" name="api-case-is-img" value="1">是 </label>
+                        	</div>
+                        	<label class="col-sm-7 text-info">(涉及图片上传接口)</label>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div id="imgDiv" class="col-md-12 m-b-20" style="width:100%;display: none"></div>
+	                    </div>
+	                </form>
                   </div>
                   <div class="modal-footer">
                   	<div id="msgDiv" class="alert alert-danger alert-dismissable text-center" style="display: none">
@@ -208,7 +226,7 @@
 						</button>
 						<span id="msg"></span>
 					</div>
-                    <button type="button" class="btn btn-primary waves-effect" onclick="apiCaseSave();">保存</button>
+                    <button type="button" class="btn btn-primary waves-effect" onclick="apiImgUploadSave();">保存</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
                   </div>
                 </div>
@@ -280,6 +298,7 @@
 <!-- Base -->
 <script src="${pageContext.request.contextPath}/js/base.js"></script>
 <script src="${pageContext.request.contextPath}/js/dateFormat.js"></script>
+<script src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -291,10 +310,13 @@
 <script src="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/eliteadmin/js/jasny-bootstrap.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/multiselect/js/jquery.multi-select.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<!-- jQuery file upload -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/dropify/dist/js/dropify.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
@@ -331,6 +353,28 @@
 		initApiCaseInterface($('#api-case-project').val(),null);
 		initApiCaseLink();
 	});
+	
+	var dropifyImg;
+	function initDestroy(file){
+		var f = "<input type='file' id='api-case-img' name='api-case-img' class='dropify' data-max-file-size='1M' data-default-file='" + file + "'/>";
+		$("#imgDiv").append(f);
+		$("#imgDiv").show();
+		dropifyImg = $('#api-case-img').dropify({
+			messages: {
+		        'default': '点击或拖拽文件到这里',
+		        'replace': '点击或拖拽文件到这里来替换文件',
+		        'remove':  '移除文件',
+		        'error':   '对不起，你上传的文件太大了',
+		    }
+	    });
+		dropifyImg = dropifyImg.data('dropify');
+	}
+	
+	function removeDestroy(){
+		$("#imgDiv").empty();
+		$("#imgDiv").hide();
+		dropifyImg = null;
+	}
 	
 	function initEvent(){
 		$("#api-case-project-s").change(function(){
@@ -370,6 +414,12 @@
 		});
 		$("#api-case-is-body1").change(function(){
 			$("#bodyDiv").show();
+		});
+		$("#api-case-is-img0").change(function(){
+			removeDestroy();
+		});
+		$("#api-case-is-img1").change(function(){
+			initDestroy("");
 		});
 		if(parseInt($('#api-case-count').val()) > 1){
 			$('.del-link-case').removeAttr("disabled");
@@ -520,6 +570,14 @@
   	      		$('#api-case-is-result0').prop("checked",true);
   	      		$("#resultDiv").hide();
   	      	}
+			if(c.img != null && c.img != ""){
+				$('#api-case-is-img1').prop("checked",true);
+				removeDestroy();
+				initDestroy(c.img);
+			}else{
+				$('#api-case-is-img0').prop("checked",true);
+				removeDestroy();
+  	      	}
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
@@ -550,6 +608,8 @@
 		$('#api-case-is-result0').prop("checked",true);
 		$('#api-case-result').val("");
 		$("#resultDiv").hide();
+		$('#api-case-is-img0').prop("checked",true);
+		removeDestroy();
 		initApiCaseProject(null);
     	initApiCaseVersion(null);
     	initApiCaseInterface($('#api-case-project').val(),null);
@@ -829,6 +889,32 @@
     			}
     		}
     	});
+	}
+	
+	function apiImgUploadSave(){
+		if(dropifyImg != null){
+			if(!dropifyImg.isImage()){
+				showMsgDiv("文件请选择图片！");
+			}
+			$.ajaxFileUpload({
+				type:"post",
+	      		url:"<%=request.getContextPath()%>/api/case/fileUpload",
+	      		secureuri:false,
+	      		fileElementId:'api-case-img',
+	      		dataType:'json',
+	      		success:function(data){
+	      			if(data.responseCode == "0000"){
+	      				$('#api-case-img-path').val(data.data);
+	      				apiCaseSave();
+	      			}else{
+	      				showMsgDiv(data.responseMsg);
+	      			}
+	      	    }
+			});
+		}else{
+			$('#api-case-img-path').val("");
+			apiCaseSave();
+		}
 	}
 	
 	function apiCaseSave(){
