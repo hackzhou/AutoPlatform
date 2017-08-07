@@ -143,7 +143,7 @@ public class ApiCaseController extends BaseController{
 				ACase tempCase = caseService.findById(Integer.parseInt(id));
 				if(tempCase != null){
 					String imgPath = tempCase.getImg();
-					if(imgPath != null && !imgPath.isEmpty() && (img == null || img.isEmpty())){
+					if(imgPath != null && !imgPath.isEmpty() && !imgPath.equals(img)){
 						delImg(imgPath);
 						logger.info("[Case]==>删除图片[img=" + imgPath + "]成功！");
 					}
