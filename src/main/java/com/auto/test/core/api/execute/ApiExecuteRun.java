@@ -178,7 +178,8 @@ public class ApiExecuteRun implements Runnable {
 			if(file.exists() && file.isFile()){
 				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, file);
 			}else{
-				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
+				logger.error("[案例][" + runid + "]==>文件不存在[" + img + "]");
+				throw new BusinessException("[案例][" + runid + "]==>文件不存在[" + img + "]");
 			}
 		}else{
 			result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
