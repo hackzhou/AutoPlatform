@@ -431,7 +431,6 @@
     function initApiTaskVersion(versionid){
     	$.ajax({
     		type:"get",
-    		async: false,
     		url:"<%=request.getContextPath()%>/api/version/list/data",
     		success:function(data){
     			if(data.responseCode == "0000"){
