@@ -1,5 +1,6 @@
 package com.auto.test.core.api.execute;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -156,9 +157,9 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId()));
+				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));
 			}
-			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId()));
+			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg()));
 		}
 	}
 	
@@ -169,9 +170,19 @@ public class ApiExecuteRun implements Runnable {
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid) throws Exception{
+	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid, String img) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
-		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
+		String result = "";
+		if(img != null && !img.isEmpty()){
+			File file = new File(img);
+			if(file.exists() && file.isFile()){
+				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, file);
+			}else{
+				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
+			}
+		}else{
+			result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
+		}
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}

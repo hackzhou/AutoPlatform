@@ -1,5 +1,6 @@
 package com.auto.test.core.api.http;
 
+import java.io.File;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public interface IApiSendMessage {
@@ -9,5 +10,7 @@ public interface IApiSendMessage {
 	String sendGet(CloseableHttpClient httpclient, String url, String author, String channel, String version) throws Exception;
 	
 	String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool) throws Exception;
+
+	String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool, File file) throws Exception;
 
 }
