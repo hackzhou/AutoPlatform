@@ -33,13 +33,13 @@ public class ApiTaskDao extends AbstractHibernateDao<ATask> implements IApiTaskD
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<ATask> findByVersion(Integer vid) {
-		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("projecto", new AVersion(vid))).list();
+		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("versiono", new AVersion(vid))).list();
 	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<ATask> findByAccount(Integer aid) {
-		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("projecto", new AAccount(aid))).list();
+		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("accounto", new AAccount(aid))).list();
 	}
 
 }
