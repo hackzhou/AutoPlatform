@@ -209,7 +209,7 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> fileUpload(HttpServletRequest request, @RequestParam("api-case-img") CommonsMultipartFile file) throws Exception {
 		if(file == null || file.isEmpty()){
-			return failedJson("上传文件为空！");
+			return failedJson("上传图片为空！");
 		}else{
 			OutputStream os = null;
 			InputStream inputStream = null;
@@ -219,7 +219,7 @@ public class ApiCaseController extends BaseController{
 			try {
 				File tempFile = new File(rootPath);
 				if(!tempFile.exists() && !tempFile.isDirectory()){
-					return failedJson("[Case]==>文件上传[" + fullPath + "]路径错误！");
+					return failedJson("[Case]==>图片上传[" + fullPath + "]路径错误！");
 				}
 				tempFile = new File(imgPath);
 				if(!tempFile.exists() && !tempFile.isDirectory()){

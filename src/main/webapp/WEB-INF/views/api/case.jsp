@@ -902,7 +902,7 @@
 	}
 	
 	function apiImgUploadSave(){
-		if(dropifyImg != null){
+		if(dropifyImg != null && dropifyImg.file != null && dropifyImg.file.object != null && dropifyImg.file.name != null){
 			if(!dropifyImg.isImage()){
 				showMsgDiv("文件请选择图片！");
 			}else{
