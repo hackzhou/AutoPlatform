@@ -39,6 +39,14 @@ public class ApiAccountController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/type={type}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllAccountDataByType(@PathVariable("type") String type) {
+		logger.info("[Account]==>获取所有测试账号数据！");
+		List<AAccount> list = accountService.findByTypeOrder(isNull(type) ? "0" : type);
+		return successJson(list);
+	}
+	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAccountById(@PathVariable("id") String id) {

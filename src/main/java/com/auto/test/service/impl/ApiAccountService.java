@@ -30,6 +30,11 @@ public class ApiAccountService implements IApiAccountService {
 	}
 	
 	@Override
+	public List<AAccount> findByTypeOrder(String type) {
+		return dao.findByTypeOrder(type);
+	}
+	
+	@Override
 	public AAccount findById(Integer id) {
 		return dao.findById(id);
 	}

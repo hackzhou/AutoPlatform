@@ -49,15 +49,18 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <!-- <div class="col-md-3">
+	              <div class="col-md-3">
 	                <div class="form-group">
-					  <label class="control-label col-md-2">Name:</label>
-					  <div class="col-md-9">
-	                    <input type="text" class="form-control" placeholder="name">
+					  <label class="control-label text-center col-md-2">类型：</label>
+					  <div class="col-md-10">
+	                    <select id="api-account-type-s" name="api-account-type-s" class="form-select" style="width: 80%;">
+	                      <option value="0" selected="selected">密码</option>
+		                  <option value="1">Token</option>
+	                    </select>
 					  </div>
 	                </div>
-	              </div> -->
-	              <div class="col-md-12">
+	              </div>
+	              <div class="col-md-9">
 	              	<!-- /.Create Account -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiAccountModal()" data-toggle="modal" data-target="#exampleModalAccount" data-whatever="@fat">添加账号</button>
@@ -182,7 +185,7 @@
 <script>
 
     $(document).ready(function(){
-    	createTable();
+    	createTable(null);
     	initEvent();
     	initPwd(null);
     });
@@ -195,6 +198,9 @@
     			initToken(null);
     		}
     	});
+    	$("#api-account-type-s").change(function(){
+    		createTable($(this).val());
+		});
     }
     
     function initPwd(text){
@@ -219,11 +225,11 @@
 		}
     }
 
-    function createTable() {
+    function createTable(type) {
     	$('#api-account-table').dataTable().fnDestroy();
     	$('#api-account-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/account/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/account/list/data/type=" + type,
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']

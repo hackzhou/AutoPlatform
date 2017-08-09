@@ -1,6 +1,7 @@
 package com.auto.test.dao.impl;
 
 import java.util.List;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.auto.test.common.dao.AbstractHibernateDao;
@@ -19,6 +20,12 @@ public class ApiAccountDao extends AbstractHibernateDao<AAccount> implements IAp
 	@Override
 	public List<AAccount> findByName(String name) {
 		return getCurrentSession().createCriteria(AAccount.class).add(Restrictions.eq("loginname", name)).list();
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<AAccount> findByTypeOrder(String type) {
+		return getCurrentSession().createCriteria(AAccount.class).add(Restrictions.eq("token", type)).addOrder(Order.desc("id")).list();
 	}
 
 }

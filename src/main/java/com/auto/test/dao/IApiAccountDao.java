@@ -8,4 +8,6 @@ public interface IApiAccountDao extends IBaseDao<AAccount> {
 
 	List<AAccount> findByName(String name);
 	
+	List<AAccount> findByTypeOrder(String type);
+	
 }
