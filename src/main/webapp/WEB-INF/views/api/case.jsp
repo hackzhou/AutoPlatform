@@ -581,7 +581,7 @@
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
-  	      	editApiCaseLink(c.link,c.id);
+  	      	editApiCaseLink(c.interfaceo.projecto.id,c.versiono.id,c.link,c.id);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -630,7 +630,7 @@
 		initApiCaseCase(pid,vid,1,null,null);
 	}
 	
-	function editApiCaseLink(link, myid){
+	function editApiCaseLink(pid, vid, link, myid){
 		var count = parseInt($('#api-case-count').val());
 		if(count > 1){
 			for (var i = 2; i <= count; i++) {
@@ -639,14 +639,14 @@
 		}
 		$('#api-case-count').val(1);
 		if(link == null || link == ""){
-			initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),1,null,myid);
+			initApiCaseCase(pid,vid,1,null,myid);
 		}else{
 			var arrlink = link.split(",");
 			for (var i = 1; i <= arrlink.length; i++) {
 				if(i != 1){
 					addApiCaseLink();
 				}
-				initApiCaseCase($('#api-case-project').val(),$('#api-case-version').val(),i,arrlink[i-1],myid);
+				initApiCaseCase(pid,vid,i,arrlink[i-1],myid);
 			}
 		}
 		if($('#api-case-count').val() == "1"){
