@@ -268,11 +268,11 @@
                   <th>ID</th>
                   <th>项目</th>
                   <th>版本</th>
-                  <th>地址</th>
-                  <th>名称<b class="text-info">（默认）</b></th>
+                  <th><b class='label label-danger'>地址</b></th>
+                  <th><b class='label label-inverse'>名称</b><b class='label label-info'>默认</b></th>
                   <th>请求体</th>
-                  <th>非验证点</th>
-                  <th>关联案例</th>
+                  <th><b class='label label-success'>非验证点</b></th>
+                  <th><b class='label label-warning'>关联案例</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -481,7 +481,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.flag == 0){
-							return data.name;
+							return "<lable class='text-inverse'>" + data.name + "</label>";
 						}
 						return "<lable class='text-info'>" + data.name + "</label>";
 					}

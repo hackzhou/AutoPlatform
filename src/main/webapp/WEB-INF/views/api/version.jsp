@@ -115,8 +115,8 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>版本</th>
-                  <th>渠道号</th>
+                  <th><b class='label label-inverse'>版本</b></th>
+                  <th><b class='label label-info'>渠道号</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>

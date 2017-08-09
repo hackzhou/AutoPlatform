@@ -93,15 +93,15 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>名称</th>
-                  <th>类型</th>
-                  <th>地址</th>
+                  <th><b class='label label-inverse'>名称</b></th>
+                  <th><b class='label label-warning'>类型</b></th>
+                  <th><b class='label label-danger'>地址</b></th>
                   <th>描述</th>
-                  <th>版本号</th>
-                  <th>渠道号</th>
-                  <th>测试账号</th>
+                  <th><b class='label label-inverse'>版本号</b></th>
+                  <th><b class='label label-info'>渠道号</b></th>
+                  <th><b class='label label-success'>测试账号</b></th>
                   <th>请求体</th>
-                  <th><b style='color:blue'>状态</b></th>
+                  <th><b class='label label-warning'>状态</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -176,7 +176,7 @@
 					}
 				},
 				{
-					"sWidth" : "14%",
+					"sWidth" : "12%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -185,7 +185,7 @@
 					}
 				},
 				{
-					"sWidth" : "3%",
+					"sWidth" : "5%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -212,7 +212,7 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "6%",
 					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -221,7 +221,7 @@
 					}
 				},
 				{
-					"sWidth" : "5%",
+					"sWidth" : "6%",
 					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",

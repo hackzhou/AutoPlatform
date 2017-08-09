@@ -54,11 +54,11 @@
                   <th>ID</th>
                   <th>项目</th>
                   <th>版本</th>
-                  <th>名称</th>
-                  <th>状态</th>
+                  <th><b class='label label-inverse'>名称</b></th>
+                  <th><b class='label label-warning'>状态</b></th>
                   <th>运行时长</th>
-                  <th><b style='color:green'>成功</b>/<b style='color:red'>失败</b>/<b style='color:blue'>总数</b></th>
-                  <th><b style='color:violet'>成功率</b></th>
+                  <th><b class='label label-success'>成功</b>/<b class='label label-red'>失败</b>/<b class='label label-info'>总数</b></th>
+                  <th><b class='label label-danger'>成功率</b></th>
                   <th>运行人</th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -131,7 +131,7 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "7%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -140,7 +140,7 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "7%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -190,14 +190,14 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "12%",
 					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var format = "<b style='color:green'>{0}</b>" + " / "
+						var format = "<b class='text-success'>{0}</b>" + " / "
 						+ "<b style='color:red'>{1}</b>" + " / "
-						+ "<b style='color:blue'>{2}</b>";
+						+ "<b class='text-info'>{2}</b>";
 						if("COMPLETE" == data.status){
 							return String.format(format, data.success, data.fail, data.total);
 						}else{

@@ -158,8 +158,8 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>名称</th>
-                  <th>地址</th>
+                  <th><b class='label label-inverse'>名称</b></th>
+                  <th><b class='label label-danger'>地址</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>

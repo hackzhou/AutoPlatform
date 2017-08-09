@@ -152,11 +152,11 @@
                   <th>ID</th>
                   <th>项目</th>
                   <th>版本</th>
-                  <th>测试账号</th>
-                  <th><b style='color:green'>是否运行</b></th>
-                  <th><b style='color:red'>触发时间</b></th>
+                  <th><b class='label label-inverse'>测试账号</b></th>
+                  <th><b class='label label-success'>是否运行</b></th>
+                  <th><b class='label label-red'>触发时间</b></th>
                   <th>创建人</th>
-                  <th>更新人</th>
+                  <th><b class='label label-info'>更新人</b></th>
                   <th>创建日期</th>
                   <th>操作</th>
                 </tr>

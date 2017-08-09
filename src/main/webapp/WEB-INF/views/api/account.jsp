@@ -133,9 +133,9 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>测试账号</th>
-                  <th><b style='color:green'>密码</b>/<b style='color:violet'>Token</b></th>
-                  <th><b style='color:blue'>类型</b></th>
+                  <th><b class='label label-inverse'>测试账号</b></th>
+                  <th><b class='label label-info'>密码</b>/<b class='label label-success'>Token</b></th>
+                  <th><b class='label label-warning'>类型</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -250,7 +250,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.loginname;
+						return "<b class='text-inverse'>" + data.loginname + "</b>";
 					}
 				},
 				{
@@ -260,9 +260,9 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.token == "0"){
-							return "<b style='color:green'>" + data.password + "</b>";
+							return "<b class='text-info'>" + data.password + "</b>";
 						}else if(data.token == "1"){
-							return "<b style='color:violet'>" + data.password.replace(/,/g, "<br/>") + "</b>";
+							return "<b class='text-success'>" + data.password.replace(/,/g, "<br/>") + "</b>";
 						}else{
 							return "-";
 						}
@@ -275,9 +275,9 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.token == "0"){
-							return "<b style='color:green'>密码</b>";
+							return "<b class='text-info'>密码</b>";
 						}else if(data.token == "1"){
-							return "<b style='color:violet'>Token</b>";
+							return "<b class='text-success'>Token</b>";
 						}else{
 							return "-";
 						}

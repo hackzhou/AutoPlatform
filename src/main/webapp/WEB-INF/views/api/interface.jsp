@@ -149,9 +149,9 @@
                 <tr>
                   <th>ID</th>
                   <th>项目</th>
-                  <th>名称</th>
-                  <th>类型</th>
-                  <th>地址</th>
+                  <th><b class='label label-inverse'>名称</b></th>
+                  <th><b class='label label-warning'>类型</b></th>
+                  <th><b class='label label-danger'>地址</b></th>
                   <th>描述</th>
                   <th>创建时间</th>
                   <th>操作</th>
