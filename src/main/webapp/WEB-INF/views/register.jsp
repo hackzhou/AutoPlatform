@@ -34,35 +34,35 @@
     <div class="white-box">
       <form class="form-horizontal form-material" id="registerform" action="${pageContext.request.contextPath}/user/register" method="post">
         <a href="javascript:void(0)" class="text-center db"><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-logo-dark.png" alt="Home" /><br/><img src="${pageContext.request.contextPath}/plugins/images/eliteadmin-text-dark.png" alt="Home" /></a> 
-        <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small> 
+        <h3 class="box-title m-t-40 m-b-0">立即注册</h3><small>创建您的帐户并欢迎您的加入</small> 
         <div class="form-group m-t-20">
           <div class="col-xs-12">
-            <input id="username" name="username" class="form-control" type="text" placeholder="Username">
+            <input id="username" name="username" class="form-control" type="text" placeholder="用户名">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input id="email" name="email" class="form-control" type="text" placeholder="Email">
+            <input id="email" name="email" class="form-control" type="text" placeholder="邮箱">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input id="password" name="password" class="form-control" type="password" placeholder="Password">
+            <input id="password" name="password" class="form-control" type="password" placeholder="密码">
           </div>
         </div>
         <div class="form-group">
           <div class="col-xs-12">
-            <input id="password2" name="password2" class="form-control" type="password" placeholder="Confirm Password">
+            <input id="password2" name="password2" class="form-control" type="password" placeholder="确认 密码">
           </div>
         </div>
         <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
-            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Sign Up</button>
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">注册</button>
           </div>
         </div>
         <div class="form-group m-b-0">
           <div class="col-sm-12 text-center">
-            <p>Already have an account? <a href="${pageContext.request.contextPath}/home/login" class="text-primary m-l-5"><b>Sign In</b></a></p>
+            <p>已经有账户了？ <a href="${pageContext.request.contextPath}/home/login" class="text-primary m-l-5"><b>登录</b></a></p>
           </div>
         </div>
         <div class="row">

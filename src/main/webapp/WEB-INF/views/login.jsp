@@ -37,12 +37,12 @@
         <input type="hidden" id="hiddenjump" name="hiddenjump" value="/home/index">
         <div class="form-group m-t-40">
           <div class="col-xs-12">
-            <input id="username" name="username" class="form-control" type="text" placeholder="Username">
+            <input id="username" name="username" class="form-control" type="text" placeholder="请输入用户名">
           </div>
         </div>
         <div class="form-group">
           <div class="col-xs-12">
-            <input id="password" name="password" class="form-control" type="password" placeholder="Password">
+            <input id="password" name="password" class="form-control" type="password" placeholder="请输入密码">
           </div>
         </div>
         <div class="form-group">
@@ -50,18 +50,18 @@
             <div class="checkbox checkbox-primary pull-left p-t-0">
               <input id="rememberme" name="rememberme" type="hidden" value="0">
               <input id="remember" name="remember" type="checkbox">
-              <label for="remember"> Remember me (ten days)</label>
+              <label for="remember"> 记住 (十天)</label>
             </div>
           </div>
         </div>
         <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
-            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" onclick="login();">Log In</button>
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" onclick="login();">登录</button>
           </div>
         </div>
         <div class="form-group m-b-0">
           <div class="col-sm-12 text-center">
-            <p>Don't have an account? <a href="${pageContext.request.contextPath}/home/register" class="text-primary m-l-5"><b>Sign Up</b></a></p>
+            <p>没有账户？ <a href="${pageContext.request.contextPath}/home/register" class="text-primary m-l-5"><b>注册</b></a></p>
           </div>
         </div>
         <div class="row">
