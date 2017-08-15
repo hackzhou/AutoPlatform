@@ -248,6 +248,18 @@
 	    <artifactId>java-client</artifactId>
 	    <version>4.1.2</version>
 	</dependency>
+	<!-- svnkit -->
+	<dependency>
+	    <groupId>org.tmatesoft.svnkit</groupId>
+	    <artifactId>svnkit</artifactId>
+	    <version>1.9.0</version>
+	</dependency>
+	<!-- commons -->
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-compress</artifactId>
+	    <version>1.14</version>
+	</dependency>
 	<!-- junit4 -->
     <dependency>
 	    <groupId>junit</groupId>

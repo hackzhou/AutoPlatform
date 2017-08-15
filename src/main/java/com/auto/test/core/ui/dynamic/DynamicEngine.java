@@ -47,7 +47,7 @@ public class DynamicEngine {
 		ClassFileManager fileManager = null;
 		DynamicClassLoader dynamicClassLoader = null;
 		try {
-			String path = Const.UI_CODE_PATH + File.separator + fullClassName;
+			String path = Const.PATH_UI_CODE + File.separator + fullClassName;
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 			fileManager = new ClassFileManager(compiler.getStandardFileManager(diagnostics, null, null));

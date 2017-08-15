@@ -68,7 +68,7 @@ public class UiCodeListController extends BaseController{
 		try {
 			UCode uCode = uiCodeService.findById(Integer.parseInt(id));
 			if(uCode != null){
-				new FileUtil().deleteDir(Const.UI_CODE_PATH + File.separator + uCode.getCls().replaceAll(".java", ""));
+				new FileUtil().deleteDir(Const.PATH_UI_CODE + File.separator + uCode.getCls().replaceAll(".java", ""));
 				uiCodeService.delete(Integer.parseInt(id));
 				logger.info("[CodeList]==>删除UI编码[id=" + id + "]成功！");
 			}

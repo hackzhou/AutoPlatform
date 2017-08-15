@@ -77,7 +77,7 @@ public class UiCodeController extends BaseController{
 			logger.info("[Code]==>Init:\r\n" + data.toString());
 			return successJson(data.toString());
 		}else{
-			String path = Const.UI_CODE_PATH + File.separator + cls;
+			String path = Const.PATH_UI_CODE + File.separator + cls;
 			String fileName = cls + ".java";
 			FileUtil fileUtil = new FileUtil();
 			File file = fileUtil.getFile(path, fileName);
@@ -103,7 +103,7 @@ public class UiCodeController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("ui-code-desc") String desc, @RequestParam("ui-code-devices") String devices, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
-		String path = Const.UI_CODE_PATH + File.separator + className;
+		String path = Const.PATH_UI_CODE + File.separator + className;
 		String fileName = className + ".java";
 		logger.info("[Code]==>Save[" + path + File.separator + fileName + "]\r\n" + code);
 		List<UCode> codeList = uiCodeService.findByCls(fileName);
@@ -134,7 +134,7 @@ public class UiCodeController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> runCode(HttpServletRequest request, @RequestParam("ui-code-devices") String devices, @RequestParam("ui-code-java") String code) {
 		String className = subStr(code, "class", "\\{");
-		String path = Const.UI_CODE_PATH + File.separator + className;
+		String path = Const.PATH_UI_CODE + File.separator + className;
 		String fileName = className + ".java";
 		FileUtil fileUtil = new FileUtil();
 		File file = fileUtil.getFile(path, fileName);
