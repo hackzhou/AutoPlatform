@@ -29,7 +29,7 @@
 			</li>
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs m-r-10">测试工具</b> </a>
 			<ul class="dropdown-menu dropdown-user animated flipInY">
-				<li><a href="#"><i class="ti-briefcase m-r-10"></i> 敬请期待</a></li>
+				<li><a href="${pageContext.request.contextPath}/tool/war/page"><i class="fa fa-rocket m-r-10"></i> 更新包(部署工具)</a></li>
 			</ul>
 			</li>
 		</ul>
