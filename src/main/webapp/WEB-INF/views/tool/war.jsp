@@ -76,7 +76,7 @@
 	                  <div class="form-group">
 	                  <label class="col-sm-3 text-center"><code>对比文件 <i class="fa fa-chevron-right text-info"></i></code></label>
 					  <div class="col-sm-9">
-	                    <select id="tool-war-type" name="tool-war-type" class="form-select" style="width: 90%;"></select>
+	                    <select id="tool-war-name" name="tool-war-name" class="form-select" style="width: 90%;"></select>
 					  </div>
 	                </div>
 	                </div>
@@ -129,6 +129,12 @@
 
 	$(document).ready(function(){
 		initToolWarType();
+		var msg = $('#msg').html();
+		if(msg != null && msg != ""){
+			showMsgDiv(msg);
+		}else{
+			hideMsgDiv();
+		}
 	});
 	
 	function initToolWarType(){
@@ -148,8 +154,8 @@
         					}
         				}
     				}
-    				$('#tool-war-type').empty();
-    				$('#tool-war-type').append(optionstring);
+    				$('#tool-war-name').empty();
+    				$('#tool-war-name').append(optionstring);
     			}else{
     				swal("错误!", data.responseMsg, "error");
     			}
@@ -159,11 +165,11 @@
 	
 	function toolWarRun(){
 		var ip = $('#tool-war-ip').val();
-		var type = $('#tool-war-type').val();
+		var name = $('#tool-war-name').val();
 		var filename = $('.fileinput-filename').html();
 		if(ip == null || ip.trim() == ""){
 			showMsgDiv("请选择服务器地址！");
-		}else if(type == null || type.trim() == ""){
+		}else if(name == null || name.trim() == ""){
 			showMsgDiv("请选择对比文件！");
 		}else if(filename == ""){
 			showMsgDiv("请选择War包！");
