@@ -58,50 +58,41 @@
           <div class="panel panel-info">
             <div class="panel-body">
 	          <div class="form-body">
-	            <div class="row">
-	              <div class="col-md-2 text-center">
-	                <div class="form-group">
-	                  <label class="col-sm-4 text-center"><code>服务器 <i class="fa fa-chevron-right text-info"></i></code></label>
-					  <div class="col-sm-8">
-	                    <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 90%;">
-			              <option value="192.168.101.181" selected="selected">192.168.101.181</option>
-			              <option value="192.168.101.182">192.168.101.182</option>
-					    </select>
+	            <form id="tool-war-form" action="${pageContext.request.contextPath}/tool/war/run" method="post" enctype="multipart/form-data">
+	              <div class="row">
+	                <div class="col-md-2 text-center">
+	                  <div class="form-group">
+	                    <label class="col-sm-4 text-center"><code>服务器 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-8">
+	                      <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 90%;">
+			                <option value="192.168.101.181" selected="selected">192.168.101.181</option>
+			                <option value="192.168.101.182">192.168.101.182</option>
+			                <option value="192.168.101.183">192.168.101.183</option>
+					      </select>
+					    </div>
+	                  </div>
+	                </div>
+	                <div class="col-md-3 text-center">
+	                  <div class="form-group">
+	                  <label class="col-sm-3 text-center"><code>对比文件 <i class="fa fa-chevron-right text-info"></i></code></label>
+					  <div class="col-sm-9">
+	                    <select id="tool-war-type" name="tool-war-type" class="form-select" style="width: 90%;"></select>
 					  </div>
 	                </div>
-	              </div>
-	              <div class="col-md-2 text-center">
-	                <div class="form-group">
-	                  <label class="col-sm-4 text-center"><code>类型 <i class="fa fa-chevron-right text-info"></i></code></label>
-					  <div class="col-sm-8">
-	                    <select id="tool-war-type" name="tool-war-type" class="form-select" style="width: 90%;">
-			              <option value="admin" selected="selected">admin</option>
-			              <option value="app">app</option>
-			              <option value="inventory">inventory</option>
-						  <option value="mall">mall</option>
-						  <option value="platform">platform</option>
-						  <option value="platms">platms</option>
-						  <option value="quoits">quoits</option>
-						  <option value="report">report</option>
-						  <option value="uic">uic</option>
-						  <option value="wars">wars</option>
-						  <option value="ring">ring</option>
-					    </select>
-					  </div>
+	                </div>
+	                <div class="col-md-5">
+	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+		                <span class="input-group-addon btn btn-warning btn-file"> <span class="fileinput-new">选择war包</span> <span class="fileinput-exists">重选</span>
+		                <input type="file" name="file">
+		                </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
+		                <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+		              </div>
+	                </div>
+	                <div class="col-md-2 text-center">
+	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
 	                </div>
 	              </div>
-	              <div class="col-md-6">
-	              	<div class="fileinput fileinput-new input-group" data-provides="fileinput">
-		              <span class="input-group-addon btn btn-warning btn-file"> <span class="fileinput-new">选择war包</span> <span class="fileinput-exists">重选</span>
-		              <input type="file" name="file">
-		              </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
-		              <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-		            </div>
-	              </div>
-	              <div class="col-md-2 text-center">
-	                <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
-	              </div>
-	            </div>
+	            </form>
 	          </div>
             </div>
           </div>
@@ -137,11 +128,60 @@
 <script>
 
 	$(document).ready(function(){
-		
+		initToolWarType();
 	});
 	
+	function initToolWarType(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/types",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(i == 0){
+        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+        					}
+        				}
+    				}
+    				$('#tool-war-type').empty();
+    				$('#tool-war-type').append(optionstring);
+    			}else{
+    				swal("错误!", data.responseMsg, "error");
+    			}
+    		}
+    	});
+    }
+	
 	function toolWarRun(){
-		showMsgDiv("XXXX");
+		var ip = $('#tool-war-ip').val();
+		var type = $('#tool-war-type').val();
+		var filename = $('.fileinput-filename').html();
+		if(ip == null || ip.trim() == ""){
+			showMsgDiv("请选择服务器地址！");
+		}else if(type == null || type.trim() == ""){
+			showMsgDiv("请选择对比文件！");
+		}else if(filename == ""){
+			showMsgDiv("请选择War包！");
+		}else if(!checkFiles(filename)){
+			showMsgDiv("选择文件不合法，文件的扩展名必须为.war！");
+		}else{
+			$('#tool-war-form').submit();
+		}
+	}
+	
+	function checkFiles(str){
+		var strRegex = "(.war)$";
+		var re = new RegExp(strRegex);
+		if (re.test(str.toLowerCase())){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 </script>

@@ -74,9 +74,9 @@ public class WarUtil {
 	}
 	
 	public String getWarFile(String warPath){
-		new FileUtil().deleteDir(Const.PATH_WAR_TEMP);
+		new FileUtil().deleteDir(Const.PATH_FILE_TEMP);
 		if(unzip(warPath)){
-			return readFile(Const.PATH_WAR_PROPERTIES);
+			return readFile(Const.PATH_FILE_PROPERTIES);
 		}
 		return null;
 	}
@@ -91,11 +91,11 @@ public class WarUtil {
 			JarArchiveEntry entry = null;
 			while ((entry = (JarArchiveEntry) in.getNextEntry()) != null) {
                 if (entry.isDirectory()) {
-                    new File(Const.PATH_WAR_TEMP, entry.getName()).mkdir();
+                    new File(Const.PATH_FILE_TEMP, entry.getName()).mkdirs();
                 } else {
                 	OutputStream out = null;
                 	try {
-                		out = FileUtils.openOutputStream(new File(Const.PATH_WAR_TEMP, entry.getName()));
+                		out = FileUtils.openOutputStream(new File(Const.PATH_FILE_TEMP, entry.getName()));
                         IOUtils.copy(in, out);
 					} finally {
 						if(out != null){

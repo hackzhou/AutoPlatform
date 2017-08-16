@@ -18,9 +18,11 @@ public class Const {
 	public static final String PATH_AUTO_PLATFORM		= System.getProperty("user.home") + File.separator + AUTO_PLATFORM;
 	public static final String PATH_UI_CODE				= PATH_AUTO_PLATFORM + File.separator + "code";
 	
-	public static final String PATH_WAR_TEMP			= PATH_AUTO_PLATFORM + File.separator + "war" + File.separator + "temp";
-	public static final String PATH_WAR_TEMP_CLASSES	= PATH_AUTO_PLATFORM + File.separator + "war" + File.separator + "temp" + File.separator + "WEB-INF" + File.separator + "classes";
-	public static final String PATH_WAR_PROPERTIES		= PATH_WAR_TEMP_CLASSES + File.separator + "application.properties";
+	public static final String PATH_FILE				= PATH_AUTO_PLATFORM + File.separator + "file";
+	public static final String PATH_FILE_WAR			= PATH_FILE + File.separator + "war";
+	public static final String PATH_FILE_TEMP			= PATH_FILE + File.separator + "temp";
+	public static final String PATH_FILE_TEMP_CLASSES	= PATH_FILE_TEMP + File.separator + "WEB-INF" + File.separator + "classes";
+	public static final String PATH_FILE_PROPERTIES		= PATH_FILE_TEMP_CLASSES + File.separator + "application.properties";
 	
 	public static final String DATE_FORAMT_1			= "yyyy-MM-dd HH:mm:ss";
 

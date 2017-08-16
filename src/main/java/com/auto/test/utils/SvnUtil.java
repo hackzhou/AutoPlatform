@@ -1,8 +1,14 @@
 package com.auto.test.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.io.ByteArrayOutputStream;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNProperties;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
@@ -23,7 +29,10 @@ public class SvnUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(new SvnUtil().getSvnFile("(app)application.properties"));
+//		System.out.println(new SvnUtil().getSvnFile("(app)application.properties"));
+		for (String string : new SvnUtil().getAllFileName()) {
+			System.out.println(string);
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -59,6 +68,24 @@ public class SvnUtil {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public List<String> getAllFileName(){
+		List<String> list = new ArrayList<String>();
+		try {
+			Collection<?> entries = repository.getDir("", -1, null, (Collection<?>)null);
+			Iterator<?> iterator = entries.iterator();
+			while (iterator.hasNext()){
+				SVNDirEntry entry = (SVNDirEntry)iterator.next();
+				if (entry.getKind() == SVNNodeKind.FILE) {
+					list.add(entry.getName());
+				}
+			}
+		} catch (SVNException e) {
+			throw new BusinessException("获取SVN服务器文件列表失败[" + SVN_LKCZ_QA + "][" + e.getMessage() + "]");
+		}
+		list.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		return list;
 	}
 
 }

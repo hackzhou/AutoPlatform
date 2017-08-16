@@ -1,15 +1,45 @@
 package com.auto.test.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
 public class FileUtil {
+	
+	public boolean writeFile(InputStream is, String path){
+		OutputStream output = null;
+		try {
+			output = new FileOutputStream(path);
+			byte[] buf = new byte[1024];
+			int bytesRead;        
+			while ((bytesRead = is.read(buf)) > 0) {
+				output.write(buf, 0, bytesRead);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(output != null){
+					output.close();
+				}
+				if(is != null){
+					is.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return false;
+	}
 	
 	public boolean writeJavaFile(String dirPath, String fileName, String source){
 		BufferedWriter bw = null;

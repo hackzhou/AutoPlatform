@@ -34,7 +34,7 @@ public class ApiUploadController extends BaseController{
 	
 	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
 	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws Exception {
-		if(file.isEmpty()){
+		if(file == null || file.isEmpty()){
 			logger.error("[Upload]==>批量导入接口[文件是空或者不存在！]");
 			return failMsg("文件是空或者不存在！", "api/setting");
 		}
