@@ -2,6 +2,7 @@ package com.auto.test.common.bean;
 
 public class SimpleJsonResult {
 	private boolean success;
+	private String name;
 	private Object data;
 	private String msg;
 
@@ -18,6 +19,12 @@ public class SimpleJsonResult {
 		this.msg = msg;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public boolean isSuccess() {
 		return success;
 	}
@@ -39,6 +46,6 @@ public class SimpleJsonResult {
 	
 	@Override
 	public String toString() {
-		return "SimpleJsonResult [success=" + success + ", data=" + data + ", msg=" + msg + "]";
+		return "SimpleJsonResult [success=" + success + ", name=" + name + ", data=" + data + ", msg=" + msg + "]";
 	}
 }

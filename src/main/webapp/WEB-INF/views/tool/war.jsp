@@ -88,7 +88,7 @@
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-4">
+	                <div class="col-md-3">
 	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
 		                <span class="input-group-addon btn btn-warning btn-file"> <span class="fileinput-new">选择war包</span> <span class="fileinput-exists">重选</span>
 		                <input type="file" name="file">
@@ -96,8 +96,11 @@
 		                <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 		              </div>
 	                </div>
-	                <div class="col-md-1 text-center">
+	                <div class="col-md-2 text-center">
+	                  <input type="hidden" id="tool-war-start-log-ip" name="tool-war-start-log-ip" value="">
+	                  <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
 	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
+	                  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-war-showlog"><span id="tool-war-showlog-span"></span></button>
 	                </div>
 	              </div>
 	            </form>
@@ -106,6 +109,18 @@
           </div>
         </div>
       </div>
+      <div class="row">
+	  	<div class="col-sm-12">
+	  	  <form class="form-horizontal">
+	  	  	<div class="form-group">
+              <label class="col-md-12">查看日志结果显示</label>
+              <div class="col-md-12">
+                <textarea id="tool-war-resultlog" class="form-control" rows="25"></textarea>
+              </div>
+            </div>
+	  	  </form>
+	  	</div>
+	  </div>
       <!-- /.container-fluid -->
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
     </div>
@@ -137,6 +152,7 @@
 
 	$(document).ready(function(){
 		initEvent();
+		initShowWarLog();
 		initToolWarType();
 		initToolWarServer(null);
 		var msg = $('#msg').html();
@@ -145,11 +161,28 @@
 		}else{
 			hideMsgDiv();
 		}
+		setInterval("readWarLog()", 5000);
 	});
 	
 	function initEvent(){
 		$("#tool-war-ip").change(function(){
 			initToolWarServer($(this).val());
+		});
+		$("#tool-war-showlog-span").html("启动查看日志");
+		$("#tool-war-showlog").click(function(){
+			if($("#tool-war-showlog-span").html() == "启动查看日志"){
+				$("#tool-war-showlog-span").html("停止查看日志");
+				$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
+				$("#tool-war-ip").prop("disabled", true);
+				$("#tool-war-server").prop("disabled", true);
+				startWarLog($("#tool-war-ip").val(), $("#tool-war-server").val());
+			}else{
+				$("#tool-war-showlog-span").html("启动查看日志");
+				$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
+				$("#tool-war-ip").prop("disabled", false);
+				$("#tool-war-server").prop("disabled", false);
+				stopWarLog();
+			}
 		});
 	}
 	
@@ -234,6 +267,99 @@
 			return true;
 		}else{
 			return false;
+		}
+	}
+	
+	function initShowWarLog(){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/log/isrun",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var result = data.data;
+    				if(result.success){
+    					$("#tool-war-ip").val(result.data);
+    					$("#tool-war-start-log-ip").val(result.data);
+    					$("#tool-war-start-log-server").val(result.name);
+    					initToolWarServer(result.name);
+    					$("#tool-war-showlog-span").html("停止查看日志");
+    					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
+    					$("#tool-war-ip").prop("disabled", true);
+    					$("#tool-war-server").prop("disabled", true);
+    				}
+    			}
+    		}
+    	});
+	}
+	
+	function startWarLog(ip, server){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/server=" + server + "/log/start",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var result = data.data;
+    				if(result.success){
+    					$("#tool-war-start-log-ip").val(ip);
+    					$("#tool-war-start-log-server").val(server);
+    				}else{
+    					showMsgDiv(result.msg);
+    				}
+    			}else{
+    				showMsgDiv(data.responseMsg);
+    			}
+    		}
+    	});
+	}
+	
+	function stopWarLog(){
+		var ip = $("#tool-war-start-log-ip").val();
+		if(ip == null || ip == ""){
+			ip = $("#tool-war-ip").val();
+		}
+		if(ip != null && ip != ""){
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/stop",
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				var result = data.data;
+	    				if(result.success){
+	    					$("#tool-war-start-log-ip").val("");
+	    					$("#tool-war-start-log-server").val("");
+	    					$("#tool-war-resultlog").val("");
+	    				}else{
+	    					showMsgDiv(result.msg);
+	    				}
+	    			}else{
+	    				showMsgDiv(data.responseMsg);
+	    			}
+	    		}
+	    	});
+		}else{
+			showMsgDiv("停止查看日志失败！");
+		}
+	}
+	
+	function readWarLog(){
+		var ip = $("#tool-war-start-log-ip").val();
+		if(ip != null && ip != ""){
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/read",
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				var result = data.data;
+	    				if(result.success){
+	    					$("#tool-war-resultlog").val(result.data);
+	    				}else{
+	    					showMsgDiv(result.msg);
+	    				}
+	    			}else{
+	    				showMsgDiv(data.responseMsg);
+	    			}
+	    		}
+	    	});
 		}
 	}
 

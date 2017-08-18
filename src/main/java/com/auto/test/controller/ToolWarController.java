@@ -30,6 +30,71 @@ public class ToolWarController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolWarController.class);
 	private static String WAR_PROJECT = "AutoTest";
 	private static Integer WAR_PORT = 8090;
+	private static String[] ipArr = {"192.168.101.181", "192.168.101.182", "192.168.101.184"};
+	
+	@RequestMapping(value = "/log/isrun", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogIsRun() {
+		String logIsRunUrl = "http://%s:" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/isrun";
+		HttpUtil hu = new HttpUtil();
+		SimpleJsonResult sjr = null;
+		for (String ip : ipArr) {
+			try {
+				logger.info("[War]==>获取服务查看日志是否开启[" + String.format(logIsRunUrl, ip) + "]");
+				sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(String.format(logIsRunUrl, ip)));
+				if(sjr.isSuccess()){
+					logger.error("[War]==>开启[" + String.format(logIsRunUrl, ip) + "]");
+					sjr.setData(ip);
+					return successJson(sjr);
+				}
+			} catch (Exception e) {
+				logger.error("[War]==>没有开启[" + String.format(logIsRunUrl, ip) + "]");
+			}
+		}
+		return failedJson();
+	}
+	
+	@RequestMapping(value = "/ip={ip}/server={server}/log/start", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogStart(@PathVariable("ip") String ip, @PathVariable("server") String server) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/server=" + server + "/start";
+		logger.info("[War]==>启动服务查看日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/ip={ip}/log/read", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogRead(@PathVariable("ip") String ip, @PathVariable("server") String server) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/read";
+		logger.info("[War]==>读取服务日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/ip={ip}/log/stop", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogStop(@PathVariable("ip") String ip, @PathVariable("server") String server) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/stop";
+		logger.info("[War]==>停止服务查看日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			return failedJson(e.getMessage());
+		}
+	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
@@ -52,12 +117,13 @@ public class ToolWarController extends BaseController{
 	@RequestMapping(value = "/ip={ip}/servers", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getToolWarServers(@PathVariable("ip") String ip) {
-		logger.info("[War]==>获取服务器[" + ip +"]所有服务数据！");
 		try {
 			ip = isNull(ip) ? "192.168.101.181" : ip;
+			String serverListStr = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT +"/rs/files/file/list";
+			logger.info("[War]==>获取服务器所有服务数据[" + serverListStr + "]");
 			HttpUtil hu = new HttpUtil();
 			if(hu.isAvailablePort(ip, WAR_PORT)){
-				SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet("http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT +"/rs/files/file/list"));
+				SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(serverListStr));
 				if(sjr.isSuccess()){
 					return successJson(sjr.getData());
 				}else{
