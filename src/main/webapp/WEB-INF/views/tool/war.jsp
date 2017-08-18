@@ -62,25 +62,33 @@
 	              <div class="row">
 	                <div class="col-md-2 text-center">
 	                  <div class="form-group">
-	                    <label class="col-sm-4 text-center"><code>服务器 <i class="fa fa-chevron-right text-info"></i></code></label>
+	                    <label class="col-sm-4 text-center"><code>服务器IP <i class="fa fa-chevron-right text-info"></i></code></label>
 					    <div class="col-sm-8">
-	                      <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 90%;">
+	                      <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 100%;">
 			                <option value="192.168.101.181" selected="selected">192.168.101.181</option>
 			                <option value="192.168.101.182">192.168.101.182</option>
-			                <option value="192.168.101.183">192.168.101.183</option>
+			                <option value="192.168.101.184">192.168.101.184</option>
 					      </select>
+					    </div>
+	                  </div>
+	                </div>
+	                <div class="col-md-2 text-center">
+	                  <div class="form-group">
+	                    <label class="col-sm-4 text-center"><code>部署服务 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-8">
+	                      <select id="tool-war-server" name="tool-war-server" class="form-select" style="width: 100%;"></select>
 					    </div>
 	                  </div>
 	                </div>
 	                <div class="col-md-3 text-center">
 	                  <div class="form-group">
-	                  <label class="col-sm-3 text-center"><code>对比文件 <i class="fa fa-chevron-right text-info"></i></code></label>
-					  <div class="col-sm-9">
-	                    <select id="tool-war-name" name="tool-war-name" class="form-select" style="width: 90%;"></select>
-					  </div>
+	                    <label class="col-sm-3 text-center"><code>对比文件 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-9">
+	                      <select id="tool-war-name" name="tool-war-name" class="form-select" style="width: 100%;"></select>
+					    </div>
+	                  </div>
 	                </div>
-	                </div>
-	                <div class="col-md-5">
+	                <div class="col-md-4">
 	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
 		                <span class="input-group-addon btn btn-warning btn-file"> <span class="fileinput-new">选择war包</span> <span class="fileinput-exists">重选</span>
 		                <input type="file" name="file">
@@ -88,7 +96,7 @@
 		                <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 		              </div>
 	                </div>
-	                <div class="col-md-2 text-center">
+	                <div class="col-md-1 text-center">
 	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
 	                </div>
 	              </div>
@@ -128,7 +136,9 @@
 <script>
 
 	$(document).ready(function(){
+		initEvent();
 		initToolWarType();
+		initToolWarServer(null);
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
@@ -136,6 +146,40 @@
 			hideMsgDiv();
 		}
 	});
+	
+	function initEvent(){
+		$("#tool-war-ip").change(function(){
+			initToolWarServer($(this).val());
+		});
+	}
+	
+	function initToolWarServer(ip){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/servers",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				hideMsgDiv();
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(i == 0){
+        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+        					}
+        				}
+    				}
+    				$('#tool-war-server').empty();
+    				$('#tool-war-server').append(optionstring);
+    			}else{
+    				$('#tool-war-server').empty();
+    				showMsgDiv(data.responseMsg);
+    			}
+    		}
+    	});
+	}
 	
 	function initToolWarType(){
     	$.ajax({
@@ -157,7 +201,7 @@
     				$('#tool-war-name').empty();
     				$('#tool-war-name').append(optionstring);
     			}else{
-    				swal("错误!", data.responseMsg, "error");
+    				showMsgDiv(data.responseMsg);
     			}
     		}
     	});
@@ -165,10 +209,13 @@
 	
 	function toolWarRun(){
 		var ip = $('#tool-war-ip').val();
+		var server = $('#tool-war-server').val();
 		var name = $('#tool-war-name').val();
 		var filename = $('.fileinput-filename').html();
 		if(ip == null || ip.trim() == ""){
 			showMsgDiv("请选择服务器地址！");
+		}else if(server == null || server.trim() == ""){
+			showMsgDiv("请选择部署服务！");
 		}else if(name == null || name.trim() == ""){
 			showMsgDiv("请选择对比文件！");
 		}else if(filename == ""){

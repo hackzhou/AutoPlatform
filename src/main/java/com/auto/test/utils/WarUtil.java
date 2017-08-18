@@ -25,10 +25,13 @@ import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.exception.BusinessException;
 
 public class WarUtil {
+	private static Logger logger = LoggerFactory.getLogger(WarUtil.class);
 	
 	public static void main(String[] args) {
 		WarUtil war = new WarUtil();
@@ -40,8 +43,11 @@ public class WarUtil {
 		Properties p1 = getProperties(svnText);
 		Properties p2 = getProperties(getWarFile(Const.PATH_FILE_WAR + File.separator + warName));
 		boolean bool = isSetEqual(p1.keySet(), p2.keySet());
+		logger.info("application.properties文件对比结果[" + bool + "]");
 		if(bool){
+			logger.info("application.properties文件覆盖[" + Const.PATH_FILE_PROPERTIES + "]");
 			if(writeFile(Const.PATH_FILE_PROPERTIES, svnText)){
+				logger.info("压缩war包[" + Const.PATH_FILE + File.separator + warName + "]");
 				zip(Const.PATH_FILE + File.separator + warName, Const.PATH_FILE_TEMP);
 			}
 		}
@@ -70,6 +76,7 @@ public class WarUtil {
 			pps.load(is);
 			return pps;
 		} catch (IOException e) {
+			logger.error("properties文件解析失败[" + e.getMessage() + "]");
 			throw new BusinessException("properties文件解析失败[" + e.getMessage() + "]");
 		} finally {
 			try {
@@ -115,11 +122,14 @@ public class WarUtil {
             }
 			return true;
 		} catch (FileNotFoundException e1) {
-			throw new BusinessException("未找到war文件[" + warPath + "][" + e1.getMessage() + "]");
+			logger.error("解压时未找到war文件[" + warPath + "][" + e1.getMessage() + "]");
+			throw new BusinessException("解压时未找到war文件[" + warPath + "][" + e1.getMessage() + "]");
         } catch (ArchiveException e2) {
-        	throw new BusinessException("不支持的压缩格式[" + warPath + "][" + e2.getMessage() + "]");
+        	logger.error("解压时不支持的压缩格式[" + warPath + "][" + e2.getMessage() + "]");
+        	throw new BusinessException("解压时不支持的压缩格式[" + warPath + "][" + e2.getMessage() + "]");
         } catch (IOException e3) {
-        	throw new BusinessException("文件写入发生错误[" + warPath + "][" + e3.getMessage() + "]");
+        	logger.error("解压时文件写入发生错误[" + warPath + "][" + e3.getMessage() + "]");
+        	throw new BusinessException("解压时文件写入发生错误[" + warPath + "][" + e3.getMessage() + "]");
         } finally {
         	try {
         		if(in != null){
@@ -156,9 +166,11 @@ public class WarUtil {
 			out.finish();
 			return true;
 		} catch (IOException e1) {
-			throw new BusinessException("创建文件失败[" + destFile + "][" + e1.getMessage() + "]");
+			logger.error("压缩时创建文件失败[" + destFile + "][" + e1.getMessage() + "]");
+			throw new BusinessException("压缩时创建文件失败[" + destFile + "][" + e1.getMessage() + "]");
 		} catch (ArchiveException e2) {
-			throw new BusinessException("不支持的压缩格式[" + destFile + "][" + e2.getMessage() + "]");
+			logger.error("压缩时不支持的压缩格式[" + destFile + "][" + e2.getMessage() + "]");
+			throw new BusinessException("压缩时不支持的压缩格式[" + destFile + "][" + e2.getMessage() + "]");
 		} finally {
 			try {
         		if(out != null){
@@ -197,7 +209,8 @@ public class WarUtil {
 				}
 			}
 		}else{
-			throw new BusinessException("未找到application.properties文件[" + path + "]");
+			logger.error("未找到war包下的application.properties文件[" + path + "]");
+			throw new BusinessException("未找到war包下的application.properties文件[" + path + "]");
 		}
 		return null;
 	}
@@ -214,7 +227,8 @@ public class WarUtil {
 			bw.flush();
 			return true;
 		} catch (Exception e) {
-			throw new BusinessException("svn的application.properties文件内容写入war失败[" + e.getMessage() + "]");
+			logger.error("svn的application.properties文件内容写入war包失败[" + e.getMessage() + "]");
+			throw new BusinessException("svn的application.properties文件内容写入war包失败[" + e.getMessage() + "]");
 		} finally {
 			try {
 				if(bw != null){

@@ -2,6 +2,9 @@ package com.auto.test.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,6 +24,7 @@ import com.auto.test.common.exception.BusinessException;
 public class HttpUtil {
 	
 	public static void main(String[] args) {
+		System.out.println(new HttpUtil().isAvailablePort("192.168.101.182", 8090));
 	}
 
 	public String sendGet(String url){
@@ -120,5 +124,19 @@ public class HttpUtil {
 	public <T> T json2JavaBean(Class<T> c, String text){
 		return JSON.parseObject(text, c);
 	}
+	
+	@SuppressWarnings("resource")
+	public boolean isAvailablePort(String host, int port){
+		boolean flag = false;
+        try {
+        	InetAddress theAddress = InetAddress.getByName(host);
+        	new Socket(theAddress, port);
+        	flag = true;
+        } catch (UnknownHostException e) {
+        	throw new BusinessException("服务器访问地址不通[" + host + "]");
+		} catch (IOException e) {
+        }
+        return flag;
+    }
 	
 }
