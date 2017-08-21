@@ -150,8 +150,6 @@
 		initEvent();
 		initShowWarLog();
 		initToolWarType();
-		initToolWarIP(null);
-		initToolWarServer(null);
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
@@ -163,7 +161,7 @@
 	
 	function initEvent(){
 		$("#tool-war-ip").change(function(){
-			initToolWarServer($(this).val());
+			initToolWarServer($(this).val(), null);
 		});
 		$("#tool-war-showlog-span").html("启动查看日志");
 		$("#tool-war-showlog").click(function(){
@@ -219,7 +217,7 @@
     	});
 	}
 	
-	function initToolWarServer(ip){
+	function initToolWarServer(ip, server){
 		$.ajax({
     		type:"get",
     		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/servers",
@@ -230,7 +228,7 @@
     				var list = data.data;
     				if(list != null){
     					for(var i = 0; i < list.length; i++){
-        					if(i == 0){
+        					if(server == list[i] || i == 0){
         						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
         					}else{
     	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
@@ -267,6 +265,7 @@
     				$('#tool-war-name').empty();
     				$('#tool-war-name').append(optionstring);
     			}else{
+    				$('#tool-war-name').empty();
     				showMsgDiv(data.responseMsg);
     			}
     		}
@@ -327,18 +326,31 @@
     		type:"get",
     		url:"<%=request.getContextPath()%>/tool/war/log/isrun",
     		success:function(data){
+    			var bool = true;
     			if(data.responseCode == "0000"){
     				var result = data.data;
     				if(result.success){
     					$("#tool-war-start-log-ip").val(result.data);
     					$("#tool-war-start-log-server").val(result.name);
     					initToolWarIP(result.data);
-    					initToolWarServer(result.data);
+    					initToolWarServer(result.data, result.name);
     					$("#tool-war-showlog-span").html("停止查看日志");
     					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
     					$("#tool-war-ip").prop("disabled", true);
     					$("#tool-war-server").prop("disabled", true);
+    					bool = false;
     				}
+    			}
+    			if(bool){
+    				$("#tool-war-start-log-ip").val("");
+					$("#tool-war-start-log-server").val("");
+					initToolWarIP(null);
+					initToolWarServer(null, null);
+					$("#tool-war-showlog-span").html("启动查看日志");
+					$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
+					$("#tool-war-ip").prop("disabled", false);
+					$("#tool-war-server").prop("disabled", false);
+					stopWarLog();
     			}
     		}
     	});
