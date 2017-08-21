@@ -168,11 +168,19 @@
 		$("#tool-war-showlog-span").html("启动查看日志");
 		$("#tool-war-showlog").click(function(){
 			if($("#tool-war-showlog-span").html() == "启动查看日志"){
-				$("#tool-war-showlog-span").html("停止查看日志");
-				$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
-				$("#tool-war-ip").prop("disabled", true);
-				$("#tool-war-server").prop("disabled", true);
-				startWarLog($("#tool-war-ip").val(), $("#tool-war-server").val());
+				var ip = $('#tool-war-ip').val();
+				var server = $('#tool-war-server').val();
+				if(ip == null || ip.trim() == ""){
+					showMsgDiv("请选择服务器地址！");
+				}else if(server == null || server.trim() == ""){
+					showMsgDiv("请选择部署服务！");
+				}else{
+					$("#tool-war-showlog-span").html("停止查看日志");
+					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
+					$("#tool-war-ip").prop("disabled", true);
+					$("#tool-war-server").prop("disabled", true);
+					startWarLog(ip, server);
+				}
 			}else{
 				$("#tool-war-showlog-span").html("启动查看日志");
 				$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
@@ -266,23 +274,42 @@
     }
 	
 	function toolWarRun(){
-		var ip = $('#tool-war-ip').val();
-		var server = $('#tool-war-server').val();
-		var name = $('#tool-war-name').val();
-		var filename = $('.fileinput-filename').html();
-		if(ip == null || ip.trim() == ""){
-			showMsgDiv("请选择服务器地址！");
-		}else if(server == null || server.trim() == ""){
-			showMsgDiv("请选择部署服务！");
-		}else if(name == null || name.trim() == ""){
-			showMsgDiv("请选择对比文件！");
-		}else if(filename == ""){
-			showMsgDiv("请选择War包！");
-		}else if(!checkFiles(filename)){
-			showMsgDiv("选择文件不合法，文件的扩展名必须为.war！");
-		}else{
-			$('#tool-war-form').submit();
-		}
+		swal({
+			title: "你确定部署吗？",
+			text: "请检查相关请求参数，谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定，部署！",
+			cancelButtonText: "取消",
+			closeOnConfirm: true
+		}, function(){
+			var ip = $('#tool-war-ip').val();
+			var server = $('#tool-war-server').val();
+			var name = $('#tool-war-name').val();
+			var filename = $('.fileinput-filename').html();
+			if(ip == null || ip.trim() == ""){
+				showMsgDiv("请选择服务器地址！");
+			}else if(server == null || server.trim() == ""){
+				showMsgDiv("请选择部署服务！");
+			}else if(name == null || name.trim() == ""){
+				showMsgDiv("请选择对比文件！");
+			}else if(filename == ""){
+				showMsgDiv("请选择War包！");
+			}else if(!checkFiles(filename)){
+				showMsgDiv("选择文件不合法，文件的扩展名必须为.war！");
+			}else{
+				hideMsgDiv();
+				if($("#tool-war-showlog-span").html() == "启动查看日志"){
+					$("#tool-war-showlog-span").html("停止查看日志");
+					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
+					$("#tool-war-ip").prop("disabled", true);
+					$("#tool-war-server").prop("disabled", true);
+					startWarLog($("#tool-war-ip").val(), $("#tool-war-server").val());
+				}
+				$('#tool-war-form').submit();
+			}
+		});
 	}
 	
 	function checkFiles(str){
