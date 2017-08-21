@@ -52,6 +52,16 @@
 			</div>
 		</div>
 	  </div>
+	  <div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+			<div id="msgDiv2" class="alert alert-danger alert-dismissable" style="display: none">
+				<button type="button" class="close" aria-hidden="true">
+					&times;
+				</button>
+				<span id="msg2">${msg2}</span>
+			</div>
+		</div>
+	  </div>
       <!-- /row -->
       <div class="row">
         <div class="col-md-12">
@@ -93,8 +103,6 @@
 		              </div>
 	                </div>
 	                <div class="col-md-2 text-center">
-	                  <input type="hidden" id="tool-war-start-log-ip" name="tool-war-start-log-ip" value="">
-	                  <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
 	                  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-war-showlog"><span id="tool-war-showlog-span"></span></button>
 	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
 	                </div>
@@ -109,6 +117,8 @@
 	  	<div class="col-sm-12">
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
+	  	  	  <input type="hidden" id="tool-war-start-log-ip" name="tool-war-start-log-ip" value="">
+	          <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
                 <textarea id="tool-war-resultlog" class="form-control" rows="25"></textarea>
@@ -147,15 +157,15 @@
 <script>
 
 	$(document).ready(function(){
-		initEvent();
-		initShowWarLog();
-		initToolWarType();
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
 		}else{
 			hideMsgDiv();
 		}
+		initEvent();
+		initShowWarLog();
+		initToolWarType();
 		setInterval("readWarLog()", 5000);
 	});
 	
@@ -169,9 +179,9 @@
 				var ip = $('#tool-war-ip').val();
 				var server = $('#tool-war-server').val();
 				if(ip == null || ip.trim() == ""){
-					showMsgDiv("请选择服务器地址！");
+					showMsgDiv2("请选择服务器地址！");
 				}else if(server == null || server.trim() == ""){
-					showMsgDiv("请选择部署服务！");
+					showMsgDiv2("请选择部署服务！");
 				}else{
 					$("#tool-war-showlog-span").html("停止查看日志");
 					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
@@ -187,6 +197,11 @@
 				stopWarLog();
 			}
 		});
+		
+		$(".close").click(function(){
+			hideMsgDiv();
+			hideMsgDiv2();
+		});
 	}
 	
 	function initToolWarIP(ip){
@@ -195,7 +210,7 @@
     		url:"<%=request.getContextPath()%>/tool/war/ips",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				hideMsgDiv();
+    				hideMsgDiv2();
     				var optionstring = "";
     				var list = data.data;
     				if(list != null){
@@ -211,7 +226,7 @@
     				$('#tool-war-ip').append(optionstring);
     			}else{
     				$('#tool-war-ip').empty();
-    				showMsgDiv(data.responseMsg);
+    				showMsgDiv2(data.responseMsg);
     			}
     		}
     	});
@@ -223,7 +238,7 @@
     		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/servers",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				hideMsgDiv();
+    				hideMsgDiv2();
     				var optionstring = "";
     				var list = data.data;
     				if(list != null){
@@ -239,7 +254,7 @@
     				$('#tool-war-server').append(optionstring);
     			}else{
     				$('#tool-war-server').empty();
-    				showMsgDiv(data.responseMsg);
+    				showMsgDiv2(data.responseMsg);
     			}
     		}
     	});
@@ -266,7 +281,7 @@
     				$('#tool-war-name').append(optionstring);
     			}else{
     				$('#tool-war-name').empty();
-    				showMsgDiv(data.responseMsg);
+    				showMsgDiv2(data.responseMsg);
     			}
     		}
     	});
@@ -288,25 +303,25 @@
 			var name = $('#tool-war-name').val();
 			var filename = $('.fileinput-filename').html();
 			if(ip == null || ip.trim() == ""){
-				showMsgDiv("请选择服务器地址！");
+				showMsgDiv2("请选择服务器地址！");
 			}else if(server == null || server.trim() == ""){
-				showMsgDiv("请选择部署服务！");
+				showMsgDiv2("请选择部署服务！");
 			}else if(name == null || name.trim() == ""){
-				showMsgDiv("请选择对比文件！");
+				showMsgDiv2("请选择对比文件！");
 			}else if(filename == ""){
-				showMsgDiv("请选择War包！");
+				showMsgDiv2("请选择War包！");
 			}else if(!checkFiles(filename)){
-				showMsgDiv("选择文件不合法，文件的扩展名必须为.war！");
+				showMsgDiv2("选择文件不合法，文件的扩展名必须为.war！");
 			}else{
-				hideMsgDiv();
+				hideMsgDiv2();
+				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
 					$("#tool-war-showlog-span").html("停止查看日志");
 					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
 					$("#tool-war-ip").prop("disabled", true);
 					$("#tool-war-server").prop("disabled", true);
-					startWarLog($("#tool-war-ip").val(), $("#tool-war-server").val());
+					startWarLog(ip, server);
 				}
-				$('#tool-war-form').submit();
 			}
 		});
 	}
@@ -367,10 +382,10 @@
     					$("#tool-war-start-log-ip").val(ip);
     					$("#tool-war-start-log-server").val(server);
     				}else{
-    					showMsgDiv(result.msg);
+    					showMsgDiv2(result.msg);
     				}
     			}else{
-    				showMsgDiv(data.responseMsg);
+    				showMsgDiv2(data.responseMsg);
     			}
     		}
     	});
@@ -393,15 +408,15 @@
 	    					$("#tool-war-start-log-server").val("");
 	    					$("#tool-war-resultlog").val("");
 	    				}else{
-	    					showMsgDiv(result.msg);
+	    					showMsgDiv2(result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv(data.responseMsg);
+	    				showMsgDiv2(data.responseMsg);
 	    			}
 	    		}
 	    	});
 		}else{
-			showMsgDiv("停止查看日志失败！");
+			showMsgDiv2("停止查看日志失败！");
 		}
 	}
 	
@@ -417,10 +432,10 @@
 	    				if(result.success){
 	    					$("#tool-war-resultlog").val(result.data);
 	    				}else{
-	    					showMsgDiv(result.msg);
+	    					showMsgDiv2(result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv(data.responseMsg);
+	    				showMsgDiv2(data.responseMsg);
 	    			}
 	    		}
 	    	});

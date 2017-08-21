@@ -125,6 +125,17 @@ function hideMsgDiv(){
 	$("#msgDiv").hide();
 }
 
+function showMsgDiv2(msgStr){
+	if(msgStr != ""){
+		$("#msgDiv2").show();
+		$("#msg2").html(msgStr);
+	}
+}
+
+function hideMsgDiv2(){
+	$("#msgDiv2").hide();
+}
+
 function getCountByString(text, str){
 	var regex = new RegExp(str, 'g');
 	var result = text.match(regex);
