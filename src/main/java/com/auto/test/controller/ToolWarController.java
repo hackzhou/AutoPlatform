@@ -2,6 +2,7 @@ package com.auto.test.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -28,88 +29,37 @@ import com.auto.test.utils.WarUtil;
 @RequestMapping(value = "tool/war")
 public class ToolWarController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolWarController.class);
-	private static String WAR_PROJECT = "AutoTest";
 	private static Integer WAR_PORT = 8090;
-	private static String[] ipArr = {"192.168.101.181", "192.168.101.182", "192.168.101.184"};
+	private static String WAR_PROJECT = "AutoTest";
+	private static String[] IP_ARR = {"192.168.101.181", "192.168.101.182", "192.168.101.184"};
 	
-	@RequestMapping(value = "/log/isrun", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getToolWarLogIsRun() {
-		String logIsRunUrl = "http://%s:" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/isrun";
-		HttpUtil hu = new HttpUtil();
-		SimpleJsonResult sjr = null;
-		for (String ip : ipArr) {
-			try {
-				logger.info("[War]==>获取服务查看日志是否开启[" + String.format(logIsRunUrl, ip) + "]");
-				sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(String.format(logIsRunUrl, ip)));
-				if(sjr.isSuccess()){
-					logger.error("[War]==>开启[" + String.format(logIsRunUrl, ip) + "]");
-					sjr.setData(ip);
-					return successJson(sjr);
-				}
-			} catch (Exception e) {
-				logger.error("[War]==>没有开启[" + String.format(logIsRunUrl, ip) + "]");
-			}
-		}
-		return failedJson();
-	}
-	
-	@RequestMapping(value = "/ip={ip}/server={server}/log/start", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getToolWarLogStart(@PathVariable("ip") String ip, @PathVariable("server") String server) {
-		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/server=" + server + "/start";
-		logger.info("[War]==>启动服务查看日志[" + logIsRunUrl + "]");
-		try {
-			HttpUtil hu = new HttpUtil();
-			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
-			return successJson(sjr);
-		} catch (Exception e) {
-			return failedJson(e.getMessage());
-		}
-	}
-	
-	@RequestMapping(value = "/ip={ip}/log/read", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getToolWarLogRead(@PathVariable("ip") String ip, @PathVariable("server") String server) {
-		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/read";
-		logger.info("[War]==>读取服务日志[" + logIsRunUrl + "]");
-		try {
-			HttpUtil hu = new HttpUtil();
-			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
-			return successJson(sjr);
-		} catch (Exception e) {
-			return failedJson(e.getMessage());
-		}
-	}
-	
-	@RequestMapping(value = "/ip={ip}/log/stop", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getToolWarLogStop(@PathVariable("ip") String ip, @PathVariable("server") String server) {
-		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/stop";
-		logger.info("[War]==>停止服务查看日志[" + logIsRunUrl + "]");
-		try {
-			HttpUtil hu = new HttpUtil();
-			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
-			return successJson(sjr);
-		} catch (Exception e) {
-			return failedJson(e.getMessage());
-		}
-	}
-
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
 		logger.info("[War]==>请求页面[tool/war],登录用户[" + getCurrentUserName(request) + "]");
 		return success("tool/war", getCurrentUserName(request));
 	}
 	
+	@RequestMapping(value = "/ips", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarIPs() {
+		logger.info("[War]==>获取所有SVN服务器IP列表数据！");
+		try {
+			return successJson(getAvailableServer(IP_ARR));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
+	}
+	
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getToolWarTypes() {
-		logger.info("[War]==>获取所有SVN列表数据！");
+		logger.info("[War]==>获取所有SVN对比文件列表数据！");
 		try {
 			List<String> list = new SvnUtil().getAllFileName();
 			return successJson(list);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
 	}
@@ -118,21 +68,27 @@ public class ToolWarController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getToolWarServers(@PathVariable("ip") String ip) {
 		try {
-			ip = isNull(ip) ? "192.168.101.181" : ip;
-			String serverListStr = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT +"/rs/files/file/list";
-			logger.info("[War]==>获取服务器所有服务数据[" + serverListStr + "]");
-			HttpUtil hu = new HttpUtil();
-			if(hu.isAvailablePort(ip, WAR_PORT)){
-				SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(serverListStr));
-				if(sjr.isSuccess()){
-					return successJson(sjr.getData());
+			List<String> ipList = getAvailableServer(IP_ARR);
+			if(ipList != null && !ipList.isEmpty()){
+				ip = isNull(ip) ? ipList.get(0) : ip;
+				String serverListStr = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT +"/rs/files/file/list";
+				logger.info("[War]==>获取服务器所有部署服务数据[" + serverListStr + "]");
+				HttpUtil hu = new HttpUtil();
+				if(ipList.contains(ip)){
+					SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(serverListStr));
+					if(sjr.isSuccess()){
+						return successJson(sjr.getData());
+					}else{
+						return failedJson(sjr.getMsg());
+					}
 				}else{
-					return failedJson(sjr.getMsg());
+					return failedJson("服务未启动[" + ip +":" + WAR_PORT + "][" + WAR_PROJECT +"]");
 				}
 			}else{
-				return failedJson("服务未启动[" + ip +":" + WAR_PORT + "][" + WAR_PROJECT +"]");
+				return failedJson("没有可用服务器！");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return failedJson("服务错误[" + ip + "][" + e.getMessage() + "]");
 		}
 	}
@@ -161,6 +117,7 @@ public class ToolWarController extends BaseController{
 			restartServer(ip, server, file.getOriginalFilename());
 			return success("redirect:/tool/war/page", getCurrentUserName(request));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return failMsg(e.getMessage(), "tool/war");
 		}
 	}
@@ -229,5 +186,93 @@ public class ToolWarController extends BaseController{
 		logger.info("[War]==>复制文件[" + Const.PATH_FILE_WAR + File.separator + file.getOriginalFilename() + "]");
 		tmpFile = new File(Const.PATH_FILE_WAR + File.separator + file.getOriginalFilename());
 		file.transferTo(tmpFile);
+	}
+	
+	@RequestMapping(value = "/log/isrun", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogIsRun() {
+		String logIsRunUrl = "http://%s:" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/isrun";
+		HttpUtil hu = new HttpUtil();
+		SimpleJsonResult sjr = null;
+		List<String> ipList = getAvailableServer(IP_ARR);
+		if(ipList != null && !ipList.isEmpty()){
+			for (String ip : ipList) {
+				try {
+					logger.info("[War]==>获取服务查看日志是否开启[" + String.format(logIsRunUrl, ip) + "]");
+					sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(String.format(logIsRunUrl, ip)));
+					if(sjr.isSuccess()){
+						logger.error("[War]==>开启[" + String.format(logIsRunUrl, ip) + "]");
+						sjr.setData(ip);
+						return successJson(sjr);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("[War]==>没有开启[" + String.format(logIsRunUrl, ip) + "]");
+				}
+			}
+		}
+		return failedJson();
+	}
+	
+	@RequestMapping(value = "/ip={ip}/server={server}/log/start", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogStart(@PathVariable("ip") String ip, @PathVariable("server") String server) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/server=" + server + "/start";
+		logger.info("[War]==>启动服务查看日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/ip={ip}/log/read", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogRead(@PathVariable("ip") String ip) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/read";
+		logger.info("[War]==>读取服务日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/ip={ip}/log/stop", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarLogStop(@PathVariable("ip") String ip) {
+		String logIsRunUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/stop";
+		logger.info("[War]==>停止服务查看日志[" + logIsRunUrl + "]");
+		try {
+			HttpUtil hu = new HttpUtil();
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			return successJson(sjr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	private List<String> getAvailableServer(String[] arr){
+		if(arr != null && arr.length > 0){
+			List<String> list = new ArrayList<String>();
+			HttpUtil hu = new HttpUtil();
+			for (String ip : arr) {
+				try {
+					if(hu.isAvailablePort(ip, WAR_PORT)){
+						list.add(ip);
+					}
+				} catch (Exception e) {
+				}
+			}
+			return list;
+		}
+		return null;
 	}
 }

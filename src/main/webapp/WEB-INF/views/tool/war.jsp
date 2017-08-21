@@ -64,11 +64,7 @@
 	                  <div class="form-group">
 	                    <label class="col-sm-4 text-center"><code>服务器IP <i class="fa fa-chevron-right text-info"></i></code></label>
 					    <div class="col-sm-8">
-	                      <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 100%;">
-			                <option value="192.168.101.181" selected="selected">192.168.101.181</option>
-			                <option value="192.168.101.182">192.168.101.182</option>
-			                <option value="192.168.101.184">192.168.101.184</option>
-					      </select>
+	                      <select id="tool-war-ip" name="tool-war-ip" class="form-select" style="width: 100%;"></select>
 					    </div>
 	                  </div>
 	                </div>
@@ -154,6 +150,7 @@
 		initEvent();
 		initShowWarLog();
 		initToolWarType();
+		initToolWarIP(null);
 		initToolWarServer(null);
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
@@ -184,6 +181,34 @@
 				stopWarLog();
 			}
 		});
+	}
+	
+	function initToolWarIP(ip){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/ips",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				hideMsgDiv();
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(ip == list[i] || i == 0){
+        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+        					}
+        				}
+    				}
+    				$('#tool-war-ip').empty();
+    				$('#tool-war-ip').append(optionstring);
+    			}else{
+    				$('#tool-war-ip').empty();
+    				showMsgDiv(data.responseMsg);
+    			}
+    		}
+    	});
 	}
 	
 	function initToolWarServer(ip){
@@ -278,10 +303,10 @@
     			if(data.responseCode == "0000"){
     				var result = data.data;
     				if(result.success){
-    					$("#tool-war-ip").val(result.data);
     					$("#tool-war-start-log-ip").val(result.data);
     					$("#tool-war-start-log-server").val(result.name);
-    					initToolWarServer(result.name);
+    					initToolWarIP(result.data);
+    					initToolWarServer(result.data);
     					$("#tool-war-showlog-span").html("停止查看日志");
     					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
     					$("#tool-war-ip").prop("disabled", true);

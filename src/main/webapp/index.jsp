@@ -40,7 +40,7 @@
 	</tr>
 	<tr>
 		<td align="center">测试工具：</td>
-		<td></td>
+		<td><a href="${pageContext.request.contextPath}/tool/war/page">部署工具</a><br/></td>
 		<td></td>
 		<td></td>
 		<td></td>
