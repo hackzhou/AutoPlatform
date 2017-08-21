@@ -141,14 +141,17 @@ public class ToolWarController extends BaseController{
 			logger.info("[War]==>关闭服务地址[" + stopUrl + "]");
 			SimpleJsonResult stopResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(stopUrl));
 			if(stopResult.isSuccess()){
+				sleep(2);
 				logger.info("[War]==>关闭服务结果[" + stopResult.toString() + "]");
 				logger.info("[War]==>删除项目地址[" + deleteUrl + "]");
 				SimpleJsonResult deleteResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(deleteUrl));
 				if(deleteResult.isSuccess()){
+					sleep(2);
 					logger.info("[War]==>删除项目结果[" + deleteResult.toString() + "]");
 					logger.info("[War]==>上传项目地址[" + uploadUrl + "]");
 					SimpleJsonResult uploadResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendPost(uploadUrl, new File(Const.PATH_FILE + File.separator + fileName)));
 					if(uploadResult.isSuccess()){
+						sleep(2);
 						logger.info("[War]==>上传项目结果[" + uploadResult.toString() + "]");
 						logger.info("[War]==>启动服务地址[" + startUrl + "]");
 						SimpleJsonResult startResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(startUrl));
@@ -274,5 +277,14 @@ public class ToolWarController extends BaseController{
 			return list;
 		}
 		return null;
+	}
+	
+	private void sleep(int s){
+		try {
+			Thread.sleep(1000 * s);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
 	}
 }
