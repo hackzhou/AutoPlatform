@@ -95,8 +95,8 @@
 	                <div class="col-md-2 text-center">
 	                  <input type="hidden" id="tool-war-start-log-ip" name="tool-war-start-log-ip" value="">
 	                  <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
-	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
 	                  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-war-showlog"><span id="tool-war-showlog-span"></span></button>
+	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-war-run" onclick="toolWarRun();">部署</button>
 	                </div>
 	              </div>
 	            </form>
