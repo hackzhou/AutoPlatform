@@ -156,19 +156,19 @@ public class ToolWarController extends BaseController{
 							logger.info("[War]==>启动服务结果[" + startResult.toString() + "]");
 						}else{
 							logger.error(startResult.toString());
-							throw new BusinessException(startResult.getMsg());
+							throw new BusinessException("启动服务[" + startUrl + "]==>" + startResult.getMsg());
 						}
 					}else{
 						logger.error(uploadResult.toString());
-						throw new BusinessException(uploadResult.getMsg());
+						throw new BusinessException("上传项目[" + uploadUrl + "]==>" + uploadResult.getMsg());
 					}
 				}else{
 					logger.error(deleteResult.toString());
-					throw new BusinessException(deleteResult.getMsg());
+					throw new BusinessException("删除项目[" + deleteUrl + "]==>" + deleteResult.getMsg());
 				}
 			}else{
 				logger.error(stopResult.toString());
-				throw new BusinessException(stopResult.getMsg());
+				throw new BusinessException("关闭服务[" + stopUrl + "]==>" + stopResult.getMsg());
 			}
 		}else{
 			throw new BusinessException("服务未启动[" + ip +":" + WAR_PORT + "][" + WAR_PROJECT +"]");
