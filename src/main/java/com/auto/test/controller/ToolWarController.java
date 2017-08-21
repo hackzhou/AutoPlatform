@@ -134,7 +134,7 @@ public class ToolWarController extends BaseController{
 	private synchronized void restartServer(String ip, String server, String fileName){
 		String startUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/servers/server/server=" + server + "/start";
 		String stopUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/servers/server/server=" + server + "/kill";
-		String deleteUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/files/file/server=" + server + "/project=" + fileName.split(".")[0] + "/delete";
+		String deleteUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/files/file/server=" + server + "/project=" + fileName.replace(".war", "") + "/delete";
 		String uploadUrl = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT + "/rs/files/file/server=" + server + "/upload";
 		HttpUtil hu = new HttpUtil();
 		if(hu.isAvailablePort(ip, WAR_PORT)){
