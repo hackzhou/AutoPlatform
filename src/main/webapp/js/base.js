@@ -125,15 +125,15 @@ function hideMsgDiv(){
 	$("#msgDiv").hide();
 }
 
-function showMsgDiv2(msgStr){
+function showMsgDiv(index, msgStr){
 	if(msgStr != ""){
-		$("#msgDiv2").show();
-		$("#msg2").html(msgStr);
+		$("#msgDiv" + index).show();
+		$("#msg" + index).html(msgStr);
 	}
 }
 
-function hideMsgDiv2(){
-	$("#msgDiv2").hide();
+function hideMsgDiv(index){
+	$("#msgDiv" + index).hide();
 }
 
 function getCountByString(text, str){

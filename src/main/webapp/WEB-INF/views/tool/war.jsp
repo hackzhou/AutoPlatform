@@ -121,7 +121,7 @@
 	          <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
-                <textarea id="tool-war-resultlog" class="form-control" rows="25"></textarea>
+                <textarea id="tool-war-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
               </div>
             </div>
 	  	  </form>
@@ -170,6 +170,11 @@
 	});
 	
 	function initEvent(){
+		hideMsgDiv(2);
+		$(".close").click(function(){
+			hideMsgDiv();
+			hideMsgDiv(2);
+		});
 		$("#tool-war-ip").change(function(){
 			initToolWarServer($(this).val(), null);
 		});
@@ -179,29 +184,34 @@
 				var ip = $('#tool-war-ip').val();
 				var server = $('#tool-war-server').val();
 				if(ip == null || ip.trim() == ""){
-					showMsgDiv2("请选择服务器地址！");
+					showMsgDiv(2,"请选择服务器地址！");
 				}else if(server == null || server.trim() == ""){
-					showMsgDiv2("请选择部署服务！");
+					showMsgDiv(2,"请选择部署服务！");
 				}else{
-					$("#tool-war-showlog-span").html("停止查看日志");
-					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
-					$("#tool-war-ip").prop("disabled", true);
-					$("#tool-war-server").prop("disabled", true);
+					stopShowLog();
 					startWarLog(ip, server);
 				}
 			}else{
-				$("#tool-war-showlog-span").html("启动查看日志");
-				$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
-				$("#tool-war-ip").prop("disabled", false);
-				$("#tool-war-server").prop("disabled", false);
+				startShowLog();
 				stopWarLog();
 			}
 		});
-		
-		$(".close").click(function(){
-			hideMsgDiv();
-			hideMsgDiv2();
-		});
+	}
+	
+	function stopShowLog(){
+		$('#tool-war-run').attr("disabled","disabled");
+		$("#tool-war-showlog-span").html("停止查看日志");
+		$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
+		$("#tool-war-ip").prop("disabled", true);
+		$("#tool-war-server").prop("disabled", true);
+	}
+	
+	function startShowLog(){
+		$('#tool-war-run').removeAttr("disabled");
+		$("#tool-war-showlog-span").html("启动查看日志");
+		$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
+		$("#tool-war-ip").prop("disabled", false);
+		$("#tool-war-server").prop("disabled", false);
 	}
 	
 	function initToolWarIP(ip){
@@ -210,7 +220,6 @@
     		url:"<%=request.getContextPath()%>/tool/war/ips",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				hideMsgDiv2();
     				var optionstring = "";
     				var list = data.data;
     				if(list != null){
@@ -226,7 +235,7 @@
     				$('#tool-war-ip').append(optionstring);
     			}else{
     				$('#tool-war-ip').empty();
-    				showMsgDiv2(data.responseMsg);
+    				showMsgDiv(2,data.responseMsg);
     			}
     		}
     	});
@@ -238,7 +247,6 @@
     		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/servers",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				hideMsgDiv2();
     				var optionstring = "";
     				var list = data.data;
     				if(list != null){
@@ -254,7 +262,7 @@
     				$('#tool-war-server').append(optionstring);
     			}else{
     				$('#tool-war-server').empty();
-    				showMsgDiv2(data.responseMsg);
+    				showMsgDiv(2,data.responseMsg);
     			}
     		}
     	});
@@ -281,7 +289,7 @@
     				$('#tool-war-name').append(optionstring);
     			}else{
     				$('#tool-war-name').empty();
-    				showMsgDiv2(data.responseMsg);
+    				showMsgDiv(2,data.responseMsg);
     			}
     		}
     	});
@@ -303,23 +311,21 @@
 			var name = $('#tool-war-name').val();
 			var filename = $('.fileinput-filename').html();
 			if(ip == null || ip.trim() == ""){
-				showMsgDiv2("请选择服务器地址！");
+				showMsgDiv(2,"请选择服务器地址！");
 			}else if(server == null || server.trim() == ""){
-				showMsgDiv2("请选择部署服务！");
+				showMsgDiv(2,"请选择部署服务！");
 			}else if(name == null || name.trim() == ""){
-				showMsgDiv2("请选择对比文件！");
+				showMsgDiv(2,"请选择对比文件！");
 			}else if(filename == ""){
-				showMsgDiv2("请选择War包！");
+				showMsgDiv(2,"请选择War包！");
 			}else if(!checkFiles(filename)){
-				showMsgDiv2("选择文件不合法，文件的扩展名必须为.war！");
+				showMsgDiv(2,"选择文件不合法，文件的扩展名必须为.war！");
 			}else{
-				hideMsgDiv2();
+				hideMsgDiv();
+				hideMsgDiv(2);
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
-					$("#tool-war-showlog-span").html("停止查看日志");
-					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
-					$("#tool-war-ip").prop("disabled", true);
-					$("#tool-war-server").prop("disabled", true);
+					stopShowLog();
 					startWarLog(ip, server);
 				}
 			}
@@ -349,10 +355,7 @@
     					$("#tool-war-start-log-server").val(result.name);
     					initToolWarIP(result.data);
     					initToolWarServer(result.data, result.name);
-    					$("#tool-war-showlog-span").html("停止查看日志");
-    					$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
-    					$("#tool-war-ip").prop("disabled", true);
-    					$("#tool-war-server").prop("disabled", true);
+    					stopShowLog();
     					bool = false;
     				}
     			}
@@ -361,10 +364,7 @@
 					$("#tool-war-start-log-server").val("");
 					initToolWarIP(null);
 					initToolWarServer(null, null);
-					$("#tool-war-showlog-span").html("启动查看日志");
-					$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
-					$("#tool-war-ip").prop("disabled", false);
-					$("#tool-war-server").prop("disabled", false);
+					startShowLog();
 					stopWarLog();
     			}
     		}
@@ -382,10 +382,10 @@
     					$("#tool-war-start-log-ip").val(ip);
     					$("#tool-war-start-log-server").val(server);
     				}else{
-    					showMsgDiv2(result.msg);
+    					showMsgDiv(2,result.msg);
     				}
     			}else{
-    				showMsgDiv2(data.responseMsg);
+    				showMsgDiv(2,data.responseMsg);
     			}
     		}
     	});
@@ -408,10 +408,10 @@
 	    					$("#tool-war-start-log-server").val("");
 	    					$("#tool-war-resultlog").val("");
 	    				}else{
-	    					showMsgDiv2(result.msg);
+	    					showMsgDiv(2,result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv2(data.responseMsg);
+	    				showMsgDiv(2,data.responseMsg);
 	    			}
 	    		}
 	    	});
@@ -430,10 +430,10 @@
 	    				if(result.success){
 	    					$("#tool-war-resultlog").val(result.data);
 	    				}else{
-	    					showMsgDiv2(result.msg);
+	    					showMsgDiv(2,result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv2(data.responseMsg);
+	    				showMsgDiv(2,data.responseMsg);
 	    			}
 	    		}
 	    	});
