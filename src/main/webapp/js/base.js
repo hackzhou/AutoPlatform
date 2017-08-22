@@ -125,14 +125,14 @@ function hideMsgDiv(){
 	$("#msgDiv").hide();
 }
 
-function showMsgDiv(index, msgStr){
+function showMsgDivIndex(index, msgStr){
 	if(msgStr != ""){
 		$("#msgDiv" + index).show();
 		$("#msg" + index).html(msgStr);
 	}
 }
 
-function hideMsgDiv(index){
+function hideMsgDivIndex(index){
 	$("#msgDiv" + index).hide();
 }
 

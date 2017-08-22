@@ -157,7 +157,7 @@
 <script>
 
 	$(document).ready(function(){
-		var msg = $('#msg').html();
+		var msg = "${msg}";
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
 		}else{
@@ -170,10 +170,10 @@
 	});
 	
 	function initEvent(){
-		hideMsgDiv(2);
+		hideMsgDivIndex(2);
 		$(".close").click(function(){
 			hideMsgDiv();
-			hideMsgDiv(2);
+			hideMsgDivIndex(2);
 		});
 		$("#tool-war-ip").change(function(){
 			initToolWarServer($(this).val(), null);
@@ -184,9 +184,9 @@
 				var ip = $('#tool-war-ip').val();
 				var server = $('#tool-war-server').val();
 				if(ip == null || ip.trim() == ""){
-					showMsgDiv(2,"请选择服务器地址！");
+					showMsgDivIndex(2,"请选择服务器地址！");
 				}else if(server == null || server.trim() == ""){
-					showMsgDiv(2,"请选择部署服务！");
+					showMsgDivIndex(2,"请选择部署服务！");
 				}else{
 					stopShowLog();
 					startWarLog(ip, server);
@@ -235,7 +235,7 @@
     				$('#tool-war-ip').append(optionstring);
     			}else{
     				$('#tool-war-ip').empty();
-    				showMsgDiv(2,data.responseMsg);
+    				showMsgDivIndex(2,data.responseMsg);
     			}
     		}
     	});
@@ -262,7 +262,7 @@
     				$('#tool-war-server').append(optionstring);
     			}else{
     				$('#tool-war-server').empty();
-    				showMsgDiv(2,data.responseMsg);
+    				showMsgDivIndex(2,data.responseMsg);
     			}
     		}
     	});
@@ -289,7 +289,7 @@
     				$('#tool-war-name').append(optionstring);
     			}else{
     				$('#tool-war-name').empty();
-    				showMsgDiv(2,data.responseMsg);
+    				showMsgDivIndex(2,data.responseMsg);
     			}
     		}
     	});
@@ -311,18 +311,18 @@
 			var name = $('#tool-war-name').val();
 			var filename = $('.fileinput-filename').html();
 			if(ip == null || ip.trim() == ""){
-				showMsgDiv(2,"请选择服务器地址！");
+				showMsgDivIndex(2,"请选择服务器地址！");
 			}else if(server == null || server.trim() == ""){
-				showMsgDiv(2,"请选择部署服务！");
+				showMsgDivIndex(2,"请选择部署服务！");
 			}else if(name == null || name.trim() == ""){
-				showMsgDiv(2,"请选择对比文件！");
+				showMsgDivIndex(2,"请选择对比文件！");
 			}else if(filename == ""){
-				showMsgDiv(2,"请选择War包！");
+				showMsgDivIndex(2,"请选择War包！");
 			}else if(!checkFiles(filename)){
-				showMsgDiv(2,"选择文件不合法，文件的扩展名必须为.war！");
+				showMsgDivIndex(2,"选择文件不合法，文件的扩展名必须为.war！");
 			}else{
 				hideMsgDiv();
-				hideMsgDiv(2);
+				hideMsgDivIndex(2);
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
 					stopShowLog();
@@ -382,10 +382,10 @@
     					$("#tool-war-start-log-ip").val(ip);
     					$("#tool-war-start-log-server").val(server);
     				}else{
-    					showMsgDiv(2,result.msg);
+    					showMsgDivIndex(2,result.msg);
     				}
     			}else{
-    				showMsgDiv(2,data.responseMsg);
+    				showMsgDivIndex(2,data.responseMsg);
     			}
     		}
     	});
@@ -408,10 +408,10 @@
 	    					$("#tool-war-start-log-server").val("");
 	    					$("#tool-war-resultlog").val("");
 	    				}else{
-	    					showMsgDiv(2,result.msg);
+	    					showMsgDivIndex(2,result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv(2,data.responseMsg);
+	    				showMsgDivIndex(2,data.responseMsg);
 	    			}
 	    		}
 	    	});
@@ -430,10 +430,10 @@
 	    				if(result.success){
 	    					$("#tool-war-resultlog").val(result.data);
 	    				}else{
-	    					showMsgDiv(2,result.msg);
+	    					showMsgDivIndex(2,result.msg);
 	    				}
 	    			}else{
-	    				showMsgDiv(2,data.responseMsg);
+	    				showMsgDivIndex(2,data.responseMsg);
 	    			}
 	    		}
 	    	});
