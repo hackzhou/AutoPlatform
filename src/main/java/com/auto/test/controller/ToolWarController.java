@@ -56,7 +56,7 @@ public class ToolWarController extends BaseController{
 	public Map<String, Object> getToolWarTypes() {
 		logger.info("[War]==>获取所有SVN对比文件列表数据！");
 		try {
-			List<String> list = new SvnUtil().getAllFileName();
+			List<String> list = new SvnUtil(Const.SVN_LKCZ_QA_TEST).getAllFileName(1);
 			return successJson(list);
 		} catch (Exception e) {
 			e.printStackTrace();

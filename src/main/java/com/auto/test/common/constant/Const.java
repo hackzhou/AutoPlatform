@@ -24,6 +24,11 @@ public class Const {
 	public static final String PATH_FILE_TEMP_CLASSES	= PATH_FILE_TEMP + File.separator + "WEB-INF" + File.separator + "classes";
 	public static final String PATH_FILE_PROPERTIES		= PATH_FILE_TEMP_CLASSES + File.separator + "application.properties";
 	
+	public static final String SVN_USERNAME 			= "zhouzhou";
+	public static final String SVN_PASSWORD 			= "Jih3wroK1d19yerM";
+	public static final String SVN_LKCZ_QA_TEST			= "https://61.155.136.217:8443/svn/LKCZ/QA/application_test/";
+	public static final String SVN_LKCZ_PUBLISH			= "https://61.155.136.217:8443/svn/LKCZ/publish/";
+	
 	public static final String DATE_FORAMT_1			= "yyyy-MM-dd HH:mm:ss";
 
 	public static final String PLATFORM_ANDROID			= "Android";
