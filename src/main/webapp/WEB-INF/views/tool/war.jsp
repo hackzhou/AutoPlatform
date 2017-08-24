@@ -156,8 +156,10 @@
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
 			$("#tool-war-run-progress").val("-1");
+			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">部署失败</div>");
 		}else{
 			hideMsgDiv();
+			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">准备就绪/部署完成</div>");
 		}
 		initEvent();
 		initShowWarLog();
