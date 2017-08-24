@@ -429,6 +429,7 @@
 	    				var result = data.data;
 	    				if(result.success){
 	    					$("#tool-war-resultlog").val(result.data);
+	    					scroll();
 	    				}else{
 	    					showMsgDivIndex(2,result.msg);
 	    				}
@@ -438,6 +439,11 @@
 	    		}
 	    	});
 		}
+	}
+	
+	function scroll(){
+		var obj = document.getElementById("tool-war-resultlog");
+		obj.scrollTop = obj.scrollHeight;
 	}
 
 </script>
