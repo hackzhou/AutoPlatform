@@ -78,7 +78,7 @@
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-2 text-center">
+	                <div class="col-md-4 text-center">
 	                  <div class="form-group">
 	                    <label class="col-sm-4 text-center"><code>部署服务 <i class="fa fa-chevron-right text-info"></i></code></label>
 					    <div class="col-sm-8">
@@ -86,15 +86,7 @@
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-3 text-center">
-	                  <div class="form-group">
-	                    <label class="col-sm-3 text-center"><code>对比文件 <i class="fa fa-chevron-right text-info"></i></code></label>
-					    <div class="col-sm-9">
-	                      <select id="tool-war-name" name="tool-war-name" class="form-select" style="width: 100%;"></select>
-					    </div>
-	                  </div>
-	                </div>
-	                <div class="col-md-3">
+	                <div class="col-md-4">
 	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
 		                <span class="input-group-addon btn btn-warning btn-file"> <span class="fileinput-new">选择war包</span> <span class="fileinput-exists">重选</span>
 		                <input type="file" name="file">
@@ -117,8 +109,7 @@
 	  	<div class="col-sm-12">
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
-	  	  	  <input type="hidden" id="tool-war-start-log-ip" name="tool-war-start-log-ip" value="">
-	          <input type="hidden" id="tool-war-start-log-server" name="tool-war-start-log-server" value="">
+	  	  	  <input type="hidden" id="tool-war-run-ip" name="tool-war-run-ip" value="">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
                 <textarea id="tool-war-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
@@ -165,7 +156,6 @@
 		}
 		initEvent();
 		initShowWarLog();
-		initToolWarType();
 		setInterval("readWarLog()", 5000);
 	});
 	
@@ -212,6 +202,32 @@
 		$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
 		$("#tool-war-ip").prop("disabled", false);
 		$("#tool-war-server").prop("disabled", false);
+	}
+	
+	function initShowWarLog(){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/log/isrun",
+    		success:function(data){
+    			var bool = true;
+    			if(data.responseCode == "0000"){
+    				var result = data.data;
+    				if(result.success){
+    					$("#tool-war-run-ip").val(result.data);
+    					initToolWarIP(result.data);
+    					initToolWarServer(result.data, result.name);
+    					stopShowLog();
+    					bool = false;
+    				}
+    			}
+    			if(bool){
+    				$("#tool-war-run-ip").val("");
+					initToolWarIP(null);
+					initToolWarServer(null, null);
+					startShowLog();
+    			}
+    		}
+    	});
 	}
 	
 	function initToolWarIP(ip){
@@ -268,33 +284,6 @@
     	});
 	}
 	
-	function initToolWarType(){
-    	$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/tool/war/types",
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				var optionstring = "";
-    				var list = data.data;
-    				if(list != null){
-    					for(var i = 0; i < list.length; i++){
-        					if(i == 0){
-        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
-        					}else{
-    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
-        					}
-        				}
-    				}
-    				$('#tool-war-name').empty();
-    				$('#tool-war-name').append(optionstring);
-    			}else{
-    				$('#tool-war-name').empty();
-    				showMsgDivIndex(2,data.responseMsg);
-    			}
-    		}
-    	});
-    }
-	
 	function toolWarRun(){
 		swal({
 			title: "你确定部署吗？",
@@ -308,15 +297,12 @@
 		}, function(){
 			var ip = $('#tool-war-ip').val();
 			var server = $('#tool-war-server').val();
-			var name = $('#tool-war-name').val();
 			var filename = $('.fileinput-filename').html();
 			if(ip == null || ip.trim() == ""){
 				showMsgDivIndex(2,"请选择服务器地址！");
 			}else if(server == null || server.trim() == ""){
 				showMsgDivIndex(2,"请选择部署服务！");
-			}else if(name == null || name.trim() == ""){
-				showMsgDivIndex(2,"请选择对比文件！");
-			}else if(filename == ""){
+			}else if(filename == null || filename == ""){
 				showMsgDivIndex(2,"请选择War包！");
 			}else if(!checkFiles(filename)){
 				showMsgDivIndex(2,"选择文件不合法，文件的扩展名必须为.war！");
@@ -342,35 +328,6 @@
 		}
 	}
 	
-	function initShowWarLog(){
-		$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/tool/war/log/isrun",
-    		success:function(data){
-    			var bool = true;
-    			if(data.responseCode == "0000"){
-    				var result = data.data;
-    				if(result.success){
-    					$("#tool-war-start-log-ip").val(result.data);
-    					$("#tool-war-start-log-server").val(result.name);
-    					initToolWarIP(result.data);
-    					initToolWarServer(result.data, result.name);
-    					stopShowLog();
-    					bool = false;
-    				}
-    			}
-    			if(bool){
-    				$("#tool-war-start-log-ip").val("");
-					$("#tool-war-start-log-server").val("");
-					initToolWarIP(null);
-					initToolWarServer(null, null);
-					startShowLog();
-					stopWarLog();
-    			}
-    		}
-    	});
-	}
-	
 	function startWarLog(ip, server){
 		$.ajax({
     		type:"get",
@@ -379,8 +336,7 @@
     			if(data.responseCode == "0000"){
     				var result = data.data;
     				if(result.success){
-    					$("#tool-war-start-log-ip").val(ip);
-    					$("#tool-war-start-log-server").val(server);
+    					$("#tool-war-run-ip").val(ip);
     				}else{
     					showMsgDivIndex(2,result.msg);
     				}
@@ -392,7 +348,7 @@
 	}
 	
 	function stopWarLog(){
-		var ip = $("#tool-war-start-log-ip").val();
+		var ip = $("#tool-war-run-ip").val();
 		if(ip == null || ip == ""){
 			ip = $("#tool-war-ip").val();
 		}
@@ -404,9 +360,7 @@
 	    			if(data.responseCode == "0000"){
 	    				var result = data.data;
 	    				if(result.success){
-	    					$("#tool-war-start-log-ip").val("");
-	    					$("#tool-war-start-log-server").val("");
-	    					$("#tool-war-resultlog").val("");
+	    					$("#tool-war-run-ip").val("");
 	    				}else{
 	    					showMsgDivIndex(2,result.msg);
 	    				}
@@ -419,7 +373,7 @@
 	}
 	
 	function readWarLog(){
-		var ip = $("#tool-war-start-log-ip").val();
+		var ip = $("#tool-war-run-ip").val();
 		if(ip != null && ip != ""){
 			$.ajax({
 	    		type:"get",

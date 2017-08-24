@@ -95,16 +95,13 @@ public class ToolWarController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView runToolWar(HttpServletRequest request, @RequestParam("tool-war-ip") String ip, @RequestParam("tool-war-server") String server, @RequestParam("tool-war-name") String name, @RequestParam("file") CommonsMultipartFile file) {
+	public ModelAndView runToolWar(HttpServletRequest request, @RequestParam("tool-war-ip") String ip, @RequestParam("tool-war-server") String server, @RequestParam("file") CommonsMultipartFile file) {
 		if(ip == null || ip.isEmpty()){
 			logger.error("[War]==>服务器地址不能为空！");
 			return failMsg("服务器地址不能为空！", "tool/war");
 		}else if(server == null || server.isEmpty()){
 			logger.error("[War]==>部署项目不能为空！");
 			return failMsg("部署项目不能为空！", "tool/war");
-		}else if(name == null || name.isEmpty()){
-			logger.error("[War]==>对比文件不能为空！");
-			return failMsg("对比文件不能为空！", "tool/war");
 		}else if(file == null || file.isEmpty()){
 			logger.error("[War]==>上传War包不能为空！");
 			return failMsg("上传War包不能为空！", "tool/war");
@@ -113,12 +110,21 @@ public class ToolWarController extends BaseController{
             return failMsg("上传文件不是War包！", "tool/war");
         }
 		try {
+			String name = getSvnFileName(ip, server);
 			runWar(ip, name, file);
 			restartServer(ip, server, file.getOriginalFilename());
 			return success("redirect:/tool/war/page", getCurrentUserName(request));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failMsg(e.getMessage(), "tool/war");
+		}
+	}
+	
+	private String getSvnFileName(String ip, String server){
+		if(ip.equals(IP_ARR[0])){
+			return "(" + server.replace("-", "_").replace("tomcat_", "") + ")application.properties";
+		}else{
+			return "(" + server.replace("-", "_").replace("tomcat_", "").split("_")[0] + ")application.properties";
 		}
 	}
 	
