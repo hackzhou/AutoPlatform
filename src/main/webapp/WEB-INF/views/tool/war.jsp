@@ -156,10 +156,10 @@
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
 			$("#tool-war-run-progress").val("-1");
-			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">部署失败</div>");
+			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">运行失败</div>");
 		}else{
 			hideMsgDiv();
-			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">准备就绪/部署完成</div>");
+			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">准备就绪/运行完成</div>");
 		}
 		initEvent();
 		initShowWarLog();
@@ -169,6 +169,7 @@
 	
 	function initEvent(){
 		hideMsgDivIndex(2);
+		$("#tool-war-resultlog").val("");
 		$(".close").click(function(){
 			hideMsgDiv();
 			hideMsgDivIndex(2);
@@ -197,6 +198,7 @@
 	}
 	
 	function stopShowLog(){
+		$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">正在运行</div>");
 		$('#tool-war-run').attr("disabled","disabled");
 		$("#tool-war-showlog-span").html("停止查看日志");
 		$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
@@ -205,6 +207,7 @@
 	}
 	
 	function startShowLog(){
+		$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">准备就绪/运行完成</div>");
 		$('#tool-war-run').removeAttr("disabled");
 		$("#tool-war-showlog-span").html("启动查看日志");
 		$("#tool-war-showlog").prop("class", "btn btn-primary waves-effect waves-light m-r-20");
