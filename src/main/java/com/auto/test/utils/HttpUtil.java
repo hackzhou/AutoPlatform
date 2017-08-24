@@ -2,7 +2,7 @@ package com.auto.test.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import org.apache.http.HttpEntity;
@@ -125,18 +125,22 @@ public class HttpUtil {
 		return JSON.parseObject(text, c);
 	}
 	
-	@SuppressWarnings("resource")
 	public boolean isAvailablePort(String host, int port){
-		boolean flag = false;
+		Socket socket = new Socket();
         try {
-        	InetAddress theAddress = InetAddress.getByName(host);
-        	new Socket(theAddress, port);
-        	flag = true;
+        	socket.connect(new InetSocketAddress(host, port));
+        	return true;
         } catch (UnknownHostException e) {
         	throw new BusinessException("服务器访问地址不通[" + host + "]");
 		} catch (IOException e) {
-        }
-        return flag;
+			return false;
+        } finally {
+        	try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
     }
 	
 }
