@@ -8,6 +8,7 @@
 	
     <bean id="context" class="com.auto.test.common.context.SpringContext"/>
     <bean id="apiApplication" class="com.auto.test.common.context.ApiApplication"/>
+    <bean id="toolWarApplication" class="com.auto.test.common.context.ToolWarApplication"/>
     
 	<bean id="apiCaseParse" class="com.auto.test.core.api.parse.impl.ApiCaseParse" scope="prototype"/>
 	<bean id="httpClientManager" class="com.auto.test.core.api.http.HttpClientManager" scope="prototype"/>

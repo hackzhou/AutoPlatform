@@ -28,6 +28,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.SpringContext;
+import com.auto.test.common.context.ToolWarApplication;
 import com.auto.test.common.exception.BusinessException;
 
 public class WarUtil {
@@ -40,14 +42,19 @@ public class WarUtil {
 	
 	public boolean compareZip(String svn, String warName){
 		String svnText = new SvnUtil(Const.SVN_LKCZ_QA_TEST).getSvnFile(svn);
-		Properties p1 = getProperties(svnText);
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(2);
 		Properties p2 = getProperties(getWarFile(Const.PATH_FILE_WAR + File.separator + warName));
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(3);
+		Properties p1 = getProperties(svnText);
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(4);
 		boolean bool = isSetEqual(p1.keySet(), p2.keySet());
 		logger.info("application.properties文件对比结果[" + bool + "]");
 		if(bool){
 			logger.info("application.properties文件覆盖[" + Const.PATH_FILE_PROPERTIES + "]");
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(5);
 			if(writeFile(Const.PATH_FILE_PROPERTIES, svnText)){
 				logger.info("压缩war包[" + Const.PATH_FILE + File.separator + warName + "]");
+				((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(6);
 				zip(Const.PATH_FILE + File.separator + warName, Const.PATH_FILE_TEMP);
 			}
 		}

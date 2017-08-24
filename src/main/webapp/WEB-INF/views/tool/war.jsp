@@ -70,6 +70,9 @@
 	          <div class="form-body">
 	            <form id="tool-war-form" action="${pageContext.request.contextPath}/tool/war/run" method="post" enctype="multipart/form-data">
 	              <div class="row">
+	                <div id="tool-war-progress" class="progress progress-lg"></div>
+	              </div>
+	              <div class="row">
 	                <div class="col-md-2 text-center">
 	                  <div class="form-group">
 	                    <label class="col-sm-4 text-center"><code>服务器IP <i class="fa fa-chevron-right text-info"></i></code></label>
@@ -110,6 +113,7 @@
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
 	  	  	  <input type="hidden" id="tool-war-run-ip" name="tool-war-run-ip" value="">
+	  	  	  <input type="hidden" id="tool-war-run-progress" name="tool-war-run-progress" value="-1">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
                 <textarea id="tool-war-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
@@ -151,11 +155,13 @@
 		var msg = "${msg}";
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
+			$("#tool-war-run-progress").val("-1");
 		}else{
 			hideMsgDiv();
 		}
 		initEvent();
 		initShowWarLog();
+		setInterval("progress()", 1000);
 		setInterval("readWarLog()", 5000);
 	});
 	
@@ -309,6 +315,7 @@
 			}else{
 				hideMsgDiv();
 				hideMsgDivIndex(2);
+				$("#tool-war-run-progress").val("0");
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
 					stopShowLog();
@@ -398,6 +405,39 @@
 	function scroll(){
 		var obj = document.getElementById("tool-war-resultlog");
 		obj.scrollTop = obj.scrollHeight;
+	}
+	
+	function progress(){
+		var rp = parseInt($("#tool-war-run-progress").val());
+		if(rp >= 0 && rp < 10){
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/tool/war/progress",
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				$("#tool-war-run-progress").val(data.data);
+	    				if(data.data > 0){
+		    				progressbar(data.data);
+	    				}
+	    			}
+	    		}
+	    	});
+		}
+	}
+	
+	function progressbar(index){
+		var barArray = new Array();
+		barArray[0] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">保存WAR包</div>";
+		barArray[1] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-warning progress-bar-striped active\">解压WAR包</div>";
+		barArray[2] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">获取SVN文件</div>";
+		barArray[3] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-primary progress-bar-striped active\">配置文件对比</div>";
+		barArray[4] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">覆盖配置文件</div>";
+		barArray[5] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">压缩WAR包</div>";
+		barArray[6] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-warning progress-bar-striped active\">停止线上服务</div>";
+		barArray[7] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">删除线上项目</div>";
+		barArray[8] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-primary progress-bar-striped active\">上传WAR包</div>";
+		barArray[9] = "<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 10%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">启动线上服务</div>";
+		$("#tool-war-progress").html(barArray.slice(0,index).join(""));
 	}
 
 </script>

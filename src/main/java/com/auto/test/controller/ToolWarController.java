@@ -18,6 +18,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.bean.SimpleJsonResult;
 import com.auto.test.common.constant.Const;
+import com.auto.test.common.context.SpringContext;
+import com.auto.test.common.context.ToolWarApplication;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.utils.FileUtil;
@@ -37,6 +39,18 @@ public class ToolWarController extends BaseController{
 	public ModelAndView getToolWar(HttpServletRequest request) {
 		logger.info("[War]==>请求页面[tool/war],登录用户[" + getCurrentUserName(request) + "]");
 		return success("tool/war", getCurrentUserName(request));
+	}
+	
+	@RequestMapping(value = "/progress", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarProgress() {
+		logger.info("[War]==>获取当前部署进度！");
+		try {
+			return successJson(((ToolWarApplication) SpringContext.getBean("toolWarApplication")).getIndex());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value = "/ips", method = RequestMethod.GET)
@@ -129,6 +143,7 @@ public class ToolWarController extends BaseController{
 	}
 	
 	private synchronized void runWar(String ip, String name, CommonsMultipartFile file) throws Exception{
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(1);
 		saveWarFile(file);
 		logger.info("[War]==Svn[" + name + "],War[" + file.getOriginalFilename() + "]");
 		if(!new WarUtil().compareZip(name, file.getOriginalFilename())){
@@ -145,21 +160,25 @@ public class ToolWarController extends BaseController{
 		HttpUtil hu = new HttpUtil();
 		if(hu.isAvailablePort(ip, WAR_PORT)){
 			logger.info("[War]==>关闭服务地址[" + stopUrl + "]");
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(7);
 			SimpleJsonResult stopResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(stopUrl));
 			if(stopResult.isSuccess()){
 				sleep(2);
 				logger.info("[War]==>关闭服务结果[" + stopResult.toString() + "]");
 				logger.info("[War]==>删除项目地址[" + deleteUrl + "]");
+				((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(8);
 				SimpleJsonResult deleteResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(deleteUrl));
 				if(deleteResult.isSuccess()){
 					sleep(2);
 					logger.info("[War]==>删除项目结果[" + deleteResult.toString() + "]");
 					logger.info("[War]==>上传项目地址[" + uploadUrl + "]");
+					((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(9);
 					SimpleJsonResult uploadResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendPost(uploadUrl, new File(Const.PATH_FILE + File.separator + fileName)));
 					if(uploadResult.isSuccess()){
 						sleep(2);
 						logger.info("[War]==>上传项目结果[" + uploadResult.toString() + "]");
 						logger.info("[War]==>启动服务地址[" + startUrl + "]");
+						((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(10);
 						SimpleJsonResult startResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(startUrl));
 						if(startResult.isSuccess()){
 							logger.info("[War]==>启动服务结果[" + startResult.toString() + "]");
