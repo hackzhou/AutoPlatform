@@ -38,6 +38,7 @@ public class ToolWarController extends BaseController{
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
 		logger.info("[War]==>请求页面[tool/war],登录用户[" + getCurrentUserName(request) + "]");
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIps(getAvailableServer(IP_ARR));
 		return success("tool/war", getCurrentUserName(request));
 	}
 	
@@ -58,7 +59,7 @@ public class ToolWarController extends BaseController{
 	public Map<String, Object> getToolWarIPs() {
 		logger.info("[War]==>获取所有SVN服务器IP列表数据！");
 		try {
-			return successJson(getAvailableServer(IP_ARR));
+			return successJson(getAvailableServerCache());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failedJson(e.getMessage());
@@ -82,7 +83,7 @@ public class ToolWarController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getToolWarServers(@PathVariable("ip") String ip) {
 		try {
-			List<String> ipList = getAvailableServer(IP_ARR);
+			List<String> ipList = getAvailableServerCache();
 			if(ipList != null && !ipList.isEmpty()){
 				ip = isNull(ip) ? ipList.get(0) : ip;
 				String serverListStr = "http://" + ip + ":" + WAR_PORT + "/" + WAR_PROJECT +"/rs/files/file/list";
@@ -222,7 +223,7 @@ public class ToolWarController extends BaseController{
 		String logIsRunUrl = "http://%s:" + WAR_PORT + "/" + WAR_PROJECT + "/rs/logs/log/isrun";
 		HttpUtil hu = new HttpUtil();
 		SimpleJsonResult sjr = null;
-		List<String> ipList = getAvailableServer(IP_ARR);
+		List<String> ipList = getAvailableServerCache();
 		if(ipList != null && !ipList.isEmpty()){
 			for (String ip : ipList) {
 				try {
@@ -285,6 +286,14 @@ public class ToolWarController extends BaseController{
 			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
+	}
+	
+	private List<String> getAvailableServerCache(){
+		List<String> list = ((ToolWarApplication) SpringContext.getBean("toolWarApplication")).getIps();
+		if(list == null){
+			return getAvailableServer(IP_ARR);
+		}
+		return list;
 	}
 	
 	private List<String> getAvailableServer(String[] arr){

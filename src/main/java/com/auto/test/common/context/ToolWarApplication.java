@@ -1,5 +1,7 @@
 package com.auto.test.common.context;
 
+import java.util.List;
+
 public class ToolWarApplication {
 	
 	/**
@@ -15,6 +17,7 @@ public class ToolWarApplication {
 	 * 10、启动线上服务
 	 */
 	private Integer index;
+	private List<String> ips;
 
 	public ToolWarApplication() {
 		super();
@@ -26,6 +29,12 @@ public class ToolWarApplication {
 	}
 	public void setIndex(Integer index) {
 		this.index = index;
+	}
+	public List<String> getIps() {
+		return ips;
+	}
+	public void setIps(List<String> ips) {
+		this.ips = ips;
 	}
 
 }
