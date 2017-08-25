@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -65,6 +66,14 @@ public class ToolWebController extends BaseController{
 			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
+	}
+	
+	@RequestMapping(value = "/run", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getToolWebRun(HttpServletRequest request, @RequestParam("tool-web-path") String path, @RequestParam("tool-server-project") String project) {
+		System.out.println("path=" + Const.SVN_LKCZ_PUBLISH + path);
+		System.out.println("project=" + project);
+		return successJson();
 	}
 	
 }

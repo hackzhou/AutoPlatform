@@ -1,11 +1,14 @@
 package com.auto.test.utils;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -36,9 +39,11 @@ public class SvnUtil {
 			System.out.println(string);
 		}*/
 		
-		for (String string : new SvnUtil(Const.SVN_LKCZ_PUBLISH).getAllFileName(0)) {
+		/*for (String string : new SvnUtil(Const.SVN_LKCZ_PUBLISH).getAllFileName(0)) {
 			System.out.println(string);
-		}
+		}*/
+		
+		new SvnUtil("https://61.155.136.217:8443/svn/LKCZ/publish/ball/1430/").downloadSVNDir("C:/Users/Administrator/Desktop/testa/test/");
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -98,6 +103,80 @@ public class SvnUtil {
 		}
 		list.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
 		return list;
+	}
+	
+	public List<String> getAllFileName(){
+		List<String> list = new ArrayList<String>();
+		try {
+			Collection<?> entries = repository.getDir("", -1, null, (Collection<?>)null);
+			Iterator<?> iterator = entries.iterator();
+			while (iterator.hasNext()){
+				SVNDirEntry entry = (SVNDirEntry)iterator.next();
+				System.out.println(entry.getURL().getPath());
+			}
+		} catch (SVNException e) {
+			logger.error("获取SVN服务器文件列表失败[" + url + "][" + e.getMessage() + "]");
+			throw new BusinessException("获取SVN服务器文件列表失败[" + url + "][" + e.getMessage() + "]");
+		}
+		list.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		return list;
+	}
+	
+	public void downloadSVNDir(String root){
+		new FileUtil().deleteDir(root);
+		List<String> list = new ArrayList<String>();
+		listEntries(list, root, "");
+		if(list != null && !list.isEmpty()){
+			SVNProperties svnProperties = null;
+			OutputStream output = null;
+			try {
+				for (String svn : list) {
+					svnProperties = new SVNProperties();
+					output = new FileOutputStream(new File(root + svn));
+					repository.getFile(svn, -1, svnProperties, output);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if(svnProperties != null){
+						svnProperties.dispose();
+					}
+					if(output != null){
+						output.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private void listEntries(List<String> list, String root, String path){
+		try {
+			Collection<?> entries = repository.getDir(path, -1, null, (Collection<?>)null);
+			Iterator<?> iterator = entries.iterator();
+			while (iterator.hasNext()){
+				SVNDirEntry entry = (SVNDirEntry)iterator.next();
+				String name = ("".equals(path) ? "" : path + "/") + entry.getName();
+				if(entry.getKind() == SVNNodeKind.DIR) {
+					createDirs(root + name);
+					listEntries(list, root, ("".equals(path)) ? entry.getName() : path + "/" + entry.getName());
+				}else if(entry.getKind() == SVNNodeKind.FILE){
+					list.add(name);
+				}
+			}
+		} catch (SVNException e) {
+			logger.error("获取SVN服务器文件列表失败[" + url + "][" + e.getMessage() + "]");
+			throw new BusinessException("获取SVN服务器文件列表失败[" + url + "][" + e.getMessage() + "]");
+		}
+	}
+	
+	private void createDirs(String path){
+		File f = new File(path);
+		if(!f.exists() || !f.isDirectory()){
+			f.mkdirs();
+		}
 	}
 
 }

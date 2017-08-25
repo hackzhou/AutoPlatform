@@ -271,6 +271,20 @@
     	});
 	}
 	
+	function toolWebRun(){
+		$.ajax({
+			type:"post",
+      		url:"<%=request.getContextPath()%>/tool/web/run",
+      		data:$('#tool-web-form').serialize(),
+      		success:function(data){
+      	    	if(data.responseCode == "0000"){
+      	    	}else{
+      	    		showMsgDiv(data.responseMsg);
+      			}
+      	    }
+		});
+	}
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
