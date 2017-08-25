@@ -33,7 +33,7 @@ public class ToolWarController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolWarController.class);
 	private static Integer WAR_PORT = 8090;
 	private static String WAR_PROJECT = "AutoTest";
-	private static String[] IP_ARR = {"192.168.101.181", "192.168.101.182", "192.168.101.184"};
+	private static String[] IP_ARR = {"192.168.101.181", "192.168.101.182", "192.168.101.184", "192.168.101.192", "192.168.101.194"};
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {

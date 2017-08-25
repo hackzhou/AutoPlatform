@@ -88,26 +88,28 @@
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-4 text-center">
+	                <div class="col-md-5 text-center">
 	                  <div class="form-group">
 	                    <label class="col-sm-2 text-center"><code>路径 <i class="fa fa-chevron-right text-info"></i></code></label>
-					    <div class="col-sm-10">
+					    <div class="col-sm-6">
 	                      <input id="tool-web-path" name="tool-web-path" class="form-control" style="width: 100%;" readonly="readonly">
+					    </div>
+					    <div class="col-sm-4">
+					      <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-web-up" onclick="toolWebUp();">上一层</button>
+	                  	  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-web-down" onclick="toolWebDown();">下一层</button>
 					    </div>
 	                  </div>
 	                </div>
 	                <div class="col-md-2 text-center">
 	                  <div class="form-group">
-	                    <label class="col-sm-6 text-center"><code>服务器项目 <i class="fa fa-chevron-right text-info"></i></code></label>
-					    <div class="col-sm-6">
+	                    <label class="col-sm-5 text-center"><code>服务器项目 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-7">
 	                      <select id="tool-server-project" name="tool-server-project" class="form-select" style="width: 100%;"></select>
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-2 text-center">
+	                <div class="col-md-1 text-center">
 	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-web-run" onclick="toolWebRun();">部署</button>
-	                  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-web-up" onclick="toolWebUp();">上一层</button>
-	                  <button type="button" class="btn btn-primary waves-effect waves-light m-r-20" id="tool-web-down" onclick="toolWebDown();">下一层</button>
 	                </div>
 	              </div>
 	            </form>
