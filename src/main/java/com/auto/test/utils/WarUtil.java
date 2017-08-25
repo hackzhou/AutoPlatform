@@ -40,11 +40,11 @@ public class WarUtil {
 		System.out.println(war.compareZip("(app)application.properties", "api_app.war"));
 	}
 	
-	public boolean compareZip(String svn, String warName){
+	public boolean compareZip(String svnName, String warName){
 		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(2);
 		Properties p2 = getProperties(getWarFile(Const.PATH_FILE_WAR + File.separator + warName));
 		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(3);
-		String svnText = new SvnUtil(Const.SVN_LKCZ_QA_TEST).getSvnFile(svn);
+		String svnText = new SvnUtil(Const.SVN_LKCZ_QA_TEST).getSvnFile(svnName);
 		Properties p1 = getProperties(svnText);
 		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(4);
 		boolean bool = isSetEqual(p1.keySet(), p2.keySet());
