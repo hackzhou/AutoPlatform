@@ -125,7 +125,7 @@ public class ToolWarController extends BaseController{
             return failMsg("上传文件不是War包！", "tool/war");
         }
 		try {
-			String name = getSvnFileName(ip, server);
+			String name = getSvnFileName(file.getOriginalFilename());
 			runWar(ip, name, file);
 			restartServer(ip, server, file.getOriginalFilename());
 			return success("redirect:/tool/war/page", getCurrentUserName(request));
@@ -135,16 +135,11 @@ public class ToolWarController extends BaseController{
 		}
 	}
 	
-	private String getSvnFileName(String ip, String server){
-		if(ip.equals(IP_ARR[0])){
-			return "(" + server.replace("-", "_").replace("tomcat_", "") + ")application.properties";
-		}else{
-			return "(" + server.replace("-", "_").replace("tomcat_", "").split("_")[0] + ")application.properties";
-		}
+	private String getSvnFileName(String fileName){
+		return "(" + fileName.replace(".war", "") + ")application.properties";
 	}
 	
 	private synchronized void runWar(String ip, String name, CommonsMultipartFile file) throws Exception{
-		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(1);
 		saveWarFile(file);
 		logger.info("[War]==Svn[" + name + "],War[" + file.getOriginalFilename() + "]");
 		if(!new WarUtil().compareZip(name, file.getOriginalFilename())){
@@ -205,6 +200,7 @@ public class ToolWarController extends BaseController{
 	}
 	
 	private synchronized void saveWarFile(CommonsMultipartFile file) throws IllegalStateException, IOException{
+		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(1);
 		logger.info("[War]==>删除文件夹[" + Const.PATH_FILE + "]");
 		new FileUtil().deleteDir(Const.PATH_FILE);
 		File tmpFile = new File(Const.PATH_FILE_WAR);
