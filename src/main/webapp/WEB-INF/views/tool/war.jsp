@@ -163,6 +163,7 @@
 			$("#tool-war-progress").empty();
 			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">准备就绪/运行完成</div>");
 		}
+		$('#tool-war-showlog').removeAttr("disabled");
 		initEvent();
 		initShowWarLog();
 		readWarLogTask();
@@ -201,7 +202,7 @@
 	
 	function stopShowLog(){
 		$("#tool-war-progress").empty();
-		$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">正在运行</div>");
+		$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-success progress-bar-striped active\">查看日志/正在运行</div>");
 		$('#tool-war-run').attr("disabled","disabled");
 		$("#tool-war-showlog-span").html("停止查看日志");
 		$("#tool-war-showlog").prop("class", "btn btn-danger waves-effect waves-light m-r-20");
@@ -328,6 +329,7 @@
 				hideMsgDivIndex(2);
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
+					$('#tool-war-showlog').attr("disabled","disabled");
 					stopShowLog();
 					startWarLog(ip, server);
 				}
