@@ -323,7 +323,7 @@
 			}else if(!checkFiles(filename)){
 				showMsgDivIndex(2,"选择文件不合法，文件的扩展名必须为.war！");
 			}else{
-				$("#tool-war-run-progress").val("0");
+				$("#tool-war-run-progress").val("-2");
 				hideMsgDiv();
 				hideMsgDivIndex(2);
 				$('#tool-war-form').submit();
@@ -422,13 +422,12 @@
 	function showProgressTask(){
 		setInterval(function(){
 			var rp = parseInt($("#tool-war-run-progress").val());
-			if(rp > -1 && rp < 11){
-				if(rp == 0){
-					progressbar(1);
+			if(rp == -2 || (rp > -1 && rp < 11)){
+				if(rp == -2){
+					$("#tool-war-run-progress").val("0");
 					initProgressIndex();
-				}else{
-					progressbar(rp);
 				}
+				progressbar(rp < 1 ? 1 : rp);
 				$.ajax({
 		    		type:"get",
 		    		url:"<%=request.getContextPath()%>/tool/war/progress",
