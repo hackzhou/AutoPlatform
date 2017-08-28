@@ -426,6 +426,8 @@
 				if(rp == 0){
 					progressbar(1);
 					initProgressIndex();
+				}else{
+					progressbar(rp);
 				}
 				$.ajax({
 		    		type:"get",
