@@ -42,6 +42,19 @@ public class ToolWarController extends BaseController{
 		return success("tool/war", getCurrentUserName(request));
 	}
 	
+	@RequestMapping(value = "/init/progress", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarInitProgress() {
+		try {
+			logger.info("[War]==>初始化当前部署进度！");
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(0);
+			return successJson();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
+		}
+	}
+	
 	@RequestMapping(value = "/progress", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getToolWarProgress() {
@@ -133,9 +146,8 @@ public class ToolWarController extends BaseController{
 			return success("redirect:/tool/war/page", getCurrentUserName(request));
 		} catch (Exception e) {
 			e.printStackTrace();
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(-1);
 			return failMsg(e.getMessage(), "tool/war");
-		} finally {
-			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(0);
 		}
 	}
 	
@@ -181,6 +193,7 @@ public class ToolWarController extends BaseController{
 						((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(10);
 						SimpleJsonResult startResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(startUrl));
 						if(startResult.isSuccess()){
+							((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(-1);
 							logger.info("[War]==>启动服务结果[" + startResult.toString() + "]");
 						}else{
 							logger.error(startResult.toString());

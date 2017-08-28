@@ -113,7 +113,7 @@
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
 	  	  	  <input type="hidden" id="tool-war-run-ip" name="tool-war-run-ip" value="">
-	  	  	  <input type="hidden" id="tool-war-run-progress" name="tool-war-run-progress" value="0">
+	  	  	  <input type="hidden" id="tool-war-run-progress" name="tool-war-run-progress" value="-1">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
                 <textarea id="tool-war-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
@@ -154,6 +154,7 @@
 	$(document).ready(function(){
 		var msg = "${msg}";
 		if(msg != null && msg != ""){
+			$("#tool-war-run-progress").val("-1");
 			showMsgDiv(msg);
 			$("#tool-war-progress").empty();
 			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">运行失败</div>");
@@ -164,43 +165,8 @@
 		}
 		initEvent();
 		initShowWarLog();
-		var readWarLog = setInterval(function (){
-			var ip = $("#tool-war-run-ip").val();
-			if(ip != null && ip != ""){
-				$.ajax({
-		    		type:"get",
-		    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/read",
-		    		success:function(data){
-		    			if(data.responseCode == "0000"){
-		    				var result = data.data;
-		    				if(result.success){
-		    					$("#tool-war-resultlog").val(result.data);
-		    					scroll();
-		    				}else{
-		    					showMsgDivIndex(2,result.msg);
-		    				}
-		    			}else{
-		    				showMsgDivIndex(2,data.responseMsg);
-		    			}
-		    		}
-		    	});
-			}
-		}, 5000);
-		var showProgress = setInterval(function (){
-			var rp = parseInt($("#tool-war-run-progress").val());
-			if(rp > 0 && rp < 11){
-				progressbar(rp);
-				$.ajax({
-		    		type:"get",
-		    		url:"<%=request.getContextPath()%>/tool/war/progress",
-		    		success:function(data){
-		    			if(data.responseCode == "0000"){
-		    				$("#tool-war-run-progress").val(data.data);
-		    			}
-		    		}
-		    	});
-			}
-		}, 1000);
+		readWarLogTask();
+		showProgressTask();
 	});
 	
 	function initEvent(){
@@ -244,6 +210,7 @@
 	}
 	
 	function startShowLog(){
+		$("#tool-war-run-progress").val("-1");
 		$("#tool-war-progress").empty();
 		$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-info progress-bar-striped active\">准备就绪/运行完成</div>");
 		$('#tool-war-run').removeAttr("disabled");
@@ -356,7 +323,7 @@
 			}else if(!checkFiles(filename)){
 				showMsgDivIndex(2,"选择文件不合法，文件的扩展名必须为.war！");
 			}else{
-				$("#tool-war-run-progress").val("1");
+				$("#tool-war-run-progress").val("0");
 				hideMsgDiv();
 				hideMsgDivIndex(2);
 				$('#tool-war-form').submit();
@@ -422,9 +389,68 @@
 		}
 	}
 	
+	function readWarLogTask(){
+		setInterval(function(){
+			var ip = $("#tool-war-run-ip").val();
+			if(ip != null && ip != ""){
+				$.ajax({
+		    		type:"get",
+		    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/read",
+		    		success:function(data){
+		    			if(data.responseCode == "0000"){
+		    				var result = data.data;
+		    				if(result.success){
+		    					$("#tool-war-resultlog").val(result.data);
+		    					scroll();
+		    				}else{
+		    					showMsgDivIndex(2,result.msg);
+		    				}
+		    			}else{
+		    				showMsgDivIndex(2,data.responseMsg);
+		    			}
+		    		}
+		    	});
+			}
+		}, 5000);
+	}
+	
 	function scroll(){
 		var obj = document.getElementById("tool-war-resultlog");
 		obj.scrollTop = obj.scrollHeight;
+	}
+	
+	function showProgressTask(){
+		setInterval(function(){
+			var rp = parseInt($("#tool-war-run-progress").val());
+			if(rp > -1 && rp < 11){
+				if(rp == 0){
+					progressbar(1);
+					initProgressIndex();
+				}
+				$.ajax({
+		    		type:"get",
+		    		url:"<%=request.getContextPath()%>/tool/war/progress",
+		    		success:function(data){
+		    			if(data.responseCode == "0000"){
+		    				$("#tool-war-run-progress").val(data.data);
+		    				console.log(data.data);
+		    			}
+		    		}
+		    	});
+			}
+		}, 1000);
+	}
+	
+	function initProgressIndex(){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/tool/war/init/progress",
+    		success:function(data){
+    			if(data.responseCode != "0000"){
+    				$("#tool-war-run-progress").val("-1");
+    			}
+    		}
+    	});
 	}
 	
 	function progressbar(index){
