@@ -164,8 +164,43 @@
 		}
 		initEvent();
 		initShowWarLog();
-		var intervalA = setInterval("progress()", 1000);
-		var intervalB = setInterval("readWarLog()", 5000);
+		var readWarLog = setInterval(function (){
+			var ip = $("#tool-war-run-ip").val();
+			if(ip != null && ip != ""){
+				$.ajax({
+		    		type:"get",
+		    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/read",
+		    		success:function(data){
+		    			if(data.responseCode == "0000"){
+		    				var result = data.data;
+		    				if(result.success){
+		    					$("#tool-war-resultlog").val(result.data);
+		    					scroll();
+		    				}else{
+		    					showMsgDivIndex(2,result.msg);
+		    				}
+		    			}else{
+		    				showMsgDivIndex(2,data.responseMsg);
+		    			}
+		    		}
+		    	});
+			}
+		}, 5000);
+		var showProgress = setInterval(function (){
+			var rp = parseInt($("#tool-war-run-progress").val());
+			if(rp > 0 && rp < 11){
+				progressbar(rp);
+				$.ajax({
+		    		type:"get",
+		    		url:"<%=request.getContextPath()%>/tool/war/progress",
+		    		success:function(data){
+		    			if(data.responseCode == "0000"){
+		    				$("#tool-war-run-progress").val(data.data);
+		    			}
+		    		}
+		    	});
+			}
+		}, 1000);
 	});
 	
 	function initEvent(){
@@ -387,48 +422,9 @@
 		}
 	}
 	
-	function readWarLog(){
-		var ip = $("#tool-war-run-ip").val();
-		if(ip != null && ip != ""){
-			$.ajax({
-	    		type:"get",
-	    		url:"<%=request.getContextPath()%>/tool/war/ip=" + ip + "/log/read",
-	    		success:function(data){
-	    			if(data.responseCode == "0000"){
-	    				var result = data.data;
-	    				if(result.success){
-	    					$("#tool-war-resultlog").val(result.data);
-	    					scroll();
-	    				}else{
-	    					showMsgDivIndex(2,result.msg);
-	    				}
-	    			}else{
-	    				showMsgDivIndex(2,data.responseMsg);
-	    			}
-	    		}
-	    	});
-		}
-	}
-	
 	function scroll(){
 		var obj = document.getElementById("tool-war-resultlog");
 		obj.scrollTop = obj.scrollHeight;
-	}
-	
-	function progress(){
-		var rp = parseInt($("#tool-war-run-progress").val());
-		if(rp > 0 && rp < 11){
-			progressbar(rp);
-			$.ajax({
-	    		type:"get",
-	    		url:"<%=request.getContextPath()%>/tool/war/progress",
-	    		success:function(data){
-	    			if(data.responseCode == "0000"){
-	    				$("#tool-war-run-progress").val(data.data);
-	    			}
-	    		}
-	    	});
-		}
 	}
 	
 	function progressbar(index){
