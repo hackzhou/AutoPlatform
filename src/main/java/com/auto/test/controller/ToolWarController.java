@@ -125,6 +125,7 @@ public class ToolWarController extends BaseController{
             return failMsg("上传文件不是War包！", "tool/war");
         }
 		try {
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(1);
 			String name = getSvnFileName(file.getOriginalFilename());
 			runWar(ip, name, file);
 			restartServer(ip, server, file.getOriginalFilename());
@@ -202,7 +203,6 @@ public class ToolWarController extends BaseController{
 	}
 	
 	private synchronized void saveWarFile(CommonsMultipartFile file) throws IllegalStateException, IOException{
-		((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(1);
 		logger.info("[War]==>删除文件夹[" + Const.PATH_FILE + "]");
 		new FileUtil().deleteDir(Const.PATH_FILE);
 		File tmpFile = new File(Const.PATH_FILE_WAR);

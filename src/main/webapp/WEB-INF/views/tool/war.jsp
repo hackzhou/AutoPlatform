@@ -322,9 +322,9 @@
 			}else if(!checkFiles(filename)){
 				showMsgDivIndex(2,"选择文件不合法，文件的扩展名必须为.war！");
 			}else{
+				$("#tool-war-run-progress").val("1");
 				hideMsgDiv();
 				hideMsgDivIndex(2);
-				$("#tool-war-run-progress").val("1");
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
 					stopShowLog();
