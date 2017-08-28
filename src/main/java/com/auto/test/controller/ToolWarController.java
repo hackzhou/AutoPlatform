@@ -131,6 +131,7 @@ public class ToolWarController extends BaseController{
 			return success("redirect:/tool/war/page", getCurrentUserName(request));
 		} catch (Exception e) {
 			e.printStackTrace();
+			((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(0);
 			return failMsg(e.getMessage(), "tool/war");
 		}
 	}
@@ -177,6 +178,7 @@ public class ToolWarController extends BaseController{
 						((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(10);
 						SimpleJsonResult startResult = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(startUrl));
 						if(startResult.isSuccess()){
+							((ToolWarApplication) SpringContext.getBean("toolWarApplication")).setIndex(0);
 							logger.info("[War]==>启动服务结果[" + startResult.toString() + "]");
 						}else{
 							logger.error(startResult.toString());

@@ -113,7 +113,7 @@
 	  	  <form class="form-horizontal">
 	  	  	<div class="form-group">
 	  	  	  <input type="hidden" id="tool-war-run-ip" name="tool-war-run-ip" value="">
-	  	  	  <input type="hidden" id="tool-war-run-progress" name="tool-war-run-progress" value="-1">
+	  	  	  <input type="hidden" id="tool-war-run-progress" name="tool-war-run-progress" value="0">
               <label class="col-md-12">查看日志结果显示</label>
               <div class="col-md-12">
                 <textarea id="tool-war-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
@@ -155,7 +155,7 @@
 		var msg = "${msg}";
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
-			$("#tool-war-run-progress").val("-1");
+			$("#tool-war-run-progress").val("0");
 			$("#tool-war-progress").empty();
 			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">运行失败</div>");
 		}else{
@@ -324,7 +324,7 @@
 			}else{
 				hideMsgDiv();
 				hideMsgDivIndex(2);
-				$("#tool-war-run-progress").val("0");
+				$("#tool-war-run-progress").val("1");
 				$('#tool-war-form').submit();
 				if($("#tool-war-showlog-span").html() == "启动查看日志"){
 					stopShowLog();
@@ -418,7 +418,7 @@
 	
 	function progress(){
 		var rp = parseInt($("#tool-war-run-progress").val());
-		if(rp >= 0 && rp < 10){
+		if(rp > 0 && rp < 11){
 			$.ajax({
 	    		type:"get",
 	    		url:"<%=request.getContextPath()%>/tool/war/progress",
