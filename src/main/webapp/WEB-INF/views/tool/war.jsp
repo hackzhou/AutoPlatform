@@ -434,7 +434,6 @@
 		    		success:function(data){
 		    			if(data.responseCode == "0000"){
 		    				$("#tool-war-run-progress").val(data.data);
-		    				console.log(data.data);
 		    			}
 		    		}
 		    	});
