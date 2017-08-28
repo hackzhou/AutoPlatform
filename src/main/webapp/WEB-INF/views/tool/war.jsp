@@ -155,7 +155,6 @@
 		var msg = "${msg}";
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
-			$("#tool-war-run-progress").val("0");
 			$("#tool-war-progress").empty();
 			$("#tool-war-progress").html("<div role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\" class=\"progress-bar progress-bar-danger progress-bar-striped active\">运行失败</div>");
 		}else{
@@ -165,8 +164,8 @@
 		}
 		initEvent();
 		initShowWarLog();
-		setInterval("progress()", 1000);
-		setInterval("readWarLog()", 5000);
+		var intervalA = setInterval("progress()", 1000);
+		var intervalB = setInterval("readWarLog()", 5000);
 	});
 	
 	function initEvent(){
@@ -419,15 +418,13 @@
 	function progress(){
 		var rp = parseInt($("#tool-war-run-progress").val());
 		if(rp > 0 && rp < 11){
+			progressbar(rp);
 			$.ajax({
 	    		type:"get",
 	    		url:"<%=request.getContextPath()%>/tool/war/progress",
 	    		success:function(data){
 	    			if(data.responseCode == "0000"){
 	    				$("#tool-war-run-progress").val(data.data);
-	    				if(data.data > 0){
-		    				progressbar(data.data);
-	    				}
 	    			}
 	    		}
 	    	});
