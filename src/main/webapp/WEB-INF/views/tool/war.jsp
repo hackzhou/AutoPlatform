@@ -426,12 +426,12 @@
 			var rp = parseInt($("#tool-war-run-progress").val());
 			if(rp == -2 || (rp > -1 && rp < 11)){
 				if(rp == -2){
-					$("#tool-war-run-progress").val("0");
 					$.ajax({
 			    		type:"get",
 			    		url:"<%=request.getContextPath()%>/tool/war/init/progress",
 			    		success:function(data){
 			    			if(data.responseCode == "0000"){
+								$("#tool-war-run-progress").val("0");
 			    				progressbar(1);
 			    			}else{
 			    				$("#tool-war-run-progress").val("-1");
