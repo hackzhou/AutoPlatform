@@ -427,32 +427,31 @@
 			if(rp == -2 || (rp > -1 && rp < 11)){
 				if(rp == -2){
 					$("#tool-war-run-progress").val("0");
-					initProgressIndex();
+					$.ajax({
+			    		type:"get",
+			    		url:"<%=request.getContextPath()%>/tool/war/init/progress",
+			    		success:function(data){
+			    			if(data.responseCode == "0000"){
+			    				progressbar(1);
+			    			}else{
+			    				$("#tool-war-run-progress").val("-1");
+			    			}
+			    		}
+			    	});
+				}else{
+					progressbar(rp < 1 ? 1 : rp);
+					$.ajax({
+			    		type:"get",
+			    		url:"<%=request.getContextPath()%>/tool/war/progress",
+			    		success:function(data){
+			    			if(data.responseCode == "0000"){
+			    				$("#tool-war-run-progress").val(data.data);
+			    			}
+			    		}
+			    	});
 				}
-				progressbar(rp < 1 ? 1 : rp);
-				$.ajax({
-		    		type:"get",
-		    		url:"<%=request.getContextPath()%>/tool/war/progress",
-		    		success:function(data){
-		    			if(data.responseCode == "0000"){
-		    				$("#tool-war-run-progress").val(data.data);
-		    			}
-		    		}
-		    	});
 			}
 		}, 1000);
-	}
-	
-	function initProgressIndex(){
-		$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/tool/war/init/progress",
-    		success:function(data){
-    			if(data.responseCode != "0000"){
-    				$("#tool-war-run-progress").val("-1");
-    			}
-    		}
-    	});
 	}
 	
 	function progressbar(index){
