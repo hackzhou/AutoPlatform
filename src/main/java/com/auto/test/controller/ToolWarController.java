@@ -242,7 +242,7 @@ public class ToolWarController extends BaseController{
 					logger.info("[War]==>获取服务查看日志是否开启[" + String.format(logIsRunUrl, ip) + "]");
 					sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(String.format(logIsRunUrl, ip)));
 					if(sjr.isSuccess()){
-						logger.error("[War]==>开启[" + String.format(logIsRunUrl, ip) + "]");
+						logger.info("[War]==>开启[" + String.format(logIsRunUrl, ip) + "]");
 						sjr.setData(ip);
 						return successJson(sjr);
 					}
