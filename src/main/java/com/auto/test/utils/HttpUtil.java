@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -22,9 +23,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.exception.BusinessException;
 
 public class HttpUtil {
+	private static final Integer CONNECT_TIMEOUT = 1000 * 30;
+	private static final Integer REQUEST_TIMEOUT = 1000 * 30;
+	private static final Integer SOCKET_TIMEOUT = 1000 * 60 * 3;
 	
 	public static void main(String[] args) {
 		System.out.println(new HttpUtil().isAvailablePort("192.168.101.182", 8090));
+	}
+	
+	private RequestConfig getTimeOutConfig(){
+		return RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setConnectionRequestTimeout(REQUEST_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
 	}
 
 	public String sendGet(String url){
@@ -32,6 +40,7 @@ public class HttpUtil {
 		CloseableHttpResponse response = null;
 		try {
 			HttpGet httpGet = new HttpGet(url);
+			httpGet.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpGet);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
@@ -59,6 +68,7 @@ public class HttpUtil {
 		try {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(new StringEntity(data));
+			httpPost.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
@@ -91,6 +101,7 @@ public class HttpUtil {
 			HttpEntity reqEntity = builder.build();
 			httpPost.setEntity(reqEntity);
 			httpPost.setHeader("Content-Type", "multipart/form-data;");
+			httpPost.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
