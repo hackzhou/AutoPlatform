@@ -17,15 +17,18 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.exception.BusinessException;
 
 public class HttpUtil {
+	private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 	private static final Integer CONNECT_TIMEOUT = 1000 * 30;
 	private static final Integer REQUEST_TIMEOUT = 1000 * 30;
-	private static final Integer SOCKET_TIMEOUT = 1000 * 60 * 3;
+	private static final Integer SOCKET_TIMEOUT = 1000 * 300;
 	
 	public static void main(String[] args) {
 		System.out.println(new HttpUtil().isAvailablePort("192.168.101.182", 8090));
@@ -34,8 +37,12 @@ public class HttpUtil {
 	private RequestConfig getTimeOutConfig(){
 		return RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setConnectionRequestTimeout(REQUEST_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
 	}
-
+	
 	public String sendGet(String url){
+		return sendGet(url, true);
+	}
+
+	public String sendGet(String url, boolean bool){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		try {
@@ -43,7 +50,13 @@ public class HttpUtil {
 			httpGet.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpGet);
 			if (response.getStatusLine().getStatusCode() == 200) {
-				return EntityUtils.toString(response.getEntity());
+				String result = EntityUtils.toString(response.getEntity());
+				if(bool){
+					logger.info("[Http]==>[" + url +"][" + result + "]");
+				}
+				return result;
+			}else{
+				logger.info("[Http]==>[" + url +"][" + response.getStatusLine().getStatusCode() + "]");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,7 +84,11 @@ public class HttpUtil {
 			httpPost.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
-				return EntityUtils.toString(response.getEntity());
+				String result = EntityUtils.toString(response.getEntity());
+				logger.info("[Http]==>[" + url +"][" + result + "]");
+				return result;
+			}else{
+				logger.info("[Http]==>[" + url +"][" + response.getStatusLine().getStatusCode() + "]");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,7 +121,11 @@ public class HttpUtil {
 			httpPost.setConfig(getTimeOutConfig());
 			response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() == 200) {
-				return EntityUtils.toString(response.getEntity());
+				String result = EntityUtils.toString(response.getEntity());
+				logger.info("[Http]==>[" + url +"][" + result + "]");
+				return result;
+			}else{
+				logger.info("[Http]==>[" + url +"][" + response.getStatusLine().getStatusCode() + "]");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

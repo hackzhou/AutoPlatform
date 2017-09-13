@@ -277,7 +277,7 @@ public class ToolWarController extends BaseController{
 		logger.info("[War]==>读取服务日志[" + logIsRunUrl + "]");
 		try {
 			HttpUtil hu = new HttpUtil();
-			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl));
+			SimpleJsonResult sjr = hu.json2JavaBean(SimpleJsonResult.class, hu.sendGet(logIsRunUrl, false));
 			return successJson(sjr);
 		} catch (Exception e) {
 			e.printStackTrace();
