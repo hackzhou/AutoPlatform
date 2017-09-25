@@ -36,7 +36,7 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 获取网络标准时间
+	 * 获取本地系统时间
 	 * @return
 	 */
 	public static Date getSystemTime(){
