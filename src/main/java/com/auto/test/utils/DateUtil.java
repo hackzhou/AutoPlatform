@@ -23,15 +23,15 @@ public class DateUtil {
 		date = (date == null) ? getNetworkTime() : date;
 		String os = System.getProperty("os.name");
 		if(os.toLowerCase().contains("windows")){
-			String dateCom[] = {"cmd", "/c", "date", getFormatDateWin(date)};
+			String dateCom[] = {"cmd", "/c", "date", getFormatDate(date)};
 			exeCommand(dateCom);
 			String timeCom[] = {"cmd", "/c", "time", getFormatTime(date)};
 			exeCommand(timeCom);
 		}else if(os.toLowerCase().contains("linux")){
-			String dateCom[] = {"date", "-s", getFormatDateLinux(date)};
+			String dateCom[] = {"date", "-s", getFormatDateTime(date)};
 			exeCommand(dateCom);
-			String timeCom[] = {"date", "-s", getFormatTime(date)};
-			exeCommand(timeCom);
+			String cmosCom[] = {"#clock", "–w"};
+			exeCommand(cmosCom);
 		}
 	}
 	
@@ -85,13 +85,8 @@ public class DateUtil {
 		return sdf.format(date);
 	}
 	
-	public static String getFormatDateWin(Date date){
+	public static String getFormatDate(Date date){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return sdf.format(date);
-	}
-	
-	public static String getFormatDateLinux(Date date){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		return sdf.format(date);
 	}
 	
