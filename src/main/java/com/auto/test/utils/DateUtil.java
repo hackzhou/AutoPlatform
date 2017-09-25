@@ -30,7 +30,7 @@ public class DateUtil {
 		}else if(os.toLowerCase().contains("linux")){
 			String dateCom[] = {"date", "-s", getFormatDateTime(date)};
 			exeCommand(dateCom);
-			String cmosCom[] = {"#clock", "–w"};
+			String cmosCom[] = {"hwclock", "–w"};
 			exeCommand(cmosCom);
 		}
 	}
