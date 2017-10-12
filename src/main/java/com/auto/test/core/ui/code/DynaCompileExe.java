@@ -1,11 +1,11 @@
-package com.auto.test.core.ui;
+package com.auto.test.core.ui.code;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import com.auto.test.common.context.UiContext;
 import com.auto.test.common.context.UiThreadPool;
-import com.auto.test.core.ui.dynamic.DynamicEngine;
-import com.auto.test.core.ui.result.SuiteResult;
+import com.auto.test.core.ui.code.dynamic.DynamicEngine;
+import com.auto.test.core.ui.code.result.SuiteResult;
 import com.auto.test.entity.UCode;
 import com.auto.test.entity.UDevice;
 import com.auto.test.entity.UResultSuite;

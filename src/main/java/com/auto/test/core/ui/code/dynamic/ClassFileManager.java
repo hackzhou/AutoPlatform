@@ -1,4 +1,4 @@
-package com.auto.test.core.ui.dynamic;
+package com.auto.test.core.ui.code.dynamic;
 
 import java.io.IOException;
 import javax.tools.FileObject;

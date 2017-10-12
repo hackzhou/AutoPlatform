@@ -21,7 +21,7 @@ import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
-import com.auto.test.core.ui.DynaCompileExe;
+import com.auto.test.core.ui.code.DynaCompileExe;
 import com.auto.test.entity.UCode;
 import com.auto.test.service.IUiCodeService;
 import com.auto.test.utils.FileUtil;

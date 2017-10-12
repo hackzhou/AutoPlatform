@@ -1,4 +1,4 @@
-package com.auto.test.core.ui.result;
+package com.auto.test.core.ui.code.result;
 
 import java.util.Date;
 import com.auto.test.common.context.SpringContext;

@@ -1,4 +1,4 @@
-package com.auto.test.core.ui.log;
+package com.auto.test.core.ui.code.log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

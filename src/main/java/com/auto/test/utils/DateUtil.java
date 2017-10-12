@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -93,6 +94,20 @@ public class DateUtil {
 	public static String getFormatTime(Date date){
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		return sdf.format(date);
+	}
+	
+	public static String getFormatTime(Long timeL){
+		return getFormatDateTime(new Date(timeL));
+	}
+	
+	public static Long date2Long(String date){
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+			return sdf.parse(date).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0L;
 	}
 
 }

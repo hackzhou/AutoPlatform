@@ -31,6 +31,7 @@
 			<ul class="dropdown-menu dropdown-user animated flipInY">
 				<li><a href="${pageContext.request.contextPath}/tool/war/page"><i class="fa fa-rocket m-r-10"></i> 更新包(后端部署)</a></li>
 				<%-- <li><a href="${pageContext.request.contextPath}/tool/web/page"><i class="fa fa-tablet m-r-10"></i> 更新包(前端部署)</a></li> --%>
+				<li><a href="${pageContext.request.contextPath}/tool/time/page"><i class="ti-timer m-r-10"></i> 工具(调整时间)</a></li>
 			</ul>
 			</li>
 		</ul>
