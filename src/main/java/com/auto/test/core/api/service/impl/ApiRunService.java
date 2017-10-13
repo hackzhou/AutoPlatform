@@ -109,7 +109,6 @@ public class ApiRunService implements IApiRunService {
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;
 		apiContext.setTotal(getCaseTotal(list, len));
-		
 		/*apiContext.setBool(isRunOnline(list));	//Online Compare
 		if(apiContext.getAccount() != null && "1".equals(apiContext.getAccount().getToken())){
 			int index = apiContext.getAccount().getPassword().split(",").length;

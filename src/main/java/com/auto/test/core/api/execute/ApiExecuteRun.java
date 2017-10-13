@@ -129,10 +129,10 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private void runFinal(AResultDetail aResultDetail) throws Exception{
-		apiContext.setCount(apiContext.getCount() + 1);
+		apiContext.countPlus();
 		AResult aResult = apiContext.getResult();
 		if(aResultDetail != null && ApiStatus.SUCCESS.name().equals(aResultDetail.getStatus())){
-			aResult.setSuccess(aResult.getSuccess() + 1);
+			apiContext.successPlus();
 		}
 		if(apiContext.getCount().equals(apiContext.getTotal())){
 			try {

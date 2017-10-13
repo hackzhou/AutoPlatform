@@ -34,6 +34,12 @@ public class ApiContext {
 //	public void setBool(boolean bool) {
 //		this.bool = bool;
 //	}
+	public synchronized void countPlus(){
+		this.count++;
+	}
+	public synchronized void successPlus(){
+		this.result.setSuccess(this.result.getSuccess() + 1);
+	}
 	public Integer getCount() {
 		return count;
 	}
