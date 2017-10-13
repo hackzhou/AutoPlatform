@@ -124,6 +124,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【接口地址】为空！");
 				}else if(isNull(aInterfaceCase.getVersion())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【案例版本】为空！");
+				}else if(isNull(aInterfaceCase.getResult())){
+					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【验证结果】为空！");
 				}else{
 					List<AProject> pList = projectDao.findByName(aInterfaceCase.getProject());
 					List<AVersion> vList = versionDao.findByVersion(aInterfaceCase.getVersion());
@@ -178,7 +180,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 				}
 			}
 		}
-		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), null, null, null, null, 1, 1);
+		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), null, null, null, 1, 1);
 		if(caseo == null){
 			c.setCreateTime(new Date());
 			casedDao.create(c);

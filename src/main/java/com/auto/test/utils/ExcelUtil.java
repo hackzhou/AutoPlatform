@@ -67,6 +67,9 @@ public class ExcelUtil {
 	                	case 6:
 	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
 		                    break;
+	                	case 7:
+	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+		                    break;
 	                	default:
 		                    break;
 	                }

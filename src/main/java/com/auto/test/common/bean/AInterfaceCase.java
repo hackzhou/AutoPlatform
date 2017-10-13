@@ -9,6 +9,7 @@ public class AInterfaceCase {
 	
 	private String version;
 	private String body;
+	private String result;
 	
 	private Integer rowNum;
 	
@@ -58,10 +59,15 @@ public class AInterfaceCase {
 	public void setBody(String body) {
 		this.body = body;
 	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
 	public Integer getRowNum() {
 		return rowNum;
 	}
-
 	public void setRowNum(Integer rowNum) {
 		this.rowNum = rowNum;
 	}
