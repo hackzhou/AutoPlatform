@@ -2,6 +2,7 @@ package com.auto.test.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.auto.test.common.dao.AbstractHibernateDao;
@@ -42,7 +43,7 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	public List<ACase> findByProjectVersion(Integer pid, Integer vid) {
 		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
 		if(interList != null && !interList.isEmpty()){
-			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).list();
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).addOrder(Order.desc("id")).list();
 		}
 		return null;
 	}
