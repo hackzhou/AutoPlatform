@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
-import com.auto.test.common.constant.Const;
 import com.auto.test.common.constant.HttpType;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
@@ -35,9 +34,10 @@ public class ApiExecuteRun implements Runnable {
 	private String authorB = null;
 	private String version = null;
 	private String channel = null;
+	private String projectRootPath = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlB, String authorB, String version, String channel) {
+			String urlB, String authorB, String version, String channel, String projectRootPath) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -46,10 +46,11 @@ public class ApiExecuteRun implements Runnable {
 		this.authorB = authorB;
 		this.version = version;
 		this.channel = channel;
+		this.projectRootPath = projectRootPath;
 	}
 	
 	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlA, String urlB, String authorA, String authorB, String version, String channel) {	//Online Compare
+			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath) {	//Online Compare
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -60,6 +61,7 @@ public class ApiExecuteRun implements Runnable {
 		this.authorB = authorB;
 		this.version = version;
 		this.channel = channel;
+		this.projectRootPath = projectRootPath;
 	}*/
 
 	@Override
@@ -207,8 +209,12 @@ public class ApiExecuteRun implements Runnable {
 			iUrl = fullUrl;
 		}
 		String desc = aCase.getInterfaceo().getDescription();
-		if(desc != null && desc.contains(Const.API_PLATFORM)){
-			return url + "/" + Const.API_PLATFORM + iUrl;
+		if(projectRootPath != null && !projectRootPath.isEmpty()){
+			for (String pPath : projectRootPath.split(",")) {
+				if(desc != null && desc.contains(pPath)){
+					return url + "/" + pPath + iUrl;
+				}
+			}
 		}
 		return url + apiContext.getProject().getPath() + iUrl;
 	}

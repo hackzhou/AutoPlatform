@@ -31,6 +31,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String urlB = null;
 	private String userLogin = null;
 	private String usersAccessToken = null;
+	private String projectRootPath = null;
 	
 	public ApiCaseParse(){
 		super();
@@ -40,6 +41,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.userLogin = GlobalValueConfig.getConfig("uri.user.login");
 		this.usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
 		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
+		this.projectRootPath = GlobalValueConfig.getConfig("uri.project.path");
 	}
 
 	@Override
@@ -86,9 +88,9 @@ public class ApiCaseParse implements IApiCaseParse {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlA, urlB, authorA, authorB, version, channel);	//Online Compare*/						
+								aCase, urlA, urlB, authorA, authorB, version, channel, projectRootPath);	//Online Compare*/						
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlB, authorB, version, channel);
+								aCase, urlB, authorB, version, channel, projectRootPath);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}
