@@ -122,12 +122,15 @@ public class ApiCaseController extends BaseController{
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, @RequestParam("api-case-strategy") String strategy, 
 			@RequestParam("api-case-flag") String flag, @RequestParam("api-case-run") String run, @RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result,
-			@RequestParam("api-case-link") String links, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-is-result") String isResult, @RequestParam("api-case-img-path") String img) {
+			@RequestParam("api-case-link") String links, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-img-path") String img) {
 		try {
 			if("0".equals(isBody)){
 				body = null;
 			}
-			if("0".equals(isResult)){
+			/*if("0".equals(isResult)){
+				result = null;
+			}*/
+			if(result != null && result.trim().isEmpty()){
 				result = null;
 			}
 			if(isNull(id)){
@@ -188,12 +191,15 @@ public class ApiCaseController extends BaseController{
 	
 	@RequestMapping(value = "/is/json", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> isJson(@RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-is-result") String isResult, @RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result) {
+	public Map<String, Object> isJson(@RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result) {
 		try {
 			if("1".equals(isBody)){
 				JSON.parseObject(body);
 			}
-			if("1".equals(isResult)){
+			/*if("1".equals(isResult)){
+				JSON.parseObject(result);
+			}*/
+			if(result != null && !result.isEmpty()){
 				JSON.parseObject(result);
 			}
 			logger.info("[Case]==>JSON数据验证成功！");

@@ -173,16 +173,19 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><code>是否是新接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><code>请填写验证结果 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <%-- <label class="col-sm-3 text-info text-center"><code>是否是新接口 <i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="col-sm-2 radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-is-result0" name="api-case-is-result" value="0" checked>不是</label>
                           		<label class="radio-inline"><input type="radio" id="api-case-is-result1" name="api-case-is-result" value="1">是 </label>
                         	</div>
-                        	<label class="col-sm-7 text-info">(单次运行的所有案例全为"是"，则不请求线上！)</label>
+                        	<label class="col-sm-7 text-info">(单次运行的所有案例全为"是"，则不请求线上！)</label> --%>
+                        	<label class="col-sm-7 text-info">(实际请求返回值与此结果对比)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
-	                      <div id="resultDiv" class="col-md-12 m-b-20" style="width:100%;display: none">
+	                      <!-- <div id="resultDiv" class="col-md-12 m-b-20" style="width:100%;display: none"> -->
+	                      <div id="resultDiv" class="col-md-12 m-b-20" style="width:100%;">
 							<textarea autoHeight="true" name="api-case-result" id="api-case-result" style="min-height:300px;overflow:hidden;" class="form-control" placeholder="验证结果"></textarea>
                            </div>
 	                    </div>
@@ -403,12 +406,12 @@
 	      	    }
 			});
 		});
-		$("#api-case-is-result0").change(function(){
+		/* $("#api-case-is-result0").change(function(){
 			$("#resultDiv").hide();
 		});
 		$("#api-case-is-result1").change(function(){
 			$("#resultDiv").show();
-		});
+		}); */
 		$("#api-case-is-body0").change(function(){
 			$("#bodyDiv").hide();
 		});
@@ -563,12 +566,12 @@
   	      		$("#bodyDiv").hide();
   	      	}
 			if(c.result != null && c.result != ""){
-				$('#api-case-is-result1').prop("checked",true);
+				/* $('#api-case-is-result1').prop("checked",true); */
 				$('#api-case-result').val(jsonFormat(c.result));
-				$("#resultDiv").show();
+				/* $("#resultDiv").show(); */
 			}else{
-  	      		$('#api-case-is-result0').prop("checked",true);
-  	      		$("#resultDiv").hide();
+  	      		/* $('#api-case-is-result0').prop("checked",true); */
+  	      		/* $("#resultDiv").hide(); */
   	      	}
 			if(c.img != null && c.img != ""){
 				$('#api-case-is-img1').prop("checked",true);
@@ -607,7 +610,7 @@
 		$("#bodyDiv").hide();
 		$('#api-case-is-result0').prop("checked",true);
 		$('#api-case-result').val("");
-		$("#resultDiv").hide();
+		/* $("#resultDiv").hide(); */
 		$('#api-case-is-img0').prop("checked",true);
 		removeDestroy();
 		initApiCaseProject(null);
@@ -933,6 +936,7 @@
 		var cversion = $('#api-case-version').val();
 		var cname = $('#api-case-name').val();
 		var cinterface = $('#api-case-interface').val();
+		var cresult = $('#api-case-result').val();
 		if(cproject == null || cproject.trim() == ""){
 	    	showMsgDiv("请选择项目！");
     	}else if(cversion == null || cversion.trim() == ""){
@@ -941,6 +945,8 @@
 	    	showMsgDiv("请输入案例名称！");
     	}else if(cinterface == null || cinterface.trim() == ""){
 	    	showMsgDiv("请选择接口！");
+    	}else if(cresult == null || cresult.trim() == ""){
+	    	showMsgDiv("请填写验证结果！");
     	}else {
     		countApiCaseLink();
     		$.ajax({

@@ -29,15 +29,27 @@ public class ApiExecuteRun implements Runnable {
 	private HttpClientManager httpClientManager = null;
 	private ApiContext apiContext = null;
 	private ACase aCase = null;
-	private String urlA = null;
+	/*private String urlA = null;	//Online Compare*/	
 	private String urlB = null;
-	private String authorA = null;
+	/*private String authorA = null;	//Online Compare*/	
 	private String authorB = null;
 	private String version = null;
 	private String channel = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlA, String urlB, String authorA, String authorB, String version, String channel) {
+			String urlB, String authorB, String version, String channel) {
+		super();
+		this.httpClientManager = httpClientManager;
+		this.apiContext = apiContext;
+		this.aCase = aCase;
+		this.urlB = urlB;
+		this.authorB = authorB;
+		this.version = version;
+		this.channel = channel;
+	}
+	
+	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
+			String urlA, String urlB, String authorA, String authorB, String version, String channel) {	//Online Compare
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -48,7 +60,7 @@ public class ApiExecuteRun implements Runnable {
 		this.authorB = authorB;
 		this.version = version;
 		this.channel = channel;
-	}
+	}*/
 
 	@Override
 	public void run() {
@@ -150,14 +162,14 @@ public class ApiExecuteRun implements Runnable {
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));
+				/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
 			}
 			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId()));
 		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				aResultDetail.setResulta(aCase.getResult());
 			}else{
-				aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));
+				/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
 			}
 			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg()));
 		}

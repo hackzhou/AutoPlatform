@@ -11,7 +11,7 @@ import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
 
 public class ApiContext {
-	private boolean bool;
+//	private boolean bool;
 	private Integer count;
 	private Integer total;
 	
@@ -28,12 +28,12 @@ public class ApiContext {
 		this.count = 0;
 	}
 
-	public boolean isBool() {
-		return bool;
-	}
-	public void setBool(boolean bool) {
-		this.bool = bool;
-	}
+//	public boolean isBool() {
+//		return bool;
+//	}
+//	public void setBool(boolean bool) {
+//		this.bool = bool;
+//	}
 	public Integer getCount() {
 		return count;
 	}

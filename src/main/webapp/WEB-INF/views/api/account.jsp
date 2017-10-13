@@ -204,7 +204,7 @@
     }
     
     function initPwd(text){
-    	$('#api-account-loginname-label').html("(通常会使用同一个库，所以使用同一个账号测试！)");
+    	/* $('#api-account-loginname-label').html("(通常会使用同一个库，所以使用同一个账号测试！)"); */
 		$('#api-account-password-label').html("");
 		$('#api-account-password').prop("placeholder", "账号密码");
 		if(text != null){
@@ -215,8 +215,8 @@
     }
     
 	function initToken(text){
-		$('#api-account-loginname-label').html("(仅作为标示)");
-		$('#api-account-password-label').html("(可填写一个[线下]或者两个[线上,线下](*逗号分隔即可))");
+		/* $('#api-account-loginname-label').html("(仅作为标示)"); */
+		/* $('#api-account-password-label').html("(可填写一个[线下]或者两个[线上,线下](*逗号分隔即可))"); */
 		$('#api-account-password').prop("placeholder", "Token");
 		if(text != null){
 			$('#api-account-password').val(text);

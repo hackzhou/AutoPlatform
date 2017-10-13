@@ -27,7 +27,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
 	private ExecutorService cachedThreadPool = null;
 	private HttpClientManager httpClientManager = null;
-	private String urlA = null;
+	/*private String urlA = null;	//Online Compare*/	
 	private String urlB = null;
 	private String userLogin = null;
 	private String usersAccessToken = null;
@@ -35,7 +35,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	public ApiCaseParse(){
 		super();
 		this.cachedThreadPool = ApiThreadPool.getInstance();
-		this.urlA = GlobalValueConfig.getConfig("uri.production.environment");
+		/*this.urlA = GlobalValueConfig.getConfig("uri.production.environment");	//Online Compare*/		
 		this.urlB = GlobalValueConfig.getConfig("uri.advance.environment");
 		this.userLogin = GlobalValueConfig.getConfig("uri.user.login");
 		this.usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
@@ -62,30 +62,33 @@ public class ApiCaseParse implements IApiCaseParse {
 			String version = apiContext.getVersion().getVersion();
 			String channels = apiContext.getVersion().getChannel();
 			for (String channel : channels.split(",")) {
-				String authorA = null;
+				/*String authorA = null;	//Online Compare*/				
 				String authorB = null;
 				if(apiContext.getAccount() != null){
 					if("1".equals(apiContext.getAccount().getToken())){
 						String token = apiContext.getAccount().getPassword();
-						if(token.contains(",")){
+						/*if(token.contains(",")){	//Online Compare
 							authorA = token.split(",")[0];
 							authorB = token.split(",")[1];
 						}else{
 							authorB = token;
-						}
+						}*/
+						authorB = token;
 					}else{
-						if(apiContext.isBool()){
+						/*if(apiContext.isBool()){	//Online Compare
 							authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "线上");
 							logger.info("[登录权限][线上]==>[" + authorA + "]");
-						}
+						}*/
 						authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "线下");
 						logger.info("[登录权限][线下]==>[" + authorB + "]");
 					}
 				}
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
+						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
+								aCase, urlA, urlB, authorA, authorB, version, channel);	//Online Compare*/						
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlA, urlB, authorA, authorB, version, channel);
+								aCase, urlB, authorB, version, channel);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}

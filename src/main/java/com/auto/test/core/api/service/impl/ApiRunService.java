@@ -109,7 +109,8 @@ public class ApiRunService implements IApiRunService {
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;
 		apiContext.setTotal(getCaseTotal(list, len));
-		apiContext.setBool(isRunOnline(list));
+		
+		/*apiContext.setBool(isRunOnline(list));	//Online Compare
 		if(apiContext.getAccount() != null && "1".equals(apiContext.getAccount().getToken())){
 			int index = apiContext.getAccount().getPassword().split(",").length;
 			if(index > 2){
@@ -118,19 +119,19 @@ public class ApiRunService implements IApiRunService {
 			if(apiContext.isBool() && index != 2){
 				throw throwException(logger, "Token[线上未设置]-[" + apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword() + "]");
 			}
-		}
+		}*/
 		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		return apiContext;
 	}
 	
-	private boolean isRunOnline(List<ACase> list){
+	/*private boolean isRunOnline(List<ACase> list){	//Online Compare
 		for (ACase aCase : list) {
 			if(aCase.getResult() == null || aCase.getResult().isEmpty()){
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	private AResult createApiResult(ApiRunType type, Integer runId, String runby, ApiContext apiContext) throws Exception{
 		AResult aResult = new AResult();
