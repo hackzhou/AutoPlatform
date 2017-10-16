@@ -42,6 +42,9 @@ public class ATask implements Serializable{
 	
 	@Column(name="run_flag")
 	private Integer runFlag;
+
+	@Column(name="monitor")
+	private Integer monitor;
 	
 	@Column(name="run_time")
 	private String runTime;
@@ -65,7 +68,7 @@ public class ATask implements Serializable{
 		super();
 	}
 	
-	public ATask(String pid, String vid, String aid, Integer runFlag, String runTime, String createby) {
+	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby) {
 		super();
 		if(pid != null && !pid.isEmpty()){
 			this.projecto = new AProject(Integer.parseInt(pid));
@@ -77,11 +80,12 @@ public class ATask implements Serializable{
 			this.accounto = new AAccount(Integer.parseInt(aid));
 		}
 		this.runFlag = runFlag;
+		this.monitor = monitor;
 		this.runTime = runTime;
 		this.createby = createby;
 		this.runby = createby;
 	}
-	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, String runTime, String runby) {
+	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby) {
 		super();
 		this.id = id;
 		if(pid != null && !pid.isEmpty()){
@@ -94,6 +98,7 @@ public class ATask implements Serializable{
 			this.accounto = new AAccount(Integer.parseInt(aid));
 		}
 		this.runFlag = runFlag;
+		this.monitor = monitor;
 		this.runTime = runTime;
 		this.runby = runby;
 	}
@@ -103,6 +108,7 @@ public class ATask implements Serializable{
 		this.versiono = aTask.getVersiono();
 		this.accounto = aTask.getAccounto();
 		this.runFlag = aTask.getRunFlag();
+		this.monitor = aTask.getMonitor();
 		this.runTime = aTask.getRunTime();
 		this.runby = aTask.getRunby();
 		this.updateTime = new Date();
@@ -138,6 +144,12 @@ public class ATask implements Serializable{
 	}
 	public void setRunFlag(Integer runFlag) {
 		this.runFlag = runFlag;
+	}
+	public Integer getMonitor() {
+		return monitor;
+	}
+	public void setMonitor(Integer monitor) {
+		this.monitor = monitor;
 	}
 	public String getRunTime() {
 		return runTime;
@@ -179,7 +191,8 @@ public class ATask implements Serializable{
 	@Override
 	public String toString() {
 		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
-				+ ", runFlag=" + runFlag + ", runTime=" + runTime + ", createby=" + createby + ", runby=" + runby
-				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", runTime=" + runTime + ", createby=" + createby
+				+ ", runby=" + runby + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
+				+ "]";
 	}
 }

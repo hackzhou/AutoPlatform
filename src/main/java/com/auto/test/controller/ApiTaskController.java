@@ -41,7 +41,7 @@ public class ApiTaskController extends BaseController{
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getTaskByTime(@RequestParam("api-task-id") String id, @RequestParam("api-task-time") String time) {
+	public Map<String, Object> getTaskByTime(@RequestParam("api-task-id") String id, @RequestParam("api-task-time-hide") String time) {
 		if(!isNull(id)){
 			ATask aTask = apiTaskService.findById(Integer.parseInt(id));
 			if(aTask != null && aTask.getRunTime() != null && aTask.getRunTime().equals(time)){
@@ -61,11 +61,11 @@ public class ApiTaskController extends BaseController{
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("api-task-id") String id, @RequestParam("api-task-run") String run,
-			@RequestParam("api-task-time") String time, @RequestParam("api-task-project") String project, @RequestParam("api-task-version") String version, 
-			@RequestParam("api-task-account") String account) {
+			@RequestParam("api-task-monitor") String monitor, @RequestParam("api-task-time-hide") String time, @RequestParam("api-task-project") String project, 
+			@RequestParam("api-task-version") String version, @RequestParam("api-task-account") String account) {
 		try {
 			if(isNull(id)){
-				Integer tid = apiTaskService.create(new ATask(project, version, account, Integer.parseInt(run), time, getCurrentUserName(request)));
+				Integer tid = apiTaskService.create(new ATask(project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request)));
 				if(tid != null){
 					logger.info("[Task]==>添加定时任务[id=" + tid + ",project=" + project + ",time=" + time + "]成功！");
 					return successJson();
@@ -74,7 +74,7 @@ public class ApiTaskController extends BaseController{
 					return failedJson("添加定时任务[project=" + project + ",time=" + time + "]失败！");
 				}
 			}else{
-				ATask aTask = apiTaskService.update(new ATask(Integer.parseInt(id), project, version, account, Integer.parseInt(run), time, getCurrentUserName(request)));
+				ATask aTask = apiTaskService.update(new ATask(Integer.parseInt(id), project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request)));
 				if(aTask != null){
 					logger.info("[Task]==>更新定时任务[id=" + id + ",project=" + project + ",time=" + time + "]成功！");
 					return successJson();

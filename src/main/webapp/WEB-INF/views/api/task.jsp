@@ -83,6 +83,7 @@
                   <div class="modal-body">
                     <form id="api-task-form" class="form-horizontal form-material">
 	                    <input type="hidden" id="api-task-id" name="api-task-id" value="">
+	                    <input type="hidden" id="api-task-time-hide" name="api-task-time-hide" value="">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否运行 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -94,10 +95,34 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>循环监控 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-task-monitor1" name="api-task-monitor" value="1">是 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-task-monitor0" name="api-task-monitor" value="0" checked>否 </label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group task-time-div">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>触发时间 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-8 input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
 		                        <input type="text" id="api-task-time" name="api-task-time" class="form-control" value="00:00" readOnly>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group task-cycle-div" style="display: none">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>触发周期 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-task-cycle" name="api-task-cycle" class="form-select" style="width: 80%;">
+		                        	<option value="1" selected="selected">一分钟</option>
+		                        	<option value="3">三分钟</option>
+		                        	<option value="5">五分钟</option>
+		                        	<option value="10">十分钟</option>
+		                        	<option value="30">半小时</option>
+		                        	<option value="60">一小时</option>
+		                        </select>
 	                        </div>
 	                      </div>
 	                    </div>
@@ -154,9 +179,10 @@
                   <th>版本</th>
                   <th><b class='label label-inverse'>测试账号</b></th>
                   <th><b class='label label-success'>是否运行</b></th>
+                  <th><b class='label label-info'>循环监控</b></th>
                   <th><b class='label label-red'>触发时间</b></th>
                   <th>创建人</th>
-                  <th><b class='label label-info'>更新人</b></th>
+                  <th><b class='label label-danger'>更新人</b></th>
                   <th>创建日期</th>
                   <th>操作</th>
                 </tr>
@@ -211,10 +237,22 @@
 
     $(document).ready(function(){
     	createTable();
+    	initEvent();
     	initApiTaskProject(null);
     	initApiTaskVersion(null);
     	initApiTaskAccount(null);
     });
+    
+    function initEvent(){
+    	$("#api-task-monitor0").change(function(){
+			$(".task-time-div").show();
+			$(".task-cycle-div").hide();
+		});
+    	$("#api-task-monitor1").change(function(){
+    		$(".task-time-div").hide();
+			$(".task-cycle-div").show();
+		});
+    }
 
     function createTable() {
     	$('#api-task-table').dataTable().fnDestroy();
@@ -227,7 +265,7 @@
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -236,7 +274,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -254,7 +292,7 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "16%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -280,7 +318,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.runTime == null ? "-" : "<b style='color:red'>" + data.runTime + "</b>";
+						if(data.monitor == 1){
+							return "<b style='color:blue'>是</b>";
+						}
+						return "<b style='color:black'>否</b>";
 					}
 				},
 				{
@@ -289,7 +330,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.createby == null ? "-" : data.createby;
+						if(data.monitor == 1){
+							return data.runTime == null ? "-" : "<b style='color:red'>" + data.runTime + "分钟</b>";
+						}
+						return data.runTime == null ? "-" : "<b style='color:red'>" + data.runTime + "</b>";
 					}
 				},
 				{
@@ -298,12 +342,21 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
+						return data.createby == null ? "-" : data.createby;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 8 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
 						return data.runby == null ? "-" : data.runby;
 					}
 				},
 				{
 					"sWidth" : "12%",
-					"aTargets" : [ 8 ],
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -312,7 +365,7 @@
 				},
 				{
 					"sWidth" : "8%",
-					"aTargets" : [ 9 ],
+					"aTargets" : [ 10 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -334,8 +387,17 @@
 			hideMsgDiv();
 			var t = $(this).data('data');
 			$('#api-task-id').val(t.id);
-			$('#api-task-time').val(t.runTime);
 			$('#api-task-run' + t.runFlag).prop("checked", true);
+			$('#api-task-monitor' + t.monitor).prop("checked", true);
+			if(t.monitor == 1){
+				$('#api-task-cycle').val(t.runTime);
+				$(".task-cycle-div").show();
+				$(".task-time-div").hide();
+			}else{
+				$('#api-task-time').val(t.runTime);
+				$(".task-time-div").show();
+				$(".task-cycle-div").hide();
+			}
 			initApiTaskProject(t.projecto.id);
 	    	initApiTaskVersion(t.versiono.id);
 	    	if(t.accounto == null){
@@ -355,7 +417,11 @@
     	$('#task-modal-lable').html("定时任务-添加");
     	$('#api-task-id').val("");
     	$('#api-task-time').val("00:00");
+    	$('#api-task-cycle').val("1");
     	$('#api-task-run1').prop("checked", true);
+    	$('#api-task-monitor0').prop("checked", true);
+    	$(".task-time-div").show();
+		$(".task-cycle-div").hide();
     	initApiTaskProject(null);
     	initApiTaskVersion(null);
     	initApiTaskAccount(null);
@@ -363,12 +429,16 @@
     }
     
     function apiTaskSave(){
+    	var tmonitor = $("input[name='api-task-monitor']:checked").val();
     	var ttime = $('#api-task-time').val();
+    	var tcycle = $('#api-task-cycle').val();
     	var tproject = $('#api-task-project').val();
     	var tversion = $('#api-task-version').val();
     	var taccount = $('#api-task-account').val();
-    	if(ttime == null || ttime.trim() == ""){
+    	if(tmonitor == 0 && (ttime == null || ttime.trim() == "")){
 	    	showMsgDiv("请输入触发时间！");
+    	}else if(tmonitor == 1 && (tcycle == null || tcycle.trim() == "")){
+    		showMsgDiv("请输入触发周期！");
     	}else if(tproject == null || tproject.trim() == ""){
 	    	showMsgDiv("请选择项目！");
     	}else if(tversion == null || tversion.trim() == ""){
@@ -376,6 +446,11 @@
     	}else if(taccount == null || taccount.trim() == ""){
 	    	showMsgDiv("请选择测试账号！");
     	}else{
+    		if(tmonitor == 1){
+    			$('#api-task-time-hide').val(tcycle);
+    		}else{
+    			$('#api-task-time-hide').val(ttime);
+    		}
     		$.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/task/repeat",
