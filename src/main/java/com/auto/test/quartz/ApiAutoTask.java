@@ -15,7 +15,7 @@ import com.auto.test.service.IApiTaskService;
 
 public class ApiAutoTask {
 	private static Logger logger = LoggerFactory.getLogger(ApiAutoTask.class);
-	private static final Long DATE_START_SERVER = new Date().getTime();
+	private static final Long DATE_START_SERVER = System.currentTimeMillis();
 	
 	@Resource
 	private IApiTaskService apiTaskService;
