@@ -6,8 +6,8 @@ import java.net.UnknownHostException;
 
 public class Const {
 	
-	public static final String IP_ONLINE				= "192.168.101.245";
-	public static final String IP_TEST					= "192.168.101.59";
+	public static final String IP_ONLINE				= "192.168.101.242";
+	public static final String IP_TEST					= "192.168.102.147";
 	public static final String IP_CURRENT				= getCurrentIP();
 	
 	public static final String RUN_PROJECT_NAME			= "项目[%s]";
