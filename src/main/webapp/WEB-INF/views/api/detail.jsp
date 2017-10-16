@@ -153,6 +153,7 @@
 <script type="text/javascript">
   
 	$(document).ready(function() {
+		$('.top-menu-all').hide();
 		createTable();
 	});
 	

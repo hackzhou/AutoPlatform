@@ -46,8 +46,8 @@ public class LoginFilter implements Filter {
         		|| servletPath.startsWith("/eliteadmin/") || servletPath.startsWith("/plugins/") 
         		|| servletPath.startsWith("/home/login") || servletPath.startsWith("/home/register") 
         		|| servletPath.startsWith("/user/login") || servletPath.startsWith("/user/logout") 
-        		|| servletPath.startsWith("//user/login/cookie") || servletPath.startsWith("/user/register") 
-        		|| servletPath.endsWith("/index.jsp");
+        		|| servletPath.startsWith("/user/login/cookie") || servletPath.startsWith("/user/register") 
+        		|| servletPath.endsWith("/index.jsp") || servletPath.startsWith("/api/report/detail");
     }
 	
 }
