@@ -35,7 +35,7 @@
 			</ul>
 			</li>
 		</ul>
-		<ul class="nav navbar-top-links navbar-right pull-right">
+		<ul class="nav navbar-top-links navbar-right pull-right top-logout-user">
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="${pageContext.request.contextPath}/plugins/images/img2.jpg" alt="user-img" width="36" class="img-rounded"><b class="hidden-xs m-r-10">${username}</b> </a>
 			<ul class="dropdown-menu dropdown-user animated flipInY">
 				<li><a href="${pageContext.request.contextPath}/user/logout"><i class="fa fa-power-off m-r-10"></i> 登出</a></li>

@@ -154,6 +154,7 @@
   
 	$(document).ready(function() {
 		$('.top-menu-all').hide();
+		$('.top-logout-user').hide();
 		createTable();
 	});
 	
