@@ -337,8 +337,8 @@
 			baseTextLines: base,
 			newTextLines: newtxt,
 			opcodes: opcodes,
-			baseTextName: "线上数据",
-			newTextName: "预发数据",
+			baseTextName: "标准数据",/* 线上数据 */
+			newTextName: "测试数据",/* 预发数据 */
 			contextSize: contextSize,
 			viewType: viewType
 		}));
