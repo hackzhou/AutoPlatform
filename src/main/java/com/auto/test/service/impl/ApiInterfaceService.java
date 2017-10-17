@@ -180,7 +180,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 				}
 			}
 		}
-		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), null, null, null, 1, 1);
+		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), null, null, 1, 1);
 		if(caseo == null){
 			c.setCreateTime(new Date());
 			casedDao.create(c);

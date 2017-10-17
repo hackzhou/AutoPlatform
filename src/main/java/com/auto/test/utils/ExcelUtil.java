@@ -70,6 +70,9 @@ public class ExcelUtil {
 	                	case 7:
 	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
 		                    break;
+	                	case 8:
+	                		aInterfaceCase.setStrategy(splitStr(cellValue));
+		                    break;
 	                	default:
 		                    break;
 	                }
@@ -112,6 +115,24 @@ public class ExcelUtil {
 			}
 		}
 		throw new BusinessException("【第" + row + "行】" + text + "ID获取失败！");
+	}
+	
+	private String splitStr(String str){
+		if(str != null && !str.isEmpty()){
+			str = str.replace("，", ",").trim();
+			if(str.contains(",")){
+				String result = "";
+				for (String s : str.split(",")) {
+					if(s != null && !s.trim().isEmpty()){
+						result += "," + s.trim();
+					}
+				}
+				return result.startsWith(",") ? result.substring(1) : result;
+			}else{
+				return str;
+			}
+		}
+		return "";
 	}
 	
 	private String trimStr(String str){

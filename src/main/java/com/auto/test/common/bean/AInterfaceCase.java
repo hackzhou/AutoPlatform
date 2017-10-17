@@ -10,6 +10,7 @@ public class AInterfaceCase {
 	private String version;
 	private String body;
 	private String result;
+	private String strategy;
 	
 	private Integer rowNum;
 	
@@ -65,6 +66,12 @@ public class AInterfaceCase {
 	public void setResult(String result) {
 		this.result = result;
 	}
+	public String getStrategy() {
+		return strategy;
+	}
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
 	public Integer getRowNum() {
 		return rowNum;
 	}
@@ -75,8 +82,8 @@ public class AInterfaceCase {
 	@Override
 	public String toString() {
 		return "AInterfaceCase [project=" + project + ", name=" + name + ", type=" + type + ", url=" + url
-				+ ", description=" + description + ", version=" + version + ", body=" + body + ", rowNum=" + rowNum
-				+ "]";
+				+ ", description=" + description + ", version=" + version + ", body=" + body + ", result=" + result
+				+ ", strategy=" + strategy + ", rowNum=" + rowNum + "]";
 	}
 
 }
