@@ -110,9 +110,10 @@ public class JSONCompare {
 	public String sortJson(String json){
 		try {
 			if(json != null && !json.isEmpty()){
-				Object obj = JSON.parse(json);
-				sortJson(obj);
-				return obj.toString();
+				Object obj = JSON.parse(JSON.toJSONString(JSON.parse(json), SerializerFeature.SortField));
+				return JSON.toJSONString(obj, SerializerFeature.SortField);
+//				sortJson(obj);
+//				return JSON.toJSONString(obj, SerializerFeature.SortField);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +134,6 @@ public class JSONCompare {
 	}
 	
 	public void sortJson(JSONObject json) {
-		JSON.toJSONString(json, SerializerFeature.SortField);
 		Set<String> set = json.keySet();
 		if(set != null && set.size() > 0){
 			for (String s : set) {
@@ -163,8 +163,8 @@ public class JSONCompare {
 		String s3 = "{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"}";
 		String s4 = "{\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521,\"name\": \"平台\"}";
 		System.out.println(new JSONCompare().compareJson(new JSONCompare().sortJson(s1), new JSONCompare().sortJson(s2), null));
-		System.out.println(new JSONCompare().sortJson(new JSONCompare().sortJson(s1)));
-		System.out.println(new JSONCompare().sortJson(new JSONCompare().sortJson(s2)));
+		System.out.println(new JSONCompare().sortJson(s1));
+		System.out.println(new JSONCompare().sortJson(s2));
 		System.out.println(new JSONCompare().sortJson(s3));
 		System.out.println(new JSONCompare().sortJson(s4));
 	}
