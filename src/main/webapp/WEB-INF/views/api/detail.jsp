@@ -50,7 +50,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="exampleModalLabelDetail">结果对比<label class="text-danger" id="ignores"></label></h4>
+              <h4 class="modal-title" id="exampleModalLabelDetail"><label class="text-info" id="showid"></label>结果对比<label class="text-danger" id="ignores"></label></h4>
             </div>
             <div class="modal-body">
               <form id="api-result-detail-diff-form" class="form-horizontal form-material">
@@ -305,6 +305,7 @@
 	function initTableEvent() {
 		$(".initResultDetailData").on("click", function(){
 			var data = JSON.parse(unescape($(this).data('data')));
+			$("#showid").html("[" + data.id + "->" + data.name + "]");
 			$("#baseText").val(jsonFormat(data.resulta));
 			$("#newText").val(jsonFormat(data.resultb));
 			diffUsingJS(0);
