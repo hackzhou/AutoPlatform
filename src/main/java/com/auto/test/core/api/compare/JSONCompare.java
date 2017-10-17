@@ -112,7 +112,7 @@ public class JSONCompare {
 			if(json != null && !json.isEmpty()){
 				Object obj = JSON.parse(json);
 				sortJson(obj);
-				return JSON.toJSONString(obj, SerializerFeature.SortField);
+				return obj.toString();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,6 +133,7 @@ public class JSONCompare {
 	}
 	
 	public void sortJson(JSONObject json) {
+		JSON.toJSONString(json, SerializerFeature.SortField);
 		Set<String> set = json.keySet();
 		if(set != null && set.size() > 0){
 			for (String s : set) {
@@ -143,6 +144,10 @@ public class JSONCompare {
 	
 	public void sortJson(JSONArray json) {
 		json.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		Iterator<Object> it = json.iterator();
+		while (it.hasNext()) {
+			sortJson(it.next());
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -153,12 +158,13 @@ public class JSONCompare {
 //		String s2 = "{\"code\": 200,\"data\":[{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
 //		System.out.println(new JSONCompare().compareJson(JSON.parse(s1), JSON.parse(s2), "headImg,userId,useAmount".split(",")));
 		
-		String s1 = "{\"code\": 200,\"data\":[{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"},{\"changeMoney\": 2820,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"},{\"changeMoney\": 500,\"createTime\": \"2017年03月20日 21:09\",\"name\": \"梦想飞镖\"}]}";
-		String s2 = "{\"code\": 200,\"data\":[{\"createTime\": \"2017年03月20日 21:09\",\"changeMoney\": 2820,\"name\": \"梦想飞镖\"},{\"name\": \"平台\",\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521},{\"changeMoney\": 500,\"name\": \"梦想飞镖\",\"createTime\": \"2017年03月20日 21:09\"}]}";
+		String s1 = "{\"code\":200,\"data\":{\"feedback\":[],\"common\":[{\"amount\":1000,\"bizType\":101,\"thirdId\":\"jddgame_0001\",\"price\":1,\"bizId\":241,\"name\":\"清凉啤酒\",\"icon\":\"/group1/M00/00/11/wKhl_VnbNyGASP-8AAASLhjBORI821.png\",\"productIcon\":\"/group1/M00/00/02/wKhl_VmIF9iAASr_AAASLhjBORI008.png\",\"remark\":\"\",\"bizTarget\":241}],\"welfare\":[],\"feedbackAutoOpen\":false,\"card\":[{\"bizType\":106,\"thirdId\":\"jddgame_0001\",\"nextTime\":0,\"buyFlag\":1,\"price\":30,\"icon\":\"/group1/M00/00/11/wKhl_VnbNzyAcQpqAAAb-Wq8eME950.png\",\"bizId\":242,\"name\":\"周卡\",\"remark\":\"\",\"productIcon\":\"/group1/M00/00/03/wKhl_VmIHuaAaE2XAAAb-Wq8eME107.png\",\"bizTarget\":242,\"content\":\"购买立得:5000;每天返还:5000\"}]}}";
+		String s2 = "{\"code\":200,\"data\":{\"feedback\":[],\"common\":[{\"bizId\":241,\"name\":\"清凉啤酒\",\"price\":1,\"amount\":1000,\"giveAmount\":null,\"icon\":\"/group1/M00/00/11/wKhl_VnbNyGASP-8AAASLhjBORI821.png\",\"productIcon\":\"/group1/M00/00/02/wKhl_VmIF9iAASr_AAASLhjBORI008.png\",\"thirdId\":\"jddgame_0001\",\"remark\":\"\",\"bizType\":101,\"bizTarget\":241}],\"card\":[{\"bizId\":242,\"name\":\"周卡\",\"price\":30,\"giveAmount\":null,\"content\":\"购买立得:5000;每天返还:5000\",\"icon\":\"/group1/M00/00/11/wKhl_VnbNzyAcQpqAAAb-Wq8eME950.png\",\"productIcon\":\"/group1/M00/00/03/wKhl_VmIHuaAaE2XAAAb-Wq8eME107.png\",\"thirdId\":\"jddgame_0001\",\"remark\":\"\",\"nextTime\":0,\"buyFlag\":1,\"bizType\":106,\"bizTarget\":242}],\"welfare\":[],\"feedbackAutoOpen\":false}}";
 		String s3 = "{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"}";
 		String s4 = "{\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521,\"name\": \"平台\"}";
-		System.out.println(new JSONCompare().sortJson(s1));
-		System.out.println(new JSONCompare().sortJson(s2));
+		System.out.println(new JSONCompare().compareJson(new JSONCompare().sortJson(s1), new JSONCompare().sortJson(s2), null));
+		System.out.println(new JSONCompare().sortJson(new JSONCompare().sortJson(s1)));
+		System.out.println(new JSONCompare().sortJson(new JSONCompare().sortJson(s2)));
 		System.out.println(new JSONCompare().sortJson(s3));
 		System.out.println(new JSONCompare().sortJson(s4));
 	}
