@@ -46,6 +46,9 @@ public class ATask implements Serializable{
 	@Column(name="monitor")
 	private Integer monitor;
 	
+	@Column(name="mail")
+	private Integer mail;
+	
 	@Column(name="run_time")
 	private String runTime;
 	
@@ -68,7 +71,7 @@ public class ATask implements Serializable{
 		super();
 	}
 	
-	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby) {
+	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby, Integer mail) {
 		super();
 		if(pid != null && !pid.isEmpty()){
 			this.projecto = new AProject(Integer.parseInt(pid));
@@ -84,8 +87,9 @@ public class ATask implements Serializable{
 		this.runTime = runTime;
 		this.createby = createby;
 		this.runby = createby;
+		this.mail = mail;
 	}
-	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby) {
+	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby, Integer mail) {
 		super();
 		this.id = id;
 		if(pid != null && !pid.isEmpty()){
@@ -101,6 +105,7 @@ public class ATask implements Serializable{
 		this.monitor = monitor;
 		this.runTime = runTime;
 		this.runby = runby;
+		this.mail = mail;
 	}
 
 	public void update(ATask aTask) {
@@ -109,6 +114,7 @@ public class ATask implements Serializable{
 		this.accounto = aTask.getAccounto();
 		this.runFlag = aTask.getRunFlag();
 		this.monitor = aTask.getMonitor();
+		this.mail = aTask.getMail();
 		this.runTime = aTask.getRunTime();
 		this.runby = aTask.getRunby();
 		this.updateTime = new Date();
@@ -151,6 +157,12 @@ public class ATask implements Serializable{
 	public void setMonitor(Integer monitor) {
 		this.monitor = monitor;
 	}
+	public Integer getMail() {
+		return mail;
+	}
+	public void setMail(Integer mail) {
+		this.mail = mail;
+	}
 	public String getRunTime() {
 		return runTime;
 	}
@@ -191,8 +203,8 @@ public class ATask implements Serializable{
 	@Override
 	public String toString() {
 		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
-				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", runTime=" + runTime + ", createby=" + createby
-				+ ", runby=" + runby + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
-				+ "]";
+				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", mail=" + mail + ", runTime=" + runTime
+				+ ", createby=" + createby + ", runby=" + runby + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", memo=" + memo + "]";
 	}
 }

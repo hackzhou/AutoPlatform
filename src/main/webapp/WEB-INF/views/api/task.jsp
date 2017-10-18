@@ -95,6 +95,16 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>异常报告 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-task-mail1" name="api-task-mail" value="1">发送 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-task-mail0" name="api-task-mail" value="0" checked>不发送 </label>
+                          		<label class="text-info">(发送报告邮箱请联系管理员配置)</label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>循环监控 <i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-task-monitor1" name="api-task-monitor" value="1">是 </label>
@@ -181,6 +191,7 @@
                   <th><b class='label label-success'>是否运行</b></th>
                   <th><b class='label label-info'>循环监控</b></th>
                   <th><b class='label label-red'>触发时间</b></th>
+                  <th><b class='label label-primary'>发送报告</b></th>
                   <th>创建人</th>
                   <th><b class='label label-danger'>更新人</b></th>
                   <th>创建日期</th>
@@ -283,7 +294,7 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
+					"sWidth" : "6%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -292,7 +303,7 @@
 					}
 				},
 				{
-					"sWidth" : "16%",
+					"sWidth" : "12%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -342,7 +353,10 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.createby == null ? "-" : data.createby;
+						if(data.mail == 1){
+							return "<b style='color:purple'>发送</b>";
+						}
+						return "<b style='color:black'>不发送</b>";
 					}
 				},
 				{
@@ -351,12 +365,21 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
+						return data.createby == null ? "-" : data.createby;
+					}
+				},
+				{
+					"sWidth" : "8%",
+					"aTargets" : [ 9 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
 						return data.runby == null ? "-" : data.runby;
 					}
 				},
 				{
-					"sWidth" : "12%",
-					"aTargets" : [ 9 ],
+					"sWidth" : "10%",
+					"aTargets" : [ 10 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -365,7 +388,7 @@
 				},
 				{
 					"sWidth" : "8%",
-					"aTargets" : [ 10 ],
+					"aTargets" : [ 11 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -388,6 +411,7 @@
 			var t = $(this).data('data');
 			$('#api-task-id').val(t.id);
 			$('#api-task-run' + t.runFlag).prop("checked", true);
+			$('#api-task-mail' + t.mail).prop("checked", true);
 			$('#api-task-monitor' + t.monitor).prop("checked", true);
 			if(t.monitor == 1){
 				$('#api-task-cycle').val(t.runTime);
@@ -419,6 +443,7 @@
     	$('#api-task-time').val("00:00");
     	$('#api-task-cycle').val("1");
     	$('#api-task-run1').prop("checked", true);
+    	$('#api-task-mail0').prop("checked", true);
     	$('#api-task-monitor0').prop("checked", true);
     	$(".task-time-div").show();
 		$(".task-cycle-div").hide();
