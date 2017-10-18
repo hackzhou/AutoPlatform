@@ -50,7 +50,7 @@ public class ApiAutoTask {
 		Integer vid = aTask.getVersiono().getId();
 		logger.info("[Task]==>定时任务运行项目[id=" + pid + ",account=" + aid + ",version=" + vid + ",user=" + aTask.getRunby() + "]");
 		IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
-		apiRunService.run(ApiRunType.PROJECT, pid, aid, vid, "Auto[" + aTask.getRunby() + "]", "1".equals(aTask.getMail()));
+		apiRunService.run(ApiRunType.PROJECT, pid, aid, vid, "Auto[" + aTask.getRunby() + "]", new Integer(1).equals(aTask.getMail()));
 		logger.info("[Task]==>定时任务运行项目成功！");
 	}
 
