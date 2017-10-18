@@ -44,11 +44,11 @@ public class ApiRunService implements IApiRunService {
 	private IApiResultService resultService;
 
 	@Override
-	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby) throws Exception{
+	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, boolean mail) throws Exception{
 		isNotRunAccount(accountId);
 		List<ACase> list = getRunCases(type, runId, versionId);
 		AVersion aVersion = getApiVersion(list, type, versionId);
-		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion);
+		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion, mail);
 		if(apiContext != null){
 			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 			caseParse.execute(apiContext);
@@ -100,11 +100,12 @@ public class ApiRunService implements IApiRunService {
 		return aVersion;
 	}
 	
-	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion) throws Exception{
+	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion, boolean mail) throws Exception{
 		ApiContext apiContext = new ApiContext();
 		if(accountId != null){
 			apiContext.setAccount(accountService.findById(accountId));
 		}
+		apiContext.setMail(mail);
 		apiContext.setList(list);
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;

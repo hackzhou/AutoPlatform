@@ -22,6 +22,7 @@ import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
 import com.auto.test.service.IApiResultDetailService;
 import com.auto.test.service.IApiResultService;
+import com.auto.test.utils.EmailUtil;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
@@ -150,6 +151,9 @@ public class ApiExecuteRun implements Runnable {
 			} finally {
 				if(httpClientManager != null){
 					httpClientManager.close();
+				}
+				if(apiContext.isMail() && aResult.getFail() > 0){
+					new EmailUtil().sendEmail(aResult);
 				}
 			}
 		}

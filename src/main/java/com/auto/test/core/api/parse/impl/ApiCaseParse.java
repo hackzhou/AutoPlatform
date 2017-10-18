@@ -22,6 +22,7 @@ import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
 import com.auto.test.service.IApiResultService;
+import com.auto.test.utils.EmailUtil;
 
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
@@ -99,13 +100,13 @@ public class ApiCaseParse implements IApiCaseParse {
 	}
 	
 	private void executeFinal(ApiContext apiContext, String message) throws Exception{
+		AResult aResult = apiContext.getResult();
 		try {
 			if(apiContext.getAccount() != null){
 				ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 				apiApplication.remove(apiContext.getAccount().getId());
 			}
 			IApiResultService apiResultService = (IApiResultService) SpringContext.getBean("apiResultService");
-			AResult aResult = apiContext.getResult();
 			aResult.setEndTime(new Date());
 			aResult.setStatus(ApiRunStatus.COMPLETE.name());
 			aResult.setFail(aResult.getTotal() - aResult.getSuccess());
@@ -114,6 +115,9 @@ public class ApiCaseParse implements IApiCaseParse {
 		} finally {
 			if(httpClientManager != null){
 				httpClientManager.close();
+			}
+			if(apiContext.isMail() && aResult.getFail() > 0){
+				new EmailUtil().sendEmail(aResult);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.auto.test.utils;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -12,8 +13,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.auto.test.common.config.GlobalValueConfig;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
+import com.auto.test.entity.AResult;
 import freemarker.template.Template;
 
 public class EmailUtil {
@@ -27,22 +30,17 @@ public class EmailUtil {
 	private static final String SERVER_PASSWORD		= "cup6m8hp";
 	
 	public static void main(String[] args) {
-		String[] email = {"zhouzhou@jddfun.com"};
-		new EmailUtil().sendEmail("邮件测试-邮件标题", "邮件测试-你好啊！", email);
+		/*String[] email = {"zhouzhou@jddfun.com"};
+		new EmailUtil().sendEmail("邮件测试-邮件标题", "邮件测试-你好啊！", email);*/
 		/*sendEmail("邮件测试-邮件标题", "邮件测试-你好啊！");*/
 	}
 	
-	public void sendEmail(String title){
+	public void sendEmail(AResult aResult){
 		String mailTo = GlobalValueConfig.getConfig("mail.send.to");
-		sendEmail(title, null, mailTo == null ? null : mailTo.split(","));
+		sendEmail("接口自动化异常报告", aResult, mailTo == null ? null : mailTo.split(","));
 	}
 	
-	public void sendEmail(String title, String context){
-		String mailTo = GlobalValueConfig.getConfig("mail.send.to");
-		sendEmail(title, context, mailTo == null ? null : mailTo.split(","));
-	}
-	
-	private synchronized void sendEmail(String title, String context, String[] email){
+	private synchronized void sendEmail(String title, AResult aResult, String[] email){
 		if(email == null || email.length == 0){
 			throw new BusinessException("邮件的收件人不可以为空！");
 		}
@@ -65,7 +63,7 @@ public class EmailUtil {
 			//3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
 	        ts.connect(SERVER_HOST, SERVER_FROM, SERVER_PASSWORD);
 	        //4、创建邮件
-	        Message message = createSimpleMail(session, title, context, email);
+	        Message message = createSimpleMail(session, title, aResult, email);
 	        //5、发送邮件
 	        ts.sendMessage(message, message.getAllRecipients());
 		} catch (Exception e) {
@@ -81,7 +79,7 @@ public class EmailUtil {
 		}
 	}
 
-	private MimeMessage createSimpleMail(Session session, String title, String context, String[] email)
+	private MimeMessage createSimpleMail(Session session, String title, AResult aResult, String[] email)
             throws Exception {
 		InternetAddress[] adds = new InternetAddress[email.length];
         for (int i = 0; i < email.length; i++) {
@@ -97,10 +95,24 @@ public class EmailUtil {
         message.setSubject(title);
         //邮件的文本内容
         message.setContent(context, "text/html;charset=UTF-8");*/
+        Map<String, Object> root = new HashMap<String, Object>();
+        root.put("id", aResult.getId());
+        root.put("project", aResult.getProjecto().getName());
+        root.put("version", aResult.getVersiono().getVersion());
+        root.put("name", aResult.getName());
+        root.put("status", aResult.getStatus());
+        root.put("startTime", DateUtil.getFormatDateTime(aResult.getStartTime()));
+        root.put("endTime", DateUtil.getFormatDateTime(aResult.getEndTime()));
+        root.put("subTime", DateUtil.subTime(aResult.getEndTime().getTime() - aResult.getStartTime().getTime()));
+        root.put("total", aResult.getTotal());
+        root.put("success", aResult.getSuccess());
+        root.put("fail", aResult.getFail());
+        DecimalFormat df = new DecimalFormat("#.##%");
+        root.put("per", df.format((float) aResult.getSuccess() /(float) aResult.getTotal()));
+        root.put("ip", Const.getCurrentIP());
         MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");	//发送模板
         FreeMarkerConfigurer freeMarkerConfigurer = (FreeMarkerConfigurer) SpringContext.getBean("freeMarkerConfigurer");
         Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate("mail.html");
-        Map<String, Object> root = new HashMap<String, Object>();
 		String htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl, root);
 		helper.setText(htmlText, true);
 		helper.setSubject(title);

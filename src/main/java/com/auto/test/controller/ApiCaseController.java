@@ -45,7 +45,7 @@ public class ApiCaseController extends BaseController{
 		try {
 			logger.info("[Case]==>运行案例[id=" + runid + ",account=" + account + ",user=" + getCurrentUserName(request) + "]");
 			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
-			apiRunService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request));
+			apiRunService.run(ApiRunType.CASE, Integer.parseInt(runid), Integer.parseInt(account), null, getCurrentUserName(request), false);
 			logger.info("[Case]==>运行案例成功！");
 			return successJson();
 		} catch (Exception e) {

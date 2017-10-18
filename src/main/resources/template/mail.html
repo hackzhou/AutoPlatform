@@ -3,8 +3,60 @@
 <head>
 <title>接口自动化报告</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+  	table
+        {
+            border-collapse: collapse;
+            border: none;
+            background-color: #EAEAEA;
+        }
+        td
+        {
+            border: solid #000 1px;
+        }
+</style>
 </head>
 <body>
-测试测试！！！
+	<table class="table">
+		<tr>
+			<td><strong>项目名称</strong></td><td>${project}</td>
+		</tr>
+		<tr>
+			<td><strong>版本号</strong></td><td>${version}</td>
+		</tr>
+		<tr>
+			<td><strong>名称</strong></td><td>${name}</td>
+		</tr>
+		<tr>
+			<td><strong>运行状态</strong></td><td>${status}</td>
+		</tr>
+		<tr>
+			<td><strong>开始时间</strong></td><td>${startTime}</td>
+		</tr>
+		<tr>
+			<td><strong>结束时间</strong></td><td>${endTime}</td>
+		</tr>
+		<tr>
+			<td><strong>运行时长</strong></td><td>${subTime}</td>
+		</tr>
+		<tr>
+			<td><strong>总数</strong></td><td>${total}</td>
+		</tr>
+		<tr>
+			<td><strong>成功</strong></td><td>${success}</td>
+		</tr>
+		<tr>
+			<td><strong>失败</strong></td><td>${fail}</td>
+		</tr>
+		<tr>
+			<td><strong>成功率</strong></td><td>${per}</td>
+		</tr>
+		<tr>
+			<td><strong>详情</strong></td>
+			<td>
+				<a href="http://${ip}:8080/AutoPlatform/api/report/detail/list/id=${id}">http://${ip}:8080/AutoPlatform/api/report/detail/list/id=${id}</a>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>

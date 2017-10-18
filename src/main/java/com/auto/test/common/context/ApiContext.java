@@ -12,6 +12,7 @@ import com.auto.test.entity.AVersion;
 
 public class ApiContext {
 //	private boolean bool;
+	private boolean mail;
 	private Integer count;
 	private Integer total;
 	
@@ -28,20 +29,26 @@ public class ApiContext {
 		this.count = 0;
 	}
 
-//	public boolean isBool() {
-//		return bool;
-//	}
-//	public void setBool(boolean bool) {
-//		this.bool = bool;
-//	}
 	public synchronized void countPlus(){
 		this.count++;
 	}
 	public synchronized void successPlus(){
 		this.result.setSuccess(this.result.getSuccess() + 1);
 	}
+//	public boolean isBool() {
+//		return bool;
+//	}
+//	public void setBool(boolean bool) {
+//		this.bool = bool;
+//	}
 	public Integer getCount() {
 		return count;
+	}
+	public boolean isMail() {
+		return mail;
+	}
+	public void setMail(boolean mail) {
+		this.mail = mail;
 	}
 	public void setCount(Integer count) {
 		this.count = count;
