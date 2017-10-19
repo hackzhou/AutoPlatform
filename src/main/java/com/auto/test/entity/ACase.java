@@ -112,13 +112,19 @@ public class ACase implements Serializable{
 	}
 	
 	public void update(ACase aCase) {
+		update(aCase, true);
+	}
+	
+	public void update(ACase aCase, boolean boolImg) {
 		this.interfaceo = aCase.getInterfaceo();
 		this.versiono = aCase.getVersiono();
 		this.name = aCase.getName();
 		this.body = aCase.getBody();
 		this.result = aCase.getResult();
 		this.strategy = aCase.getStrategy();
-		this.img = aCase.getImg();
+		if(boolImg){
+			this.img = aCase.getImg();
+		}
 		this.flag = aCase.getFlag();
 		this.run = aCase.getRun();
 		this.link = aCase.getLink();

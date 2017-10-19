@@ -185,7 +185,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 			c.setCreateTime(new Date());
 			casedDao.create(c);
 		}else{
-			caseo.update(c);
+			caseo.update(c, false);
 			casedDao.update(caseo);
 		}
 	}
