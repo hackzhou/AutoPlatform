@@ -20,14 +20,15 @@ import com.auto.test.entity.AResult;
 import freemarker.template.Template;
 
 public class EmailUtil {
-	private static final String SERVER_HOST			= "mail.jddfun.com";
-	private static final String SERVER_PORT			= "25";
-	private static final String SERVER_TIMEOUT		= "25000";
-	private static final String SERVER_IS_AUTH		= "true";
-	private static final String SERVER_IS_SSL		= "true";
-	private static final String SERVER_PROTOCOL		= "smtp";
-	private static final String SERVER_FROM			= "zhouzhou@jddfun.com";
-	private static final String SERVER_PASSWORD		= "cup6m8hp";
+	private static final String SERVER_HOST			= GlobalValueConfig.getConfig("mail.server.host");
+	private static final String SERVER_PORT			= GlobalValueConfig.getConfig("mail.server.port");
+	private static final String SERVER_TIMEOUT		= GlobalValueConfig.getConfig("mail.server.timeout");
+	private static final String SERVER_IS_AUTH		= GlobalValueConfig.getConfig("mail.server.auth");
+	private static final String SERVER_IS_SSL		= GlobalValueConfig.getConfig("mail.server.ssl");
+	private static final String SERVER_PROTOCOL		= GlobalValueConfig.getConfig("mail.server.protocol");
+	private static final String SERVER_USERNAME		= GlobalValueConfig.getConfig("mail.user.username");
+	private static final String SERVER_PASSWORD		= GlobalValueConfig.getConfig("mail.user.password");
+	private static final String SERVER_SEND_TO		= GlobalValueConfig.getConfig("mail.send.to");
 	
 	public static void main(String[] args) {
 		/*String[] email = {"zhouzhou@jddfun.com"};
@@ -36,8 +37,7 @@ public class EmailUtil {
 	}
 	
 	public void sendEmail(AResult aResult){
-		String mailTo = GlobalValueConfig.getConfig("mail.send.to");
-		sendEmail("接口自动化异常报告", aResult, mailTo == null ? null : mailTo.split(","));
+		sendEmail("接口自动化异常报告", aResult, SERVER_SEND_TO == null ? null : SERVER_SEND_TO.split(","));
 	}
 	
 	private synchronized void sendEmail(String title, AResult aResult, String[] email){
@@ -61,7 +61,7 @@ public class EmailUtil {
 	        //2、通过session得到transport对象
 			ts = session.getTransport();
 			//3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
-	        ts.connect(SERVER_HOST, SERVER_FROM, SERVER_PASSWORD);
+	        ts.connect(SERVER_HOST, SERVER_USERNAME, StrUtil.authMail(SERVER_PASSWORD));
 	        //4、创建邮件
 	        Message message = createSimpleMail(session, title, aResult, email);
 	        //5、发送邮件
@@ -116,7 +116,7 @@ public class EmailUtil {
 		String htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl, root);
 		helper.setText(htmlText, true);
 		helper.setSubject(title);
-		helper.setFrom(new InternetAddress(SERVER_FROM));
+		helper.setFrom(new InternetAddress(SERVER_USERNAME));
 		helper.setTo(adds);
         //返回创建好的邮件对象
         return message;
