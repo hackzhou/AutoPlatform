@@ -98,6 +98,7 @@
                     <form id="api-case-form" class="form-horizontal form-material">
                         <input type="hidden" id="api-case-id" name="api-case-id" value="">
                         <input type="hidden" id="api-case-img-path" name="api-case-img-path" value="">
+                        <input type="hidden" id="api-case-update-img" name="api-case-update-img" value="0">
                         <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否默认 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -419,9 +420,11 @@
 			$("#bodyDiv").show();
 		});
 		$("#api-case-is-img0").change(function(){
+			$('#api-case-update-img').val("1");
 			removeDestroy();
 		});
 		$("#api-case-is-img1").change(function(){
+			$('#api-case-update-img').val("1");
 			initDestroy("");
 		});
 		if(parseInt($('#api-case-count').val()) > 1){
@@ -549,6 +552,7 @@
 	function initTableEvent() {
 		$(".apiCaseEdit").on("click", function(){
 			$('#case-modal-lable').html("案例-编辑");
+			$('#api-case-update-img').val("0");
 			hideMsgDiv();
 			var c = $(this).data('data');
 			$('#api-case-id').val(c.id);
@@ -600,6 +604,7 @@
 	
 	function initApiCaseModal(){
 		$('#case-modal-lable').html("案例-添加");
+		$('#api-case-update-img').val("0");
 		$('#api-case-id').val("");
 		$('#api-case-name').val("");
 		$('#api-case-run1').prop("checked",true);
