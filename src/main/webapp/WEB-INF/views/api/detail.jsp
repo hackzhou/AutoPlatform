@@ -165,7 +165,7 @@
     		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/id=${data}",
     		bProcessing : false,
     		"aaSorting": [
-    			[0,'desc']
+    			[9,'asc']
     		],
     		aoColumnDefs : [
     			{
