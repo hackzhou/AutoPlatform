@@ -28,7 +28,6 @@ public class ApiSendMessage implements IApiSendMessage {
 	private static final String APP_CHANNEL	= "App-Channel";
 	private static final String CONTENT_TYPE= "Content-Type";
 	private static final String CONTENT_JSON= "application/json; charset=UTF-8";
-	private static final String CONTENT_DATA= "multipart/form-data;";
 	private static final String PATH		= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
 	private static final String DATA		= "-->[Data:%s]";
 	
@@ -109,7 +108,6 @@ public class ApiSendMessage implements IApiSendMessage {
 		        }
 				HttpEntity reqEntity = builder.build();
 				httpPost.setEntity(reqEntity);
-				httpPost.setHeader(CONTENT_TYPE, CONTENT_DATA);
 			}else{
 				InputStreamEntity reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
 				reqEntity.setContentType("binary/octet-stream");
