@@ -65,12 +65,15 @@ public class ExcelUtil {
 	                		aInterfaceCase.setVersion(cellValue);
 		                    break;
 	                	case 6:
-	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setLogin(cellValue);
 		                    break;
 	                	case 7:
-	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
 		                    break;
 	                	case 8:
+	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+		                    break;
+	                	case 9:
 	                		aInterfaceCase.setStrategy(splitStr(cellValue));
 		                    break;
 	                	default:

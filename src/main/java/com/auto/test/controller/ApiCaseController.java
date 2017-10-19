@@ -121,8 +121,9 @@ public class ApiCaseController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-case-id") String id, @RequestParam("api-case-interface") String inter, 
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, @RequestParam("api-case-strategy") String strategy, 
-			@RequestParam("api-case-flag") String flag, @RequestParam("api-case-run") String run, @RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result,
-			@RequestParam("api-case-link") String links, @RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-img-path") String img, @RequestParam("api-case-update-img") String uImg) {
+			@RequestParam("api-case-flag") String flag, @RequestParam("api-case-run") String run,  @RequestParam("api-case-login") String login, 
+			@RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result, @RequestParam("api-case-link") String links, 
+			@RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-img-path") String img, @RequestParam("api-case-update-img") String uImg) {
 		try {
 			if("0".equals(isBody)){
 				body = null;
@@ -134,7 +135,7 @@ public class ApiCaseController extends BaseController{
 				result = null;
 			}
 			if(isNull(id)){
-				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run)));
+				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
 				if(cid != null){
 					logger.info("[Case]==>添加案例[id=" + cid + ",name=" + name + "]成功！");
 					return successJson();
@@ -155,7 +156,7 @@ public class ApiCaseController extends BaseController{
 						}
 					}
 				}
-				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run)));
+				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArray(links), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
 				if(aCase != null){
 					logger.info("[Case]==>更新案例[id=" + id + ",name=" + name + "]成功！");
 					return successJson();

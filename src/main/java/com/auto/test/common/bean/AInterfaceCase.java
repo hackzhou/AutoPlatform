@@ -11,6 +11,7 @@ public class AInterfaceCase {
 	private String body;
 	private String result;
 	private String strategy;
+	private String login;
 	
 	private Integer rowNum;
 	
@@ -72,6 +73,12 @@ public class AInterfaceCase {
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
 	public Integer getRowNum() {
 		return rowNum;
 	}
@@ -83,7 +90,7 @@ public class AInterfaceCase {
 	public String toString() {
 		return "AInterfaceCase [project=" + project + ", name=" + name + ", type=" + type + ", url=" + url
 				+ ", description=" + description + ", version=" + version + ", body=" + body + ", result=" + result
-				+ ", strategy=" + strategy + ", rowNum=" + rowNum + "]";
+				+ ", strategy=" + strategy + ", login=" + login + ", rowNum=" + rowNum + "]";
 	}
 
 }

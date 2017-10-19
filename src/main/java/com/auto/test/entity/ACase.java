@@ -61,6 +61,9 @@ public class ACase implements Serializable{
 
 	@Column(name="run")
 	private Integer run;
+	
+	@Column(name="login")
+	private Integer login;
 
 	@Column(name="create_time")
 	private Date createTime;
@@ -83,7 +86,7 @@ public class ACase implements Serializable{
 		this.id = id;
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run, Integer login) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
@@ -94,9 +97,10 @@ public class ACase implements Serializable{
 		this.img = img;
 		this.flag = flag;
 		this.run = run;
+		this.login = login;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run, Integer login) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -108,6 +112,7 @@ public class ACase implements Serializable{
 		this.img = img;
 		this.flag = flag;
 		this.run = run;
+		this.login = login;
 		this.link = link;
 	}
 	
@@ -127,6 +132,7 @@ public class ACase implements Serializable{
 		}
 		this.flag = aCase.getFlag();
 		this.run = aCase.getRun();
+		this.login = aCase.getLogin();
 		this.link = aCase.getLink();
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
@@ -198,6 +204,12 @@ public class ACase implements Serializable{
 	public void setRun(Integer run) {
 		this.run = run;
 	}
+	public Integer getLogin() {
+		return login;
+	}
+	public void setLogin(Integer login) {
+		this.login = login;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -227,8 +239,7 @@ public class ACase implements Serializable{
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
 				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", img=" + img
-				+ ", flag=" + flag + ", run=" + run + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + ", list=" + list + "]";
+				+ ", flag=" + flag + ", run=" + run + ", login=" + login + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + ", list=" + list + "]";
 	}
-
 }

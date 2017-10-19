@@ -36,9 +36,10 @@ public class ApiExecuteRun implements Runnable {
 	private String version = null;
 	private String channel = null;
 	private String projectRootPath = null;
+	private String nologinResult = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlB, String authorB, String version, String channel, String projectRootPath) {
+			String urlB, String authorB, String version, String channel, String projectRootPath, String nologinResult) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -48,10 +49,11 @@ public class ApiExecuteRun implements Runnable {
 		this.version = version;
 		this.channel = channel;
 		this.projectRootPath = projectRootPath;
+		this.nologinResult = nologinResult;
 	}
 	
 	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath) {	//Online Compare
+			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath, String nologinResult) {	//Online Compare
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -63,6 +65,7 @@ public class ApiExecuteRun implements Runnable {
 		this.version = version;
 		this.channel = channel;
 		this.projectRootPath = projectRootPath;
+		this.nologinResult = nologinResult;
 	}*/
 
 	@Override
@@ -166,14 +169,22 @@ public class ApiExecuteRun implements Runnable {
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 		if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-				aResultDetail.setResulta(aCase.getResult());
+				if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
+					aResultDetail.setResulta(nologinResult);
+				}else{
+					aResultDetail.setResulta(aCase.getResult());
+				}
 			}else{
 				/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
 			}
 			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId()));
 		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-				aResultDetail.setResulta(aCase.getResult());
+				if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
+					aResultDetail.setResulta(nologinResult);
+				}else{
+					aResultDetail.setResulta(aCase.getResult());
+				}
 			}else{
 				/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
 			}

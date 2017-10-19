@@ -119,6 +119,15 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>登录验证 <i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-login1" name="api-case-login" value="1" checked>是 </label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-login0" name="api-case-login" value="0">否  <b class="text-info"></b></label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>项目 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-project" name="api-case-project" class="form-select" style="width: 80%;"></select>
@@ -558,6 +567,7 @@
 			$('#api-case-id').val(c.id);
   	      	$('#api-case-name').val(c.name);
   	      	$('#api-case-run' + c.run).prop("checked", true);
+  	      	$('#api-case-login' + c.login).prop("checked", true);
   	      	$('#api-case-flag' + c.flag).prop("checked", true);
   	      	$('#api-case-strategy').tagsinput('removeAll');
 	      	$('#api-case-strategy').tagsinput('add', c.strategy);
@@ -608,6 +618,7 @@
 		$('#api-case-id').val("");
 		$('#api-case-name').val("");
 		$('#api-case-run1').prop("checked",true);
+		$('#api-case-login1').prop("checked",true);
 		$('#api-case-flag0').prop("checked",true);
 		$('#api-case-strategy').tagsinput('removeAll');
 		$('#api-case-is-body0').prop("checked",true);
