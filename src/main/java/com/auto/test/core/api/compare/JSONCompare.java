@@ -111,9 +111,8 @@ public class JSONCompare {
 		try {
 			if(json != null && !json.isEmpty()){
 				Object obj = JSON.parse(JSON.toJSONString(JSON.parse(json), SerializerFeature.SortField));
+				sortJson(obj);
 				return JSON.toJSONString(obj, SerializerFeature.SortField);
-//				sortJson(obj);
-//				return JSON.toJSONString(obj, SerializerFeature.SortField);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,11 +159,11 @@ public class JSONCompare {
 		
 		String s1 = "{\"code\":200,\"data\":{\"feedback\":[],\"common\":[{\"amount\":1000,\"bizType\":101,\"thirdId\":\"jddgame_0001\",\"price\":1,\"bizId\":241,\"name\":\"清凉啤酒\",\"icon\":\"/group1/M00/00/11/wKhl_VnbNyGASP-8AAASLhjBORI821.png\",\"productIcon\":\"/group1/M00/00/02/wKhl_VmIF9iAASr_AAASLhjBORI008.png\",\"remark\":\"\",\"bizTarget\":241}],\"welfare\":[],\"feedbackAutoOpen\":false,\"card\":[{\"bizType\":106,\"thirdId\":\"jddgame_0001\",\"nextTime\":0,\"buyFlag\":1,\"price\":30,\"icon\":\"/group1/M00/00/11/wKhl_VnbNzyAcQpqAAAb-Wq8eME950.png\",\"bizId\":242,\"name\":\"周卡\",\"remark\":\"\",\"productIcon\":\"/group1/M00/00/03/wKhl_VmIHuaAaE2XAAAb-Wq8eME107.png\",\"bizTarget\":242,\"content\":\"购买立得:5000;每天返还:5000\"}]}}";
 		String s2 = "{\"code\":200,\"data\":{\"feedback\":[],\"common\":[{\"bizId\":241,\"name\":\"清凉啤酒\",\"price\":1,\"amount\":1000,\"giveAmount\":null,\"icon\":\"/group1/M00/00/11/wKhl_VnbNyGASP-8AAASLhjBORI821.png\",\"productIcon\":\"/group1/M00/00/02/wKhl_VmIF9iAASr_AAASLhjBORI008.png\",\"thirdId\":\"jddgame_0001\",\"remark\":\"\",\"bizType\":101,\"bizTarget\":241}],\"card\":[{\"bizId\":242,\"name\":\"周卡\",\"price\":30,\"giveAmount\":null,\"content\":\"购买立得:5000;每天返还:5000\",\"icon\":\"/group1/M00/00/11/wKhl_VnbNzyAcQpqAAAb-Wq8eME950.png\",\"productIcon\":\"/group1/M00/00/03/wKhl_VmIHuaAaE2XAAAb-Wq8eME107.png\",\"thirdId\":\"jddgame_0001\",\"remark\":\"\",\"nextTime\":0,\"buyFlag\":1,\"bizType\":106,\"bizTarget\":242}],\"welfare\":[],\"feedbackAutoOpen\":false}}";
-		String s3 = "{\"changeMoney\": 7521,\"createTime\": \"2017年03月21日 00:01\",\"name\": \"平台\"}";
-		String s4 = "{\"createTime\": \"2017年03月21日 00:01\",\"changeMoney\": 7521,\"name\": \"平台\"}";
 		System.out.println(new JSONCompare().compareJson(new JSONCompare().sortJson(s1), new JSONCompare().sortJson(s2), null));
 		System.out.println(new JSONCompare().sortJson(s1));
 		System.out.println(new JSONCompare().sortJson(s2));
+		String s3 = "{\"code\":200,\"data\":[{\"method\":\"ali\",\"wapImg\":\"/cdn/mall/ali-wappay.png\",\"appImg\":\"/cdn/mall/ali-apppay.png\",\"isH5\":true,\"name\":\"支付宝支付\",\"value\":\"4\",\"desc\":\"推荐使用\"},{\"method\":\"wx\",\"wapImg\":\"/cdn/mall/wx-wappay.png\",\"appImg\":\"/cdn/mall/wx-apppay.png\",\"isH5\":true,\"name\":\"微信支付\",\"value\":\"3\"}]}";
+		String s4 = "{\"code\":200,\"data\":[{\"method\":\"wx\",\"wapImg\":\"/cdn/mall/wx-wappay.png\",\"appImg\":\"/cdn/mall/wx-apppay.png\",\"isH5\":true,\"name\":\"微信支付\",\"value\":\"3\"},{\"method\":\"ali\",\"wapImg\":\"/cdn/mall/ali-wappay.png\",\"appImg\":\"/cdn/mall/ali-apppay.png\",\"isH5\":true,\"name\":\"支付宝支付\",\"value\":\"4\",\"desc\":\"推荐使用\"}]}";
 		System.out.println(new JSONCompare().sortJson(s3));
 		System.out.println(new JSONCompare().sortJson(s4));
 	}
