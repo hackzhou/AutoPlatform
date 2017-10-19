@@ -599,6 +599,8 @@
 			initApiCaseVersion(c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
   	      	editApiCaseLink(c.interfaceo.projecto.id,c.versiono.id,c.link,c.id);
+			autoHeight($("#api-case-body")[0]);
+			autoHeight($("#api-case-result")[0]);
 		});
 		
 		$(".apiCaseDel").on("click", function(){
@@ -634,6 +636,7 @@
     	initApiCaseInterface(null,null);
     	initApiCaseLink(null,null);
     	autoHeight($("#api-case-body")[0]);
+    	autoHeight($("#api-case-result")[0]);
     	hideMsgDiv();
     }
 	
