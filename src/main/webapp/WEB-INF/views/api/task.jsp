@@ -135,14 +135,7 @@
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>触发周期 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
-		                        <select id="api-task-cycle" name="api-task-cycle" class="form-select" style="width: 80%;">
-		                        	<option value="1" selected="selected">一分钟</option>
-		                        	<option value="3">三分钟</option>
-		                        	<option value="5">五分钟</option>
-		                        	<option value="10">十分钟</option>
-		                        	<option value="30">半小时</option>
-		                        	<option value="60">一小时</option>
-		                        </select>
+		                        <select id="api-task-cycle" name="api-task-cycle" class="form-select" style="width: 80%;"></select>
 	                        </div>
 	                      </div>
 	                    </div>
@@ -440,7 +433,7 @@
 				$("#api-task-email-div").hide();
 			}
 			if(t.monitor == 1){
-				$('#api-task-cycle').val(t.runTime);
+				initApiTaskCycle(t.runTime);
 				$(".task-cycle-div").show();
 				$(".task-time-div").hide();
 			}else{
@@ -467,13 +460,13 @@
     	$('#task-modal-lable').html("定时任务-添加");
     	$('#api-task-id').val("");
     	$('#api-task-time').val("00:00");
-    	$('#api-task-cycle').val("1");
     	$('#api-task-run1').prop("checked", true);
     	$('#api-task-mail0').prop("checked", true);
     	$('#api-task-monitor0').prop("checked", true);
     	$(".task-time-div").show();
 		$(".task-cycle-div").hide();
 		$("#api-task-email-div").hide();
+		initApiTaskCycle(null);
     	initApiTaskProject(null);
     	initApiTaskVersion(null);
     	initApiTaskAccount(null);
@@ -481,13 +474,17 @@
     }
     
     function apiTaskSave(){
+    	var tmail = $("input[name='api-task-mail']:checked").val();
     	var tmonitor = $("input[name='api-task-monitor']:checked").val();
     	var ttime = $('#api-task-time').val();
     	var tcycle = $('#api-task-cycle').val();
     	var tproject = $('#api-task-project').val();
     	var tversion = $('#api-task-version').val();
     	var taccount = $('#api-task-account').val();
-    	if(tmonitor == 0 && (ttime == null || ttime.trim() == "")){
+    	var temail = $('#api-task-email').val();
+    	if(tmail == 1 && (temail == null || temail.trim() == "")){
+    		showMsgDiv("请选择邮件收件人！");
+    	}else if(tmonitor == 0 && (ttime == null || ttime.trim() == "")){
 	    	showMsgDiv("请输入触发时间！");
     	}else if(tmonitor == 1 && (tcycle == null || tcycle.trim() == "")){
     		showMsgDiv("请输入触发周期！");
@@ -602,6 +599,19 @@
       	    }
 		});
 	}
+    
+    function initApiTaskCycle(cycle){
+    	var optionstring = "";
+    	for (var i = 1; i <= 60; i++) {
+    		if(cycle == i || i == 1){
+	    		optionstring += "<option value='" + i + "' selected='selected'>" + i + "分钟</option>";
+    		}else{
+    			optionstring += "<option value='" + i + "' >" + i + "分钟</option>";
+    		}
+    	}
+    	$('#api-task-cycle').empty();
+		$('#api-task-cycle').append(optionstring);
+    }
     
     function initApiTaskEmail(email){
     	$.ajax({

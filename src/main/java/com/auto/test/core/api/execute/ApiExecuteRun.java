@@ -156,7 +156,7 @@ public class ApiExecuteRun implements Runnable {
 					httpClientManager.close();
 				}
 				if(apiContext.isMail() && aResult.getFail() > 0){
-					new EmailUtil().sendEmail(aResult);
+					new EmailUtil().sendEmail(aResult, apiContext.getEmails());
 				}
 			}
 		}

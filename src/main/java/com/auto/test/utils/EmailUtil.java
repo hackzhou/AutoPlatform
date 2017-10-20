@@ -28,7 +28,6 @@ public class EmailUtil {
 	private static final String SERVER_PROTOCOL		= GlobalValueConfig.getConfig("mail.server.protocol");
 	private static final String SERVER_USERNAME		= GlobalValueConfig.getConfig("mail.user.username");
 	private static final String SERVER_PASSWORD		= GlobalValueConfig.getConfig("mail.user.password");
-	private static final String SERVER_SEND_TO		= GlobalValueConfig.getConfig("mail.send.to");
 	
 	public static void main(String[] args) {
 		/*String[] email = {"zhouzhou@jddfun.com"};
@@ -36,8 +35,8 @@ public class EmailUtil {
 		/*sendEmail("邮件测试-邮件标题", "邮件测试-你好啊！");*/
 	}
 	
-	public void sendEmail(AResult aResult){
-		sendEmail("接口自动化异常报告", aResult, SERVER_SEND_TO == null ? null : SERVER_SEND_TO.split(","));
+	public void sendEmail(AResult aResult, String mails){
+		sendEmail("接口自动化异常报告", aResult, mails.split(","));
 	}
 	
 	private synchronized void sendEmail(String title, AResult aResult, String[] email){

@@ -44,11 +44,11 @@ public class ApiRunService implements IApiRunService {
 	private IApiResultService resultService;
 
 	@Override
-	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, boolean mail) throws Exception{
+	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, boolean mail, String emails) throws Exception{
 		isNotRunAccount(accountId);
 		List<ACase> list = getRunCases(type, runId, versionId);
 		AVersion aVersion = getApiVersion(list, type, versionId);
-		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion, mail);
+		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion, mail, emails);
 		if(apiContext != null){
 			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 			caseParse.execute(apiContext);
@@ -100,12 +100,16 @@ public class ApiRunService implements IApiRunService {
 		return aVersion;
 	}
 	
-	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion, boolean mail) throws Exception{
+	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion, boolean mail, String emails) throws Exception{
 		ApiContext apiContext = new ApiContext();
 		if(accountId != null){
 			apiContext.setAccount(accountService.findById(accountId));
 		}
+		if(mail && (emails == null || emails.isEmpty())){
+			throw throwException(logger, "运行[发送邮件-收件人]不能为空！");
+		}
 		apiContext.setMail(mail);
+		apiContext.setEmails(emails);
 		apiContext.setList(list);
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;

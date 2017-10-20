@@ -34,7 +34,7 @@ public class ApiProjectController extends BaseController{
 		try {
 			logger.info("[Project]==>运行项目[id=" + runid + ",account=" + account + ",version=" + version + ",user=" + getCurrentUserName(request) + "]");
 			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
-			apiRunService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request), false);
+			apiRunService.run(ApiRunType.PROJECT, Integer.parseInt(runid), Integer.parseInt(account), Integer.parseInt(version), getCurrentUserName(request), false, null);
 			logger.info("[Project]==>运行项目成功！");
 			return successJson();
 		} catch (Exception e) {

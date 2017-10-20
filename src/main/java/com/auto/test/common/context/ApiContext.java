@@ -13,6 +13,7 @@ import com.auto.test.entity.AVersion;
 public class ApiContext {
 //	private boolean bool;
 	private boolean mail;
+	private String emails;
 	private Integer count;
 	private Integer total;
 	
@@ -49,6 +50,12 @@ public class ApiContext {
 	}
 	public void setMail(boolean mail) {
 		this.mail = mail;
+	}
+	public String getEmails() {
+		return emails;
+	}
+	public void setEmails(String emails) {
+		this.emails = emails;
 	}
 	public void setCount(Integer count) {
 		this.count = count;
