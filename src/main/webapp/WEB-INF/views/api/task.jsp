@@ -23,6 +23,9 @@
 <link href="${pageContext.request.contextPath}/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css" rel="stylesheet">
 <!--alerts CSS -->
 <link href="${pageContext.request.contextPath}/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<!-- page CSS -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/plugins/bower_components/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
@@ -100,6 +103,14 @@
                           		<label class="radio-inline"><input type="radio" id="api-task-mail1" name="api-task-mail" value="1">发送 </label>
                           		<label class="radio-inline"><input type="radio" id="api-task-mail0" name="api-task-mail" value="0" checked>不发送 </label>
                           		<label class="text-info">(发送报告邮箱请联系管理员配置)</label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group" id="api-task-email-div" style="display: none">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>选择收件人<i class="fa fa-chevron-right text-danger"></i></code></label>
+                          	<div class="radio-list">
+                          		<select id="api-task-email" name="api-task-email" class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="请选择收件人"></select>
                         	</div>
 	                      </div>
 	                    </div>
@@ -231,6 +242,8 @@
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/multiselect/js/jquery.multi-select.js" type="text/javascript"></script>
 <!-- Clock Plugin JavaScript -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.js"></script>
 <!-- start - This is for export functionality only -->
@@ -252,6 +265,7 @@
     	initApiTaskProject(null);
     	initApiTaskVersion(null);
     	initApiTaskAccount(null);
+    	$(".select2").select2();
     });
     
     function initEvent(){
@@ -262,6 +276,13 @@
     	$("#api-task-monitor1").change(function(){
     		$(".task-time-div").hide();
 			$(".task-cycle-div").show();
+		});
+    	$("#api-task-mail1").change(function(){
+			initApiTaskEmail();
+			$("#api-task-email-div").show();
+		});
+		$("#api-task-mail0").change(function(){
+			$("#api-task-email-div").hide();
 		});
     }
 
@@ -575,6 +596,28 @@
       	    }
 		});
 	}
+    
+    function initApiTaskEmail(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/user/list/eamil",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "<optgroup label=\"请选择收件人...\">";
+    				var list = data.data;
+    				if(list != null){
+	    				for (var i = 0; i < list.length; i++) {
+	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+	    				}
+    				}
+    				optionstring += "</optgroup>";
+    				$('#api-task-email').empty();
+    				$('#api-task-email').append(optionstring);
+    				$('#api-task-email').select2();
+    			}
+    		}
+    	});
+    }
     
     function apiTaskDel(tid){
     	swal({

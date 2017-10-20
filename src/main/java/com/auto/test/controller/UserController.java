@@ -1,6 +1,8 @@
 package com.auto.test.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.controller.BaseController;
@@ -149,6 +152,22 @@ public class UserController extends BaseController{
 				response.addCookie(cookie);
 			}
 		}
+	}
+	
+	@RequestMapping(value = "/list/eamil", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAllTaskData() {
+		logger.info("[TUser]==>获取所有用户邮箱！");
+		List<String> mailList = new ArrayList<String>();
+		List<TUser> list = userService.findAll();
+		if(list != null && !list.isEmpty()){
+			for (TUser tUser : list) {
+				if(!mailList.contains(tUser.getEmail())){
+					mailList.add(tUser.getEmail());
+				}
+			}
+		}
+		return successJson(mailList);
 	}
 	
 }

@@ -62,10 +62,12 @@ public class ApiTaskController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("api-task-id") String id, @RequestParam("api-task-run") String run,
 			@RequestParam("api-task-monitor") String monitor, @RequestParam("api-task-mail") String mail, @RequestParam("api-task-time-hide") String time, 
-			@RequestParam("api-task-project") String project, @RequestParam("api-task-version") String version, @RequestParam("api-task-account") String account) {
+			@RequestParam("api-task-project") String project, @RequestParam("api-task-version") String version, @RequestParam("api-task-account") String account, 
+			@RequestParam("api-task-email") String email) {
 		try {
+			email = "1".equals(mail) ? email : null;
 			if(isNull(id)){
-				Integer tid = apiTaskService.create(new ATask(project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request), Integer.parseInt(mail)));
+				Integer tid = apiTaskService.create(new ATask(project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request), Integer.parseInt(mail), trimArray(email)));
 				if(tid != null){
 					logger.info("[Task]==>添加定时任务[id=" + tid + ",project=" + project + ",time=" + time + "]成功！");
 					return successJson();
@@ -74,7 +76,7 @@ public class ApiTaskController extends BaseController{
 					return failedJson("添加定时任务[project=" + project + ",time=" + time + "]失败！");
 				}
 			}else{
-				ATask aTask = apiTaskService.update(new ATask(Integer.parseInt(id), project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request), Integer.parseInt(mail)));
+				ATask aTask = apiTaskService.update(new ATask(Integer.parseInt(id), project, version, account, Integer.parseInt(run), Integer.parseInt(monitor), time, getCurrentUserName(request), Integer.parseInt(mail), trimArray(email)));
 				if(aTask != null){
 					logger.info("[Task]==>更新定时任务[id=" + id + ",project=" + project + ",time=" + time + "]成功！");
 					return successJson();

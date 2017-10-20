@@ -49,6 +49,9 @@ public class ATask implements Serializable{
 	@Column(name="mail")
 	private Integer mail;
 	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="run_time")
 	private String runTime;
 	
@@ -71,7 +74,7 @@ public class ATask implements Serializable{
 		super();
 	}
 	
-	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby, Integer mail) {
+	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby, Integer mail, String email) {
 		super();
 		if(pid != null && !pid.isEmpty()){
 			this.projecto = new AProject(Integer.parseInt(pid));
@@ -88,8 +91,9 @@ public class ATask implements Serializable{
 		this.createby = createby;
 		this.runby = createby;
 		this.mail = mail;
+		this.email = email;
 	}
-	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby, Integer mail) {
+	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby, Integer mail, String email) {
 		super();
 		this.id = id;
 		if(pid != null && !pid.isEmpty()){
@@ -106,6 +110,7 @@ public class ATask implements Serializable{
 		this.runTime = runTime;
 		this.runby = runby;
 		this.mail = mail;
+		this.email = email;
 	}
 
 	public void update(ATask aTask) {
@@ -115,6 +120,7 @@ public class ATask implements Serializable{
 		this.runFlag = aTask.getRunFlag();
 		this.monitor = aTask.getMonitor();
 		this.mail = aTask.getMail();
+		this.email = aTask.getEmail();
 		this.runTime = aTask.getRunTime();
 		this.runby = aTask.getRunby();
 		this.updateTime = new Date();
@@ -163,6 +169,12 @@ public class ATask implements Serializable{
 	public void setMail(Integer mail) {
 		this.mail = mail;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public String getRunTime() {
 		return runTime;
 	}
@@ -203,8 +215,8 @@ public class ATask implements Serializable{
 	@Override
 	public String toString() {
 		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
-				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", mail=" + mail + ", runTime=" + runTime
-				+ ", createby=" + createby + ", runby=" + runby + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", memo=" + memo + "]";
+				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", mail=" + mail + ", email=" + email + ", runTime="
+				+ runTime + ", createby=" + createby + ", runby=" + runby + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
 }
