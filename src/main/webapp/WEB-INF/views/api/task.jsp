@@ -367,7 +367,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.mail == 1){
-							return "<b style='color:purple'>发送</b>";
+							return tooltipJsonByVersion("<b style='color:purple'>发送</b>", data.email);
 						}
 						return "<b style='color:black'>不发送</b>";
 					}
@@ -482,7 +482,7 @@
     	var tversion = $('#api-task-version').val();
     	var taccount = $('#api-task-account').val();
     	var temail = $('#api-task-email').val();
-    	if(tmail == 1 && (temail == null || temail.trim() == "")){
+    	if(tmail == 1 && (temail == null || temail == "")){
     		showMsgDiv("请选择邮件收件人！");
     	}else if(tmonitor == 0 && (ttime == null || ttime.trim() == "")){
 	    	showMsgDiv("请输入触发时间！");
