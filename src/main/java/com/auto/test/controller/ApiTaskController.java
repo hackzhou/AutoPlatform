@@ -63,7 +63,7 @@ public class ApiTaskController extends BaseController{
 	public Map<String, Object> createOrUpdate(HttpServletRequest request, @RequestParam("api-task-id") String id, @RequestParam("api-task-run") String run,
 			@RequestParam("api-task-monitor") String monitor, @RequestParam("api-task-mail") String mail, @RequestParam("api-task-time-hide") String time, 
 			@RequestParam("api-task-project") String project, @RequestParam("api-task-version") String version, @RequestParam("api-task-account") String account, 
-			@RequestParam("api-task-email") String email) {
+			@RequestParam("api-task-email-hide") String email) {
 		try {
 			email = "1".equals(mail) ? email : null;
 			if(isNull(id)){

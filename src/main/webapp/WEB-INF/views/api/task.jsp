@@ -87,6 +87,7 @@
                     <form id="api-task-form" class="form-horizontal form-material">
 	                    <input type="hidden" id="api-task-id" name="api-task-id" value="">
 	                    <input type="hidden" id="api-task-time-hide" name="api-task-time-hide" value="">
+	                    <input type="hidden" id="api-task-email-hide" name="api-task-email-hide" value="">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>是否运行 <i class="fa fa-chevron-right text-danger"></i></code></label>
@@ -420,6 +421,7 @@
     function initTableEvent() {
 		$(".apiTaskEdit").on("click", function(){
 			$('#task-modal-lable').html("定时任务-编辑");
+			$('#api-task-email-hide').val("");
 			hideMsgDiv();
 			var t = $(this).data('data');
 			$('#api-task-id').val(t.id);
@@ -458,6 +460,7 @@
     
     function initApiTaskModal(){
     	$('#task-modal-lable').html("定时任务-添加");
+    	$('#api-task-email-hide').val("");
     	$('#api-task-id').val("");
     	$('#api-task-time').val("00:00");
     	$('#api-task-run1').prop("checked", true);
@@ -495,6 +498,9 @@
     	}else if(taccount == null || taccount.trim() == ""){
 	    	showMsgDiv("请选择测试账号！");
     	}else{
+    		if(tmail == 1){
+    			$('#api-task-email-hide').val(temail);
+    		}
     		if(tmonitor == 1){
     			$('#api-task-time-hide').val(tcycle);
     		}else{
