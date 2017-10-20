@@ -714,11 +714,10 @@
 		var result = "";
 		var count = parseInt($('#api-case-count').val());
 		for (var i = 1; i <= count; i++) {
-			result += $('#api-case-case' + i).val() + ",";
+			result += "," + $('#api-case-case' + i).val();
 		}
-		result = result.replace(/0,/g, "");
-		if(result[result.length-1] == ','){
-			result = result.substring(0, result.length-1);
+		if(result[0] == ','){
+			result = result.substring(1);
 		}
 		$('#api-case-link').val(result);
 	}

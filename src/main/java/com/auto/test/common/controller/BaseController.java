@@ -195,6 +195,19 @@ public class BaseController implements MessageSourceAware {
 		return "";
 	}
 	
+	protected String trimArrayRemove(String text, String str){
+		if(text != null && !text.isEmpty()){
+			String result = "";
+			for (String s : text.trim().split(",")) {
+				if(!s.trim().isEmpty() && !s.equals(str)){
+					result += "," + s.trim();
+				}
+			}
+			return result.startsWith(",") ? result.substring(1) : "";
+		}
+		return "";
+	}
+	
 	protected boolean isNull(String text){
 		if(text == null || text.trim().isEmpty() || "null".equals(text)){
 			return true;
