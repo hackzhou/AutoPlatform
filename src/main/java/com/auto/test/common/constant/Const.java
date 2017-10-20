@@ -10,8 +10,10 @@ public class Const {
 	public static final String IP_TEST					= "192.168.102.147";
 	public static final String IP_CURRENT				= getCurrentIP();
 	
-	public static final String RUN_PROJECT_NAME			= "项目[%s]";
-	public static final String RUN_CASE_NAME			= "案例[%s]";
+	public static final String RUN_PROJECT_NAME_Y		= "项目[%s]-已登录";
+	public static final String RUN_CASE_NAME_Y			= "案例[%s]-已登录";
+	public static final String RUN_PROJECT_NAME_N		= "项目[%s]-未登录";
+	public static final String RUN_CASE_NAME_N			= "案例[%s]-未登录";
 
 	public static final String API_PLATFORM				= "api_platform";
 	public static final String AUTO_PLATFORM			= "AutoPlatform";

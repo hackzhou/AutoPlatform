@@ -144,14 +144,22 @@ public class ApiRunService implements IApiRunService {
 			if(aProject != null){
 				apiContext.setProject(aProject);
 				aResult.setProjecto(aProject);
-				aResult.setName(String.format(Const.RUN_PROJECT_NAME, aProject.getName()));
+				if(apiContext.getAccount() == null){
+					aResult.setName(String.format(Const.RUN_PROJECT_NAME_N, aProject.getName()));
+				}else{
+					aResult.setName(String.format(Const.RUN_PROJECT_NAME_Y, aProject.getName()));
+				}
 			}
 		}else if(ApiRunType.CASE.equals(type)){
 			ACase aCase = caseService.findById(runId);
 			if(aCase != null){
 				apiContext.setProject(aCase.getInterfaceo().getProjecto());
 				aResult.setProjecto(aCase.getInterfaceo().getProjecto());
-				aResult.setName(String.format(Const.RUN_CASE_NAME, aCase.getName()));
+				if(apiContext.getAccount() == null){
+					aResult.setName(String.format(Const.RUN_CASE_NAME_N, aCase.getName()));
+				}else{
+					aResult.setName(String.format(Const.RUN_CASE_NAME_Y, aCase.getName()));
+				}
 			}
 		}
 		aResult.setVersiono(apiContext.getVersion());
