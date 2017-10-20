@@ -525,7 +525,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return (data.link == null || data.link == "") ? "-" : data.link;
+						return (data.link == null || data.link == "") ? "-" : tooltipText(data.link);
 					}
 				},
 				{
