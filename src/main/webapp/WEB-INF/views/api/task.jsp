@@ -102,7 +102,6 @@
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-task-mail1" name="api-task-mail" value="1">发送 </label>
                           		<label class="radio-inline"><input type="radio" id="api-task-mail0" name="api-task-mail" value="0" checked>不发送 </label>
-                          		<label class="text-info">(发送报告邮箱请联系管理员配置)</label>
                         	</div>
 	                      </div>
 	                    </div>
@@ -278,7 +277,7 @@
 			$(".task-cycle-div").show();
 		});
     	$("#api-task-mail1").change(function(){
-			initApiTaskEmail();
+			initApiTaskEmail(null);
 			$("#api-task-email-div").show();
 		});
 		$("#api-task-mail0").change(function(){
@@ -434,6 +433,12 @@
 			$('#api-task-run' + t.runFlag).prop("checked", true);
 			$('#api-task-mail' + t.mail).prop("checked", true);
 			$('#api-task-monitor' + t.monitor).prop("checked", true);
+			if(t.mail == 1){
+				initApiTaskEmail(t.email);
+				$("#api-task-email-div").show();
+			}else{
+				$("#api-task-email-div").hide();
+			}
 			if(t.monitor == 1){
 				$('#api-task-cycle').val(t.runTime);
 				$(".task-cycle-div").show();
@@ -468,6 +473,7 @@
     	$('#api-task-monitor0').prop("checked", true);
     	$(".task-time-div").show();
 		$(".task-cycle-div").hide();
+		$("#api-task-email-div").hide();
     	initApiTaskProject(null);
     	initApiTaskVersion(null);
     	initApiTaskAccount(null);
@@ -597,13 +603,14 @@
 		});
 	}
     
-    function initApiTaskEmail(){
+    function initApiTaskEmail(email){
     	$.ajax({
     		type:"get",
     		url:"<%=request.getContextPath()%>/user/list/eamil",
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "<optgroup label=\"请选择收件人...\">";
+    				var selected = "";
     				var list = data.data;
     				if(list != null){
 	    				for (var i = 0; i < list.length; i++) {
@@ -614,6 +621,10 @@
     				$('#api-task-email').empty();
     				$('#api-task-email').append(optionstring);
     				$('#api-task-email').select2();
+    				if(email != null && email.trim() != ""){
+	    				var arr = email.split(",");
+	    				$('#api-task-email').val(arr).trigger('change');
+    				}
     			}
     		}
     	});
