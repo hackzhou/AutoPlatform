@@ -608,12 +608,15 @@
     
     function initApiTaskCycle(cycle){
     	var optionstring = "";
-    	for (var i = 1; i <= 60; i++) {
+    	for (var i = 1; i <= 59; i++) {
     		if(cycle == i || i == 1){
 	    		optionstring += "<option value='" + i + "' selected='selected'>" + i + "分钟</option>";
     		}else{
     			optionstring += "<option value='" + i + "' >" + i + "分钟</option>";
     		}
+    	}
+    	for (var i = 1; i <= 24; i++) {
+    		optionstring += "<option value='" + i * 60 + "' >" + i + "小时</option>";
     	}
     	$('#api-task-cycle').empty();
 		$('#api-task-cycle').append(optionstring);
