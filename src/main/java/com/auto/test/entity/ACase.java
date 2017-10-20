@@ -117,10 +117,10 @@ public class ACase implements Serializable{
 	}
 	
 	public void update(ACase aCase) {
-		update(aCase, true);
+		update(aCase, true, true);
 	}
 	
-	public void update(ACase aCase, boolean boolImg) {
+	public void update(ACase aCase, boolean boolImg, boolean boolLink) {
 		this.interfaceo = aCase.getInterfaceo();
 		this.versiono = aCase.getVersiono();
 		this.name = aCase.getName();
@@ -131,9 +131,11 @@ public class ACase implements Serializable{
 			this.img = aCase.getImg();
 		}
 		this.flag = aCase.getFlag();
-		this.run = aCase.getRun();
 		this.login = aCase.getLogin();
-		this.link = aCase.getLink();
+		if(boolLink){
+			this.run = aCase.getRun();
+			this.link = aCase.getLink();
+		}
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
