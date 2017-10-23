@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.exception.BusinessException;
 
 public class HttpUtil {
@@ -31,7 +32,7 @@ public class HttpUtil {
 	private static final Integer SOCKET_TIMEOUT = 1000 * 300;
 	
 	public static void main(String[] args) {
-		System.out.println(new HttpUtil().isAvailablePort("192.168.101.182", 8090));
+		System.out.println(new HttpUtil().isAvailablePort(Const.IP_SERVER + ".182", 8090));
 	}
 	
 	private RequestConfig getTimeOutConfig(){

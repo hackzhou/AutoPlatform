@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.bean.SimpleJsonResult;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.context.ToolWarApplication;
 import com.auto.test.common.controller.BaseController;
@@ -25,7 +26,7 @@ public class ToolTimeController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolTimeController.class);
 	private static Integer WAR_PORT = 8090;
 	private static String WAR_PROJECT = "AutoTest";
-	private static String[] IP_ARR = {"192.168.101.181", "192.168.101.182", "192.168.101.184", "192.168.101.192", "192.168.101.194"};
+	private static String[] IP_ARR = {Const.IP_SERVER + ".181", Const.IP_SERVER + ".182", Const.IP_SERVER + ".184", Const.IP_SERVER + ".192", Const.IP_SERVER + ".194"};
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
