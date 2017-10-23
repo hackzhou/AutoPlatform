@@ -60,38 +60,38 @@
               <tbody>
                 <tr>
                   <td id="time-ip-181"><b>10.33.85.181</b></td>
-                  <td id="time-current-192-168-101-181"></td>
-                  <td><button id="time-net-192-168-101-181" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.181');" disabled="disabled">校准时间</button></td>
-                  <td><input id="time-val-192-168-101-181" type="datetime-local" style="width:80%;" disabled="disabled"></td>
-                  <td><button id="time-set-192-168-101-181" type="button" class="btn btn-success" onclick="setTime('10.33.85.181');" disabled="disabled">设置时间</button></td>
+                  <td id="time-current-10-33-85-181"></td>
+                  <td><button id="time-net-10-33-85-181" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.181');" disabled="disabled">校准时间</button></td>
+                  <td><input id="time-val-10-33-85-181" type="datetime-local" style="width:80%;" disabled="disabled"></td>
+                  <td><button id="time-set-10-33-85-181" type="button" class="btn btn-success" onclick="setTime('10.33.85.181');" disabled="disabled">设置时间</button></td>
                 </tr>
                 <tr>
                   <td id="time-ip-182"><b>10.33.85.182</b></td>
-                  <td id="time-current-192-168-101-182"></td>
-                  <td><button id="time-net-192-168-101-182" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.182');" disabled="disabled">校准时间</button></td>
-                  <td><input id="time-val-192-168-101-182" type="datetime-local" style="width:80%;" disabled="disabled"></td>
-                  <td><button id="time-set-192-168-101-182" type="button" class="btn btn-success" onclick="setTime('10.33.85.182');" disabled="disabled">设置时间</button></td>
+                  <td id="time-current-10-33-85-182"></td>
+                  <td><button id="time-net-10-33-85-182" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.182');" disabled="disabled">校准时间</button></td>
+                  <td><input id="time-val-10-33-85-182" type="datetime-local" style="width:80%;" disabled="disabled"></td>
+                  <td><button id="time-set-10-33-85-182" type="button" class="btn btn-success" onclick="setTime('10.33.85.182');" disabled="disabled">设置时间</button></td>
                 </tr>
                 <tr>
                   <td id="time-ip-184"><b>10.33.85.184</b></td>
-                  <td id="time-current-192-168-101-184"></td>
-                  <td><button id="time-net-192-168-101-184" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.184');" disabled="disabled">校准时间</button></td>
-                  <td><input id="time-val-192-168-101-184" type="datetime-local" style="width:80%;" disabled="disabled"></td>
-                  <td><button id="time-set-192-168-101-184" type="button" class="btn btn-success" onclick="setTime('10.33.85.184');" disabled="disabled">设置时间</button></td>
+                  <td id="time-current-10-33-85-184"></td>
+                  <td><button id="time-net-10-33-85-184" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.184');" disabled="disabled">校准时间</button></td>
+                  <td><input id="time-val-10-33-85-184" type="datetime-local" style="width:80%;" disabled="disabled"></td>
+                  <td><button id="time-set-10-33-85-184" type="button" class="btn btn-success" onclick="setTime('10.33.85.184');" disabled="disabled">设置时间</button></td>
                 </tr>
                 <tr>
                   <td id="time-ip-192"><b>10.33.85.192</b></td>
-                  <td id="time-current-192-168-101-192"></td>
-                  <td><button id="time-net-192-168-101-192" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.192');" disabled="disabled">校准时间</button></td>
-                  <td><input id="time-val-192-168-101-192" type="datetime-local" style="width:80%;" disabled="disabled"></td>
-                  <td><button id="time-set-192-168-101-192" type="button" class="btn btn-success" onclick="setTime('10.33.85.192');" disabled="disabled">设置时间</button></td>
+                  <td id="time-current-10-33-85-192"></td>
+                  <td><button id="time-net-10-33-85-192" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.192');" disabled="disabled">校准时间</button></td>
+                  <td><input id="time-val-10-33-85-192" type="datetime-local" style="width:80%;" disabled="disabled"></td>
+                  <td><button id="time-set-10-33-85-192" type="button" class="btn btn-success" onclick="setTime('10.33.85.192');" disabled="disabled">设置时间</button></td>
                 </tr>
                 <tr>
                   <td id="time-ip-194"><b>10.33.85.194</b></td>
-                  <td id="time-current-192-168-101-194"></td>
-                  <td><button id="time-net-192-168-101-194" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.194');" disabled="disabled">校准时间</button></td>
-                  <td><input id="time-val-192-168-101-194" type="datetime-local" style="width:80%;" disabled="disabled"></td>
-                  <td><button id="time-set-192-168-101-194" type="button" class="btn btn-success" onclick="setTime('10.33.85.194');" disabled="disabled">设置时间</button></td>
+                  <td id="time-current-10-33-85-194"></td>
+                  <td><button id="time-net-10-33-85-194" type="button" class="btn btn-danger" onclick="setNetTime('10.33.85.194');" disabled="disabled">校准时间</button></td>
+                  <td><input id="time-val-10-33-85-194" type="datetime-local" style="width:80%;" disabled="disabled"></td>
+                  <td><button id="time-set-10-33-85-194" type="button" class="btn btn-success" onclick="setTime('10.33.85.194');" disabled="disabled">设置时间</button></td>
                 </tr>
               </tbody>
             </table>
