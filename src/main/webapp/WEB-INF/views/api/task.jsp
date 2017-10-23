@@ -256,12 +256,15 @@
     	createTable();
     	initEvent();
     	initApiTaskProject(null);
-    	initApiTaskVersion(null);
+    	initApiTaskVersion(null,null);
     	initApiTaskAccount(null);
     	$(".select2").select2();
     });
     
     function initEvent(){
+    	$("#api-task-project").change(function(){
+	    	initApiTaskVersion($(this).val(),null);
+    	});
     	$("#api-task-monitor0").change(function(){
 			$(".task-time-div").show();
 			$(".task-cycle-div").hide();
@@ -444,7 +447,7 @@
 				$(".task-cycle-div").hide();
 			}
 			initApiTaskProject(t.projecto.id);
-	    	initApiTaskVersion(t.versiono.id);
+	    	initApiTaskVersion(t.projecto.id,t.versiono.id);
 	    	if(t.accounto == null){
 	    		initApiTaskAccount(null);
 	    	}else{
@@ -471,7 +474,7 @@
 		$("#api-task-email-div").hide();
 		initApiTaskCycle(null);
     	initApiTaskProject(null);
-    	initApiTaskVersion(null);
+    	initApiTaskVersion(null,null);
     	initApiTaskAccount(null);
     	hideMsgDiv();
     }
@@ -558,10 +561,10 @@
     	});
     }
     
-    function initApiTaskVersion(versionid){
+    function initApiTaskVersion(projectid,versionid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + projectid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";

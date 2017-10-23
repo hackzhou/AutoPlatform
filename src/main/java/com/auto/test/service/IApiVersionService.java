@@ -9,7 +9,11 @@ public interface IApiVersionService{
 	
 	List<AVersion> findAll();
 
-	List<AVersion> findByVersion(String version);
+	List<AVersion> findByMinProject();
+
+	List<AVersion> findByProject(Integer pid);
+
+	List<AVersion> findByVersionProject(String version, Integer pid);
 	
 	AVersion findById(Integer id);
 	

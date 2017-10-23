@@ -51,7 +51,15 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-12">
+	              <div class="col-md-3">
+	                <div class="form-group">
+					  <label class="control-label text-center col-md-2">项目：</label>
+					  <div class="col-md-10">
+	                    <select id="api-version-project-s" name="api-version-project-s" class="form-select" style="width: 80%;"></select>
+					  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-9">
 	              	<!-- /.Create Version -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiVersionModal()" data-toggle="modal" data-target="#exampleModalVersion" data-whatever="@fat">添加版本</button>
@@ -77,6 +85,14 @@
                   </div>
                   <div class="modal-body">
                     <form id="api-version-form" class="form-horizontal form-material">
+                    	<div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>项目 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-version-project" name="api-version-project" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="hidden" id="api-version-id" name="api-version-id" value="">
@@ -167,14 +183,23 @@
 <script>
 
     $(document).ready(function(){
-    	createTable();
+    	createTable(null);
+    	initEvent();
+    	initApiVersionProject(null);
+    	initApiVersionProjectSearch();
     });
+    
+    function initEvent(){
+    	$("#api-version-project-s").change(function(){
+    		createTable($(this).val());
+		});
+    }
 
-    function createTable() {
+    function createTable(pid) {
     	$('#api-version-table').dataTable().fnDestroy();
     	$('#api-version-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/version/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/version/list/data/pid=" + pid,
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
@@ -243,6 +268,7 @@
 	    	$('#api-version-version').val(v.version);
 	    	$('#api-version-channel').tagsinput('removeAll');
   	      	$('#api-version-channel').tagsinput('add', v.channel);
+  	    	initApiVersionProject(v.projecto.id);
 		});
 		
 		$(".apiVersionDel").on("click",function(){
@@ -256,7 +282,56 @@
     	$('#api-version-id').val("");
     	$('#api-version-version').val("");
     	$('#api-version-channel').tagsinput('removeAll');
+    	initApiVersionProject(null);
     	hideMsgDiv();
+    }
+    
+    function initApiVersionProjectSearch(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
+    				}
+    				$('#api-version-project-s').empty();
+    				$('#api-version-project-s').append(optionstring);
+    			}
+    		}
+    	});
+    }
+    
+    function initApiVersionProject(projectid){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(projectid == list[i].id || i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
+    				}
+    				$('#api-version-project').empty();
+    				$('#api-version-project').append(optionstring);
+    			}
+    		}
+    	});
     }
     
     function apiVersionSave(){

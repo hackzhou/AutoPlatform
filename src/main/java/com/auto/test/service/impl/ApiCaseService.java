@@ -55,12 +55,13 @@ public class ApiCaseService implements IApiCaseService {
 
 	@Override
 	public List<ACase> findByProjectMaxVersion(Integer pid) {
-		return dao.findByProjectVersion(pid, versionDao.findMaxCount());
+		return dao.findByProjectVersion(pid, versionDao.findMaxCountBy("project_id", String.valueOf(pid)));
 	}
 	
 	@Override
 	public List<ACase> findByMinProjectMaxVersion() {
-		return dao.findByProjectVersion(projectDao.findMinCount(), versionDao.findMaxCount());
+		Integer pid = projectDao.findMinCount();
+		return dao.findByProjectVersion(pid, versionDao.findMaxCountBy("project_id", String.valueOf(pid)));
 	}
 	
 	@Override

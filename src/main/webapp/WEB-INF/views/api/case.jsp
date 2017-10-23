@@ -361,8 +361,8 @@
 		initEvent();
 		initApiCaseProject(null);
 		initApiCaseProjectSearch();
-		initApiCaseVersion(null);
-		initApiCaseVersionSearch();
+		initApiCaseVersion(null,null);
+		initApiCaseVersionSearch(null);
 		initApiCaseInterface(null,null);
 		initApiCaseLink(null,null);
 	});
@@ -391,12 +391,14 @@
 	
 	function initEvent(){
 		$("#api-case-project-s").change(function(){
-    		createTable($(this).val(), $("#api-case-version-s").val());
+			initApiCaseVersionSearch($(this).val());
+    		createTable($(this).val(), null);
 		});
 		$("#api-case-version-s").change(function(){
     		createTable($("#api-case-project-s").val(), $(this).val());
 		});
 		$("#api-case-project").change(function(){
+			initApiCaseVersion($(this).val(),null);
 			initApiCaseInterface($(this).val(),null);
 			initApiCaseLink($(this).val(),$("#api-case-version").val());
 		});
@@ -596,7 +598,7 @@
 				removeDestroy();
   	      	}
 			initApiCaseProject(c.interfaceo.projecto.id);
-			initApiCaseVersion(c.versiono.id);
+			initApiCaseVersion(c.interfaceo.projecto.id, c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
   	      	editApiCaseLink(c.interfaceo.projecto.id,c.versiono.id,c.link,c.id);
 			autoHeight($("#api-case-body")[0]);
@@ -632,7 +634,7 @@
 		$('#api-case-is-img0').prop("checked",true);
 		removeDestroy();
 		initApiCaseProject(null);
-    	initApiCaseVersion(null);
+    	initApiCaseVersion(null,null);
     	initApiCaseInterface(null,null);
     	initApiCaseLink(null,null);
     	autoHeight($("#api-case-body")[0]);
@@ -811,10 +813,10 @@
     	});
     }
 	
-	function initApiCaseVersionSearch(){
+	function initApiCaseVersionSearch(projectid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + projectid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
@@ -835,10 +837,10 @@
     	});
     }
 	
-	function initApiCaseVersion(versionid){
+	function initApiCaseVersion(projectid, versionid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + projectid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";

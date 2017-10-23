@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.dao.IApiCaseDao;
+import com.auto.test.dao.IApiProjectDao;
 import com.auto.test.dao.IApiTaskDao;
 import com.auto.test.dao.IApiVersionDao;
 import com.auto.test.entity.ACase;
@@ -18,6 +19,9 @@ public class ApiVersionService implements IApiVersionService {
 	@Resource(name="apiVersionDao")
 	private IApiVersionDao dao;
 	
+	@Resource(name="apiProjectDao")
+	private IApiProjectDao projectDao;
+	
 	@Resource(name="apiCaseDao")
 	private IApiCaseDao caseDao;
 	
@@ -30,8 +34,18 @@ public class ApiVersionService implements IApiVersionService {
 	}
 	
 	@Override
-	public List<AVersion> findByVersion(String version) {
-		return dao.findByVersion(version);
+	public List<AVersion> findByMinProject() {
+		return dao.findByProject(projectDao.findMinCount());
+	}
+	
+	@Override
+	public List<AVersion> findByProject(Integer pid) {
+		return dao.findByProject(pid);
+	}
+	
+	@Override
+	public List<AVersion> findByVersionProject(String version, Integer pid) {
+		return dao.findByVersionProject(version, pid);
 	}
 	
 	@Override

@@ -39,6 +39,19 @@ public class ApiVersionController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/pid={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getVersionDataByProject(@PathVariable("id") String id) {
+		logger.info("[Version]==>获取版本[project=" + id + "]数据！");
+		if(!isNull(id)){
+			List<AVersion> list = versionService.findByProject(Integer.parseInt(id));
+			return successJson(list);
+		}else{
+			List<AVersion> list = versionService.findByMinProject();
+			return successJson(list);
+		}
+	}
+	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getVersionById(@PathVariable("id") String id) {
@@ -53,7 +66,8 @@ public class ApiVersionController extends BaseController{
 	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getVersionByVersion(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version) {
+	public Map<String, Object> getVersionByVersion(@RequestParam("api-version-id") String id, @RequestParam("api-version-project") String project, 
+			@RequestParam("api-version-version") String version) {
 		if(!isNull(id)){
 			AVersion aVersion = versionService.findById(Integer.parseInt(id));
 			if(aVersion != null && aVersion.getVersion() != null && aVersion.getVersion().equals(version)){
@@ -61,7 +75,7 @@ public class ApiVersionController extends BaseController{
 				return successJson();
 			}
 		}
-		List<AVersion> list = versionService.findByVersion(version);
+		List<AVersion> list = versionService.findByVersionProject(version, Integer.parseInt(project));
 		if(list == null || list.isEmpty()){
 			logger.info("[Version]==>验证版本[version=" + version + "]不存在！");
 			return successJson();
@@ -72,10 +86,11 @@ public class ApiVersionController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
+	public Map<String, Object> createOrUpdate(@RequestParam("api-version-id") String id, @RequestParam("api-version-project") String project, 
+			@RequestParam("api-version-version") String version, @RequestParam("api-version-channel") String channel) {
 		try {
 			if(isNull(id)){
-				Integer vid = versionService.create(new AVersion(version.trim(), trimArray(channel)));
+				Integer vid = versionService.create(new AVersion(Integer.parseInt(project), version.trim(), trimArray(channel)));
 				if(vid != null){
 					logger.info("[Version]==>添加版本[id=" + vid + ",version=" + version + "]成功！");
 					return successJson();
@@ -84,7 +99,7 @@ public class ApiVersionController extends BaseController{
 					return failedJson("添加版本[version=" + version + "]失败！");
 				}
 			}else{
-				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), version.trim(), trimArray(channel)));
+				AVersion aVersion = versionService.update(new AVersion(Integer.parseInt(id), Integer.parseInt(project), version.trim(), trimArray(channel)));
 				if(aVersion != null){
 					logger.info("[Version]==>更新版本[id=" + id + ",version=" + version + "]成功！");
 					return successJson();

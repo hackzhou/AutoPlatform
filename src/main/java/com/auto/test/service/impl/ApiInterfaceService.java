@@ -128,12 +128,13 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【验证结果】为空！");
 				}else{
 					List<AProject> pList = projectDao.findByName(aInterfaceCase.getProject());
-					List<AVersion> vList = versionDao.findByVersion(aInterfaceCase.getVersion());
 					if(pList == null || pList.isEmpty()){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现所属项目名称是【" + aInterfaceCase.getProject() + "】不存在！");
 					}else if(pList.size() != 1){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现所属项目名称是【" + aInterfaceCase.getProject() + "】存在【" + pList.size() + "】个！");
-					}else if(vList == null || vList.isEmpty()){
+					}
+					List<AVersion> vList = versionDao.findByVersionProject(aInterfaceCase.getVersion(), pList.get(0).getId());
+					if(vList == null || vList.isEmpty()){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】所属版本号是【" + aInterfaceCase.getProject() + "】不存在！");
 					}else if(vList.size() != 1){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】所属版本号是【" + aInterfaceCase.getProject() + "】存在【" + vList.size() + "】个！");

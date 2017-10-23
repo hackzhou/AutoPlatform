@@ -6,6 +6,8 @@ import com.auto.test.entity.AVersion;
 
 public interface IApiVersionDao extends IBaseDao<AVersion> {
 
-	List<AVersion> findByVersion(String version);
+	List<AVersion> findByProject(Integer pid);
+
+	public List<AVersion> findByVersionProject(String version, Integer pid);
 	
 }

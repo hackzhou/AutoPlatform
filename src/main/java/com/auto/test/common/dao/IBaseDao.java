@@ -7,6 +7,8 @@ public interface IBaseDao <T extends java.io.Serializable> {
 
 	Integer findAllCount();
 	
+	Integer findMaxCountBy(String field, String text);
+
 	Integer findMaxCount();
 
 	Integer findMinCount();
