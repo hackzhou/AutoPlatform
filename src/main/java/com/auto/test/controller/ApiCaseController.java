@@ -90,19 +90,6 @@ public class ApiCaseController extends BaseController{
 		return successJson(list != null ? caseImgUrl2Net(request, list) : new ArrayList<ACase>());
 	}
 	
-	@RequestMapping(value = "/list/data/projectid={pid}/versionid={vid}", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getCaseDataByProjectVersion(@PathVariable("pid") String pid, @PathVariable("vid") String vid) {
-		logger.info("[Case]==>获取案例[project=" + pid + ",version=" + vid + "]数据！");
-		if(!isNull(pid) && !isNull(vid)){
-			List<ACase> list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
-			return successJson(list);
-		}else{
-			List<ACase> list = caseService.findByMinProjectMaxVersion();
-			return successJson(list);
-		}
-	}
-	
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getCaseById(@PathVariable("id") String id) {

@@ -400,7 +400,7 @@
 		$("#api-case-project").change(function(){
 			initApiCaseVersion($(this).val(),null);
 			initApiCaseInterface($(this).val(),null);
-			initApiCaseLink($(this).val(),$("#api-case-version").val());
+			initApiCaseLink($(this).val(),null);
 		});
 		$("#api-case-version").change(function(){
 			initApiCaseLink($("#api-case-project").val(),$(this).val());
@@ -893,7 +893,7 @@
 	function initApiCaseCase(projectid, versionid, index, cid, myid){
 		$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/case/list/data/projectid=" + projectid + "/versionid=" + versionid,
+    		url:"<%=request.getContextPath()%>/api/case/list/data/pid=" + projectid + "/vid=" + versionid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "<optgroup label=\"请选择...\"><option value='0'>无</option>";
