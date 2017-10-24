@@ -283,14 +283,14 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if(data.msg == null || data.msg == ""){
-							var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalDetail\"></i></a>";
+							var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><i class=\"fa fa-database text-primary m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalDetail\"></i></a></div>";
 							return String.format(html, data.id, escape(JSON.stringify(data)));
 						}else{
-							var html = "<a href=\"#\" data-data='{0}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-15\"></i></a>";
+							var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'><i class=\"fa fa-times-circle text-danger m-r-15\"></i></a></div>";
 							if(data.body == null || data.body == ""){
-								return String.format(html, data.msg);
+								return String.format(html, data.id, data.msg);
 							}else{
-								return String.format(html, data.msg + "-->[Data:" + data.body + "]");
+								return String.format(html, data.id, data.msg + "-->[Data:" + data.body + "]");
 							}
 						}
 					}
