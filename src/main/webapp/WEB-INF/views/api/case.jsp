@@ -601,6 +601,7 @@
 			initApiCaseVersion(c.interfaceo.projecto.id, c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
   	      	editApiCaseLink(c.interfaceo.projecto.id,c.versiono.id,c.link,c.id);
+			$('#api-case-project').prop("disabled",true);
 			autoHeight($("#api-case-body")[0]);
 			autoHeight($("#api-case-result")[0]);
 		});
@@ -637,6 +638,7 @@
     	initApiCaseVersion(null,null);
     	initApiCaseInterface(null,null);
     	initApiCaseLink(null,null);
+    	$('#api-case-project').prop("disabled",false);
     	autoHeight($("#api-case-body")[0]);
     	autoHeight($("#api-case-result")[0]);
     	hideMsgDiv();
