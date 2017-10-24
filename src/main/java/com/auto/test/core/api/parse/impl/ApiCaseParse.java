@@ -38,8 +38,6 @@ public class ApiCaseParse implements IApiCaseParse {
 	public ApiCaseParse(){
 		super();
 		this.cachedThreadPool = ApiThreadPool.getInstance();
-		/*this.urlA = GlobalValueConfig.getConfig("uri.production.environment");	//Online Compare*/		
-		this.urlB = GlobalValueConfig.getConfig("uri.advance.environment");
 		this.userLogin = GlobalValueConfig.getConfig("uri.user.login");
 		this.usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
 		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
@@ -53,6 +51,8 @@ public class ApiCaseParse implements IApiCaseParse {
 			throw new BusinessException("[HTTP/HTTPS]请求管理初始化失败！");
 		}
 		try {
+			/*this.urlA = "http://" + apiContext.getProject().getServera();		//Online Compare*/
+			this.urlB = "http://" + apiContext.getProject().getServerb();
 			executeBody(apiContext);
 		} catch (Exception e) {
 			executeFinal(apiContext, e.getMessage());

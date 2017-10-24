@@ -22,6 +22,12 @@ public class AProject implements Serializable{
 	@Column(name="name")
 	private String name;
 	
+	@Column(name="servera")
+	private String servera;
+
+	@Column(name="serverb")
+	private String serverb;
+	
 	@Column(name="path")
 	private String path;
 	
@@ -42,19 +48,25 @@ public class AProject implements Serializable{
 		super();
 		this.id = id;
 	}
-	public AProject(String name, String path) {
+	public AProject(String name, String servera, String serverb, String path) {
 		super();
 		this.name = name;
+		this.servera = servera;
+		this.serverb = serverb;
 		this.path = path;
 	}
-	public AProject(Integer id, String name, String path) {
+	public AProject(Integer id, String name, String servera, String serverb, String path) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.servera = servera;
+		this.serverb = serverb;
 		this.path = path;
 	}
 	
 	public void update(AProject aProject) {
+		this.servera = aProject.getServera();
+		this.serverb = aProject.getServerb();
 		this.name = aProject.getName();
 		this.path = aProject.getPath();
 		this.updateTime = new Date();
@@ -73,6 +85,19 @@ public class AProject implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getServera() {
+		return servera;
+	}
+	public void setServera(String servera) {
+		this.servera = servera;
+	}
+	public String getServerb() {
+		return serverb;
+	}
+	public void setServerb(String serverb) {
+		this.serverb = serverb;
+	}
+
 	public String getPath() {
 		return path;
 	}
@@ -100,8 +125,8 @@ public class AProject implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AProject [id=" + id + ", name=" + name + ", path=" + path + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "AProject [id=" + id + ", name=" + name + ", servera=" + servera + ", serverb=" + serverb + ", path="
+				+ path + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-	
+
 }

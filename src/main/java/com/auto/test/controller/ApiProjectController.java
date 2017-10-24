@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.ApiRunType;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.core.api.service.IApiRunService;
@@ -24,6 +25,7 @@ import com.auto.test.service.IApiProjectService;
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
+	private static String[] IP_ARR = {Const.IP_SERVER + ".181", Const.IP_SERVER + ".182", Const.IP_SERVER + ".184", Const.IP_SERVER + ".192", Const.IP_SERVER + ".194"};
 	
 	@Resource
 	private IApiProjectService projectService;
@@ -91,10 +93,11 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name, @RequestParam("api-project-path") String path) {
+	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name, 
+			@RequestParam("api-project-serverb") String serverb, @RequestParam("api-project-path") String path) {
 		try {
 			if(isNull(id)){
-				Integer pid = projectService.create(new AProject(name.trim(), path.trim()));
+				Integer pid = projectService.create(new AProject(name.trim(), null, serverb.trim(), path.trim()));
 				if(pid != null){
 					logger.info("[Project]==>添加项目[id=" + pid + ",name=" + name + "]成功！");
 					return successJson();
@@ -103,7 +106,7 @@ public class ApiProjectController extends BaseController{
 					return failedJson("添加项目[name=" + name + "]失败！");
 				}
 			}else{
-				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), path.trim()));
+				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), null, serverb.trim(), path.trim()));
 				if(aProject != null){
 					logger.info("[Project]==>更新项目[id=" + id + ",name=" + name + "]成功！");
 					return successJson();
@@ -129,6 +132,18 @@ public class ApiProjectController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("[Project]==>删除项目失败[" + e.getMessage() + "]");
+			return failedJson(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/ips", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getToolWarIPs() {
+		logger.info("[Project]==>获取所有服务器IP列表数据！");
+		try {
+			return successJson(IP_ARR);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return failedJson(e.getMessage());
 		}
 	}

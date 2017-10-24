@@ -84,6 +84,22 @@
                   <div class="modal-body">
                     <form id="api-project-form" class="form-horizontal form-material">
                         <input type="hidden" id="api-project-id" name="api-project-id" value="">
+                        <%-- <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>服务器  <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-project-servera" name="api-project-servera" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div> --%>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>服务器  <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-9">
+		                        <select id="api-project-serverb" name="api-project-serverb" class="form-select" style="width: 80%;"></select>
+	                        </div>
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-project-name" name="api-project-name" class="form-control" placeholder="项目名称">
@@ -159,6 +175,7 @@
                 <tr>
                   <th>ID</th>
                   <th><b class='label label-inverse'>名称</b></th>
+                  <th><b class='label label-primary'>服务器</b></th>
                   <th><b class='label label-danger'>地址</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -210,6 +227,7 @@
 
     $(document).ready(function(){
     	createTable();
+    	initToolWarIP(null);
     });
 
     function createTable() {
@@ -232,7 +250,7 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "20%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -241,12 +259,12 @@
 					}
 				},
 				{
-					"sWidth" : "30%",
+					"sWidth" : "20%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.path;
+						return data.serverb;
 					}
 				},
 				{
@@ -255,12 +273,21 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
+						return data.path;
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
 						return new Date(data.createTime).Format("yyyy-MM-dd hh:mm:ss");
 					}
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 4 ],
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -285,6 +312,7 @@
 			$('#api-project-id').val(p.id);
 	      	$('#api-project-name').val(p.name);
 	      	$('#api-project-path').val(p.path);
+	      	initToolWarIP(p.serverb);
 		});
 		
 		$(".apiProjectDel").on("click",function(){
@@ -303,6 +331,7 @@
     	$('#api-project-id').val("");
     	$('#api-project-name').val("");
     	$('#api-project-path').val("");
+    	initToolWarIP(null);
     	hideMsgDiv();
     }
     
@@ -377,11 +406,38 @@
     	});
     }
     
+    function initToolWarIP(ip){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/ips",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(ip == list[i] || i == 0){
+        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+        					}
+        				}
+    				}
+    				$('#api-project-serverb').empty();
+    				$('#api-project-serverb').append(optionstring);
+    			}
+    		}
+    	});
+	}
+    
     function apiProjectSave(){
     	var pname = $('#api-project-name').val();
     	var ppath = $('#api-project-path').val();
+    	var pserverb = $('#api-project-serverb').val();
     	if(pname == null || pname.trim() == ""){
 	    	showMsgDiv("请输入项目名称！");
+    	}else if(pserverb == null || pserverb.trim() == ""){
+    		showMsgDiv("请选择服务器IP！");
     	}else if(ppath == null || ppath.trim() == ""){
     		showMsgDiv("请输入项目地址！");
     	}else if(ppath[0] != "/" || ppath[ppath.length-1] == "/"){
