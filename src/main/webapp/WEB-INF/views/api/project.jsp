@@ -175,7 +175,7 @@
                 <tr>
                   <th>ID</th>
                   <th><b class='label label-inverse'>名称</b></th>
-                  <th><b class='label label-primary'>服务器</b></th>
+                  <th><b class='label label-primary'>测试服务</b></th>
                   <th><b class='label label-danger'>地址</b></th>
                   <th>创建时间</th>
                   <th>操作</th>

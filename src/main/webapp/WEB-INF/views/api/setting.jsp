@@ -163,7 +163,7 @@
 	$(document).ready(function() {
 		initEvent();
 		initCopyApiCaseProject();
-		initCopyApiCaseVersion();
+		initCopyApiCaseVersion(null);
 		var msg = $('#msg').html();
 		if(msg != null && msg != ""){
 			showMsgDiv(msg);
@@ -181,6 +181,9 @@
 	});
 	
 	function initEvent(){
+		$("#api-copy-project").change(function(){
+			initCopyApiCaseVersion($(this).val());
+		});
 		$("#api-copy-version-a").change(function(){
 			hideMsgDiv();
 		});
@@ -239,10 +242,10 @@
     	});
     }
 	
-	function initCopyApiCaseVersion(){
+	function initCopyApiCaseVersion(pid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + pid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
