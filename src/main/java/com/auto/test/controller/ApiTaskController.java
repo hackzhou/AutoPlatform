@@ -42,7 +42,7 @@ public class ApiTaskController extends BaseController{
 	@RequestMapping(value = "/list/data/pid={id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getTaskDataByProject(@PathVariable("id") String id) {
-		logger.info("[Task]==>获取所有定时任务数据！");
+		logger.info("[Task]==>获取定时任务[project=" + id + "]数据！");
 		if(!isNull(id)){
 			List<ATask> list = apiTaskService.findByProject(Integer.parseInt(id));
 			return successJson(list);

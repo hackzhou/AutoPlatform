@@ -298,7 +298,7 @@
     	$('#api-task-table').dataTable().fnDestroy();
     	$('#api-task-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/task/list/data/pid=" + pid,",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/task/list/data/pid=" + pid,
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
