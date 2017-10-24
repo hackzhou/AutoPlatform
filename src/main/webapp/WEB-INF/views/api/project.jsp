@@ -362,7 +362,7 @@
     
     function initApiProjectRun(pid){
 		$('#api-project-run-id').val(pid);
-		initApiCaseVersion(null);
+		initApiCaseVersion(pid,null);
 		$.ajax({
 			type:"get",
       		url:"<%=request.getContextPath()%>/api/account/list/data",
@@ -382,10 +382,10 @@
 		});
 	}
     
-    function initApiCaseVersion(versionid){
+    function initApiCaseVersion(pid,versionid){
     	$.ajax({
     		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data",
+    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + pid,
     		success:function(data){
     			if(data.responseCode == "0000"){
     				var optionstring = "";
