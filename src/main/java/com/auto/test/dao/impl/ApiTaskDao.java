@@ -1,6 +1,7 @@
 package com.auto.test.dao.impl;
 
 import java.util.List;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.auto.test.common.dao.AbstractHibernateDao;
@@ -27,7 +28,7 @@ public class ApiTaskDao extends AbstractHibernateDao<ATask> implements IApiTaskD
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<ATask> findByProject(Integer pid) {
-		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
+		return getCurrentSession().createCriteria(ATask.class).add(Restrictions.eq("projecto", new AProject(pid))).addOrder(Order.desc("id")).list();
 	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })

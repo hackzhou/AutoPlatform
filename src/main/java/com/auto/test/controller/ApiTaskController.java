@@ -39,6 +39,19 @@ public class ApiTaskController extends BaseController{
 		return successJson(list);
 	}
 	
+	@RequestMapping(value = "/list/data/pid={id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getTaskDataByProject(@PathVariable("id") String id) {
+		logger.info("[Task]==>获取所有定时任务数据！");
+		if(!isNull(id)){
+			List<ATask> list = apiTaskService.findByProject(Integer.parseInt(id));
+			return successJson(list);
+		}else{
+			List<ATask> list = apiTaskService.findByMinProject();
+			return successJson(list);
+		}
+	}
+	
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getTaskByTime(@RequestParam("api-task-id") String id, @RequestParam("api-task-time-hide") String time) {

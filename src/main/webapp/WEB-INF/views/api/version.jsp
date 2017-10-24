@@ -131,8 +131,9 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th><b class='label label-inverse'>版本</b></th>
-                  <th><b class='label label-info'>渠道号</b></th>
+                  <th><b class='label label-inverse'>项目</b></th>
+                  <th><b class='label label-primary'>版本</b></th>
+                  <th><b class='label label-danger'>渠道号</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -215,8 +216,17 @@
 					}
 				},
 				{
-					"sWidth" : "20%",
+					"sWidth" : "15%",
 					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.projecto.name;
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -224,8 +234,8 @@
 					}
 				},
 				{
-					"sWidth" : "40%",
-					"aTargets" : [ 2 ],
+					"sWidth" : "30%",
+					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -234,7 +244,7 @@
 				},
 				{
 					"sWidth" : "20%",
-					"aTargets" : [ 3 ],
+					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -243,7 +253,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 4 ],
+					"aTargets" : [ 5 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {

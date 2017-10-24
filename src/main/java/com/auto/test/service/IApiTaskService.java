@@ -9,6 +9,8 @@ public interface IApiTaskService{
 	
 	List<ATask> findAll();
 	
+	List<ATask> findByMinProject();
+
 	List<ATask> findByProject(Integer pid);
 
 	List<ATask> findByVersion(Integer vid);

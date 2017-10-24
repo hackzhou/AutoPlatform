@@ -59,7 +59,15 @@
             <div class="panel-body">
 	          <div class="form-body">
 	            <div class="row">
-	              <div class="col-md-12">
+	              <div class="col-md-3">
+	                <div class="form-group">
+					  <label class="control-label text-center col-md-2">项目：</label>
+					  <div class="col-md-10">
+	                    <select id="api-task-project-s" name="api-task-project-s" class="form-select" style="width: 80%;"></select>
+					  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-9">
 	              	<!-- /.Create Task -->
 		            <div class="button-box text-right">
 		              <button type="button" class="btn btn-info btn-outline" onclick="initApiTaskModal()" data-toggle="modal" data-target="#exampleModalTask" data-whatever="@fat">添加定时任务</button>
@@ -253,15 +261,19 @@
 	$('.clockpicker').clockpicker();
 
     $(document).ready(function(){
-    	createTable();
+    	createTable(null);
     	initEvent();
     	initApiTaskProject(null);
     	initApiTaskVersion(null,null);
     	initApiTaskAccount(null);
+    	initApiTaskProjectSearch();
     	$(".select2").select2();
     });
     
     function initEvent(){
+    	$("#api-task-project-s").change(function(){
+    		createTable($(this).val());
+		});
     	$("#api-task-project").change(function(){
 	    	initApiTaskVersion($(this).val(),null);
     	});
@@ -282,11 +294,11 @@
 		});
     }
 
-    function createTable() {
+    function createTable(pid) {
     	$('#api-task-table').dataTable().fnDestroy();
     	$('#api-task-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/task/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/task/list/data/pid=" + pid,",
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
@@ -535,6 +547,30 @@
           	    }
     		});
     	}
+    }
+    
+    function initApiTaskProjectSearch(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+        					if(i == (list.length - 1)){
+        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        					}
+        				}
+    				}
+    				$('#api-task-project-s').empty();
+    				$('#api-task-project-s').append(optionstring);
+    			}
+    		}
+    	});
     }
     
     function initApiTaskProject(projectid){

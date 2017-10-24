@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.auto.test.dao.IApiProjectDao;
 import com.auto.test.dao.IApiTaskDao;
 import com.auto.test.entity.ATask;
 import com.auto.test.service.IApiTaskService;
@@ -13,10 +14,18 @@ public class ApiTaskService implements IApiTaskService {
 	
 	@Resource(name="apiTaskDao")
 	private IApiTaskDao dao;
-
+	
+	@Resource(name="apiProjectDao")
+	private IApiProjectDao projectDao;
+	
 	@Override
 	public List<ATask> findAll() {
 		return dao.findAllOrder();
+	}
+	
+	@Override
+	public List<ATask> findByMinProject() {
+		return dao.findByProject(projectDao.findMinCount());
 	}
 	
 	@Override
