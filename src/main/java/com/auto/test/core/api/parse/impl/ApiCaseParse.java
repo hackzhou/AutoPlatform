@@ -119,6 +119,7 @@ public class ApiCaseParse implements IApiCaseParse {
 				httpClientManager.close();
 			}
 			if(apiContext.isMail() && aResult.getFail() > 0){
+				apiContext.getResult().setFailMsg(message);
 				new EmailUtil().sendEmail(aResult, apiContext.getEmails());
 			}
 		}

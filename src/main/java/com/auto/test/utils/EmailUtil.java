@@ -109,6 +109,17 @@ public class EmailUtil {
         DecimalFormat df = new DecimalFormat("#.##%");
         root.put("per", df.format((float) aResult.getSuccess() /(float) aResult.getTotal()));
         root.put("ip", Const.getCurrentIP());
+        if(aResult.getFailMsg() == null || aResult.getFailMsg().isEmpty()){
+        	root.put("failMsg", "无");
+        	if(aResult.getFails() == null || aResult.getFails().isEmpty()){
+        		root.put("failResults", null);
+        	}else{
+        		root.put("failResults", aResult.getFails());
+        	}
+        }else{
+        	root.put("failMsg", aResult.getFailMsg());
+        	root.put("failResults", null);
+        }
         MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");	//发送模板
         FreeMarkerConfigurer freeMarkerConfigurer = (FreeMarkerConfigurer) SpringContext.getBean("freeMarkerConfigurer");
         Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate("mail.html");

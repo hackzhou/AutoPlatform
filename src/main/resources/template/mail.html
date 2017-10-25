@@ -17,6 +17,7 @@
 </style>
 </head>
 <body>
+	<h3>报告详情：</h3>
 	<table class="table">
 		<tr>
 			<td><strong>项目名称</strong></td><td>${project}</td>
@@ -57,6 +58,30 @@
 				<a href="http://${ip}:8080/AutoPlatform/api/report/detail/list/id=${id}">http://${ip}:8080/AutoPlatform/api/report/detail/list/id=${id}</a>
 			</td>
 		</tr>
+		<tr>
+			<td><strong>失败原因</strong></td><td>${failMsg}</td>
+		</tr>
+	</table>
+	<h3>失败案例详情：</h3>
+	<table class="table2">
+		<tr>
+			<td><strong>No.</strong></td>
+			<td><strong>ID</strong></td>
+			<td><strong>接口名称</strong></td>
+			<td><strong>接口类型</strong></td>
+			<td><strong>接口地址</strong></td>
+			<td><strong>失败原因</strong></td>
+		</tr>
+		<#list failResults as failResult>
+			<tr>
+				<td>${failResult_index + 1}</td>
+				<td>${failResult.id}</td>
+				<td>${failResult.name}</td>
+				<td>${failResult.type}</td>
+				<td>${failResult.url}</td>
+				<td>${failResult.message}</td>
+			</tr>
+		</#list>
 	</table>
 </body>
 </html>

@@ -32,7 +32,7 @@ public class ApiResultDao extends AbstractHibernateDao<AResult> implements IApiR
 				criteria = criteria.add(Restrictions.eq("versiono", new AVersion(vid)));
 			}
 		}
-		return criteria.add(Restrictions.ge("startTime", startTime)).add(Restrictions.le("endTime", endTime)).addOrder(Order.desc("id")).list();
+		return criteria.add(Restrictions.ge("startTime", startTime)).add(Restrictions.or(Restrictions.isNull("endTime"), Restrictions.le("endTime", endTime))).addOrder(Order.desc("id")).list();
 	}
 
 }

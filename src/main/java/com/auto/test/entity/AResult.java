@@ -1,7 +1,9 @@
 package com.auto.test.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import com.auto.test.common.bean.AResultFail;
 
 @Entity
 @Table(name="a_result")
@@ -70,6 +74,11 @@ public class AResult implements Serializable{
 	
 	@Column(name="memo")
 	private String memo;
+	
+	@Transient
+	private String failMsg;
+	@Transient
+	private List<AResultFail> fails = new ArrayList<AResultFail>();
 	
 	public AResult() {
 		super();
@@ -185,6 +194,18 @@ public class AResult implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public String getFailMsg() {
+		return failMsg;
+	}
+	public void setFailMsg(String failMsg) {
+		this.failMsg = failMsg;
+	}
+	public List<AResultFail> getFails() {
+		return fails;
+	}
+	public void setFails(List<AResultFail> fails) {
+		this.fails = fails;
+	}
 	
 	@Override
 	public String toString() {
@@ -193,5 +214,5 @@ public class AResult implements Serializable{
 				+ ", msg=" + msg + ", startTime=" + startTime + ", endTime=" + endTime + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
-
+	
 }
