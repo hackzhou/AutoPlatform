@@ -1,5 +1,9 @@
 package com.auto.test.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -41,6 +45,32 @@ public class ApiReportController extends BaseController{
 		logger.info("[Report]==>获取所有报告数据！");
 		List<AResult> resultList = resultService.findAll();
 		return successJson(resultList);
+	}
+	
+	@RequestMapping(value = "/list/data/pid={pid}/vid={vid}/time={time}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getResultDataBy(@PathVariable("pid") String pid, @PathVariable("vid") String vid, @PathVariable("time") String time) {
+		logger.info("[Report]==>获取报告[project=" + pid + ",version=" + vid + ",time=" + time + "]数据！");
+		List<AResult> resultList = null;
+		Date startTime = null;
+		Date endTime = null;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+			String today = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
+			if(time == null || "0".equals(time) || time.isEmpty()){
+				startTime = sdf.parse(today + " 00:00:00");
+				endTime = sdf.parse(today + " 23:59:59");
+			}else{
+				startTime = sdf.parse(time.split(",")[0] + " 00:00:00");
+				endTime = sdf.parse(time.split(",")[1] + " 23:59:59");
+			}
+			pid = (pid == null || pid.isEmpty()) ? "0" : pid;
+			vid = (vid == null || vid.isEmpty()) ? "0" : vid;
+			resultList = resultService.findByProjectVersionTime(Integer.parseInt(pid), Integer.parseInt(vid), startTime, endTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return successJson(resultList == null ? new ArrayList<AResult>() : resultList);
 	}
 	
 	@RequestMapping(value = "/detail/list/id={id}", method = RequestMethod.GET)

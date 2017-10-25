@@ -25,6 +25,9 @@
 <link href="${pageContext.request.contextPath}/eliteadmin/css/style.css" rel="stylesheet">
 <!-- color CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/css/colors/blue.css" id="theme"  rel="stylesheet">
+<!-- Daterange picker plugins css -->
+<link href="${pageContext.request.contextPath}/plugins/bower_components/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 </head>
 <body>
 <!-- Preloader -->
@@ -38,8 +41,20 @@
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-1 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>报告</b></span></h4>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <label class="col-md-3">项目：</label>
+          <select id="api-report-project-s" name="api-report-project-s" class="col-md-9"></select>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <label class="col-md-3">版本：</label>
+          <select id="api-report-version-s" name="api-report-version-s" class="col-md-9"></select>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <label class="col-md-3">时间：</label>
+          <input type="text" id="api-report-time-s" class="col-md-9 input-daterange-timepicker" name="daterange" readonly="readonly"/>
         </div>
       </div>
       <!-- /row -->
@@ -96,6 +111,11 @@
 <!-- Custom Theme JavaScript -->
 <script src="${pageContext.request.contextPath}/eliteadmin/js/custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<!-- Plugin JavaScript -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/moment/moment.js"></script>
+<!-- Date range Plugin JavaScript -->
+<script src="${pageContext.request.contextPath}/plugins/bower_components/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="${pageContext.request.contextPath}/js/cdn/dataTables.buttons.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.flash.min.js"></script>
@@ -106,16 +126,46 @@
 <script src="${pageContext.request.contextPath}/js/cdn/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
 <script type="text/javascript">
+
+	$('.input-daterange-timepicker').daterangepicker({
+		buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-danger',
+        cancelClass: 'btn-inverse'
+	});
   
 	$(document).ready(function() {
-		createTable();
+		createTable(0,0,0);
+		initEvent();
+		initApiReportProjectSearch();
+		initApiReportVersionSearch(null);
 	});
 	
-	function createTable() {
+	function initEvent() {
+		$("#api-report-project-s").change(function(){
+			if($(this).val() == "0"){
+				initApiReportVersionSearch(null);
+			}else{
+				initApiReportVersionSearch($(this).val());
+			}
+			createTable($(this).val(),0,getApiReportTime());
+		});
+		$("#api-report-version-s").change(function(){
+			createTable($("#api-report-project-s").val(),$(this).val(),getApiReportTime());
+		});
+		$("#api-report-time-s").change(function(){
+			createTable($("#api-report-project-s").val(),$("#api-report-version-s").val(),getApiReportTime());
+		});
+	}
+	
+	function getApiReportTime() {
+		return $("#api-report-time-s").val().replace(/ - /g, ",").replace(/\//g, "-");
+	}
+	
+	function createTable(pid,vid,time) {
 		$('#api-report-table').dataTable().fnDestroy();
     	$('#api-report-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/report/list/data",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/report/list/data/pid=" + pid + "/vid=" + vid + "/time=" + time,
     		bProcessing : false,
     		"aaSorting": [
     			[0,'desc']
@@ -272,6 +322,51 @@
 			swal("错误", $(this).data('data'), "error");
 		});
 	}
+	
+	function initApiReportProjectSearch(){
+    	$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/project/list/data",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "<option value='0' selected>全部</option>";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = list.length - 1; i >= 0; i--){
+    						optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
+        				}
+    				}
+    				$('#api-report-project-s').empty();
+    				$('#api-report-project-s').append(optionstring);
+    			}
+    		}
+    	});
+    }
+	
+	function initApiReportVersionSearch(pid){
+		if(pid == null || pid == ""){
+			$('#api-report-version-s').empty();
+			$('#api-report-version-s').append("<option value='0' selected>全部</option>");
+		}else{
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + pid,
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				var optionstring = "<option value='0' selected>全部</option>";
+	    				var list = data.data;
+	    				if(list != null){
+	    					for(var i = 0; i < list.length; i++){
+	    						optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+	        				}
+	    				}
+	    				$('#api-report-version-s').empty();
+	    				$('#api-report-version-s').append(optionstring);
+	    			}
+	    		}
+	    	});
+		}
+    }
 	
 </script>
 <!--Style Switcher -->

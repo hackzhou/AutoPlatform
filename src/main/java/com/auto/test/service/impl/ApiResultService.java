@@ -18,6 +18,11 @@ public class ApiResultService implements IApiResultService {
 	public List<AResult> findAll() {
 		return dao.findAllOrder();
 	}
+	
+	@Override
+	public List<AResult> findByProjectVersionTime(Integer pid, Integer vid, Date startTime, Date endTime) {
+		return dao.findByProjectVersionTime(pid, vid, startTime, endTime);
+	}
 
 	@Override
 	public AResult findById(Integer id) {
