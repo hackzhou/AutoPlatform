@@ -134,7 +134,11 @@
 	});
   
 	$(document).ready(function() {
-		createTable(0,0,0);
+		var d1 = new Date();
+		var d2 = new Date(d1 - 7 * 24 * 3600 * 1000);
+		var d = (d2.getMonth() + 1) + "/" + d2.getDate() + "/" + d2.getFullYear() + " - " + (d1.getMonth() + 1) + "/" + d1.getDate() + "/" + d1.getFullYear();
+		$('#api-report-time-s').val(d);
+		createTable(0,0,getApiReportTime(d));
 		initEvent();
 		initApiReportProjectSearch();
 		initApiReportVersionSearch(null);
@@ -147,18 +151,22 @@
 			}else{
 				initApiReportVersionSearch($(this).val());
 			}
-			createTable($(this).val(),0,getApiReportTime());
+			createTable($(this).val(),0,getApiReportTime(null));
 		});
 		$("#api-report-version-s").change(function(){
-			createTable($("#api-report-project-s").val(),$(this).val(),getApiReportTime());
+			createTable($("#api-report-project-s").val(),$(this).val(),getApiReportTime(null));
 		});
 		$("#api-report-time-s").change(function(){
-			createTable($("#api-report-project-s").val(),$("#api-report-version-s").val(),getApiReportTime());
+			createTable($("#api-report-project-s").val(),$("#api-report-version-s").val(),getApiReportTime(null));
 		});
 	}
 	
-	function getApiReportTime() {
-		return $("#api-report-time-s").val().replace(/ - /g, ",").replace(/\//g, "-");
+	function getApiReportTime(date) {
+		if(date == null){
+			return $("#api-report-time-s").val().replace(/ - /g, ",").replace(/\//g, "-");
+		}else{
+			return date.replace(/ - /g, ",").replace(/\//g, "-");
+		}
 	}
 	
 	function createTable(pid,vid,time) {
