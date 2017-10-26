@@ -174,7 +174,7 @@
 		                        <select id="api-case-ready" name="api-case-ready" class="form-select" style="width: 100%;"></select>
 	                        </div>
 	                        <div class="col-sm-2">
-	                        	<label class="text-info">新增请联系管理员</label>
+	                        	<label class="text-info">(新增请联系管理员)</label>
 	                        </div>
 	                      </div>
 	                    </div>
