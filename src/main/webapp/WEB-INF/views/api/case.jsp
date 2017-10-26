@@ -787,16 +787,23 @@
     		url:"<%=request.getContextPath()%>/api/case/ready",
     		success:function(data){
     			if(data.responseCode == "0000"){
-    				var optionstring = "<option value='0' selected>[0]无</option>";
+    				var optionstring = "";
+    				var bool = false;
     				var list = data.data;
     				if(list != null){
     					for(var i = 0; i < list.length; i++){
         					if(ready == list[i].id){
+        						bool = true;
         						optionstring += "<option value='" + list[i].id + "' selected>[" + list[i].id + "]" + list[i].desc + "</option>";
         					}else{
     	    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id + "]" + list[i].desc + "</option>";
         					}
         				}
+    				}
+    				if(bool){
+    					optionstring = "<option value='0'>[0]无</option>" + optionstring;
+    				}else{
+    					optionstring = "<option value='0' selected>[0]无</option>" + optionstring;
     				}
     				$('#api-case-ready').empty();
     				$('#api-case-ready').append(optionstring);
