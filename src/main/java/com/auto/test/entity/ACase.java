@@ -52,6 +52,9 @@ public class ACase implements Serializable{
 	
 	@Column(name="strategy")
 	private String strategy;
+
+	@Column(name="ready")
+	private Integer ready;
 	
 	@Column(name="img")
 	private String img;
@@ -86,7 +89,7 @@ public class ACase implements Serializable{
 		this.id = id;
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run, Integer login) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img, Integer flag, Integer run, Integer login) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
@@ -94,13 +97,14 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.ready = ready;
 		this.img = img;
 		this.flag = flag;
 		this.run = run;
 		this.login = login;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String link, String img, Integer flag, Integer run, Integer login) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img, Integer flag, Integer run, Integer login) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -109,6 +113,7 @@ public class ACase implements Serializable{
 		this.body = body;
 		this.result = result;
 		this.strategy = strategy;
+		this.ready = ready;
 		this.img = img;
 		this.flag = flag;
 		this.run = run;
@@ -127,6 +132,7 @@ public class ACase implements Serializable{
 		this.body = aCase.getBody();
 		this.result = aCase.getResult();
 		this.strategy = aCase.getStrategy();
+		this.ready = aCase.getReady();
 		if(boolImg){
 			this.img = aCase.getImg();
 		}
@@ -188,6 +194,12 @@ public class ACase implements Serializable{
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public Integer getReady() {
+		return ready;
+	}
+	public void setReady(Integer ready) {
+		this.ready = ready;
+	}
 	public String getImg() {
 		return img;
 	}
@@ -240,8 +252,8 @@ public class ACase implements Serializable{
 	@Override
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
-				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", img=" + img
-				+ ", flag=" + flag + ", run=" + run + ", login=" + login + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + ", list=" + list + "]";
+				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", ready="
+				+ ready + ", img=" + img + ", flag=" + flag + ", run=" + run + ", login=" + login + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + ", list=" + list + "]";
 	}
 }

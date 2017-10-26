@@ -25,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 import com.auto.test.common.constant.ApiRunType;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
+import com.auto.test.core.api.ready.ReadyData;
 import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AInterface;
@@ -53,6 +54,13 @@ public class ApiCaseController extends BaseController{
 			logger.error("[Case]==>运行案例失败[" + e.getMessage() + "]");
 			return failedJson(e.getMessage());
 		}
+	}
+	
+	@RequestMapping(value = "/ready", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getDataReady() {
+		logger.info("[Case]==>获取所有前期准备数据！");
+		return successJson(ReadyData.getList());
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -110,7 +118,8 @@ public class ApiCaseController extends BaseController{
 			@RequestParam("api-case-version") String version, @RequestParam("api-case-name") String name, @RequestParam("api-case-strategy") String strategy, 
 			@RequestParam("api-case-flag") String flag, @RequestParam("api-case-run") String run,  @RequestParam("api-case-login") String login, 
 			@RequestParam("api-case-body") String body, @RequestParam("api-case-result") String result, @RequestParam("api-case-link") String links, 
-			@RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-img-path") String img, @RequestParam("api-case-update-img") String uImg) {
+			@RequestParam("api-case-is-body") String isBody, @RequestParam("api-case-ready") String ready, @RequestParam("api-case-img-path") String img, 
+			@RequestParam("api-case-update-img") String uImg) {
 		try {
 			if("0".equals(isBody)){
 				body = null;
@@ -121,8 +130,9 @@ public class ApiCaseController extends BaseController{
 			if(result != null && result.trim().isEmpty()){
 				result = null;
 			}
+			ready = (ready == null || ready.isEmpty()) ? "0" : ready;
 			if(isNull(id)){
-				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArrayRemove(links, "0"), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
+				Integer cid = caseService.create(new ACase(new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), Integer.parseInt(ready), trimArrayRemove(links, "0"), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
 				if(cid != null){
 					logger.info("[Case]==>添加案例[id=" + cid + ",name=" + name + "]成功！");
 					return successJson();
@@ -143,7 +153,7 @@ public class ApiCaseController extends BaseController{
 						}
 					}
 				}
-				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), trimArrayRemove(links, "0"), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
+				ACase aCase = caseService.update(new ACase(Integer.parseInt(id), new AVersion(Integer.parseInt(version)), new AInterface(Integer.parseInt(inter)), name.trim(), jsonFormat(body, false), jsonFormat(result, false), trimArray(strategy), Integer.parseInt(ready), trimArrayRemove(links, "0"), img, Integer.parseInt(flag), Integer.parseInt(run), Integer.parseInt(login)));
 				if(aCase != null){
 					logger.info("[Case]==>更新案例[id=" + id + ",name=" + name + "]成功！");
 					return successJson();

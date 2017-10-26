@@ -18,6 +18,7 @@ import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.compare.JSONCompare;
 import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.IApiSendMessage;
+import com.auto.test.core.api.ready.ReadyData;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
@@ -88,6 +89,9 @@ public class ApiExecuteRun implements Runnable {
 	
 	private void oneRunBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		try {
+			if(aCase.getReady() != null && aCase.getReady() > 0){
+				ReadyData.exe(aCase.getReady());
+			}
 			sendMessage(aCase, aResultDetail);
 			saveResultDetailSuccess(aCase, aResultDetail);
 		} catch (Exception e) {

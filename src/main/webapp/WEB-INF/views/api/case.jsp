@@ -169,6 +169,17 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>前期准备 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="col-sm-7">
+		                        <select id="api-case-ready" name="api-case-ready" class="form-select" style="width: 100%;"></select>
+	                        </div>
+	                        <div class="col-sm-2">
+	                        	<label class="text-info">新增请联系管理员</label>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><code>是否有请求体 <i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-is-body0" name="api-case-is-body" value="0" checked>没有</label>
@@ -359,6 +370,7 @@
 	$(document).ready(function() {
 		createTable(null, null);
 		initEvent();
+		initApiCaseReady(null);
 		initApiCaseProject(null);
 		initApiCaseProjectSearch();
 		initApiCaseVersion(null,null);
@@ -597,6 +609,7 @@
 				$('#api-case-is-img0').prop("checked",true);
 				removeDestroy();
   	      	}
+			initApiCaseReady(c.ready);
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.interfaceo.projecto.id, c.versiono.id);
   	      	initApiCaseInterface(c.interfaceo.projecto.id, c.interfaceo.id);
@@ -634,6 +647,7 @@
 		/* $("#resultDiv").hide(); */
 		$('#api-case-is-img0').prop("checked",true);
 		removeDestroy();
+		initApiCaseReady(null);
 		initApiCaseProject(null);
     	initApiCaseVersion(null,null);
     	initApiCaseInterface(null,null);
@@ -766,6 +780,30 @@
       	    }
 		});
 	}
+	
+	function initApiCaseReady(ready){
+		$.ajax({
+    		type:"get",
+    		url:"<%=request.getContextPath()%>/api/case/ready",
+    		success:function(data){
+    			if(data.responseCode == "0000"){
+    				var optionstring = "<option value='0' selected>[0]无</option>";
+    				var list = data.data;
+    				if(list != null){
+    					for(var i = 0; i < list.length; i++){
+        					if(ready == list[i].id){
+        						optionstring += "<option value='" + list[i].id + "' selected>[" + list[i].id + "]" + list[i].desc + "</option>";
+        					}else{
+    	    					optionstring += "<option value='" + list[i].id + "'>[" + list[i].id + "]" + list[i].desc + "</option>";
+        					}
+        				}
+    				}
+    				$('#api-case-ready').empty();
+    				$('#api-case-ready').append(optionstring);
+    			}
+    		}
+    	});
+    }
 	
 	function initApiCaseProjectSearch(){
     	$.ajax({
