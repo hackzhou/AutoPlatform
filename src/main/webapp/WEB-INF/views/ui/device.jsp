@@ -143,7 +143,7 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="ui-device-table" class="table table-striped">
+            <table id="ui-device-table" class="table display">
               <thead>
                 <tr>
                   <th>ID</th>

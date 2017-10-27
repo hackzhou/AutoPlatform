@@ -144,7 +144,7 @@
             </div>
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-interface-table" class="table table-striped">
+            <table id="api-interface-table" class="table display">
               <thead>
                 <tr>
                   <th>ID</th>

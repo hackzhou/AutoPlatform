@@ -89,7 +89,7 @@
           <div class="white-box">
 			<!-- /.table -->
             <div class="table-responsive">
-            <table id="api-report-detail-table" class="table table-striped">
+            <table id="api-report-detail-table" class="table display">
               <thead>
                 <tr>
                   <th>ID</th>
