@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.bean.AResultFail;
+import com.auto.test.common.bean.ARunTime;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
 import com.auto.test.common.constant.HttpType;
@@ -181,6 +182,7 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
+		ARunTime time = new ARunTime();
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 		if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
@@ -192,7 +194,7 @@ public class ApiExecuteRun implements Runnable {
 			}else{
 				/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
 			}
-			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId()));
+			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId(), time));
 		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
 				if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
@@ -203,30 +205,31 @@ public class ApiExecuteRun implements Runnable {
 			}else{
 				/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
 			}
-			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg()));
+			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg(), time));
 		}
+		aResultDetail.setTime(time.getTime());
 	}
 	
-	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid) throws Exception{
+	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid, ARunTime time) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
-		String result = apiSendMessage.sendGet(httpClientManager.getHttpClient(), url, author, channel, version);
+		String result = apiSendMessage.sendGet(httpClientManager.getHttpClient(), url, author, channel, version, time);
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid, String img) throws Exception{
+	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid, String img, ARunTime time) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = "";
 		if(img != null && !img.isEmpty()){
 			File file = new File(img);
 			if(file.exists() && file.isFile()){
-				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, file);
+				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, file, time);
 			}else{
 				logger.error("[案例][" + runid + "]==>文件不存在[" + img + "]");
 				throw new BusinessException("[案例][" + runid + "]==>文件不存在[" + img + "]");
 			}
 		}else{
-			result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false);
+			result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, time);
 		}
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;

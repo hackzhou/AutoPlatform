@@ -19,6 +19,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.common.bean.ARunTime;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
@@ -32,7 +33,7 @@ public class ApiSendMessage implements IApiSendMessage {
 	private static final String DATA		= "-->[Data:%s]";
 	
 	@Override
-	public String sendGet(CloseableHttpClient httpclient, String url, String author, String channel, String version) throws Exception{
+	public String sendGet(CloseableHttpClient httpclient, String url, String author, String channel, String version, ARunTime time) throws Exception{
 		CloseableHttpResponse response = null;
 		HttpGet httpGet = null;
 		try {
@@ -40,7 +41,13 @@ public class ApiSendMessage implements IApiSendMessage {
 			httpGet.setHeader(APP_AUTHOR, author);
 			httpGet.setHeader(APP_VERSION, version);
 			httpGet.setHeader(APP_CHANNEL, channel);
-			response = httpclient.execute(httpGet);
+			if(time == null){
+				response = httpclient.execute(httpGet);
+			}else{
+				Long start = System.currentTimeMillis();
+				response = httpclient.execute(httpGet);
+				time.setTime(System.currentTimeMillis() - start);
+			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{
@@ -55,9 +62,9 @@ public class ApiSendMessage implements IApiSendMessage {
 			}
 		}
 	}
-
+	
 	@Override
-	public String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool) throws Exception{
+	public String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool, ARunTime time) throws Exception{
 		CloseableHttpResponse response = null;
 		HttpPost httpPost = null;
 		try {
@@ -69,7 +76,13 @@ public class ApiSendMessage implements IApiSendMessage {
 			if(data != null && !data.isEmpty()){
 				httpPost.setEntity(new StringEntity(data));
 			}
-			response = httpclient.execute(httpPost);
+			if(time == null){
+				response = httpclient.execute(httpPost);
+			}else{
+				Long start = System.currentTimeMillis();
+				response = httpclient.execute(httpPost);
+				time.setTime(System.currentTimeMillis() - start);
+			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{
@@ -90,7 +103,7 @@ public class ApiSendMessage implements IApiSendMessage {
 	}
 	
 	@Override
-	public String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool, File file) throws Exception{
+	public String sendPost(CloseableHttpClient httpclient, String url, String data, String author, String channel, String version, boolean bool, File file, ARunTime time) throws Exception{
 		CloseableHttpResponse response = null;
 		HttpPost httpPost = null;
 		try {
@@ -118,7 +131,13 @@ public class ApiSendMessage implements IApiSendMessage {
 			httpPost.setHeader(APP_AUTHOR, author);
 			httpPost.setHeader(APP_VERSION, version);
 			httpPost.setHeader(APP_CHANNEL, channel);
-			response = httpclient.execute(httpPost);
+			if(time == null){
+				response = httpclient.execute(httpPost);
+			}else{
+				Long start = System.currentTimeMillis();
+				response = httpclient.execute(httpPost);
+				time.setTime(System.currentTimeMillis() - start);
+			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
 			}else{

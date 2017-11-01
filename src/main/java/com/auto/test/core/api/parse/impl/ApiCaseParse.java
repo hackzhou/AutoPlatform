@@ -135,14 +135,14 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 		logger.info("[登录权限][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
-		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + userLogin, data, "", channel, version, true);
+		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + userLogin, data, "", channel, version, true, null);
 		Login login = apiSendMessage.json2JavaBean(Login.class, result);
 		if(login != null){
 			logger.info("[登录权限][" + type + "]==>" + login.toString());
 			if("200".equals(login.getCode())){
 				String data2 = "{\"token\":\"" + login.getData() + "\",\"type\":1}";
 				logger.info("[登录权限][" + type + "]==>[POST:" + url + usersAccessToken + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data2 + "]");
-				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + usersAccessToken, data2, "", channel, version, true);
+				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + usersAccessToken, data2, "", channel, version, true, null);
 				AccessToken accessToken = apiSendMessage.json2JavaBean(AccessToken.class, result);
 				if(accessToken != null){
 					logger.info("[登录权限][" + type + "]==>" + accessToken.toString());
