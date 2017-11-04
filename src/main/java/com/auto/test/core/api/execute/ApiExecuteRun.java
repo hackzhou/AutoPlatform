@@ -183,31 +183,38 @@ public class ApiExecuteRun implements Runnable {
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		ARunTime time = new ARunTime();
-		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-		if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
-			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-				if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
-					aResultDetail.setResulta(nologinResult);
+		try {
+			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
+			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
+				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
+					if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
+						aResultDetail.setResulta(nologinResult);
+					}else{
+						aResultDetail.setResulta(aCase.getResult());
+					}
 				}else{
-					aResultDetail.setResulta(aCase.getResult());
+					/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
 				}
-			}else{
-				/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
-			}
-			aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId(), time));
-		}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
-			if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-				if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
-					aResultDetail.setResulta(nologinResult);
+				aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId(), time));
+			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
+				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
+					if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
+						aResultDetail.setResulta(nologinResult);
+					}else{
+						aResultDetail.setResulta(aCase.getResult());
+					}
 				}else{
-					aResultDetail.setResulta(aCase.getResult());
+					/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
 				}
-			}else{
-				/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
+				aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg(), time));
 			}
-			aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg(), time));
+		} finally {
+			if(time.getTime() == null){
+				aResultDetail.setTime(-1);
+			}else{
+				aResultDetail.setTime(time.getTime());
+			}
 		}
-		aResultDetail.setTime(time.getTime());
 	}
 	
 	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid, ARunTime time) throws Exception{
