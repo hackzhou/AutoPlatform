@@ -83,5 +83,26 @@
 			</tr>
 		</#list>
 	</table>
+	<h3>超时案例详情：</h3>
+	<table class="table3">
+		<tr>
+			<td><strong>No.</strong></td>
+			<td><strong>ID</strong></td>
+			<td><strong>接口名称</strong></td>
+			<td><strong>接口类型</strong></td>
+			<td><strong>接口地址</strong></td>
+			<td><strong>失败原因</strong></td>
+		</tr>
+		<#list timeoutResults as timeoutResult>
+			<tr>
+				<td>${timeoutResult_index + 1}</td>
+				<td>${timeoutResult.id}</td>
+				<td>${timeoutResult.name}</td>
+				<td>${timeoutResult.type}</td>
+				<td>${timeoutResult.url}</td>
+				<td>${timeoutResult.message}</td>
+			</tr>
+		</#list>
+	</table>
 </body>
 </html>

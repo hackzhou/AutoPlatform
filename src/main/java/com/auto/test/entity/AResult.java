@@ -79,6 +79,8 @@ public class AResult implements Serializable{
 	private String failMsg;
 	@Transient
 	private List<AResultFail> fails = new ArrayList<AResultFail>();
+	@Transient
+	private List<AResultFail> timeouts = new ArrayList<AResultFail>();
 	
 	public AResult() {
 		super();
@@ -205,6 +207,12 @@ public class AResult implements Serializable{
 	}
 	public void setFails(List<AResultFail> fails) {
 		this.fails = fails;
+	}
+	public List<AResultFail> getTimeouts() {
+		return timeouts;
+	}
+	public void setTimeouts(List<AResultFail> timeouts) {
+		this.timeouts = timeouts;
 	}
 	
 	@Override

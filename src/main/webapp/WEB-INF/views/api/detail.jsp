@@ -274,7 +274,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						if(data.time >= 300){
+						if(data.time > 300){
 							return "<b style='color:red'>" + data.time + "</b>";
 						}else{
 							return "<b style='color:green'>" + data.time + "</b>";

@@ -125,6 +125,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 		apiResultDetailService.create(aResultDetail);
 		addReportResultFail(aResultDetail, "结果对比失败");
+		addReportResultTimeout(aResultDetail);
 	}
 	
 	private void saveResultDetailFail(ACase aCase, AResultDetail aResultDetail, String message){
@@ -140,6 +141,7 @@ public class ApiExecuteRun implements Runnable {
 		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
 		apiResultDetailService.create(aResultDetail);
 		addReportResultFail(aResultDetail, message.split("-->")[0]);
+		addReportResultTimeout(aResultDetail);
 	}
 	
 	private void addReportResultFail(AResultDetail aResultDetail, String message){
@@ -147,6 +149,14 @@ public class ApiExecuteRun implements Runnable {
 			AResultFail resultFail = new AResultFail(aResultDetail);
 			resultFail.setMessage(message);
 			apiContext.getResult().getFails().add(resultFail);
+		}
+	}
+	
+	private void addReportResultTimeout(AResultDetail aResultDetail){
+		if(aResultDetail.getTime() > 300){
+			AResultFail resultTimeout = new AResultFail(aResultDetail);
+			resultTimeout.setMessage(aResultDetail.getTime() + " 毫秒(响应超时)");
+			apiContext.getResult().getTimeouts().add(resultTimeout);
 		}
 	}
 	

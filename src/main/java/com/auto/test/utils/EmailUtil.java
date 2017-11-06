@@ -116,9 +116,15 @@ public class EmailUtil {
         	}else{
         		root.put("failResults", aResult.getFails());
         	}
+        	if(aResult.getTimeouts() == null || aResult.getTimeouts().isEmpty()){
+        		root.put("timeoutResults", null);
+        	}else{
+        		root.put("timeoutResults", aResult.getTimeouts());
+        	}
         }else{
         	root.put("failMsg", aResult.getFailMsg());
         	root.put("failResults", null);
+        	root.put("timeoutResults", null);
         }
         MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");	//发送模板
         FreeMarkerConfigurer freeMarkerConfigurer = (FreeMarkerConfigurer) SpringContext.getBean("freeMarkerConfigurer");
