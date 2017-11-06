@@ -102,7 +102,7 @@
                   <th><b class='label label-success'>测试账号</b></th>
                   <th>请求体</th>
                   <th><b class='label label-warning'>状态</b></th>
-                  <th><b class='label label-primary'>响应时间</b></th>
+                  <th><b class='label label-primary'>响应(毫秒)</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -274,7 +274,11 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.time + " ms";
+						if(data.time >= 300){
+							return "<b style='color:red'>" + data.time + "</b>";
+						}else{
+							return "<b style='color:green'>" + data.time + "</b>";
+						}
 					}
 				},
 				{
