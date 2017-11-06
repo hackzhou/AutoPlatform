@@ -155,7 +155,11 @@ public class ApiExecuteRun implements Runnable {
 	private void addReportResultTimeout(AResultDetail aResultDetail){
 		if(aResultDetail.getTime() > 300){
 			AResultFail resultTimeout = new AResultFail(aResultDetail);
-			resultTimeout.setMessage(aResultDetail.getTime() + " 毫秒(响应超时)");
+			if(ApiStatus.FAILURE.name().equals(aResultDetail.getStatus())){
+				resultTimeout.setMessage(aResultDetail.getTime() + " 毫秒(响应超时)[失败]");
+			}else{
+				resultTimeout.setMessage(aResultDetail.getTime() + " 毫秒(响应超时)");
+			}
 			apiContext.getResult().getTimeouts().add(resultTimeout);
 		}
 	}
