@@ -14,22 +14,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.auto.test.common.constant.ApiRunType;
-import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.controller.BaseController;
 import com.auto.test.core.api.service.IApiRunService;
 import com.auto.test.entity.AProject;
 import com.auto.test.service.IApiProjectService;
+import com.auto.test.utils.ArrayUtil;
 
 @RestController
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
-	private static String[] IP_ARR = {Const.IP_SERVER_1 + ".181", Const.IP_SERVER_1 + ".182", Const.IP_SERVER_1 + ".184", Const.IP_SERVER_1 + ".192", Const.IP_SERVER_1 + ".194", 
-			Const.IP_SERVER_1 + ".207", Const.IP_SERVER_1 + ".241", Const.IP_SERVER_1 + ".231", 
-			Const.IP_SERVER_2 + ".208", Const.IP_SERVER_2 + ".209", Const.IP_SERVER_2 + ".219", Const.IP_SERVER_2 + ".127", Const.IP_SERVER_2 + ".150", Const.IP_SERVER_2 + ".161", 
-			Const.IP_SERVER_2 + ".230", Const.IP_SERVER_2 + ".238", Const.IP_SERVER_2 + ".232", Const.IP_SERVER_2 + ".236", Const.IP_SERVER_2 + ".237", Const.IP_SERVER_2 + ".239", 
-			Const.IP_SERVER_2 + ".241", Const.IP_SERVER_2 + ".242", Const.IP_SERVER_2 + ".243", Const.IP_SERVER_2 + ".162", Const.IP_SERVER_2 + ".163"};
+	private static String[] IP_ARR = ArrayUtil.getAllIP();
 	
 	@Resource
 	private IApiProjectService projectService;
