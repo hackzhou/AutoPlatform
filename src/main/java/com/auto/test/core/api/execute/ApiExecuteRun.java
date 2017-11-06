@@ -265,7 +265,7 @@ public class ApiExecuteRun implements Runnable {
 			String tempB = url.substring(url.indexOf("{") + 1, url.indexOf("}"));
 			JSONObject jsono = JSON.parseObject(body);
 			if(jsono != null && jsono.get(tempB) != null){
-				return url.replace(tempA, (String) jsono.get(tempB));
+				return url.replace(tempA, String.valueOf(jsono.get(tempB)));
 			}
 		}
 		return null;
