@@ -102,6 +102,7 @@
                   <th><b class='label label-success'>测试账号</b></th>
                   <th>请求体</th>
                   <th><b class='label label-warning'>状态</b></th>
+                  <th><b class='label label-primary'>响应时间</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -178,7 +179,7 @@
 					}
 				},
 				{
-					"sWidth" : "12%",
+					"sWidth" : "10%",
 					"aTargets" : [ 1 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -196,7 +197,7 @@
 					}
 				},
 				{
-					"sWidth" : "15%",
+					"sWidth" : "12%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -205,7 +206,7 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 4 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -268,8 +269,17 @@
 					}
 				},
 				{
-					"sWidth" : "10%",
+					"sWidth" : "7%",
 					"aTargets" : [ 10 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.time + " ms";
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 11 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -278,7 +288,7 @@
 				},
 				{
 					"sWidth" : "5%",
-					"aTargets" : [ 11 ],
+					"aTargets" : [ 12 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {

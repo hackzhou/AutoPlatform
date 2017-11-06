@@ -25,7 +25,11 @@ import com.auto.test.service.IApiProjectService;
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
-	private static String[] IP_ARR = {Const.IP_SERVER + ".181", Const.IP_SERVER + ".182", Const.IP_SERVER + ".184", Const.IP_SERVER + ".192", Const.IP_SERVER + ".194"};
+	private static String[] IP_ARR = {Const.IP_SERVER_1 + ".181", Const.IP_SERVER_1 + ".182", Const.IP_SERVER_1 + ".184", Const.IP_SERVER_1 + ".192", Const.IP_SERVER_1 + ".194", 
+			Const.IP_SERVER_1 + ".207", Const.IP_SERVER_1 + ".241", Const.IP_SERVER_1 + ".231", 
+			Const.IP_SERVER_2 + ".208", Const.IP_SERVER_2 + ".209", Const.IP_SERVER_2 + ".219", Const.IP_SERVER_2 + ".127", Const.IP_SERVER_2 + ".150", Const.IP_SERVER_2 + ".161", 
+			Const.IP_SERVER_2 + ".230", Const.IP_SERVER_2 + ".238", Const.IP_SERVER_2 + ".232", Const.IP_SERVER_2 + ".236", Const.IP_SERVER_2 + ".237", Const.IP_SERVER_2 + ".239", 
+			Const.IP_SERVER_2 + ".241", Const.IP_SERVER_2 + ".242", Const.IP_SERVER_2 + ".243", Const.IP_SERVER_2 + ".162", Const.IP_SERVER_2 + ".163"};
 	
 	@Resource
 	private IApiProjectService projectService;

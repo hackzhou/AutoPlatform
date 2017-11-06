@@ -32,7 +32,7 @@ public class HttpUtil {
 	private static final Integer SOCKET_TIMEOUT = 1000 * 300;
 	
 	public static void main(String[] args) {
-		System.out.println(new HttpUtil().isAvailablePort(Const.IP_SERVER + ".182", 8090));
+		System.out.println(new HttpUtil().isAvailablePort(Const.IP_SERVER_1 + ".182", 8090));
 	}
 	
 	private RequestConfig getTimeOutConfig(){

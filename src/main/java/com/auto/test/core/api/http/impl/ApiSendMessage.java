@@ -46,7 +46,8 @@ public class ApiSendMessage implements IApiSendMessage {
 			}else{
 				Long start = System.currentTimeMillis();
 				response = httpclient.execute(httpGet);
-				time.setTime(System.currentTimeMillis() - start);
+				Long end = System.currentTimeMillis();
+				time.setTime(end - start);
 			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
@@ -81,7 +82,8 @@ public class ApiSendMessage implements IApiSendMessage {
 			}else{
 				Long start = System.currentTimeMillis();
 				response = httpclient.execute(httpPost);
-				time.setTime(System.currentTimeMillis() - start);
+				Long end = System.currentTimeMillis();
+				time.setTime(end - start);
 			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());
@@ -136,7 +138,8 @@ public class ApiSendMessage implements IApiSendMessage {
 			}else{
 				Long start = System.currentTimeMillis();
 				response = httpclient.execute(httpPost);
-				time.setTime(System.currentTimeMillis() - start);
+				Long end = System.currentTimeMillis();
+				time.setTime(end - start);
 			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(response.getEntity());

@@ -21,7 +21,7 @@ import com.auto.test.utils.SvnUtil;
 @RequestMapping(value = "tool/web")
 public class ToolWebController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolWebController.class);
-	private static String WEB_IP = Const.IP_SERVER + ".181";
+	private static String WEB_IP = Const.IP_SERVER_1 + ".181";
 	private static Integer WEB_PORT = 8090;
 	private static String WEB_PROJECT = "AutoTest";
 	

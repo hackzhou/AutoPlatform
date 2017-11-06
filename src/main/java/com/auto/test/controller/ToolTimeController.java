@@ -26,7 +26,7 @@ public class ToolTimeController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ToolTimeController.class);
 	private static Integer WAR_PORT = 8090;
 	private static String WAR_PROJECT = "AutoTest";
-	private static String[] IP_ARR = {Const.IP_SERVER + ".181", Const.IP_SERVER + ".182", Const.IP_SERVER + ".184", Const.IP_SERVER + ".192", Const.IP_SERVER + ".194"};
+	private static String[] IP_ARR = {Const.IP_SERVER_1 + ".181", Const.IP_SERVER_1 + ".182", Const.IP_SERVER_1 + ".184", Const.IP_SERVER_1 + ".192", Const.IP_SERVER_1 + ".194"};
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
