@@ -265,8 +265,8 @@ public class ApiExecuteRun implements Runnable {
 		String desc = aCase.getInterfaceo().getDescription();
 		if(projectRootPath != null && !projectRootPath.isEmpty()){
 			for (String pPath : projectRootPath.split(",")) {
-				if(desc != null && desc.contains(pPath)){
-					return url + "/" + pPath + iUrl;
+				if(desc != null && desc.trim().equalsIgnoreCase(pPath)){
+					return url + pPath + iUrl;
 				}
 			}
 		}
