@@ -28,6 +28,8 @@ public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
 	private ExecutorService cachedThreadPool = null;
 	private HttpClientManager httpClientManager = null;
+//	private String loginUrlA = null;
+	private String loginUrlB = null;
 	/*private String urlA = null;	//Online Compare*/	
 	private String urlB = null;
 	private String userLogin = null;
@@ -43,6 +45,8 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
 		this.projectRootPath = GlobalValueConfig.getConfig("uri.project.path");
 		this.nologinResult = GlobalValueConfig.getConfig("api.nologin.result");
+//		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
+		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
 	}
 
 	@Override
@@ -81,10 +85,10 @@ public class ApiCaseParse implements IApiCaseParse {
 						authorB = token;
 					}else{
 						/*if(apiContext.isBool()){	//Online Compare
-							authorA = setAuthor(apiContext.getAccount(), urlA, version, channel, "线上");
+							authorA = setAuthor(apiContext.getAccount(), loginUrlA, version, channel, "线上");
 							logger.info("[登录权限][线上]==>[" + authorA + "]");
 						}*/
-						authorB = setAuthor(apiContext.getAccount(), urlB, version, channel, "线下");
+						authorB = setAuthor(apiContext.getAccount(), loginUrlB, version, channel, "线下");
 						logger.info("[登录权限][线下]==>[" + authorB + "]");
 					}
 				}
