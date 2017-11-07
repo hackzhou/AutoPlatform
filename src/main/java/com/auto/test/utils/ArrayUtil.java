@@ -4,7 +4,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class ArrayUtil {
-	private static final String URL_ROOT_TEST = "http://%s.beeplay123.com";
+	private static final String URL_ROOT_TEST = "%s.beeplay123.com";
 	
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(getAllIP()));
