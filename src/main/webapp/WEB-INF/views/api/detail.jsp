@@ -202,6 +202,17 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
+						if(data.msg == null || data.msg == ""){
+							var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-id='{0}' data-data='{1}' class='initResultDetailData'><b data-toggle=\"modal\" data-target=\"#exampleModalDetail\">{2}</b></a></div>";
+							return String.format(html, data.id, escape(JSON.stringify(data)), data.url);
+						}else{
+							var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'>{2}</a></div>";
+							if(data.body == null || data.body == ""){
+								return String.format(html, data.id, data.msg, data.url);
+							}else{
+								return String.format(html, data.id, data.msg + "-->[Data:" + data.body + "]", data.url);
+							}
+						}
 						return data.url;
 					}
 				},
