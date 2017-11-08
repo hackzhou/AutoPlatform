@@ -18,7 +18,7 @@ public interface IApiInterfaceService{
 
 	List<AInterface> findByProjectUrl(Integer id, String url);
 
-	List<AInterface> findByNotBacth(String batch);
+	List<AInterface> findByNotBacth(Integer pid, String batch);
 	
 	AInterface findById(Integer id);
 	
@@ -32,7 +32,7 @@ public interface IApiInterfaceService{
 
 	void delete(Integer id);
 
-	void deleteCascade(String batch);
+	void deleteCascade(Integer pid, String batch);
 
 	void deleteCascade(Integer id);
 

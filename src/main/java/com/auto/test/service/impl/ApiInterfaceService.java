@@ -58,8 +58,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
-	public List<AInterface> findByNotBacth(String batch) {
-		return dao.findByNotBacth(batch);
+	public List<AInterface> findByNotBacth(Integer pid, String batch) {
+		return dao.findByNotBacth(pid, batch);
 	}
 	
 	@Override
@@ -116,8 +116,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
-	public void deleteCascade(String batch) {
-		List<AInterface> list = findByNotBacth(batch);
+	public void deleteCascade(Integer pid, String batch) {
+		List<AInterface> list = findByNotBacth(pid, batch);
 		if(list != null && !list.isEmpty()){
 			for (AInterface aInterface : list) {
 				deleteCascade(aInterface.getId());
@@ -128,6 +128,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	@Override
 	public void exportApiInterface(List<AInterfaceCase> list) {
 		if(list != null && !list.isEmpty()){
+			Integer batchProject = 0;
 			String batch = String.valueOf(System.currentTimeMillis());
 			for (AInterfaceCase aInterfaceCase : list) {
 				if(isNull(aInterfaceCase.getProject())){
@@ -149,7 +150,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}else if(pList.size() != 1){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现所属项目名称是【" + aInterfaceCase.getProject() + "】存在【" + pList.size() + "】个！");
 					}
-					List<AVersion> vList = versionDao.findByVersionProject(aInterfaceCase.getVersion(), pList.get(0).getId());
+					batchProject = pList.get(0).getId();
+					List<AVersion> vList = versionDao.findByVersionProject(aInterfaceCase.getVersion(), batchProject);
 					if(vList == null || vList.isEmpty()){
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】所属版本号是【" + aInterfaceCase.getProject() + "】不存在！");
 					}else if(vList.size() != 1){
@@ -160,7 +162,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口地址【格式】错误！");
 					}else{
 						try {
-							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId(), batch);
+							Integer iid = batchInterface(aInterfaceCase, batchProject, batch);
 							batchCase(aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
@@ -168,7 +170,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}
 				}
 			}
-			deleteCascade(batch);
+			deleteCascade(batchProject, batch);
 		}else{
 			throw new BusinessException("文件数据为空！");
 		}

@@ -37,7 +37,7 @@ public class ApiInterfaceDao extends AbstractHibernateDao<AInterface> implements
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<AInterface> findByNotBacth(String batch) {
-		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.ne("batch", batch)).list();
+	public List<AInterface> findByNotBacth(Integer pid, String batch) {
+		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).add(Restrictions.ne("batch", batch)).list();
 	}
 }

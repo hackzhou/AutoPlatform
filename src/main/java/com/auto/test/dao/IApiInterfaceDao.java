@@ -12,6 +12,6 @@ public interface IApiInterfaceDao extends IBaseDao<AInterface> {
 	
 	List<AInterface> findByProjectUrl(Integer id, String url);
 
-	List<AInterface> findByNotBacth(String batch);
+	List<AInterface> findByNotBacth(Integer pid, String batch);
 	
 }
