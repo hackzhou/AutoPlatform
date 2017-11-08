@@ -47,6 +47,14 @@ public class JSONCompare {
 	}
 	
 	public boolean compareJson(JSONObject json1, JSONObject json2, String[] ignore) {
+		if(json1.size() != json2.size()){
+			if(ignore != null && ignore.length > 0){
+				for (String s : ignore) {
+					json1.remove(s);
+					json2.remove(s);
+				}
+			}
+		}
 		if(json1.size() == json2.size()){
 			Set<String> set1 = json1.keySet();
 			Set<String> set2 = json2.keySet();
