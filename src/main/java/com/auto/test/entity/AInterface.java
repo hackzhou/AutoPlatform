@@ -43,15 +43,15 @@ public class AInterface implements Serializable{
 	@Column(name="description")
 	private String description;
 	
+	@Column(name="batch")
+	private String batch;
+	
 	@Column(name="create_time")
 	private Date createTime;
 	
 	@Column(name="update_time")
 	private Date updateTime;
 
-	@Column(name="batch_time")
-	private Date batchTime;
-	
 	@Column(name="memo")
 	private String memo;
 	
@@ -94,6 +94,7 @@ public class AInterface implements Serializable{
 		this.type = aInterface.getType();
 		this.url = aInterface.getUrl();
 		this.description = aInterface.getDescription();
+		this.batch = aInterface.getBatch();
 		this.updateTime = new Date();
 		this.memo = aInterface.getMemo();
 	}
@@ -146,11 +147,11 @@ public class AInterface implements Serializable{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public Date getBatchTime() {
-		return batchTime;
+	public String getBatch() {
+		return batch;
 	}
-	public void setBatchTime(Date batchTime) {
-		this.batchTime = batchTime;
+	public void setBatch(String batch) {
+		this.batch = batch;
 	}
 	public String getMemo() {
 		return memo;
@@ -162,7 +163,7 @@ public class AInterface implements Serializable{
 	@Override
 	public String toString() {
 		return "AInterface [id=" + id + ", projecto=" + projecto + ", name=" + name + ", type=" + type + ", url=" + url
-				+ ", description=" + description + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", batchTime=" + batchTime + ", memo=" + memo + "]";
+				+ ", description=" + description + ", batch=" + batch + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", memo=" + memo + "]";
 	}
 }

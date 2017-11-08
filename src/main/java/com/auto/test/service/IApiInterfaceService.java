@@ -1,6 +1,5 @@
 package com.auto.test.service;
 
-import java.util.Date;
 import java.util.List;
 import javax.transaction.Transactional;
 import com.auto.test.common.bean.AInterfaceCase;
@@ -19,7 +18,7 @@ public interface IApiInterfaceService{
 
 	List<AInterface> findByProjectUrl(Integer id, String url);
 
-	List<AInterface> findByNotBacthTime(Date batchTime);
+	List<AInterface> findByNotBacth(String batch);
 	
 	AInterface findById(Integer id);
 	
@@ -33,7 +32,7 @@ public interface IApiInterfaceService{
 
 	void delete(Integer id);
 
-	void deleteCascade(Date batchTime);
+	void deleteCascade(String batch);
 
 	void deleteCascade(Integer id);
 

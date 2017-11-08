@@ -58,8 +58,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
-	public List<AInterface> findByNotBacthTime(Date batchTime) {
-		return dao.findByNotBacthTime(batchTime);
+	public List<AInterface> findByNotBacth(String batch) {
+		return dao.findByNotBacth(batch);
 	}
 	
 	@Override
@@ -116,8 +116,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
-	public void deleteCascade(Date batchTime) {
-		List<AInterface> list = findByNotBacthTime(batchTime);
+	public void deleteCascade(String batch) {
+		List<AInterface> list = findByNotBacth(batch);
 		if(list != null && !list.isEmpty()){
 			for (AInterface aInterface : list) {
 				deleteCascade(aInterface.getId());
@@ -128,7 +128,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	@Override
 	public void exportApiInterface(List<AInterfaceCase> list) {
 		if(list != null && !list.isEmpty()){
-			Date batchTime = new Date();
+			String batch = String.valueOf(System.currentTimeMillis());
 			for (AInterfaceCase aInterfaceCase : list) {
 				if(isNull(aInterfaceCase.getProject())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【所属项目】为空！");
@@ -160,7 +160,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口地址【格式】错误！");
 					}else{
 						try {
-							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId(), batchTime);
+							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId(), batch);
 							batchCase(aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
@@ -168,23 +168,23 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}
 				}
 			}
-			deleteCascade(batchTime);
+			deleteCascade(batch);
 		}else{
 			throw new BusinessException("文件数据为空！");
 		}
 	}
 	
-	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid, Date batchTime){
+	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid, String batch){
 		List<AInterface> interList = findByProjectUrl(pid, aInterfaceCase.getUrl());
 		if(interList != null && !interList.isEmpty()){
 			AInterface aInterfaceDB = interList.get(0);
 			aInterfaceDB.update(new AInterface(aInterfaceCase, pid));
-			aInterfaceDB.setBatchTime(batchTime);
+			aInterfaceDB.setBatch(batch);
 			update(aInterfaceDB);
 			return aInterfaceDB.getId();
 		}else{
 			AInterface aInterfaceDB = new AInterface(aInterfaceCase, pid);
-			aInterfaceDB.setBatchTime(batchTime);
+			aInterfaceDB.setBatch(batch);
 			return create(aInterfaceDB);
 		}
 	}

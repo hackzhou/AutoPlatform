@@ -1,6 +1,5 @@
 package com.auto.test.dao.impl;
 
-import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -38,7 +37,7 @@ public class ApiInterfaceDao extends AbstractHibernateDao<AInterface> implements
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<AInterface> findByNotBacthTime(Date batchTime) {
-		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.ne("batchTime", batchTime)).list();
+	public List<AInterface> findByNotBacth(String batch) {
+		return getCurrentSession().createCriteria(AInterface.class).add(Restrictions.ne("batch", batch)).list();
 	}
 }
