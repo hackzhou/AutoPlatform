@@ -58,6 +58,11 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
+	public List<AInterface> findByNotBacthTime(Date batchTime) {
+		return dao.findByNotBacthTime(batchTime);
+	}
+	
+	@Override
 	public AInterface findById(Integer id) {
 		return dao.findById(id);
 	}
@@ -100,7 +105,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	}
 	
 	@Override
-	public void deleteCascade(Integer id) throws Exception{
+	public void deleteCascade(Integer id) {
 		List<ACase> caseList = casedDao.findByInterfaceId(id);
 		if(caseList != null && !caseList.isEmpty()){
 			for (ACase aCase : caseList) {
@@ -109,10 +114,21 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 		delete(id);
 	}
+	
+	@Override
+	public void deleteCascade(Date batchTime) {
+		List<AInterface> list = findByNotBacthTime(batchTime);
+		if(list != null && !list.isEmpty()){
+			for (AInterface aInterface : list) {
+				deleteCascade(aInterface.getId());
+			}
+		}
+	}
 
 	@Override
 	public void exportApiInterface(List<AInterfaceCase> list) {
 		if(list != null && !list.isEmpty()){
+			Date batchTime = new Date();
 			for (AInterfaceCase aInterfaceCase : list) {
 				if(isNull(aInterfaceCase.getProject())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【所属项目】为空！");
@@ -144,7 +160,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口地址【格式】错误！");
 					}else{
 						try {
-							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId());
+							Integer iid = batchInterface(aInterfaceCase, pList.get(0).getId(), batchTime);
 							batchCase(aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
@@ -152,20 +168,24 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}
 				}
 			}
+			deleteCascade(batchTime);
 		}else{
 			throw new BusinessException("文件数据为空！");
 		}
 	}
 	
-	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid){
+	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid, Date batchTime){
 		List<AInterface> interList = findByProjectUrl(pid, aInterfaceCase.getUrl());
 		if(interList != null && !interList.isEmpty()){
 			AInterface aInterfaceDB = interList.get(0);
 			aInterfaceDB.update(new AInterface(aInterfaceCase, pid));
+			aInterfaceDB.setBatchTime(batchTime);
 			update(aInterfaceDB);
 			return aInterfaceDB.getId();
 		}else{
-			return create(new AInterface(aInterfaceCase, pid));
+			AInterface aInterfaceDB = new AInterface(aInterfaceCase, pid);
+			aInterfaceDB.setBatchTime(batchTime);
+			return create(aInterfaceDB);
 		}
 	}
 	

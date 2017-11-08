@@ -48,6 +48,9 @@ public class AInterface implements Serializable{
 	
 	@Column(name="update_time")
 	private Date updateTime;
+
+	@Column(name="batch_time")
+	private Date batchTime;
 	
 	@Column(name="memo")
 	private String memo;
@@ -143,18 +146,23 @@ public class AInterface implements Serializable{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	public Date getBatchTime() {
+		return batchTime;
+	}
+	public void setBatchTime(Date batchTime) {
+		this.batchTime = batchTime;
+	}
 	public String getMemo() {
 		return memo;
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "AInterface [id=" + id + ", projecto=" + projecto + ", name=" + name + ", type=" + type + ", url=" + url
 				+ ", description=" + description + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", memo=" + memo + "]";
+				+ ", batchTime=" + batchTime + ", memo=" + memo + "]";
 	}
-
 }
