@@ -20,17 +20,19 @@ import org.apache.http.util.EntityUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.common.bean.ARunTime;
+import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.http.IApiSendMessage;
 
 public class ApiSendMessage implements IApiSendMessage {
-	private static final String APP_AUTHOR	= "Authorization";
-	private static final String APP_VERSION	= "App-Version";
-	private static final String APP_CHANNEL	= "App-Channel";
-	private static final String CONTENT_TYPE= "Content-Type";
-	private static final String CONTENT_JSON= "application/json; charset=UTF-8";
-	private static final String PATH		= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
-	private static final String DATA		= "-->[Data:%s]";
+	private static final String APP_AUTHOR		= "Authorization";
+	private static final String APP_VERSION		= "App-Version";
+	private static final String APP_CHANNEL		= "App-Channel";
+	private static final String CONTENT_TYPE	= "Content-Type";
+	private static final String CONTENT_JSON	= "application/json; charset=UTF-8";
+	private static final String PATH			= "-->[%s:%s],[Authorization:%s],[Version:%s],[Channel:%s]";
+	private static final String DATA			= "-->[Data:%s]";
+	private static final String IMG_PARAME_KEY	= GlobalValueConfig.getConfig("img.parame.key");
 	
 	@Override
 	public String sendGet(CloseableHttpClient httpclient, String url, String author, String channel, String version, ARunTime time) throws Exception{
@@ -115,9 +117,16 @@ public class ApiSendMessage implements IApiSendMessage {
 				builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 				JSONObject jsonObj = JSON.parseObject(data);
 				for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
-					if("file".equalsIgnoreCase(entry.getKey())){
-						builder.addPart(entry.getKey(), new FileBody(file));
-					}else{
+					boolean b = true;
+					if(IMG_PARAME_KEY != null && IMG_PARAME_KEY.length() > 0){
+						for (String key : IMG_PARAME_KEY.split(",")) {
+							if(key.equalsIgnoreCase(entry.getKey())){
+								b = false;
+								builder.addPart(entry.getKey(), new FileBody(file));
+							}
+						}
+					}
+					if(b){
 						builder.addPart(entry.getKey(), new StringBody(entry.getValue().toString(), ContentType.create("text/plain", Consts.UTF_8)));
 					}
 		        }
