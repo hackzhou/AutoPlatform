@@ -500,7 +500,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.interfaceo == null ? "-" : "[" + data.interfaceo.type + "]" + data.interfaceo.url;
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><b data-toggle=\"modal\" data-target=\"#exampleModalCase\">{2}</b></a>";
+						return String.format(html, data.id, JSON.stringify(data), data.interfaceo == null ? "-" : "[" + data.interfaceo.type + "]" + data.interfaceo.url);
 					}
 				},
 				{

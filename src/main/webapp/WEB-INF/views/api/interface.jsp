@@ -266,7 +266,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.url;
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiInterfaceEdit'><b data-toggle=\"modal\" data-target=\"#exampleModalInterface\">{2}</b></a>";
+						return String.format(html, data.id, JSON.stringify(data), data.url);
 					}
 				},
 				{
