@@ -217,7 +217,7 @@
 								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\">{1}</a></div>";
 								return String.format(html, data.id, data.name);
 							}else{
-								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'>{1}</a></div>";
+								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'>{2}</a></div>";
 								return String.format(html, data.id, data.msg, data.name);
 							}
 						}
