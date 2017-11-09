@@ -3,6 +3,7 @@ package com.auto.test.common.constant;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import com.auto.test.common.config.GlobalValueConfig;
 
 public class Const {
 	
@@ -41,6 +42,8 @@ public class Const {
 	public static final String KEYBOARD_RETURN			= "返回";
 	public static final String KEYBOARD_ENTER			= "回车";
 	public static final String KEYBOARD_SEARCH			= "搜索";
+	
+	public static final String IMG_PARAME_KEY			= GlobalValueConfig.getConfig("img.parame.key");
 	
 	public static String getCurrentIP(){
 		try {

@@ -29,6 +29,11 @@ public class ApiCaseService implements IApiCaseService {
 	}
 	
 	@Override
+	public List<ACase> findByImg() {
+		return dao.findByImg();
+	}
+	
+	@Override
 	public List<ACase> findByInterfaceId(Integer id) {
 		return dao.findByInterfaceId(id);
 	}

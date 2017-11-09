@@ -8,6 +8,8 @@ import com.auto.test.entity.ACase;
 public interface IApiCaseService{
 	
 	List<ACase> findAll();
+
+	List<ACase> findByImg();
 	
 	List<ACase> findByInterfaceId(Integer id);
 

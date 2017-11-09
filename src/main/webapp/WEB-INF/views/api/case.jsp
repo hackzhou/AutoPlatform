@@ -831,7 +831,9 @@
         				}
     				}
     				$('#api-case-project-s').empty();
-    				$('#api-case-project-s').append(optionstring);
+    				if(optionstring != ""){
+	    				$('#api-case-project-s').append(optionstring + "<option value=-1>--工具【所有带图片接口】--</option>");
+    				}
     			}
     		}
     	});
@@ -862,27 +864,31 @@
     }
 	
 	function initApiCaseVersionSearch(projectid){
-    	$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + projectid,
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				var optionstring = "";
-    				var list = data.data;
-    				if(list != null){
-    					for(var i = 0; i < list.length; i++){
-        					if(i == 0){
-        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
-        					}else{
-    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
-        					}
-        				}
-    				}
-    				$('#api-case-version-s').empty();
-    				$('#api-case-version-s').append(optionstring);
-    			}
-    		}
-    	});
+		if(projectid == -1){
+			$('#api-case-version-s').empty();
+		}else{
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/api/version/list/data/pid=" + projectid,
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				var optionstring = "";
+	    				var list = data.data;
+	    				if(list != null){
+	    					for(var i = 0; i < list.length; i++){
+	        					if(i == 0){
+	        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].version + "</option>";
+	        					}else{
+	    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].version + "</option>";
+	        					}
+	        				}
+	    				}
+	    				$('#api-case-version-s').empty();
+	    				$('#api-case-version-s').append(optionstring);
+	    			}
+	    		}
+	    	});
+		}
     }
 	
 	function initApiCaseVersion(projectid, versionid){

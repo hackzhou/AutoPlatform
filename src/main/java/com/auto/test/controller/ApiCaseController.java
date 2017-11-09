@@ -89,10 +89,14 @@ public class ApiCaseController extends BaseController{
 				list = caseService.findByMinProjectVersion(Integer.parseInt(vid));
 			}
 		}else{
-			if(isNull(vid)){
-				list = caseService.findByProjectMaxVersion(Integer.parseInt(pid));
+			if("-1".equals(pid)){
+				list = caseService.findByImg();
 			}else{
-				list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
+				if(isNull(vid)){
+					list = caseService.findByProjectMaxVersion(Integer.parseInt(pid));
+				}else{
+					list = caseService.findByProjectVersion(Integer.parseInt(pid), Integer.parseInt(vid));
+				}
 			}
 		}
 		return successJson(list != null ? caseImgUrl2Net(request, list) : new ArrayList<ACase>());
