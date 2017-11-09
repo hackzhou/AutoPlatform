@@ -33,9 +33,9 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 			for (int i = 0; i < keys.length; i++) {
 				se[i] = Restrictions.like("body", "%\"" + keys[i] + "\":%");
 			}
-			criteria.add(Restrictions.or(se));
+			return criteria.add(Restrictions.or(se)).addOrder(Order.desc("id")).list();
 		}
-		return criteria.list();
+		return null;
 	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
