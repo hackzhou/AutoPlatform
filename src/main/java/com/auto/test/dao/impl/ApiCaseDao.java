@@ -37,6 +37,18 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 		}
 		return null;
 	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<ACase> findByLink() {
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.isNotNull("link")).add(Restrictions.ne("link", "")).addOrder(Order.desc("id")).list();
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<ACase> findByNoRun() {
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("run", 0)).addOrder(Order.desc("id")).list();
+	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override

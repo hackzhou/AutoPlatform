@@ -91,6 +91,10 @@ public class ApiCaseController extends BaseController{
 		}else{
 			if("-1".equals(pid)){
 				list = caseService.findByImg();
+			}else if("-2".equals(pid)){
+				list = caseService.findByNoRun();
+			}else if("-3".equals(pid)){
+				list = caseService.findByLink();
 			}else{
 				if(isNull(vid)){
 					list = caseService.findByProjectMaxVersion(Integer.parseInt(pid));

@@ -7,6 +7,10 @@ import com.auto.test.entity.ACase;
 public interface IApiCaseDao extends IBaseDao<ACase> {
 	
 	List<ACase> findByImg();
+	
+	List<ACase> findByLink();
+	
+	List<ACase> findByNoRun();
 
 	List<ACase> findByInterfaceId(Integer id);
 	

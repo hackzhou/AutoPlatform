@@ -10,6 +10,10 @@ public interface IApiCaseService{
 	List<ACase> findAll();
 
 	List<ACase> findByImg();
+
+	List<ACase> findByLink();
+	
+	List<ACase> findByNoRun();
 	
 	List<ACase> findByInterfaceId(Integer id);
 
