@@ -510,10 +510,13 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						if(data.flag == 0){
-							return "<lable class='text-inverse'>" + data.name + "</label>";
+						var html = "";
+						if(data.run == 1){
+							html = "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><lable class='{1}' data-toggle=\"modal\" data-target=\"#exampleModalRun1\">{2}</label></a>";
+						}else{
+							html = "<lable class='{1}'>{2}</label>";
 						}
-						return "<lable class='text-info'>" + data.name + "</label>";
+						return String.format(html, data.id, (data.flag == 0) ? "text-inverse" : "text-info", data.name);
 					}
 				},
 				{

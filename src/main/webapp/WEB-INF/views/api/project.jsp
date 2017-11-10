@@ -174,9 +174,9 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th><b class='label label-inverse'>名称</b></th>
                   <th><b class='label label-primary'>测试服务</b></th>
                   <th><b class='label label-danger'>地址</b></th>
+                  <th><b class='label label-inverse'>名称</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
                 </tr>
@@ -255,7 +255,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.name;
+						return data.serverb;
 					}
 				},
 				{
@@ -264,7 +264,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.serverb;
+						var html = "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><label data-toggle=\"modal\" data-target=\"#exampleModalProject\">{2}</label></a>";
+						return String.format(html, data.id, JSON.stringify(data), data.path);
 					}
 				},
 				{
@@ -273,7 +274,8 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.path;
+						var html = "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><b data-toggle=\"modal\" data-target=\"#exampleModalRun2\">{1}</b></a>";
+						return String.format(html, data.id, data.name);
 					}
 				},
 				{
