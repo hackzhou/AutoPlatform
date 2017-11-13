@@ -10,6 +10,8 @@ public interface IApiCaseDao extends IBaseDao<ACase> {
 	
 	List<ACase> findByLink();
 	
+	List<ACase> findByOnce();
+	
 	List<ACase> findByNoRun();
 
 	List<ACase> findByInterfaceId(Integer id);

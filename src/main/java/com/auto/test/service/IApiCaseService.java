@@ -13,6 +13,8 @@ public interface IApiCaseService{
 
 	List<ACase> findByLink();
 	
+	List<ACase> findByOnce();
+	
 	List<ACase> findByNoRun();
 	
 	List<ACase> findByInterfaceId(Integer id);

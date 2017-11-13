@@ -95,6 +95,8 @@ public class ApiCaseController extends BaseController{
 				list = caseService.findByNoRun();
 			}else if("-3".equals(pid)){
 				list = caseService.findByLink();
+			}else if("-4".equals(pid)){
+				list = caseService.findByOnce();
 			}else{
 				if(isNull(vid)){
 					list = caseService.findByProjectMaxVersion(Integer.parseInt(pid));
