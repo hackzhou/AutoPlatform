@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import com.auto.test.utils.DateUtil;
 
 @Entity
 @Table(name="a_case")
@@ -147,7 +148,9 @@ public class ACase implements Serializable{
 			this.run = aCase.getRun();
 			this.link = aCase.getLink();
 		}
-		this.once = aCase.getOnce();
+		if(!DateUtil.getFormatDate().equals(this.once)){
+			this.once = aCase.getOnce();
+		}
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
