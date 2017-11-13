@@ -12,6 +12,7 @@ public class AInterfaceCase {
 	private String result;
 	private String strategy;
 	private String login;
+	private String once;
 	
 	private Integer rowNum;
 	
@@ -79,6 +80,12 @@ public class AInterfaceCase {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+	public String getOnce() {
+		return once;
+	}
+	public void setOnce(String once) {
+		this.once = once;
+	}
 	public Integer getRowNum() {
 		return rowNum;
 	}
@@ -90,7 +97,7 @@ public class AInterfaceCase {
 	public String toString() {
 		return "AInterfaceCase [project=" + project + ", name=" + name + ", type=" + type + ", url=" + url
 				+ ", description=" + description + ", version=" + version + ", body=" + body + ", result=" + result
-				+ ", strategy=" + strategy + ", login=" + login + ", rowNum=" + rowNum + "]";
+				+ ", strategy=" + strategy + ", login=" + login + ", once=" + once + ", rowNum=" + rowNum + "]";
 	}
 
 }

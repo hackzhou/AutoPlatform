@@ -36,6 +36,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String usersAccessToken = null;
 	private String projectRootPath = null;
 	private String nologinResult = null;
+	private String onceResult = null;
 	
 	public ApiCaseParse(){
 		super();
@@ -45,6 +46,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
 		this.projectRootPath = GlobalValueConfig.getConfig("uri.project.path");
 		this.nologinResult = GlobalValueConfig.getConfig("api.nologin.result");
+		this.onceResult = GlobalValueConfig.getConfig("api.once.result");
 //		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
 		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
 	}
@@ -95,9 +97,9 @@ public class ApiCaseParse implements IApiCaseParse {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlA, urlB, authorA, authorB, version, channel, projectRootPath, nologinResult);	//Online Compare*/						
+								aCase, urlA, urlB, authorA, authorB, version, channel, projectRootPath, nologinResult, onceResult);	//Online Compare*/						
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlB, authorB, version, channel, projectRootPath, nologinResult);
+								aCase, urlB, authorB, version, channel, projectRootPath, nologinResult, onceResult);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}

@@ -23,8 +23,10 @@ import com.auto.test.core.api.ready.ReadyData;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
 import com.auto.test.entity.AResultDetail;
+import com.auto.test.service.IApiCaseService;
 import com.auto.test.service.IApiResultDetailService;
 import com.auto.test.service.IApiResultService;
+import com.auto.test.utils.DateUtil;
 import com.auto.test.utils.EmailUtil;
 
 public class ApiExecuteRun implements Runnable {
@@ -40,9 +42,10 @@ public class ApiExecuteRun implements Runnable {
 	private String channel = null;
 	private String projectRootPath = null;
 	private String nologinResult = null;
+	private String onceResult = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlB, String authorB, String version, String channel, String projectRootPath, String nologinResult) {
+			String urlB, String authorB, String version, String channel, String projectRootPath, String nologinResult, String onceResult) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -53,10 +56,11 @@ public class ApiExecuteRun implements Runnable {
 		this.channel = channel;
 		this.projectRootPath = projectRootPath;
 		this.nologinResult = nologinResult;
+		this.onceResult = onceResult;
 	}
 	
 	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath, String nologinResult) {	//Online Compare
+			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath, String nologinResult, String onceResult) {	//Online Compare
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -69,6 +73,7 @@ public class ApiExecuteRun implements Runnable {
 		this.channel = channel;
 		this.projectRootPath = projectRootPath;
 		this.nologinResult = nologinResult;
+		this.onceResult = onceResult;
 	}*/
 
 	@Override
@@ -204,7 +209,19 @@ public class ApiExecuteRun implements Runnable {
 					if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
 						aResultDetail.setResulta(nologinResult);
 					}else{
-						aResultDetail.setResulta(aCase.getResult());
+						if(aCase.getOnce() != null && !aCase.getOnce().isEmpty()){
+							String now = DateUtil.getFormatDate();
+							if(!now.equals(aCase.getOnce())){
+								aResultDetail.setResulta(onceResult);
+								aCase.setOnce(now);
+								IApiCaseService apiCaseService = (IApiCaseService) SpringContext.getBean("apiCaseService");
+								apiCaseService.update(aCase);
+							}else{
+								aResultDetail.setResulta(aCase.getResult());
+							}
+						}else{
+							aResultDetail.setResulta(aCase.getResult());
+						}
 					}
 				}else{
 					/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
@@ -215,7 +232,19 @@ public class ApiExecuteRun implements Runnable {
 					if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
 						aResultDetail.setResulta(nologinResult);
 					}else{
-						aResultDetail.setResulta(aCase.getResult());
+						if(aCase.getOnce() != null && !aCase.getOnce().isEmpty()){
+							String now = DateUtil.getFormatDate();
+							if(!now.equals(aCase.getOnce())){
+								aResultDetail.setResulta(onceResult);
+								aCase.setOnce(now);
+								IApiCaseService apiCaseService = (IApiCaseService) SpringContext.getBean("apiCaseService");
+								apiCaseService.update(aCase);
+							}else{
+								aResultDetail.setResulta(aCase.getResult());
+							}
+						}else{
+							aResultDetail.setResulta(aCase.getResult());
+						}
 					}
 				}else{
 					/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			

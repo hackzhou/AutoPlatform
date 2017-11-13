@@ -169,6 +169,15 @@
 	                    </div>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
+	                        <label class="col-sm-3 text-info text-center"><code>一次请求 <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <div class="radio-list">
+                          		<label class="radio-inline"><input type="radio" id="api-case-once0" name="api-case-once" value="0" checked>否</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-once1" name="api-case-once" value="1">是  <b class="text-info">(签到类型接口)</b></label>
+                        	</div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
 	                        <label class="col-sm-3 text-info text-center"><code>前期准备 <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-7">
 		                        <select id="api-case-ready" name="api-case-ready" class="form-select" style="width: 100%;"></select>
@@ -614,6 +623,11 @@
 				$('#api-case-is-img0').prop("checked",true);
 				removeDestroy();
   	      	}
+			if(c.once != null && c.once != ""){
+				$('#api-case-once1').prop("checked",true);
+			}else{
+				$('#api-case-once0').prop("checked",true);
+			}
 			initApiCaseReady(c.ready);
 			initApiCaseProject(c.interfaceo.projecto.id);
 			initApiCaseVersion(c.interfaceo.projecto.id, c.versiono.id);
@@ -651,6 +665,7 @@
 		$('#api-case-result').val("");
 		/* $("#resultDiv").hide(); */
 		$('#api-case-is-img0').prop("checked",true);
+		$('#api-case-once0').prop("checked",true);
 		removeDestroy();
 		initApiCaseReady(null);
 		initApiCaseProject(null);

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
@@ -85,15 +86,24 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(date);
 	}
+	public static String getFormatDateTime(){
+		return getFormatDateTime(new Date());
+	}
 	
 	public static String getFormatDate(Date date){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
+	public static String getFormatDate(){
+		return getFormatDate(new Date());
+	}
 	
 	public static String getFormatTime(Date date){
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		return sdf.format(date);
+	}
+	public static String getFormatTime(){
+		return getFormatTime(new Date());
 	}
 	
 	public static String getFormatTime(Long timeL){
@@ -121,6 +131,19 @@ public class DateUtil {
 		String sStr = (s == 0) ? "" : s + "秒";
 		String result = dayStr + hourStr + minStr + sStr;
 		return "".equals(result) ? "<1秒" : result;
+	}
+	
+	public static Date addDay(Date date, Integer day){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, day);
+		return calendar.getTime();
+	}
+	public static Date addDay(Integer day){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH, day);
+		return calendar.getTime();
 	}
 
 }

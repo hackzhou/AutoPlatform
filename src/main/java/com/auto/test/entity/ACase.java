@@ -56,6 +56,9 @@ public class ACase implements Serializable{
 	@Column(name="ready")
 	private Integer ready;
 	
+	@Column(name="once")
+	private String once;
+	
 	@Column(name="img")
 	private String img;
 	
@@ -89,7 +92,7 @@ public class ACase implements Serializable{
 		this.id = id;
 	}
 	
-	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img, Integer flag, Integer run, Integer login) {
+	public ACase(AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img, String once, Integer flag, Integer run, Integer login) {
 		super();
 		this.versiono = versiono;
 		this.interfaceo = interfaceo;
@@ -99,12 +102,13 @@ public class ACase implements Serializable{
 		this.strategy = strategy;
 		this.ready = ready;
 		this.img = img;
+		this.once = once;
 		this.flag = flag;
 		this.run = run;
 		this.login = login;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img, Integer flag, Integer run, Integer login) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, Integer ready, String link, String img,  String once, Integer flag, Integer run, Integer login) {
 		super();
 		this.id = id;
 		this.versiono = versiono;
@@ -115,6 +119,7 @@ public class ACase implements Serializable{
 		this.strategy = strategy;
 		this.ready = ready;
 		this.img = img;
+		this.once = once;
 		this.flag = flag;
 		this.run = run;
 		this.login = login;
@@ -142,6 +147,7 @@ public class ACase implements Serializable{
 			this.run = aCase.getRun();
 			this.link = aCase.getLink();
 		}
+		this.once = aCase.getOnce();
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
@@ -200,6 +206,12 @@ public class ACase implements Serializable{
 	public void setReady(Integer ready) {
 		this.ready = ready;
 	}
+	public String getOnce() {
+		return once;
+	}
+	public void setOnce(String once) {
+		this.once = once;
+	}
 	public String getImg() {
 		return img;
 	}
@@ -253,7 +265,8 @@ public class ACase implements Serializable{
 	public String toString() {
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
 				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", ready="
-				+ ready + ", img=" + img + ", flag=" + flag + ", run=" + run + ", login=" + login + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", memo=" + memo + ", list=" + list + "]";
+				+ ready + ", once=" + once + ", img=" + img + ", flag=" + flag + ", run=" + run + ", login=" + login
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + ", list=" + list
+				+ "]";
 	}
 }
