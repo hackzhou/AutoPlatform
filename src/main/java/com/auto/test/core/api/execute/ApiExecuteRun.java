@@ -206,14 +206,14 @@ public class ApiExecuteRun implements Runnable {
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
 				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-					addResulta(aResultDetail);
+					addResulta(aCase, aResultDetail);
 				}else{
 					/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
 				}
 				aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId(), time));
 			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-					addResulta(aResultDetail);
+					addResulta(aCase, aResultDetail);
 				}else{
 					/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
 				}
@@ -228,7 +228,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private void addResulta(AResultDetail aResultDetail){
+	private void addResulta(ACase aCase, AResultDetail aResultDetail){
 		if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
 			aResultDetail.setResulta(nologinResult);
 		}else{
