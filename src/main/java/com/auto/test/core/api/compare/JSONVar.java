@@ -18,15 +18,14 @@ public class JSONVar {
 		if(p == null || p.isEmpty() || !p.contains(DATA_VAR)){
 			return p;
 		}
-		String v = getValByResult(p, r);
+		String v = getValByResult(getVarData(p), r);
 		if(v != null && !v.isEmpty()){
 			return p.replace("\"_DATA_VAR\"", "\"" + v + "\"");
 		}
 		return p.replace("\"_DATA_VAR\"", "\"1\"");
 	}
 	
-	public String getValByResult(String p, String r){
-		String b = getVarData(p);
+	public String getValByResult(String b, String r){
 		if(b != null && !b.isEmpty()){
 			b = "\"" + b + "\":";
 			if(r != null && r.contains(b)){

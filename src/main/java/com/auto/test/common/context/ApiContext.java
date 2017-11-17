@@ -24,10 +24,12 @@ public class ApiContext {
 	
 	private List<ACase> list = new ArrayList<ACase>();
 	private Map<String, String> runInfo = new HashMap<String, String>();
-	
+
+	private int dbUser;
 	public ApiContext() {
 		super();
 		this.count = 0;
+		this.dbUser = 0;
 	}
 
 	public synchronized void countPlus(){
@@ -102,5 +104,10 @@ public class ApiContext {
 	public void setRunInfo(Map<String, String> runInfo) {
 		this.runInfo = runInfo;
 	}
-	
+	public int getDbUser() {
+		return dbUser;
+	}
+	public void setDbUser(int dbUser) {
+		this.dbUser = dbUser;
+	}
 }

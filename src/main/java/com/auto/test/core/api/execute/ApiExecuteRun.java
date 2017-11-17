@@ -99,7 +99,10 @@ public class ApiExecuteRun implements Runnable {
 	private void oneRunBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		try {
 			if(aCase.getReady() != null && aCase.getReady() > 0){
-				ReadyData.exe(aCase.getReady());
+				if(apiContext.getDbUser() == 0){
+					apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
+				}
+				ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), aCase.getBody());
 			}
 			sendMessage(aCase, aResultDetail);
 			saveResultDetailSuccess(aCase, aResultDetail);
