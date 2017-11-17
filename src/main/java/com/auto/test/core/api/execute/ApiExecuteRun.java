@@ -17,6 +17,7 @@ import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.compare.JSONCompare;
+import com.auto.test.core.api.compare.JSONVar;
 import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.core.api.ready.ReadyData;
@@ -79,10 +80,12 @@ public class ApiExecuteRun implements Runnable {
 	@Override
 	public void run() {
 		try {
-			oneRunBody(aCase, new AResultDetail());
+			AResultDetail resultDetail = new AResultDetail();
+			oneRunBody(aCase, resultDetail);
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
 				for (ACase aCase : list) {
+					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
 					oneRunBody(aCase, new AResultDetail());
 				}
 			}
