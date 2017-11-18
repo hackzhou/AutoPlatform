@@ -22,7 +22,7 @@ public class ReadyDataImpl {
 	public int getUserID(String loginname){
 		String sql = "SELECT id FROM uic_user WHERE loginname = '" + loginname + "'";
 		int id = new DBUtil().selectUserID(TEST_IP_209, TEST_PORT_8066, TEST_DB_MYCATUIC, TEST_USER, TEST_PWD, sql);
-		logger.info("获取[loginname=" + loginname + "]的用户ID=" + id);
+		logger.info("[loginname=" + loginname + "]获取用户ID=" + id);
 		return id;
 	}
 	
