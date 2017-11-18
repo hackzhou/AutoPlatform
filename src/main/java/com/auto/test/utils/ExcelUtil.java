@@ -71,7 +71,7 @@ public class ExcelUtil {
 	                		aInterfaceCase.setOnce(cellValue);
 		                    break;
 	                	case 8:
-	                		aInterfaceCase.setReady(parseNum(cell.getNumericCellValue(), row.getRowNum() + 1));
+	                		aInterfaceCase.setReady(parseNum(cellValue, row.getRowNum() + 1));
 		                    break;
 	                	case 9:
 	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
@@ -151,13 +151,13 @@ public class ExcelUtil {
 		return "";
 	}
 	
-	private int parseNum(double d, Integer row){
+	private String parseNum(String str, Integer row){
 		try {
-			int i = new Double(d).intValue();
+			int i = Integer.parseInt(str);
 			if(i < 0 || i > 100){
 				throw new BusinessException("【第" + row + "行】数值区间[0-100]！");
 			}
-			return i;
+			return str;
 		} catch (Exception e) {
 			throw new BusinessException("【第" + row + "行】数字格式转换错误！");
 		}
