@@ -52,6 +52,12 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	public List<ACase> findByReady() {
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.gt("ready", 0)).addOrder(Order.desc("id")).list();
+	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
 	public List<ACase> findByNoRun() {
 		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("run", 0)).addOrder(Order.desc("id")).list();
 	}

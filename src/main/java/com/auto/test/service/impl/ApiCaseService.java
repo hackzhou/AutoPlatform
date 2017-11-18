@@ -42,6 +42,11 @@ public class ApiCaseService implements IApiCaseService {
 	public List<ACase> findByOnce() {
 		return dao.findByOnce();
 	}
+	
+	@Override
+	public List<ACase> findByReady() {
+		return dao.findByReady();
+	}
 
 	@Override
 	public List<ACase> findByNoRun() {

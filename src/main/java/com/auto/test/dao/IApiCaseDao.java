@@ -12,6 +12,8 @@ public interface IApiCaseDao extends IBaseDao<ACase> {
 	
 	List<ACase> findByOnce();
 	
+	List<ACase> findByReady();
+
 	List<ACase> findByNoRun();
 
 	List<ACase> findByInterfaceId(Integer id);

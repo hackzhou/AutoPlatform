@@ -853,6 +853,7 @@
     				if(optionstring != ""){
     					optionstring += "<option value='-1'>--工具【所有带图片接口】--</option><option value='-2'>--工具【所有不运行接口】--</option>";
     					optionstring += "<option value='-3'>--工具【所有有关联接口】--</option><option value='-4'>--工具【所有一次请求接口】--</option>";
+    					optionstring += "<option value='-5'>--工具【所有数据准备接口】--</option>";
 	    				$('#api-case-project-s').append(optionstring);
     				}
     			}

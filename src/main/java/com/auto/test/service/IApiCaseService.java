@@ -15,6 +15,8 @@ public interface IApiCaseService{
 	
 	List<ACase> findByOnce();
 	
+	List<ACase> findByReady();
+
 	List<ACase> findByNoRun();
 	
 	List<ACase> findByInterfaceId(Integer id);
