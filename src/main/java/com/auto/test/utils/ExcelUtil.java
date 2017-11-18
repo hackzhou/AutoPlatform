@@ -71,7 +71,7 @@ public class ExcelUtil {
 	                		aInterfaceCase.setOnce(cellValue);
 		                    break;
 	                	case 8:
-	                		aInterfaceCase.setReady(validateNum(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setReady(parseNum(cell.getNumericCellValue(), row.getRowNum() + 1));
 		                    break;
 	                	case 9:
 	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
@@ -151,15 +151,15 @@ public class ExcelUtil {
 		return "";
 	}
 	
-	private String validateNum(String str, Integer row){
+	private int parseNum(double d, Integer row){
 		try {
-			int i = Integer.parseInt(str);
+			int i = new Double(d).intValue();
 			if(i < 0 || i > 100){
 				throw new BusinessException("【第" + row + "行】数值区间[0-100]！");
 			}
-			return str;
+			return i;
 		} catch (Exception e) {
-			throw new BusinessException("【第" + row + "行】非数字格式！");
+			throw new BusinessException("【第" + row + "行】数字格式转换错误！");
 		}
 	}
 
