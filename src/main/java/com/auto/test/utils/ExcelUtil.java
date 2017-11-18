@@ -71,12 +71,15 @@ public class ExcelUtil {
 	                		aInterfaceCase.setOnce(cellValue);
 		                    break;
 	                	case 8:
-	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setReady(validateNum(cellValue, row.getRowNum() + 1));
 		                    break;
 	                	case 9:
-	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
 		                    break;
 	                	case 10:
+	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+		                    break;
+	                	case 11:
 	                		aInterfaceCase.setStrategy(splitStr(cellValue));
 		                    break;
 	                	default:
@@ -146,6 +149,18 @@ public class ExcelUtil {
 			return str.trim();
 		}
 		return "";
+	}
+	
+	private String validateNum(String str, Integer row){
+		try {
+			int i = Integer.parseInt(str);
+			if(i < 0 || i > 100){
+				throw new BusinessException("【第" + row + "行】数值区间[0-100]！");
+			}
+			return str;
+		} catch (Exception e) {
+			throw new BusinessException("【第" + row + "行】非数字格式！");
+		}
 	}
 
 }
