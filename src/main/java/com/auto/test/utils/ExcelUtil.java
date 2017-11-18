@@ -44,43 +44,42 @@ public class ExcelUtil {
 	            Iterator<Cell> cells = row.cellIterator();
 	            while (cells.hasNext()) {
 	                Cell cell = cells.next();
-	                String cellValue = trimStr(cell.getStringCellValue());
 	                switch (cell.getColumnIndex()) {
 	                	case 0:
-	                		aInterfaceCase.setProject(cellValue);
+	                		aInterfaceCase.setProject(trimStr(cell.getStringCellValue()));
 	                		break;
 	                	case 1:
-	                		aInterfaceCase.setName(cellValue);
+	                		aInterfaceCase.setName(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 2:
-	                		aInterfaceCase.setType(cellValue);
+	                		aInterfaceCase.setType(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 3:
-	                		aInterfaceCase.setUrl(cellValue);
+	                		aInterfaceCase.setUrl(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 4:
-	                		aInterfaceCase.setDescription(cellValue);
+	                		aInterfaceCase.setDescription(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 5:
-	                		aInterfaceCase.setVersion(cellValue);
+	                		aInterfaceCase.setVersion(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 6:
-	                		aInterfaceCase.setLogin(cellValue);
+	                		aInterfaceCase.setLogin(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 7:
-	                		aInterfaceCase.setOnce(cellValue);
+	                		aInterfaceCase.setOnce(trimStr(cell.getStringCellValue()));
 		                    break;
 	                	case 8:
-	                		aInterfaceCase.setReady(parseNum(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setReady(parseNum(cell.getNumericCellValue(), row.getRowNum() + 1));
 		                    break;
 	                	case 9:
-	                		aInterfaceCase.setBody(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setBody(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
 		                    break;
 	                	case 10:
-	                		aInterfaceCase.setResult(getRequestBoy(cellValue, row.getRowNum() + 1));
+	                		aInterfaceCase.setResult(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
 		                    break;
 	                	case 11:
-	                		aInterfaceCase.setStrategy(splitStr(cellValue));
+	                		aInterfaceCase.setStrategy(splitStr(trimStr(cell.getStringCellValue())));
 		                    break;
 	                	default:
 		                    break;
@@ -151,15 +150,15 @@ public class ExcelUtil {
 		return "";
 	}
 	
-	private String parseNum(String str, Integer row){
+	private int parseNum(double d, Integer row){
 		try {
-			int i = Integer.parseInt(str);
+			int i = new Double(d).intValue();
 			if(i < 0 || i > 100){
-				throw new BusinessException("【第" + row + "行】数值区间[0-100]！");
+				throw new BusinessException("【第" + row + "行】[" + i + "]数值区间[0-100]！");
 			}
-			return str;
+			return i;
 		} catch (Exception e) {
-			throw new BusinessException("【第" + row + "行】数字格式转换错误！");
+			throw new BusinessException("【第" + row + "行】[" + d + "]数字格式转换错误！");
 		}
 	}
 

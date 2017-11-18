@@ -13,7 +13,7 @@ public class AInterfaceCase {
 	private String strategy;
 	private String login;
 	private String once;
-	private String ready;
+	private int ready;
 	
 	private Integer rowNum;
 	
@@ -87,10 +87,10 @@ public class AInterfaceCase {
 	public void setOnce(String once) {
 		this.once = once;
 	}
-	public String getReady() {
+	public int getReady() {
 		return ready;
 	}
-	public void setReady(String ready) {
+	public void setReady(int ready) {
 		this.ready = ready;
 	}
 	public Integer getRowNum() {
