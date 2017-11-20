@@ -26,24 +26,24 @@ public class ReadyDataImpl {
 		return id;
 	}
 	
-	public void AA(int uid, String body){
+	public void AA(int uid){
 		String sql = "UPDATE trans_account SET use_amount = '100000000.0000',total_amount = '100000000.0000',grand_amount = '100000000.0000' WHERE user_id = " + uid;
 		new DBUtil().updateSQL(TEST_IP_209, TEST_PORT_8066, TEST_DB_MYCATTRANS, TEST_USER, TEST_PWD, sql);
 		logger.info("[用户中心-更新我的金叶子为一亿]-->" + sql);
 	}
 	
-	public void AB(int uid, String body){
-		new RedisUtil().DelYanZhengMa();
+	public void AB(String loginname){
+		new RedisUtil().DelYanZhengMa(loginname);
 		logger.info("[用户中心-清除验证码发送频繁]-->清除Redis缓存[keys *SMS_VERIFY_CODE_LOCK*]");
 	}
 	
-	public void AC(int uid, String body){
+	public void AC(int uid){
 		String sql = "DELETE FROM uic_user_weal WHERE user_id = " + uid;
 		new DBUtil().updateSQL(TEST_IP_209, TEST_PORT_3306, TEST_DB_UIC, TEST_USER, TEST_PWD, sql);
 		logger.info("[用户中心-删除个人关联信息(保存本站/修改昵称)]-->" + sql);
 	}
 	
-	public void BA(int uid, String body){
+	public void BA(String body){
 		String sql = "UPDATE inventory_phy_awards_sendlog SET receive_status = 1 WHERE id = " + new JSONVar().getValByResult("recordId", body);
 		new DBUtil().updateSQL(TEST_IP_209, TEST_PORT_3306, TEST_DB_MALL, TEST_USER, TEST_PWD, sql);
 		logger.info("[商城-更新背包保存中奖地址状态]-->" + sql);
@@ -51,7 +51,7 @@ public class ReadyDataImpl {
 		logger.info("[商城-更新背包保存中奖地址状态]-->清除Redis缓存[keys *AWARDS_SAVE_ADDRESS*]");
 	}
 	
-	public void BB(int uid, String body){
+	public void BB(String body){
 		String sql = "UPDATE inventory_phy_awards_sendlog SET receive_status = 1 WHERE id = " + new JSONVar().getValByResult("id", body);
 		new DBUtil().updateSQL(TEST_IP_209, TEST_PORT_3306, TEST_DB_MALL, TEST_USER, TEST_PWD, sql);
 		logger.info("[商城-更新背包领取福利状态]-->" + sql);

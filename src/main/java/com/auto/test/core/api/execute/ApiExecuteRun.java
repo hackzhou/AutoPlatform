@@ -103,7 +103,7 @@ public class ApiExecuteRun implements Runnable {
 				if(apiContext.getDbUser() == 0){
 					apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
 				}
-				ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), aCase.getBody());
+				ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), apiContext.getAccount().getLoginname(), aCase.getBody());
 			}
 			sendMessage(aCase, aResultDetail);
 			saveResultDetailSuccess(aCase, aResultDetail);

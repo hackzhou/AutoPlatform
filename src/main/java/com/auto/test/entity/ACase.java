@@ -148,7 +148,11 @@ public class ACase implements Serializable{
 			this.run = aCase.getRun();
 			this.link = aCase.getLink();
 		}
-		if(!DateUtil.getFormatDate().equals(this.once)){
+		if("0".equals(aCase.getOnce())){
+			if(this.once == null || !this.once.startsWith(DateUtil.getFormatDate())){
+				this.once = aCase.getOnce();
+			}
+		}else{
 			this.once = aCase.getOnce();
 		}
 		this.updateTime = new Date();

@@ -20,22 +20,22 @@ public class ReadyData {
 		super();
 	}
 	
-	public static void exe(int index, int uid, String body){
+	public static void exe(int index, int uid, String loginname, String body){
 		switch (index) {
 			case 101:
-				new ReadyDataImpl().AA(uid, body);
+				new ReadyDataImpl().AA(uid);
 				break;
 			case 102:
-				new ReadyDataImpl().AB(uid, body);
+				new ReadyDataImpl().AB(loginname);
 				break;
 			case 103:
-				new ReadyDataImpl().AC(uid, body);
+				new ReadyDataImpl().AC(uid);
 				break;
 			case 201:
-				new ReadyDataImpl().BA(uid, body);
+				new ReadyDataImpl().BA(body);
 				break;
 			case 202:
-				new ReadyDataImpl().BB(uid, body);
+				new ReadyDataImpl().BB(body);
 				break;
 			default:
 				break;

@@ -14,11 +14,17 @@ public class RedisUtil {
 	}
 
 	public static void main(String[] args) {
-		new RedisUtil().close();
+		RedisUtil ru = new RedisUtil();
+		Set<String> set = ru.getJedis().keys("*SMS_DATE_MAX*");
+		Iterator<String> it = set.iterator();
+		while(it.hasNext()){
+			System.out.println(it.next());
+		}
 	}
 	
-	public void DelYanZhengMa(){
+	public void DelYanZhengMa(String loginname){
 		batchDel("*SMS_VERIFY_CODE_LOCK*");
+		batchDel("*SMS_DATE_MAX:" + loginname + "*");
 		close();
 	}
 	
@@ -44,5 +50,12 @@ public class RedisUtil {
 	
 	public void ping(){
 		System.out.println(jedis.ping());
+	}
+
+	public Jedis getJedis() {
+		return jedis;
+	}
+	public void setJedis(Jedis jedis) {
+		this.jedis = jedis;
 	}
 }
