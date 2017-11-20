@@ -559,15 +559,11 @@
     				var list = data.data;
     				if(list != null){
     					for(var i = list.length - 1; i >= 0; i--){
-        					if(i == (list.length - 1)){
-        						optionstring += "<option value='" + list[i].id + "' selected>" + list[i].name + "</option>";
-        					}else{
-    	    					optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-        					}
+    						optionstring += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
         				}
     				}
     				$('#api-task-project-s').empty();
-    				$('#api-task-project-s').append(optionstring);
+    				$('#api-task-project-s').append("<option value='0' selected>全部</option>" + optionstring);
     			}
     		}
     	});

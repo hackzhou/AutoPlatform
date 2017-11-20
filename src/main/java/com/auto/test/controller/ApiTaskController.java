@@ -43,11 +43,11 @@ public class ApiTaskController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getTaskDataByProject(@PathVariable("id") String id) {
 		logger.info("[Task]==>获取定时任务[project=" + id + "]数据！");
-		if(!isNull(id)){
+		if(!isNull(id) && !"0".equals(id)){
 			List<ATask> list = apiTaskService.findByProject(Integer.parseInt(id));
 			return successJson(list);
 		}else{
-			List<ATask> list = apiTaskService.findByMinProject();
+			List<ATask> list = apiTaskService.findAll();
 			return successJson(list);
 		}
 	}
