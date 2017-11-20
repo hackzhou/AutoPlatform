@@ -240,16 +240,32 @@ public class ApiExecuteRun implements Runnable {
 			aResultDetail.setResulta(nologinResult);
 		}else{
 			if(aCase.getOnce() != null && !aCase.getOnce().isEmpty()){
+				IApiCaseService apiCaseService = (IApiCaseService) SpringContext.getBean("apiCaseService");
 				String now = DateUtil.getFormatDate();
-				if(!now.equals(aCase.getOnce())){
+				if(now.equals(aCase.getOnce().split("_")[0])){
+					int once = 1;
+					if(aCase.getOnce().contains("_")){
+						once = Integer.parseInt(aCase.getOnce().split("_")[1]) + 1;
+					}
+					aCase.setOnce(now + "_" + once);
+					apiCaseService.update(aCase);
+					apiCaseService.evict(aCase);
+					if("/api/app/ranking/clear".equals(aCase.getInterfaceo().getUrl())){
+						if(once < 4){
+							aResultDetail.setResulta(onceResult);
+							aCase.setStrategy("data");
+						}else{
+							aResultDetail.setResulta(aCase.getResult());
+						}
+					}else{
+						aResultDetail.setResulta(aCase.getResult());
+					}
+				}else{
 					aResultDetail.setResulta(onceResult);
-					aCase.setOnce(now);
-					IApiCaseService apiCaseService = (IApiCaseService) SpringContext.getBean("apiCaseService");
+					aCase.setOnce(now + "_1");
 					apiCaseService.update(aCase);
 					apiCaseService.evict(aCase);
 					aCase.setStrategy("data");
-				}else{
-					aResultDetail.setResulta(aCase.getResult());
 				}
 			}else{
 				aResultDetail.setResulta(aCase.getResult());
