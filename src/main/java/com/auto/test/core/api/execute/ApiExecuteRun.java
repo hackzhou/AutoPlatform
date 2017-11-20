@@ -99,7 +99,7 @@ public class ApiExecuteRun implements Runnable {
 	private void oneRunBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		try {
 			aCase.setBody(new JSONVar().replaceRandom(aCase.getBody()));
-			if(aCase.getReady() != null && aCase.getReady() > 0){
+			if(aCase.getReady() != null && aCase.getReady() > 0 && apiContext.getAccount() != null){
 				if(apiContext.getDbUser() == 0){
 					apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
 				}
