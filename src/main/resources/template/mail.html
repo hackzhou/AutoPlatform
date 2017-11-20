@@ -72,16 +72,18 @@
 			<td><strong>接口地址</strong></td>
 			<td><strong>失败原因</strong></td>
 		</tr>
-		<#list failResults as failResult>
-			<tr>
-				<td>${failResult_index + 1}</td>
-				<td>${failResult.id}</td>
-				<td>${failResult.name}</td>
-				<td>${failResult.type}</td>
-				<td>${failResult.url}</td>
-				<td>${failResult.message}</td>
-			</tr>
-		</#list>
+		<#if failResults ??>
+			<#list failResults as failResult>
+				<tr>
+					<td>${failResult_index + 1}</td>
+					<td>${failResult.id}</td>
+					<td>${failResult.name}</td>
+					<td>${failResult.type}</td>
+					<td>${failResult.url}</td>
+					<td>${failResult.message}</td>
+				</tr>
+			</#list>
+		</#if>
 	</table>
 	<h3>超时案例详情：</h3>
 	<table class="table3">
@@ -93,16 +95,18 @@
 			<td><strong>接口地址</strong></td>
 			<td><strong>失败原因</strong></td>
 		</tr>
-		<#list timeoutResults as timeoutResult>
-			<tr>
-				<td>${timeoutResult_index + 1}</td>
-				<td>${timeoutResult.id}</td>
-				<td>${timeoutResult.name}</td>
-				<td>${timeoutResult.type}</td>
-				<td>${timeoutResult.url}</td>
-				<td>${timeoutResult.message}</td>
-			</tr>
-		</#list>
+		<#if timeoutResults ??>
+			<#list timeoutResults as timeoutResult>
+				<tr>
+					<td>${timeoutResult_index + 1}</td>
+					<td>${timeoutResult.id}</td>
+					<td>${timeoutResult.name}</td>
+					<td>${timeoutResult.type}</td>
+					<td>${timeoutResult.url}</td>
+					<td>${timeoutResult.message}</td>
+				</tr>
+			</#list>
+		</#if>
 	</table>
 </body>
 </html>
