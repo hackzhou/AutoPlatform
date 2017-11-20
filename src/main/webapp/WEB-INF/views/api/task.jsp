@@ -521,7 +521,21 @@
     		}else{
     			$('#api-task-time-hide').val(ttime);
     		}
+    		hideMsgDiv();
+    		$('#exampleModalTask').modal('hide');
     		$.ajax({
+    			type:"post",
+          		url:"<%=request.getContextPath()%>/api/task/create/update",
+          		data:$('#api-task-form').serialize(),
+          		success:function(data){
+          			if(data.responseCode == "0000"){
+          				$('#api-task-table').dataTable()._fnAjaxUpdate();
+          			}else{
+          				swal("错误", data.responseMsg, "error");
+          			}
+          	    }
+    		});
+    		<%-- $.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/task/repeat",
           		data:$('#api-task-form').serialize(),
@@ -545,7 +559,7 @@
           	    		showMsgDiv(data.responseMsg);
           			}
           	    }
-    		});
+    		}); --%>
     	}
     }
     
