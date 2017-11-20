@@ -153,10 +153,7 @@ public class ExcelUtil {
 	private int parseNum(double d, Integer row){
 		try {
 			int i = new Double(d).intValue();
-			if(i < 0 || i > 100){
-				throw new BusinessException("【第" + row + "行】[" + i + "]数值区间[0-100]！");
-			}
-			return i;
+			return i < 0 ? 0 : i;
 		} catch (Exception e) {
 			throw new BusinessException("【第" + row + "行】[" + d + "]数字格式转换错误！");
 		}

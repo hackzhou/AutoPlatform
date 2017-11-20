@@ -17,13 +17,18 @@ public class RedisUtil {
 		new RedisUtil().close();
 	}
 	
+	public void DelYanZhengMa(){
+		batchDel("*SMS_VERIFY_CODE_LOCK*");
+		close();
+	}
+	
 	public void DelShangCheng(){
-		batchDel("AWARDS_SAVE_ADDRESS");
+		batchDel("*AWARDS_SAVE_ADDRESS*");
 		close();
 	}
 	
 	public void batchDel(String text){
-		Set<String> set = jedis.keys("*" + text + "*");
+		Set<String> set = jedis.keys(text);
 		Iterator<String> it = set.iterator();
 		while(it.hasNext()){
 			jedis.del(it.next());
