@@ -40,8 +40,17 @@
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-1 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>报告详情</b></span></h4>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <label class="col-md-4">异常类型：</label>
+          <select id="api-report-detail-err-s" name="api-report-detail-err-s" class="col-md-8">
+          	<option value="0" selected="selected">无</option>
+          	<option value="1">全部</option>
+          	<option value="2">不通</option>
+          	<option value="3">500</option>
+          </select>
         </div>
       </div>
       <!-- /.modal -->
@@ -156,14 +165,21 @@
 	$(document).ready(function() {
 		$('.top-menu-all').hide();
 		$('.top-logout-user').hide();
-		createTable();
+		initEvent();
+		createTable("0");
 	});
 	
-	function createTable() {
+	function initEvent() {
+		$("#api-report-detail-err-s").change(function(){
+			createTable($(this).val());
+		});
+	}
+	
+	function createTable(index) {
 		$('#api-report-detail-table').dataTable().fnDestroy();
     	$('#api-report-detail-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/id=${data}",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/i=" + index + "/id=${data}",
     		bProcessing : false,
     		"aaSorting": [
     			[9,'asc']

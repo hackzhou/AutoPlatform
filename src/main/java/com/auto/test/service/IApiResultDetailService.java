@@ -8,6 +8,12 @@ import com.auto.test.entity.AResultDetail;
 public interface IApiResultDetailService{
 	
 	List<AResultDetail> findAll();
+	
+	List<AResultDetail> findByAllErr(Integer rid);
+
+	List<AResultDetail> findByPingNo(Integer rid);
+
+	List<AResultDetail> findByErr500(Integer rid);
 
 	List<AResultDetail> findByResultId(Integer rid);
 	

@@ -20,6 +20,21 @@ public class ApiResultDetailService implements IApiResultDetailService {
 	}
 	
 	@Override
+	public List<AResultDetail> findByAllErr(Integer rid) {
+		return dao.findByAllErr(rid);
+	}
+
+	@Override
+	public List<AResultDetail> findByPingNo(Integer rid) {
+		return dao.findByPingNo(rid);
+	}
+
+	@Override
+	public List<AResultDetail> findByErr500(Integer rid) {
+		return dao.findByErr500(rid);
+	}
+	
+	@Override
 	public List<AResultDetail> findByResultId(Integer rid) {
 		return dao.findByResultId(rid);
 	}
