@@ -14,6 +14,15 @@ public class ReadyData {
 		list.add(new ACaseReady(103, "AC", "用户中心-删除个人关联信息(保存本站/修改昵称)"));
 		list.add(new ACaseReady(201, "BA", "商城-更新背包保存中奖地址状态"));
 		list.add(new ACaseReady(202, "BB", "商城-更新背包领取福利状态"));
+		list.add(new ACaseReady(301, "CA", "App-删除分享圈点赞"));
+		list.add(new ACaseReady(302, "CB", "App-删除分享圈评论点赞"));
+		list.add(new ACaseReady(303, "CC", "App-更新咨询收藏状态"));
+		list.add(new ACaseReady(304, "CD", "App-更新咨询点赞状态"));
+		list.add(new ACaseReady(305, "CE", "App-删除每日签到"));
+		list.add(new ACaseReady(306, "CF", "App-消息中心-更新消息状态"));
+		list.add(new ACaseReady(307, "CG", "App-消息中心-更新领取奖励状态"));
+		list.add(new ACaseReady(308, "CH", "App-删除新人礼包"));
+		list.add(new ACaseReady(309, "CI", "App-删除俱乐部"));
 	}
 	
 	public ReadyData(){
@@ -36,6 +45,33 @@ public class ReadyData {
 				break;
 			case 202:
 				new ReadyDataImpl().BB(body);
+				break;
+			case 301:
+				new ReadyDataImpl().CA(body);
+				break;
+			case 302:
+				new ReadyDataImpl().CB(body);
+				break;
+			case 303:
+				new ReadyDataImpl().CC(body);
+				break;
+			case 304:
+				new ReadyDataImpl().CD(body);
+				break;
+			case 305:
+				new ReadyDataImpl().CE(uid);
+				break;
+			case 306:
+				new ReadyDataImpl().CF(body);
+				break;
+			case 307:
+				new ReadyDataImpl().CG(body);
+				break;
+			case 308:
+				new ReadyDataImpl().CH(uid);
+				break;
+			case 309:
+				new ReadyDataImpl().CI(uid);
 				break;
 			default:
 				break;

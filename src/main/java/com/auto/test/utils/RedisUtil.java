@@ -22,13 +22,29 @@ public class RedisUtil {
 		}
 	}
 	
-	public void DelYanZhengMa(String loginname){
+	public void DeXinRenLiBao(){//新人礼包
+		batchDel("*PLAT_NEW_USER*");
+		close();
+	}
+	
+	public void DeXiaoXiZhongXin(){//消息中心
+		batchDel("*APP_MESSAGE*");
+		close();
+	}
+	
+	public void DelMeiRiQianDao(){//每日签到
+		batchDel("*PLAT_USER*");
+		batchDel("*PLAT_USER_LAST*");
+		close();
+	}
+	
+	public void DelYanZhengMa(String loginname){//验证码
 		batchDel("*SMS_VERIFY_CODE_LOCK*");
 		batchDel("*SMS_DATE_MAX:" + loginname + "*");
 		close();
 	}
 	
-	public void DelShangCheng(){
+	public void DelShangCheng(){//商城
 		batchDel("*AWARDS_SAVE_ADDRESS*");
 		close();
 	}
