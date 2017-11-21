@@ -289,7 +289,7 @@
 						if("SUCCESS" == data.status){
 							return "<b style='color:green'>成功</b>";
 						}else if("FAILURE" == data.status){
-							return "<b style='color:red'>失败</b>";
+							return "<b style='color:red' onclick='alertAllRequest(" + data.id + ");'>失败</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else{
 							return "-";
 						}
@@ -360,6 +360,11 @@
 		$(".alertError").on("click", function(){
 			swal("错误", $(this).data('data'), "error");
 		});
+	}
+	
+	function alertAllRequest(id) {
+		var ar = $("#api-all-request" + id).val();
+		swal("请求体", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "error");
 	}
 
 	function diffUsingJS(viewType) {

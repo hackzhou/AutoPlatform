@@ -135,6 +135,7 @@ public class ApiExecuteRun implements Runnable {
 		}else{
 			aResultDetail.setStatus(ApiStatus.FAILURE.name());
 		}
+		setRequest(aResultDetail);
 		apiResultDetailService.create(aResultDetail);
 		addReportResultFail(aResultDetail, "结果对比失败");
 		addReportResultTimeout(aResultDetail);
@@ -151,6 +152,7 @@ public class ApiExecuteRun implements Runnable {
 		aResultDetail.setStatus(ApiStatus.FAILURE.name());
 		aResultDetail.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
 		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
+		setRequest(aResultDetail);
 		apiResultDetailService.create(aResultDetail);
 		addReportResultFail(aResultDetail, message.split("-->")[0]);
 		addReportResultTimeout(aResultDetail);
@@ -174,6 +176,12 @@ public class ApiExecuteRun implements Runnable {
 			}
 			apiContext.getResult().getTimeouts().add(resultTimeout);
 		}
+	}
+	
+	private void setRequest(AResultDetail aResultDetail){
+		String url = "http://" + apiContext.getProject().getServerb() + apiContext.getProject().getPath() + aResultDetail.getUrl();
+		String memo = url + ";Authorization:" + authorB + ";App-Version:" + aResultDetail.getVersion() + ";App-Channel:" + aResultDetail.getChannel()+ ";Data:" + aResultDetail.getBody();
+		aResultDetail.setMemo(memo);
 	}
 	
 	private void runFinal(AResultDetail aResultDetail) throws Exception{
