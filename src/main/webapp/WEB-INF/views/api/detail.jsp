@@ -287,7 +287,7 @@
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
 						if("SUCCESS" == data.status){
-							return "<b style='color:green'>成功</b>";
+							return "<b style='color:green' onclick='alertAllRequest2(" + data.id + ");'>成功</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else if("FAILURE" == data.status){
 							return "<b style='color:red' onclick='alertAllRequest(" + data.id + ");'>失败</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else{
@@ -365,6 +365,11 @@
 	function alertAllRequest(id) {
 		var ar = $("#api-all-request" + id).val();
 		swal("请求体", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "error");
+	}
+	
+	function alertAllRequest2(id) {
+		var ar = $("#api-all-request" + id).val();
+		swal("请求体", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "success");
 	}
 
 	function diffUsingJS(viewType) {
