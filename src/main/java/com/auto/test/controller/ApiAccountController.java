@@ -62,6 +62,7 @@ public class ApiAccountController extends BaseController{
 	@RequestMapping(value = "/repeat", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getAccountByName(@RequestParam("api-account-id") String id, @RequestParam("api-account-loginname") String loginname) {
+		loginname = loginname == null ? "" : loginname.trim();
 		if(!isNull(id)){
 			AAccount aAccount = accountService.findById(Integer.parseInt(id));
 			if(aAccount != null && aAccount.getLoginname() != null && aAccount.getLoginname().equals(loginname)){

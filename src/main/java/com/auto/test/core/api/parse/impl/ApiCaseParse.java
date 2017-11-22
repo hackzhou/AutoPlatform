@@ -21,8 +21,10 @@ import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
+import com.auto.test.service.IApiAccountService;
 import com.auto.test.service.IApiResultService;
 import com.auto.test.utils.EmailUtil;
+import com.auto.test.utils.ReadyUtil;
 
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
@@ -72,28 +74,29 @@ public class ApiCaseParse implements IApiCaseParse {
 		if(list != null && !list.isEmpty()){
 			String version = apiContext.getVersion().getVersion();
 			String channels = apiContext.getVersion().getChannel();
-			for (String channel : channels.split(",")) {
-				/*String authorA = null;	//Online Compare*/				
-				String authorB = null;
-				if(apiContext.getAccount() != null){
-					if("1".equals(apiContext.getAccount().getToken())){
-						String token = apiContext.getAccount().getPassword();
-						/*if(token.contains(",")){	//Online Compare
-							authorA = token.split(",")[0];
-							authorB = token.split(",")[1];
-						}else{
-							authorB = token;
-						}*/
-						authorB = token;
+			/*String authorA = null;	//Online Compare*/				
+			String authorB = null;
+			if(apiContext.getAccount() != null){
+				if("1".equals(apiContext.getAccount().getToken())){
+					String loginname = apiContext.getAccount().getLoginname();
+					String token = apiContext.getAccount().getPassword();
+					/*if(token.contains(",")){	//Online Compare
+						authorA = token.split(",")[0];
+						authorB = token.split(",")[1];
 					}else{
-						/*if(apiContext.isBool()){	//Online Compare
-							authorA = setAuthor(apiContext.getAccount(), loginUrlA, version, channel, "线上");
-							logger.info("[登录权限][线上]==>[" + authorA + "]");
-						}*/
-						authorB = setAuthor(apiContext.getAccount(), loginUrlB, version, channel, "线下");
-						logger.info("[登录权限][线下]==>[" + authorB + "]");
-					}
+						authorB = token;
+					}*/
+					authorB = visitorLogin(loginname, token);
+				}else{
+					/*if(apiContext.isBool()){	//Online Compare
+						authorA = setAuthor(apiContext.getAccount(), loginUrlA, version, channel, "线上");
+						logger.info("[登录权限][线上]==>[" + authorA + "]");
+					}*/
+					authorB = setAuthor(apiContext.getAccount(), loginUrlB, version, channels.split(",")[0], "线下");
+					logger.info("[登录权限][线下]==>[" + authorB + "]");
 				}
+			}
+			for (String channel : channels.split(",")) {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
@@ -165,6 +168,33 @@ public class ApiCaseParse implements IApiCaseParse {
 			}
 		}else{
 			throw new BusinessException("[登录权限][" + type + "]==>请求登录失败！[" + url + GlobalValueConfig.getConfig("uri.user.login") + "][" + data + "]");
+		}
+	}
+	
+	private String visitorLogin(String loginname, String token) {
+		if("游客登录".equals(loginname)){
+			String t = new ReadyUtil().getVisitorToken();
+			if(t == null || t.isEmpty()){
+				throw new BusinessException("[游客登录]登录失败！");
+			}
+			IApiAccountService apiAccountService = (IApiAccountService) SpringContext.getBean("apiAccountService");
+			List<AAccount> list = apiAccountService.findByName("游客登录");
+			if(list != null && !list.isEmpty()){
+				for (int i = 0; i < list.size(); i++) {
+					if(i == 0){
+						AAccount ac = list.get(i);
+						ac.setPassword(t);
+						apiAccountService.update(ac);
+					}else{
+						apiAccountService.delete(list.get(i).getId());
+					}
+				}
+			}else{
+				apiAccountService.create(new AAccount("1", "游客登录", t));
+			}
+			return t;
+		}else{
+			return token;
 		}
 	}
 	
