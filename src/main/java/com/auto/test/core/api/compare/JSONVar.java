@@ -33,7 +33,7 @@ public class JSONVar {
 		if(b == null || b.isEmpty() || !b.contains(DATA_TOKEN)){
 			return b;
 		}
-		return b.replace(DATA_TOKEN, "\"" + token == null ? "" : token + "\"");
+		return b.replace(DATA_TOKEN, "\"" + (token == null ? "" : token) + "\"");
 	}
 	
 	public String replaceBody(String p, String r){
