@@ -308,7 +308,7 @@ public class ApiExecuteRun implements Runnable {
 	
 	private String getFullUrl(ACase aCase, String url, String body){
 		String iUrl = aCase.getInterfaceo().getUrl();
-		String fullUrl = fillVariable(iUrl, body);
+		String fullUrl = fillVariable(aCase, iUrl, body);
 		if(fullUrl != null){
 			iUrl = fullUrl;
 		}
@@ -323,12 +323,14 @@ public class ApiExecuteRun implements Runnable {
 		return url + apiContext.getProject().getPath() + iUrl;
 	}
 	
-	public String fillVariable(String url, String body){
+	public String fillVariable(ACase aCase, String url, String body){
 		if(body != null && !body.isEmpty() && url != null && url.contains("{") && url.contains("}") && (url.indexOf("{") < url.indexOf("}"))){
 			String tempA = url.substring(url.indexOf("{"), url.indexOf("}") + 1);
 			String tempB = url.substring(url.indexOf("{") + 1, url.indexOf("}"));
 			JSONObject jsono = JSON.parseObject(body);
 			if(jsono != null && jsono.get(tempB) != null){
+//				jsono.remove(tempB);
+//				aCase.setBody(JSON.toJSONString(jsono));
 				return url.replace(tempA, String.valueOf(jsono.get(tempB)));
 			}
 		}
