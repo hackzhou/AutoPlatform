@@ -12,10 +12,11 @@ public class ReadyUtil {
 //		123qwe!@#
 //		cd /wfApp/wf_uic_api/tomcat8/logs/
 //		tail -f catalina.out
-		String version = "1.0.0";
-		String channel = "100006";
-		sendMessage("http://uic-api.beeplay123.com/uic/api/user/register/sendCode", "{\"username\":\"13151815253\"}", channel, version);
+//		String version = "1.0.0";
+//		String channel = "100006";
+//		sendMessage("http://uic-api.beeplay123.com/uic/api/user/register/sendCode", "{\"username\":\"13151815253\"}", channel, version);
 //		sendMessage("http://uic-api.beeplay123.com/uic/api/user/register/save", "{\"username\":\"13151815253\",\"password\":\"zhouzhou\",\"smsCode\":\"123456\"}", channel, version);
+		getVisitorToken();
 	}
 	
 	public static void sendMessage(String url, String data, String channel, String version){
@@ -36,6 +37,10 @@ public class ReadyUtil {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void getVisitorToken(){
+		sendMessage("http://uic-api.beeplay123.com/uic/api/user/login/visitor", "{\"source\":1,\"visitorToken\":\"08ef7567-cfa1-3e46-9060-f62f846cb0fa\"}", "1.0.0", "100006");
 	}
 
 }

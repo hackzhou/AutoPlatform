@@ -1,13 +1,13 @@
 package com.auto.test.core.api.compare;
 
 import java.util.Set;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class JSONVar {
 	private static final String DATA_VAR	= "\"_DATA_VAR\"";
 	private static final String DATA_RANDOM	= "\"_DATA_RANDOM\"";
+	private static final String DATA_TOKEN	= "\"_DATA_TOKEN\"";
 	
 	public static void main(String[] args) {
 		String r = "{\"code\":200,\"data\":{\"awardId\":1505,\"playId\":98047,\"configId\":2618,\"useAmount\":997922834,\"awardType\":9}}";
@@ -16,11 +16,24 @@ public class JSONVar {
 		System.err.println(new JSONVar().replaceRandom("{\"nickname\":\"_DATA_RANDOM\"}"));
 	}
 	
+	public String replaceBodyVar(String b, String token){
+		String val = replaceRandom(b);
+		val = replaceToken(val, token);
+		return val;
+	}
+	
 	public String replaceRandom(String b){
 		if(b == null || b.isEmpty() || !b.contains(DATA_RANDOM)){
 			return b;
 		}
 		return b.replace(DATA_RANDOM, "\"A" + System.currentTimeMillis() + "\"");
+	}
+	
+	public String replaceToken(String b, String token){
+		if(b == null || b.isEmpty() || !b.contains(DATA_TOKEN)){
+			return b;
+		}
+		return b.replace(DATA_TOKEN, token);
 	}
 	
 	public String replaceBody(String p, String r){
