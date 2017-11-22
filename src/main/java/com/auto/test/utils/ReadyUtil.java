@@ -3,11 +3,14 @@ package com.auto.test.utils;
 import java.io.IOException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auto.test.core.api.http.impl.ApiSendMessage;
 
 public class ReadyUtil {
+	private static final Logger logger = LoggerFactory.getLogger(ReadyUtil.class);
 	private static final String URL_LOGIN_VISITOR		= "http://uic-api.beeplay123.com/uic/api/user/login/visitor";
 	private static final String URL_LOGIN_ACCESSTOKEN	= "http://uic-api.beeplay123.com/uic/api/user/login/accessToken";
 	private static final String BODY_VISITOR			= "{\"source\":1,\"visitorToken\":\"08ef7567-cfa1-3e46-9060-f62f846cb0fa\"}";
@@ -33,7 +36,10 @@ public class ReadyUtil {
 		CloseableHttpClient httpClient = httpClientBuilder.build();
 		ApiSendMessage sendMessage = new ApiSendMessage();
 		try {
-			return sendMessage.sendPost(httpClient, url, data, null, channel, version, false, null);
+			logger.info("[游客登录]==>[POST:" + url + "][Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
+			String result = sendMessage.sendPost(httpClient, url, data, null, channel, version, false, null);
+			logger.info("[游客登录]==>[" + result + "]");
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
