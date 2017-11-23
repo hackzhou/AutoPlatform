@@ -52,6 +52,9 @@
           	<option value="3">500</option>
           </select>
         </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <button type="button" id="api-rerun" class="btn btn-default" onclick="rerun()">失败重跑</button>
+        </div>
       </div>
       <!-- /.modal -->
       <div class="modal fade" id="exampleModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDetail">
@@ -170,7 +173,9 @@
 	});
 	
 	function initEvent() {
+		$("#api-rerun").attr("disabled","true");
 		$("#api-report-detail-err-s").change(function(){
+			$("#api-rerun").attr("disabled","true");
 			createTable($(this).val());
 		});
 	}
@@ -289,6 +294,7 @@
 						if("SUCCESS" == data.status){
 							return "<b style='color:green' onclick='alertAllRequest2(" + data.id + ");'>成功</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else if("FAILURE" == data.status){
+							$("#api-rerun").removeAttr("disabled");
 							return "<b style='color:red' onclick='alertAllRequest(" + data.id + ");'>失败</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else{
 							return "-";
@@ -394,6 +400,26 @@
 			contextSize: contextSize,
 			viewType: viewType
 		}));
+	}
+	
+	function rerun() {
+		var index = $("#api-report-detail-err-s").val();
+		$.ajax({
+			type:"get",
+			url:"<%=request.getContextPath()%>/api/report/rerun/i=" + index + "/id=${data}",
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				swal({
+      					title: "成功!",
+      					html: true,
+						text: "<a href=\"${pageContext.request.contextPath}/api/report/list\">查看报告</a>",
+      					imageUrl: "${pageContext.request.contextPath}/plugins/images/thumbs-up.jpg"
+      				});
+      	    	}else{
+      	    		swal("错误", data.responseMsg, "error");
+      	    	}
+      	    }
+		});
 	}
 	
 </script>

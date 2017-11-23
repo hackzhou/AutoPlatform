@@ -15,6 +15,7 @@ import com.auto.test.common.context.SpringContext;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.core.api.service.IApiRunService;
+import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AProject;
 import com.auto.test.entity.AResult;
@@ -42,13 +43,24 @@ public class ApiRunService implements IApiRunService {
 
 	@Resource
 	private IApiResultService resultService;
+	
+	@Override
+	public void rerun(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion version, String runby) throws Exception{
+		isNotRunAccount(account.getId());
+		ApiContext apiContext = getApiContext(type, runId, list, account, version, runby, false, null);
+		apiContext.getResult().setName("<失败重跑>-" + apiContext.getResult().getName());
+		if(apiContext != null){
+			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
+			caseParse.execute(apiContext);
+		}
+	}
 
 	@Override
 	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, boolean mail, String emails) throws Exception{
 		isNotRunAccount(accountId);
 		List<ACase> list = getRunCases(type, runId, versionId);
 		AVersion aVersion = getApiVersion(list, type, versionId);
-		ApiContext apiContext = getApiContext(list, type, runId, accountId, runby, aVersion, mail, emails);
+		ApiContext apiContext = getApiContext(type, runId, list, getAAccount(accountId), aVersion, runby, mail, emails);
 		if(apiContext != null){
 			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 			caseParse.execute(apiContext);
@@ -100,11 +112,16 @@ public class ApiRunService implements IApiRunService {
 		return aVersion;
 	}
 	
-	private ApiContext getApiContext(List<ACase> list, ApiRunType type, Integer runId, Integer accountId, String runby, AVersion aVersion, boolean mail, String emails) throws Exception{
-		ApiContext apiContext = new ApiContext();
+	private AAccount getAAccount(Integer accountId){
 		if(accountId != null){
-			apiContext.setAccount(accountService.findById(accountId));
+			return accountService.findById(accountId);
 		}
+		return null;
+	}
+	
+	private ApiContext getApiContext(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion aVersion, String runby, boolean mail, String emails) throws Exception{
+		ApiContext apiContext = new ApiContext();
+		apiContext.setAccount(account);
 		if(mail && (emails == null || emails.isEmpty())){
 			throw throwException(logger, "运行[发送邮件-收件人]不能为空！");
 		}
