@@ -294,7 +294,9 @@
 						if("SUCCESS" == data.status){
 							return "<b style='color:green' onclick='alertAllRequest2(" + data.id + ");'>成功</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else if("FAILURE" == data.status){
-							$("#api-rerun").removeAttr("disabled");
+							if($("#api-report-detail-err-s").val() != "0"){
+								$("#api-rerun").removeAttr("disabled");
+							}
 							return "<b style='color:red' onclick='alertAllRequest(" + data.id + ");'>失败</b><input type='hidden' id='api-all-request" + data.id + "' value='" + data.memo + "'>";
 						}else{
 							return "-";
