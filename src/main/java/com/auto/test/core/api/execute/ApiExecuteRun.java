@@ -180,7 +180,7 @@ public class ApiExecuteRun implements Runnable {
 	
 	private void setRequest(AResultDetail aResultDetail){
 		String url = "http://" + apiContext.getProject().getServerb() + apiContext.getProject().getPath() + aResultDetail.getUrl();
-		String memo = url + ";Authorization:" + authorB + ";App-Version:" + aResultDetail.getVersion() + ";App-Channel:" + aResultDetail.getChannel()+ ";Data:" + aResultDetail.getBody();
+		String memo = url + ";Authorization:" + authorB + ";App-Version:" + aResultDetail.getVersion() + ";App-Channel:" + aResultDetail.getChannel()+ ";Body:" + aResultDetail.getBody();
 		aResultDetail.setMemo(memo);
 	}
 	

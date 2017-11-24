@@ -27,7 +27,8 @@ public class ReadyData {
 		list.add(new ACaseReady(308, "CH", "App-删除新人礼包"));
 		list.add(new ACaseReady(309, "CI", "App-删除俱乐部"));
 		list.add(new ACaseReady(310, "CJ", "App-清除橡皮擦"));
-		list.add(new ACaseReady(401, "DA", "Wap-"));
+		list.add(new ACaseReady(401, "DA", "Wap-消息中心-更新领取奖励状态"));
+		list.add(new ACaseReady(402, "DB", "Wap-老签到-删除签到"));
 		list.add(new ACaseReady(501, "EA", "运营活动-清除付费转盘次数"));
 	}
 	
@@ -82,6 +83,12 @@ public class ReadyData {
 				break;
 			case 310:
 				new ReadyDataImpl().CJ();
+				break;
+			case 401:
+				new ReadyDataImpl().DA(body);
+				break;
+			case 402:
+				new ReadyDataImpl().DB(uid);
 				break;
 			case 501:
 				new ReadyDataImpl().EA(uid);

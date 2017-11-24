@@ -101,7 +101,7 @@ public class ReadyDataImpl {
 		String sql = "UPDATE app_user_message SET message_status = 0 WHERE message_id = " + new JSONVar().getValByResult("value", body);
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
 		logger.info("[App-消息中心-更新消息状态]-->" + sql);
-		new RedisUtil().DelXiaoXiZhongXin();
+		new RedisUtil().DelAppXiaoXiZhongXin();
 		logger.info("[App-消息中心-更新消息状态]-->清除Redis缓存[keys *APP_MESSAGE*]");
 	}
 	
@@ -109,7 +109,7 @@ public class ReadyDataImpl {
 		String sql = "UPDATE app_user_message SET award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
 		logger.info("[App-消息中心-更新领取奖励状态]-->" + sql);
-		new RedisUtil().DelXiaoXiZhongXin();
+		new RedisUtil().DelAppXiaoXiZhongXin();
 		logger.info("[App-消息中心-更新领取奖励状态]-->清除Redis缓存[keys *APP_MESSAGE*]");
 	}
 	
@@ -135,12 +135,28 @@ public class ReadyDataImpl {
 	
 	public void CJ(){
 		new RedisUtil().DelXiangPiCa();
-		logger.info("[App-删除新人礼包]-->清除Redis缓存[keys *ERASER_RESUME_TIMES*]");
+		logger.info("[App-清除橡皮擦]-->清除Redis缓存[keys *ERASER_RESUME_TIMES*]");
+	}
+	
+	public void DA(String body){
+		String sql = "UPDATE wap_user_message SET award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
+		logger.info("[Wap-消息中心-更新领取奖励状态]-->" + sql);
+		new RedisUtil().DelWapXiaoXiZhongXin();
+		logger.info("[Wap-消息中心-更新领取奖励状态]-->清除Redis缓存[keys *WAP_MESSAGE*]");
+	}
+	
+	public void DB(int uid){
+		String sql = "DELETE FROM plat_signed_user WHERE user_id = " + uid;
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
+		logger.info("[Wap-老签到-删除签到]-->" + sql);
+		new RedisUtil().DelWapLaoQianDao();
+		logger.info("[Wap-老签到-删除签到]-->清除Redis缓存[keys *SIGNING*]");
 	}
 	
 	public void EA(int uid){
 		new RedisUtil().DelFuFeiZhuanPan(uid);
-		logger.info("[App-删除新人礼包]-->清除Redis缓存[del OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "]");
+		logger.info("[运营活动-清除付费转盘次数]-->清除Redis缓存[del OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "]");
 	}
 
 }

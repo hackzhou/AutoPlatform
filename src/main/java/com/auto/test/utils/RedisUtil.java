@@ -22,6 +22,12 @@ public class RedisUtil {
 		}
 	}
 	
+	public void DelWapLaoQianDao(){//老签到
+		batchDel("*SIGNING_LIST*");
+		batchDel("*SIGNING*");
+		close();
+	}
+	
 	public void DelFuFeiZhuanPan(int uid){//付费转盘
 		batchDel("*OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "*");
 		close();
@@ -39,7 +45,12 @@ public class RedisUtil {
 		close();
 	}
 	
-	public void DelXiaoXiZhongXin(){//消息中心
+	public void DelWapXiaoXiZhongXin(){//消息中心
+		batchDel("*WAP_MESSAGE*");
+		close();
+	}
+	
+	public void DelAppXiaoXiZhongXin(){//消息中心
 		batchDel("*APP_MESSAGE*");
 		close();
 	}
