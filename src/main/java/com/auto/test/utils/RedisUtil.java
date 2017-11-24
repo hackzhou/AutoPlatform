@@ -22,13 +22,37 @@ public class RedisUtil {
 		}
 	}
 	
-	public void DeXinRenLiBao(){//新人礼包
-		batchDel("*PLAT_NEW_USER*");
+	public void DelFuFeiZhuanPan(int uid){//付费转盘
+		batchDel("*OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "*");
+		close();
+	}
+
+	public void DelXiangPiCa(){//橡皮擦
+		batchDel("*ERASER_RESUME_TIMES*");
 		close();
 	}
 	
-	public void DeXiaoXiZhongXin(){//消息中心
+	public void DelXinRenLiBao(){//新人礼包
+		batchDel("*PLAT_NEW_USER*");
+		batchDel("*UIC_USER_BY_ID*");
+		batchDel("*IS_NEW_USER_FIRST_IN*");
+		close();
+	}
+	
+	public void DelXiaoXiZhongXin(){//消息中心
 		batchDel("*APP_MESSAGE*");
+		close();
+	}
+	
+	public void DelDianZan(){//点赞
+		batchDel("*COTERIE_PRAISE_TIMES*");
+		batchDel("*COTERIE_PRAISE_LOCK*");
+		close();
+	}
+	
+	public void DelPingLunDianZan(){//评论点赞
+		batchDel("*COTERIE_COMMENT_PRAISE_TIMES*");
+		batchDel("*COTERIE_COMMENT_PRAISE_LOCK*");
 		close();
 	}
 	
@@ -47,6 +71,10 @@ public class RedisUtil {
 	public void DelShangCheng(){//商城
 		batchDel("*AWARDS_SAVE_ADDRESS*");
 		close();
+	}
+	
+	public void del(String text){
+		jedis.del(text);
 	}
 	
 	public void batchDel(String text){

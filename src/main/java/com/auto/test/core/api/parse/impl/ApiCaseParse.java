@@ -60,7 +60,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 		try {
 			/*this.urlA = "http://" + apiContext.getProject().getServera();		//Online Compare*/
-			this.urlB = "https://" + apiContext.getProject().getServerb();
+			this.urlB = "http://" + apiContext.getProject().getServerb();
 			executeBody(apiContext);
 		} catch (Exception e) {
 			executeFinal(apiContext, e.getMessage());

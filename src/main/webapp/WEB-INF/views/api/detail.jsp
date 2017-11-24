@@ -372,12 +372,12 @@
 	
 	function alertAllRequest(id) {
 		var ar = $("#api-all-request" + id).val();
-		swal("请求体", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "error");
+		swal("请求信息", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "error");
 	}
 	
 	function alertAllRequest2(id) {
 		var ar = $("#api-all-request" + id).val();
-		swal("请求体", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "success");
+		swal("请求信息", (ar == null ? "" : ar.replace(/;/g, "\r\n")), "success");
 	}
 
 	function diffUsingJS(viewType) {

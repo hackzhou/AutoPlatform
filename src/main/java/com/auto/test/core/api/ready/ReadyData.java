@@ -1,12 +1,15 @@
 package com.auto.test.core.api.ready;
 
 import java.util.List;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import com.auto.test.common.bean.ACaseReady;
+import com.auto.test.common.constant.Const;
 import com.auto.test.core.api.ready.impl.ReadyDataImpl;
 
 public class ReadyData {
-	private static List<ACaseReady> list = null;
+	private static List<ACaseReady> list	= null;
 	static{
 		list = new ArrayList<ACaseReady>();
 		list.add(new ACaseReady(101, "AA", "用户中心-更新我的金叶子为一亿"));
@@ -23,6 +26,9 @@ public class ReadyData {
 		list.add(new ACaseReady(307, "CG", "App-消息中心-更新领取奖励状态"));
 		list.add(new ACaseReady(308, "CH", "App-删除新人礼包"));
 		list.add(new ACaseReady(309, "CI", "App-删除俱乐部"));
+		list.add(new ACaseReady(310, "CJ", "App-清除橡皮擦"));
+		list.add(new ACaseReady(401, "DA", "Wap-"));
+		list.add(new ACaseReady(501, "EA", "运营活动-清除付费转盘次数"));
 	}
 	
 	public ReadyData(){
@@ -30,7 +36,8 @@ public class ReadyData {
 	}
 	
 	public static void exe(int index, int uid, String loginname, String body){
-		switch (index) {
+		if(getTestPlatform()){
+			switch (index) {
 			case 101:
 				new ReadyDataImpl().AA(uid);
 				break;
@@ -47,10 +54,10 @@ public class ReadyData {
 				new ReadyDataImpl().BB(body);
 				break;
 			case 301:
-				new ReadyDataImpl().CA(body);
+				new ReadyDataImpl().CA(uid);
 				break;
 			case 302:
-				new ReadyDataImpl().CB(body);
+				new ReadyDataImpl().CB(uid);
 				break;
 			case 303:
 				new ReadyDataImpl().CC(body);
@@ -73,13 +80,32 @@ public class ReadyData {
 			case 309:
 				new ReadyDataImpl().CI(uid);
 				break;
+			case 310:
+				new ReadyDataImpl().CJ();
+				break;
+			case 501:
+				new ReadyDataImpl().EA(uid);
+				break;
 			default:
 				break;
+			}
 		}
 	}
 	
 	public static int getUserID(String loginname) {
 		return new ReadyDataImpl().getUserID(loginname);
+	}
+	
+	private static boolean getTestPlatform(){
+		try {
+			InetAddress ip = InetAddress.getByName("uic-api.beeplay123.com");
+			if(Const.IP_SERVER_TEST.equals(ip.getHostAddress())){
+				return true;
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public static List<ACaseReady> getList() {
