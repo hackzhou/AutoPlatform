@@ -98,7 +98,7 @@ public class ReadyDataImpl {
 	}
 	
 	public void CF(String body){
-		String sql = "UPDATE app_user_message SET message_status = 0 WHERE message_id = " + new JSONVar().getValByResult("value", body);
+		String sql = "UPDATE app_user_message SET delete_flag = 0,message_status = 0 WHERE message_id = " + new JSONVar().getValByResult("value", body);
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
 		logger.info("[App-消息中心-更新消息状态]-->" + sql);
 		new RedisUtil().DelAppXiaoXiZhongXin();
@@ -106,7 +106,7 @@ public class ReadyDataImpl {
 	}
 	
 	public void CG(String body){
-		String sql = "UPDATE app_user_message SET award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
+		String sql = "UPDATE app_user_message SET delete_flag = 0,award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
 		logger.info("[App-消息中心-更新领取奖励状态]-->" + sql);
 		new RedisUtil().DelAppXiaoXiZhongXin();
@@ -139,7 +139,7 @@ public class ReadyDataImpl {
 	}
 	
 	public void DA(String body){
-		String sql = "UPDATE wap_user_message SET award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
+		String sql = "UPDATE wap_user_message SET delete_flag = 0,award_status = 1 WHERE message_id = " + new JSONVar().getValByResult("value", body);
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_PLATFORM, TEST_USER, TEST_PWD, sql);
 		logger.info("[Wap-消息中心-更新领取奖励状态]-->" + sql);
 		new RedisUtil().DelWapXiaoXiZhongXin();
