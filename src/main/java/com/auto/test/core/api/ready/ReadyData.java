@@ -29,7 +29,7 @@ public class ReadyData {
 		list.add(new ACaseReady(310, "CJ", "App-清除橡皮擦"));
 		list.add(new ACaseReady(401, "DA", "Wap-消息中心-更新领取奖励状态"));
 		list.add(new ACaseReady(402, "DB", "Wap-老签到-删除签到"));
-		list.add(new ACaseReady(501, "EA", "运营活动-清除付费转盘次数"));
+		list.add(new ACaseReady(501, "EA", "运营活动-清除转盘"));
 	}
 	
 	public ReadyData(){

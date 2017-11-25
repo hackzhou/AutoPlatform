@@ -156,7 +156,7 @@ public class ReadyDataImpl {
 	
 	public void EA(int uid){
 		new RedisUtil().DelFuFeiZhuanPan(uid);
-		logger.info("[运营活动-清除付费转盘次数]-->清除Redis缓存[del OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "]");
+		logger.info("[运营活动-清除转盘]-->清除Redis缓存[keys *WHEEL_FEE_USER_BET_TIME*");
 	}
 
 }

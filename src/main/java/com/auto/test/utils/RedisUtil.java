@@ -29,7 +29,8 @@ public class RedisUtil {
 	}
 	
 	public void DelFuFeiZhuanPan(int uid){//付费转盘
-		batchDel("*OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "*");
+//		batchDel("*OPS:WHEEL:WHEEL_FEE_USER_BET_TIME:1:" + uid + "*");
+		batchDel("*WHEEL_FEE_USER_BET_TIME*");
 		close();
 	}
 
