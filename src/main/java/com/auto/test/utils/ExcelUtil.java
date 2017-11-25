@@ -73,12 +73,15 @@ public class ExcelUtil {
 	                		aInterfaceCase.setReady(parseNum(cell.getNumericCellValue(), row.getRowNum() + 1));
 		                    break;
 	                	case 9:
-	                		aInterfaceCase.setBody(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
+	                		aInterfaceCase.setLink(parseLink(cell.getStringCellValue(), row.getRowNum() + 1));
 		                    break;
 	                	case 10:
-	                		aInterfaceCase.setResult(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
+	                		aInterfaceCase.setBody(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
 		                    break;
 	                	case 11:
+	                		aInterfaceCase.setResult(getRequestBoy(trimStr(cell.getStringCellValue()), row.getRowNum() + 1));
+		                    break;
+	                	case 12:
 	                		aInterfaceCase.setStrategy(splitStr(trimStr(cell.getStringCellValue())));
 		                    break;
 	                	default:
@@ -156,6 +159,24 @@ public class ExcelUtil {
 			return i < 0 ? 0 : i;
 		} catch (Exception e) {
 			throw new BusinessException("【第" + row + "行】[" + d + "]数字格式转换错误！");
+		}
+	}
+	
+	private String parseLink(String text, Integer row){
+		if(text == null || text.trim().isEmpty() || text.trim().equals("-")){
+			return null;
+		}
+		String[] links = text.trim().replace("S", "").split("-");
+		if(links.length == 2){
+			try {
+				Integer.parseInt(links[0]);
+				Integer.parseInt(links[1]);
+				return text.trim();
+			} catch (Exception e) {
+				throw new BusinessException("【第" + row + "行】[" + text + "]数字转换错误！");
+			}
+		}else{
+			throw new BusinessException("【第" + row + "行】[" + text + "]格式错误！");
 		}
 	}
 

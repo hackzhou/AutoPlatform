@@ -1,7 +1,10 @@
 package com.auto.test.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.auto.test.common.bean.AInterfaceCase;
@@ -130,6 +133,8 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		if(list != null && !list.isEmpty()){
 			Integer batchProject = 0;
 			String batch = String.valueOf(System.currentTimeMillis());
+			Map<String, ACase> linkMap = new HashMap<String, ACase>();
+			int linkCount = 0;
 			for (AInterfaceCase aInterfaceCase : list) {
 				if(isNull(aInterfaceCase.getProject())){
 					throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现【所属项目】为空！");
@@ -163,13 +168,17 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}else{
 						try {
 							Integer iid = batchInterface(aInterfaceCase, batchProject, batch);
-							batchCase(aInterfaceCase, iid, vList.get(0).getId());
+							batchCase(linkMap, aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
 						}
 					}
 				}
+				if(aInterfaceCase.getLink() != null && aInterfaceCase.getLink().startsWith("S")){
+					linkCount++;
+				}
 			}
+			setCaseLink(linkMap, linkCount);
 			deleteCascade(batchProject, batch);
 		}else{
 			throw new BusinessException("文件数据为空！");
@@ -191,7 +200,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 	}
 	
-	private void batchCase(AInterfaceCase aInterfaceCase, Integer iid, Integer vid){
+	private void batchCase(Map<String, ACase> linkMap, AInterfaceCase aInterfaceCase, Integer iid, Integer vid){
 		ACase caseo = null;
 		List<ACase> list = casedDao.findByInterfaceIdFlag(iid, 1);
 		if(list != null && !list.isEmpty()){
@@ -209,9 +218,48 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		if(caseo == null){
 			c.setCreateTime(new Date());
 			casedDao.create(c);
+			if(aInterfaceCase.getLink() != null){
+				linkMap.put(aInterfaceCase.getLink(), c);
+			}
 		}else{
 			caseo.update(c, false, false);
 			casedDao.update(caseo);
+			if(aInterfaceCase.getLink() != null){
+				linkMap.put(aInterfaceCase.getLink(), caseo);
+			}
+		}
+	}
+	
+	private void setCaseLink(Map<String, ACase> linkMap, int linkCount){
+		if(linkMap != null && !linkMap.isEmpty() && linkCount > 0){
+			List<String> linkList = null;
+			for (int i = 1; i <= linkCount; i++) {
+				linkList = new ArrayList<String>();
+				String links = "";
+				String index = i + "-";
+				ACase c = linkMap.get("S" + index + "0");
+				if(c != null){
+					for (String key : linkMap.keySet()) {
+						if(!key.contains("S") && key.contains(index)){
+							linkList.add(key);
+						}
+					}
+					if(linkList != null && !linkList.isEmpty()){
+						for (int j = 1; j <= linkList.size(); j++) {
+							ACase cs = linkMap.get(index + j);
+							if(cs != null){
+								links += "," + cs.getId();
+								cs.setRun(0);
+								casedDao.update(cs);
+							}
+						}
+					}
+					if(links.startsWith(",")){
+						c.setLink(links.substring(1));
+						casedDao.update(c);
+					}
+				}
+			}
 		}
 	}
 	
