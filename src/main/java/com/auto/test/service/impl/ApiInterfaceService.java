@@ -222,7 +222,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 				linkMap.put(aInterfaceCase.getLink(), c);
 			}
 		}else{
-			caseo.update(c, false, false);
+			caseo.update(c, false, true);
 			casedDao.update(caseo);
 			if(aInterfaceCase.getLink() != null){
 				linkMap.put(aInterfaceCase.getLink(), caseo);
