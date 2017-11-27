@@ -90,19 +90,16 @@ public class ApiExecuteRun implements Runnable {
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
 				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
-					for (int i = 0; i < list.size(); i++) {
-						ACase aCase = list.get(i);
+					for (ACase aCase : list) {
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
-						if(i == 0){
-							AResultDetail rd = null;
-							for (int j = 0; j < gameTimeout; j++) {
-								rd = new AResultDetail();
-								oneRunBodyTimeout(aCase, rd);
-								if(rd.getResultb() != null){
-									JSONObject obj = JSON.parseObject(rd.getResultb());
-									if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
-										break;
-									}
+						AResultDetail rd = null;
+						for (int j = 0; j < gameTimeout; j++) {
+							rd = new AResultDetail();
+							oneRunBodyTimeout(aCase, rd);
+							if(rd.getResultb() != null){
+								JSONObject obj = JSON.parseObject(rd.getResultb());
+								if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
+									break;
 								}else{
 									Thread.sleep(1000);
 								}
