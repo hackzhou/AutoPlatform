@@ -1,6 +1,7 @@
 package com.auto.test.core.api.execute;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -44,9 +45,11 @@ public class ApiExecuteRun implements Runnable {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
+	private String gameProject = null;
+	private Integer gameTimeout = null;
 
-	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlB, String authorB, String version, String channel, String projectRootPath, String nologinResult, String onceResult) {
+	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB,
+			String version, String channel, String projectRootPath, String nologinResult, String onceResult, String gameProject, Integer gameTimeout) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -58,6 +61,8 @@ public class ApiExecuteRun implements Runnable {
 		this.projectRootPath = projectRootPath;
 		this.nologinResult = nologinResult;
 		this.onceResult = onceResult;
+		this.gameProject = gameProject;
+		this.gameTimeout = gameTimeout;
 	}
 	
 	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
@@ -84,9 +89,29 @@ public class ApiExecuteRun implements Runnable {
 			oneRunBody(aCase, resultDetail);
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
-				for (ACase aCase : list) {
-					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
-					oneRunBody(aCase, new AResultDetail());
+				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
+					for (int i = 0; i < list.size(); i++) {
+						ACase aCase = list.get(i);
+						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
+						if(i == 0){
+							AResultDetail rd = null;
+							for (int j = 0; j < gameTimeout; j++) {
+								rd = new AResultDetail();
+								oneRunBodyTimeout(aCase, rd);
+								if(rd.getResultb() != null && rd.getResultb().contains("\"code\":200")){
+									break;
+								}else{
+									Thread.sleep(1000);
+								}
+							}
+						}
+						oneRunBody(aCase, new AResultDetail());
+					}
+				}else{
+					for (ACase aCase : list) {
+						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
+						oneRunBody(aCase, new AResultDetail());
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -112,6 +137,17 @@ public class ApiExecuteRun implements Runnable {
 		} finally {
 			runFinal(aResultDetail);
 		}
+	}
+	
+	private void oneRunBodyTimeout(ACase aCase, AResultDetail aResultDetail) throws Exception{
+		aCase.setBody(new JSONVar().replaceBodyVar(aCase.getBody(), authorB));
+		if(aCase.getReady() != null && aCase.getReady() > 0 && apiContext.getAccount() != null){
+			if(apiContext.getDbUser() == 0){
+				apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
+			}
+			ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), apiContext.getAccount().getLoginname(), aCase.getBody());
+		}
+		sendMessage(aCase, aResultDetail);
 	}
 	
 	private void saveResultDetailSuccess(ACase aCase, AResultDetail aResultDetail){
@@ -329,8 +365,8 @@ public class ApiExecuteRun implements Runnable {
 			String tempB = url.substring(url.indexOf("{") + 1, url.indexOf("}"));
 			JSONObject jsono = JSON.parseObject(body);
 			if(jsono != null && jsono.get(tempB) != null){
-//				jsono.remove(tempB);
-//				aCase.setBody(JSON.toJSONString(jsono));
+//				//jsono.remove(tempB);
+//				//aCase.setBody(JSON.toJSONString(jsono));
 				return url.replace(tempA, String.valueOf(jsono.get(tempB)));
 			}
 		}

@@ -39,6 +39,8 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
+	private String gameProject = null;
+	private Integer gameTimeout = null;
 	
 	public ApiCaseParse(){
 		super();
@@ -51,6 +53,9 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.onceResult = GlobalValueConfig.getConfig("api.once.result");
 //		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
 		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
+		this.gameProject = GlobalValueConfig.getConfig("game.timeout.project");
+		String gameTime = GlobalValueConfig.getConfig("game.timeout.time");
+		this.gameTimeout = (gameTime == null || gameTime.isEmpty()) ? 0 : Integer.parseInt(gameTime);
 	}
 
 	@Override
@@ -99,10 +104,10 @@ public class ApiCaseParse implements IApiCaseParse {
 			for (String channel : channels.split(",")) {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
-						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlA, urlB, authorA, authorB, version, channel, projectRootPath, nologinResult, onceResult);	//Online Compare*/						
-						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext,
-								aCase, urlB, authorB, version, channel, projectRootPath, nologinResult, onceResult);
+						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlA, urlB, authorA, authorB, 
+								version, channel, projectRootPath, nologinResult, onceResult, gameProject, gameTimeout);	//Online Compare*/						
+						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlB, authorB,
+								version, channel, projectRootPath, nologinResult, onceResult, gameProject, gameTimeout);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}
