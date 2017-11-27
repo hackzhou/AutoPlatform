@@ -98,8 +98,11 @@ public class ApiExecuteRun implements Runnable {
 							for (int j = 0; j < gameTimeout; j++) {
 								rd = new AResultDetail();
 								oneRunBodyTimeout(aCase, rd);
-								if(rd.getResultb() != null && rd.getResultb().contains("\"code\":200")){
-									break;
+								if(rd.getResultb() != null){
+									JSONObject obj = JSON.parseObject(rd.getResultb());
+									if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
+										break;
+									}
 								}else{
 									Thread.sleep(1000);
 								}
@@ -123,14 +126,7 @@ public class ApiExecuteRun implements Runnable {
 	
 	private void oneRunBody(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		try {
-			aCase.setBody(new JSONVar().replaceBodyVar(aCase.getBody(), authorB));
-			if(aCase.getReady() != null && aCase.getReady() > 0 && apiContext.getAccount() != null){
-				if(apiContext.getDbUser() == 0){
-					apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
-				}
-				ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), apiContext.getAccount().getLoginname(), aCase.getBody());
-			}
-			sendMessage(aCase, aResultDetail);
+			oneRunBodyTimeout(aCase, aResultDetail);
 			saveResultDetailSuccess(aCase, aResultDetail);
 		} catch (Exception e) {
 			saveResultDetailFail(aCase, aResultDetail, e.getMessage());
@@ -148,6 +144,13 @@ public class ApiExecuteRun implements Runnable {
 			ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), apiContext.getAccount().getLoginname(), aCase.getBody());
 		}
 		sendMessage(aCase, aResultDetail);
+		recoverData(aCase.getReady());
+	}
+	
+	private void recoverData(Integer ready){
+		if(new Integer(502).equals(ready)){
+			ReadyData.exe(101, apiContext.getDbUser(), apiContext.getAccount().getLoginname(), null);
+		}
 	}
 	
 	private void saveResultDetailSuccess(ACase aCase, AResultDetail aResultDetail){

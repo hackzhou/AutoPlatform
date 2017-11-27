@@ -68,8 +68,9 @@ public class ApiCaseParse implements IApiCaseParse {
 			this.urlB = "http://" + apiContext.getProject().getServerb();
 			executeBody(apiContext);
 		} catch (Exception e) {
-			executeFinal(apiContext, e.getMessage());
-			logger.error(e.getMessage());
+			String message = e.getMessage() == null ? "Error" : e.getMessage();
+			executeFinal(apiContext, message);
+			logger.error(message);
 			throw e;
 		}
 	}

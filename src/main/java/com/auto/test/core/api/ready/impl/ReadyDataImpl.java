@@ -160,6 +160,9 @@ public class ReadyDataImpl {
 	}
 	
 	public void EB(int uid){
+		String sql = "UPDATE trans_account SET use_amount = '100.0000',total_amount = '100.0000',grand_amount = '100.0000' WHERE user_id = " + uid;
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_8066, TEST_DB_MYCATTRANS, TEST_USER, TEST_PWD, sql);
+		logger.info("[用户中心-更新我的金叶子为一百]-->" + sql);
 		new RedisUtil().DelFuHuoJiJin();
 		logger.info("[运营活动-复活基金-清除金叶子]-->清除Redis缓存[keys *USER_GRANT_TIMES*");
 	}
