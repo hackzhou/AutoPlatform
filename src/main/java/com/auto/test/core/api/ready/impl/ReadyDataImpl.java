@@ -158,5 +158,28 @@ public class ReadyDataImpl {
 		new RedisUtil().DelFuFeiZhuanPan(uid);
 		logger.info("[运营活动-清除转盘]-->清除Redis缓存[keys *WHEEL_FEE_USER_BET_TIME*");
 	}
+	
+	public void EB(int uid){
+		new RedisUtil().DelFuHuoJiJin();
+		logger.info("[运营活动-复活基金-清除金叶子]-->清除Redis缓存[keys *USER_GRANT_TIMES*");
+	}
+	
+	public void EC(){
+		new RedisUtil().DelWeiTuoChongZhi();
+		logger.info("[运营活动-微拓充值-清除登记领取]-->清除Redis缓存[keys *WEITUO_RECHARGE_RECORD*");
+	}
+	
+	public void ED(){
+		new RedisUtil().DelChouJiangHuoDong();
+		logger.info("[运营活动-清除活动]-->清除Redis缓存[keys *ACTIVITY_USER_IS_JOIN*");
+	}
+	
+	public void EE(){
+	}
+	
+	public void EF(){
+		new RedisUtil().DelXianShiBaoXiang();
+		logger.info("[运营活动-限时宝箱-清除吃大餐]-->清除Redis缓存[keys *PLAT_CHEST_IS_RECEIVE_BY_USERID*");
+	}
 
 }

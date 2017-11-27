@@ -30,6 +30,11 @@ public class ReadyData {
 		list.add(new ACaseReady(401, "DA", "Wap-消息中心-更新领取奖励状态"));
 		list.add(new ACaseReady(402, "DB", "Wap-老签到-删除签到"));
 		list.add(new ACaseReady(501, "EA", "运营活动-清除转盘"));
+		list.add(new ACaseReady(502, "EB", "运营活动-复活基金-清除金叶子"));
+		list.add(new ACaseReady(503, "EC", "运营活动-微拓充值-清除登记领取"));
+		list.add(new ACaseReady(504, "ED", "运营活动-清除活动"));
+		list.add(new ACaseReady(505, "EE", "运营活动-福利宝箱-清除领取奖励"));
+		list.add(new ACaseReady(506, "EF", "运营活动-限时宝箱-清除吃大餐"));
 	}
 	
 	public ReadyData(){
@@ -92,6 +97,21 @@ public class ReadyData {
 				break;
 			case 501:
 				new ReadyDataImpl().EA(uid);
+				break;
+			case 502:
+				new ReadyDataImpl().EB(uid);
+				break;
+			case 503:
+				new ReadyDataImpl().EC();
+				break;
+			case 504:
+				new ReadyDataImpl().ED();
+				break;
+			case 505:
+				new ReadyDataImpl().EE();
+				break;
+			case 506:
+				new ReadyDataImpl().EF();
 				break;
 			default:
 				break;

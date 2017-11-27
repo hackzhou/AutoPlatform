@@ -22,9 +22,23 @@ public class RedisUtil {
 		}
 	}
 	
-	public void DelWapLaoQianDao(){//老签到
-		batchDel("*SIGNING_LIST*");
-		batchDel("*SIGNING*");
+	public void DelXianShiBaoXiang(){//限时宝箱
+		batchDel("*PLAT_CHEST_IS_RECEIVE_BY_USERID*");
+		close();
+	}
+	
+	public void DelChouJiangHuoDong(){//抽奖活动
+		batchDel("*ACTIVITY_USER_IS_JOIN*");
+		close();
+	}
+	
+	public void DelWeiTuoChongZhi(){//微拓充值
+		batchDel("*WEITUO_RECHARGE_RECORD*");
+		close();
+	}
+	
+	public void DelFuHuoJiJin(){//复活基金
+		batchDel("*USER_GRANT_TIMES*");
 		close();
 	}
 	
@@ -33,7 +47,13 @@ public class RedisUtil {
 		batchDel("*WHEEL_FEE_USER_BET_TIME*");
 		close();
 	}
-
+	
+	public void DelWapLaoQianDao(){//老签到
+		batchDel("*SIGNING_LIST*");
+		batchDel("*SIGNING*");
+		close();
+	}
+	
 	public void DelXiangPiCa(){//橡皮擦
 		batchDel("*ERASER_RESUME_TIMES*");
 		close();
