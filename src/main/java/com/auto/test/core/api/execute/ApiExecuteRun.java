@@ -144,13 +144,6 @@ public class ApiExecuteRun implements Runnable {
 			ReadyData.exe(aCase.getReady(), apiContext.getDbUser(), apiContext.getAccount().getLoginname(), aCase.getBody());
 		}
 		sendMessage(aCase, aResultDetail);
-		recoverData(aCase.getReady());
-	}
-	
-	private void recoverData(Integer ready){
-		if(new Integer(502).equals(ready)){
-			ReadyData.exe(101, apiContext.getDbUser(), apiContext.getAccount().getLoginname(), null);
-		}
 	}
 	
 	private void saveResultDetailSuccess(ACase aCase, AResultDetail aResultDetail){

@@ -24,6 +24,7 @@ public class RedisUtil {
 	
 	public void DelXianShiBaoXiang(){//限时宝箱
 		batchDel("*PLAT_CHEST_IS_RECEIVE_BY_USERID*");
+		batchDel("*PLAT_CHEST_LOG_BY_USERID_COUNT*");
 		close();
 	}
 	

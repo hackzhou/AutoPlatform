@@ -111,7 +111,7 @@ public class ReadyData {
 				new ReadyDataImpl().EE();
 				break;
 			case 506:
-				new ReadyDataImpl().EF();
+				new ReadyDataImpl().EF(uid);
 				break;
 			default:
 				break;

@@ -20,6 +20,7 @@ public class ReadyDataImpl {
 	private static final String TEST_DB_UIC			= "uic";
 	private static final String TEST_DB_MALL		= "mall";
 	private static final String TEST_DB_PLATFORM	= "platform";
+	private static final String TEST_DB_OPS			= "ops";
 	
 	public int getUserID(String loginname){
 		String sql = "SELECT id FROM uic_user WHERE loginname = '" + loginname + "'";
@@ -156,33 +157,33 @@ public class ReadyDataImpl {
 	
 	public void EA(int uid){
 		new RedisUtil().DelFuFeiZhuanPan(uid);
-		logger.info("[运营活动-清除转盘]-->清除Redis缓存[keys *WHEEL_FEE_USER_BET_TIME*");
+		logger.info("[运营活动-清除转盘]-->清除Redis缓存[keys *WHEEL_FEE_USER_BET_TIME*]");
 	}
 	
 	public void EB(int uid){
-		String sql = "UPDATE trans_account SET use_amount = '100.0000',total_amount = '100.0000',grand_amount = '100.0000' WHERE user_id = " + uid;
-		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_8066, TEST_DB_MYCATTRANS, TEST_USER, TEST_PWD, sql);
-		logger.info("[用户中心-更新我的金叶子为一百]-->" + sql);
 		new RedisUtil().DelFuHuoJiJin();
-		logger.info("[运营活动-复活基金-清除金叶子]-->清除Redis缓存[keys *USER_GRANT_TIMES*");
+		logger.info("[运营活动-复活基金-清除金叶子]-->清除Redis缓存[keys *USER_GRANT_TIMES*]");
 	}
 	
 	public void EC(){
 		new RedisUtil().DelWeiTuoChongZhi();
-		logger.info("[运营活动-微拓充值-清除登记领取]-->清除Redis缓存[keys *WEITUO_RECHARGE_RECORD*");
+		logger.info("[运营活动-微拓充值-清除登记领取]-->清除Redis缓存[keys *WEITUO_RECHARGE_RECORD*]");
 	}
 	
 	public void ED(){
 		new RedisUtil().DelChouJiangHuoDong();
-		logger.info("[运营活动-清除活动]-->清除Redis缓存[keys *ACTIVITY_USER_IS_JOIN*");
+		logger.info("[运营活动-清除活动]-->清除Redis缓存[keys *ACTIVITY_USER_IS_JOIN*]");
 	}
 	
 	public void EE(){
 	}
 	
-	public void EF(){
+	public void EF(int uid){
+		String sql = "DELETE FROM plat_chest_log WHERE user_id = " + uid;
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_OPS, TEST_USER, TEST_PWD, sql);
+		logger.info("[运营活动-限时宝箱-清除吃大餐]-->" + sql);
 		new RedisUtil().DelXianShiBaoXiang();
-		logger.info("[运营活动-限时宝箱-清除吃大餐]-->清除Redis缓存[keys *PLAT_CHEST_IS_RECEIVE_BY_USERID*");
+		logger.info("[运营活动-限时宝箱-清除吃大餐]-->清除Redis缓存[keys *PLAT_CHEST_IS_RECEIVE_BY_USERID*][keys *PLAT_CHEST_LOG_BY_USERID_COUNT*]");
 	}
 
 }
