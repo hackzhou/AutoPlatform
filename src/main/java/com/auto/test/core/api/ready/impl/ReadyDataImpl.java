@@ -165,7 +165,10 @@ public class ReadyDataImpl {
 		logger.info("[运营活动-复活基金-清除金叶子]-->清除Redis缓存[keys *USER_GRANT_TIMES*]");
 	}
 	
-	public void EC(){
+	public void EC(int uid){
+		String sql = "UPDATE weituo_recharge_user SET delete_flag = 0,status = 1 WHERE user_id = " + uid;
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_OPS, TEST_USER, TEST_PWD, sql);
+		logger.info("[运营活动-微拓充值-清除登记领取]-->" + sql);
 		new RedisUtil().DelWeiTuoChongZhi();
 		logger.info("[运营活动-微拓充值-清除登记领取]-->清除Redis缓存[keys *WEITUO_RECHARGE_RECORD*]");
 	}
