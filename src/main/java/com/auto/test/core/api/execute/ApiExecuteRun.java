@@ -98,7 +98,7 @@ public class ApiExecuteRun implements Runnable {
 					AResultDetail ard = new AResultDetail();
 					for (ACase aCase : list) {
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
-						if(Arrays.asList(gameBetting.split(",")).contains(ard.getUrl())){
+						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl())){
 							testPass(aCase);
 						}
 						oneRunBody(aCase, ard);
