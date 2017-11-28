@@ -47,11 +47,12 @@ public class ApiExecuteRun implements Runnable {
 	private String onceResult = null;
 	private String gameStatus = null;
 	private String gameBetting = null;
+	private String gameResult = null;
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB, String version, String channel,
-			String projectRootPath, String nologinResult, String onceResult, String gameStatus, String gameBetting, String gameProject, Integer gameTimeout) {
+			String projectRootPath, String nologinResult, String onceResult, String gameStatus, String gameBetting, String gameResult, String gameProject, Integer gameTimeout) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -65,6 +66,7 @@ public class ApiExecuteRun implements Runnable {
 		this.onceResult = onceResult;
 		this.gameStatus = gameStatus;
 		this.gameBetting = gameBetting;
+		this.gameResult = gameResult;
 		this.gameProject = gameProject;
 		this.gameTimeout = gameTimeout;
 	}
@@ -105,7 +107,8 @@ public class ApiExecuteRun implements Runnable {
 					for (ACase aCase : list) {
 						String varBody = aCase.getBody();
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
-						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl())){
+						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl()) || 
+								Arrays.asList(gameResult.split(",")).contains(aCase.getInterfaceo().getUrl())){
 							testPass(aCase, statusCase, varBody);
 						}
 						oneRunBody(aCase, ard);
