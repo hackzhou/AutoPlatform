@@ -103,9 +103,10 @@ public class ApiExecuteRun implements Runnable {
 					String result = resultDetail.getResultb();
 					AResultDetail ard = new AResultDetail();
 					for (ACase aCase : list) {
+						String varBody = aCase.getBody();
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
 						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl())){
-							testPass(aCase, statusCase);
+							testPass(aCase, statusCase, varBody);
 						}
 						oneRunBody(aCase, ard);
 						if(Arrays.asList(gameStatus.split(",")).contains(ard.getUrl())){
@@ -127,7 +128,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private void testPass(ACase aCase, ACase statusCase) throws Exception{
+	private void testPass(ACase aCase, ACase statusCase, String varBody) throws Exception{
 		AResultDetail rd = null;
 		for (int j = 0; j < gameTimeout; j++) {
 			rd = new AResultDetail();
@@ -139,7 +140,7 @@ public class ApiExecuteRun implements Runnable {
 				}else if("期数错误".equals(obj.get("message"))){
 					AResultDetail srd = new AResultDetail();
 					oneRunBodyTimeout(statusCase, srd);
-					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), srd.getResultb()));
+					aCase.setBody(new JSONVar().replaceBody(varBody, srd.getResultb()));
 				}
 				Thread.sleep(1000);
 			}
