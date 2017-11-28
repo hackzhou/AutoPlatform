@@ -92,19 +92,7 @@ public class ApiExecuteRun implements Runnable {
 				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
 					for (ACase aCase : list) {
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
-						AResultDetail rd = null;
-						for (int j = 0; j < gameTimeout; j++) {
-							rd = new AResultDetail();
-							oneRunBodyTimeout(aCase, rd);
-							if(rd.getResultb() != null){
-								JSONObject obj = JSON.parseObject(rd.getResultb());
-								if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
-									break;
-								}else{
-									Thread.sleep(1000);
-								}
-							}
-						}
+						testPass(aCase);
 						oneRunBody(aCase, new AResultDetail());
 					}
 				}else{
@@ -118,6 +106,22 @@ public class ApiExecuteRun implements Runnable {
 			e.printStackTrace();
 			logger.error(e.getMessage());
 			throw new BusinessException(e.getMessage());
+		}
+	}
+	
+	private void testPass(ACase aCase) throws Exception{
+		AResultDetail rd = null;
+		for (int j = 0; j < gameTimeout; j++) {
+			rd = new AResultDetail();
+			oneRunBodyTimeout(aCase, rd);
+			if(rd.getResultb() != null){
+				JSONObject obj = JSON.parseObject(rd.getResultb());
+				if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
+					break;
+				}else{
+					Thread.sleep(1000);
+				}
+			}
 		}
 	}
 	
