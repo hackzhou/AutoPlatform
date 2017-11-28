@@ -283,7 +283,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private void addResulta(ACase aCase, AResultDetail aResultDetail){
+	private void addResulta(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		if(apiContext.getAccount() == null && new Integer(1).equals(aCase.getLogin())){
 			aResultDetail.setResulta(nologinResult);
 		}else{
@@ -346,7 +346,7 @@ public class ApiExecuteRun implements Runnable {
 		return result;
 	}
 	
-	private String getFullUrl(ACase aCase, String url, String body){
+	private String getFullUrl(ACase aCase, String url, String body) throws Exception{
 		String iUrl = aCase.getInterfaceo().getUrl();
 		String fullUrl = fillVariable(aCase, iUrl, body);
 		if(fullUrl != null){
@@ -363,7 +363,7 @@ public class ApiExecuteRun implements Runnable {
 		return url + apiContext.getProject().getPath() + iUrl;
 	}
 	
-	public String fillVariable(ACase aCase, String url, String body){
+	public String fillVariable(ACase aCase, String url, String body) throws Exception{
 		if(body != null && !body.isEmpty() && url != null && url.contains("{") && url.contains("}") && (url.indexOf("{") < url.indexOf("}"))){
 			String tempA = url.substring(url.indexOf("{"), url.indexOf("}") + 1);
 			String tempB = url.substring(url.indexOf("{") + 1, url.indexOf("}"));
