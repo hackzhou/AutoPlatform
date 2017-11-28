@@ -45,12 +45,13 @@ public class ApiExecuteRun implements Runnable {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
-	private String gamePath = null;
+	private String gameStatus = null;
+	private String gameBetting = null;
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 
 	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB, String version, String channel,
-			String projectRootPath, String nologinResult, String onceResult, String gamePath, String gameProject, Integer gameTimeout) {
+			String projectRootPath, String nologinResult, String onceResult, String gameStatus, String gameBetting, String gameProject, Integer gameTimeout) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -62,7 +63,8 @@ public class ApiExecuteRun implements Runnable {
 		this.projectRootPath = projectRootPath;
 		this.nologinResult = nologinResult;
 		this.onceResult = onceResult;
-		this.gamePath = gamePath;
+		this.gameStatus = gameStatus;
+		this.gameBetting = gameBetting;
 		this.gameProject = gameProject;
 		this.gameTimeout = gameTimeout;
 	}
@@ -93,12 +95,14 @@ public class ApiExecuteRun implements Runnable {
 			if(list != null && !list.isEmpty()){
 				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
 					String result = resultDetail.getResultb();
-					AResultDetail ard= new AResultDetail();
+					AResultDetail ard = new AResultDetail();
 					for (ACase aCase : list) {
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
-						testPass(aCase);
+						if(Arrays.asList(gameBetting.split(",")).contains(ard.getUrl())){
+							testPass(aCase);
+						}
 						oneRunBody(aCase, ard);
-						if(Arrays.asList(gamePath.split(",")).contains(ard.getUrl())){
+						if(Arrays.asList(gameStatus.split(",")).contains(ard.getUrl())){
 							result = ard.getResultb();
 						}
 					}

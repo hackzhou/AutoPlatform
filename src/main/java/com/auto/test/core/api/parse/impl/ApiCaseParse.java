@@ -39,7 +39,8 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
-	private String gamePath = null;
+	private String gameStatus = null;
+	private String gameBetting = null;
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 	
@@ -54,7 +55,8 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.onceResult = GlobalValueConfig.getConfig("api.once.result");
 //		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
 		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
-		this.gamePath = GlobalValueConfig.getConfig("game.timeout.path");
+		this.gameStatus = GlobalValueConfig.getConfig("game.timeout.status");
+		this.gameBetting = GlobalValueConfig.getConfig("game.timeout.betting");
 		this.gameProject = GlobalValueConfig.getConfig("game.timeout.project");
 		String gameTime = GlobalValueConfig.getConfig("game.timeout.time");
 		this.gameTimeout = (gameTime == null || gameTime.isEmpty()) ? 0 : Integer.parseInt(gameTime);
@@ -107,10 +109,10 @@ public class ApiCaseParse implements IApiCaseParse {
 			for (String channel : channels.split(",")) {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
-						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlA, urlB, authorA, authorB, 
-								version, channel, projectRootPath, nologinResult, onceResult, gamePath, gameProject, gameTimeout);	//Online Compare*/						
-						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlB, authorB,
-								version, channel, projectRootPath, nologinResult, onceResult, gamePath, gameProject, gameTimeout);
+						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlA, urlB, authorA, authorB, version, channel,
+								projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameProject, gameTimeout);	//Online Compare*/						
+						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlB, authorB, version, channel,
+								projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameProject, gameTimeout);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}
