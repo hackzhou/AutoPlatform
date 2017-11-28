@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.common.bean.AData;
 import com.auto.test.common.bean.AResultFail;
 import com.auto.test.common.bean.ARunTime;
 import com.auto.test.common.constant.ApiRunStatus;
@@ -102,19 +103,19 @@ public class ApiExecuteRun implements Runnable {
 					}else{
 						throw new BusinessException("[案例][关联案例的起始案例必须为游戏状态！]");
 					}
-					String result = resultDetail.getResultb();
+					AData aData = new AData(resultDetail.getResultb());
 					AResultDetail ard = new AResultDetail();
 					for (ACase aCase : list) {
 						String varBody = aCase.getBody();
-						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
+						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), aData.getResult()));
 						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl()) || 
 								Arrays.asList(gameResult.split(",")).contains(aCase.getInterfaceo().getUrl())){
-							testPass(aCase, statusCase, varBody);
+							testPass(aCase, statusCase, varBody, aData);
 						}
 						oneRunBody(aCase, ard);
 						if(Arrays.asList(gameStatus.split(",")).contains(ard.getUrl())){
 							statusCase = aCase;
-							result = ard.getResultb();
+							aData.setResult(ard.getResultb());
 						}
 					}
 				}else{
@@ -131,7 +132,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private void testPass(ACase aCase, ACase statusCase, String varBody) throws Exception{
+	private void testPass(ACase aCase, ACase statusCase, String varBody, AData aData) throws Exception{
 		AResultDetail rd = null;
 		for (int j = 0; j < gameTimeout; j++) {
 			rd = new AResultDetail();
@@ -144,6 +145,7 @@ public class ApiExecuteRun implements Runnable {
 					AResultDetail srd = new AResultDetail();
 					oneRunBodyTimeout(statusCase, srd);
 					aCase.setBody(new JSONVar().replaceBody(varBody, srd.getResultb()));
+					aData.setResult(srd.getResultb());
 				}
 				Thread.sleep(1000);
 			}
