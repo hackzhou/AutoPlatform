@@ -129,6 +129,9 @@ public class ApiExecuteRun implements Runnable {
 				JSONObject obj = JSON.parseObject(rd.getResultb());
 				if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
 					break;
+				}else if("期数错误".equals(obj.get("message"))){
+					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), rd.getResultb()));
+					Thread.sleep(1000);
 				}else{
 					Thread.sleep(1000);
 				}
