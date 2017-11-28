@@ -94,15 +94,22 @@ public class ApiExecuteRun implements Runnable {
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
 				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
+					ACase statusCase = null;
+					if(Arrays.asList(gameStatus.split(",")).contains(aCase.getInterfaceo().getUrl())){
+						statusCase = aCase;
+					}else{
+						throw new BusinessException("[案例][关联案例的起始案例必须为游戏状态！]");
+					}
 					String result = resultDetail.getResultb();
 					AResultDetail ard = new AResultDetail();
 					for (ACase aCase : list) {
 						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
 						if(Arrays.asList(gameBetting.split(",")).contains(aCase.getInterfaceo().getUrl())){
-							testPass(aCase);
+							testPass(aCase, statusCase);
 						}
 						oneRunBody(aCase, ard);
 						if(Arrays.asList(gameStatus.split(",")).contains(ard.getUrl())){
+							statusCase = aCase;
 							result = ard.getResultb();
 						}
 					}
@@ -120,7 +127,7 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private void testPass(ACase aCase) throws Exception{
+	private void testPass(ACase aCase, ACase statusCase) throws Exception{
 		AResultDetail rd = null;
 		for (int j = 0; j < gameTimeout; j++) {
 			rd = new AResultDetail();
@@ -130,11 +137,11 @@ public class ApiExecuteRun implements Runnable {
 				if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
 					break;
 				}else if("期数错误".equals(obj.get("message"))){
-//					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), rd.getResultb()));
-					Thread.sleep(1000);
-				}else{
-					Thread.sleep(1000);
+					AResultDetail srd = new AResultDetail();
+					oneRunBodyTimeout(statusCase, srd);
+					aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), srd.getResultb()));
 				}
+				Thread.sleep(1000);
 			}
 		}
 	}
