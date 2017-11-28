@@ -39,6 +39,7 @@ public class ApiCaseParse implements IApiCaseParse {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
+	private String gamePath = null;
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 	
@@ -53,6 +54,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.onceResult = GlobalValueConfig.getConfig("api.once.result");
 //		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
 		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
+		this.gamePath = GlobalValueConfig.getConfig("game.timeout.path");
 		this.gameProject = GlobalValueConfig.getConfig("game.timeout.project");
 		String gameTime = GlobalValueConfig.getConfig("game.timeout.time");
 		this.gameTimeout = (gameTime == null || gameTime.isEmpty()) ? 0 : Integer.parseInt(gameTime);
@@ -106,9 +108,9 @@ public class ApiCaseParse implements IApiCaseParse {
 				for (ACase aCase : list) {
 					if(new Integer(1).equals(aCase.getRun())){
 						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlA, urlB, authorA, authorB, 
-								version, channel, projectRootPath, nologinResult, onceResult, gameProject, gameTimeout);	//Online Compare*/						
+								version, channel, projectRootPath, nologinResult, onceResult, gamePath, gameProject, gameTimeout);	//Online Compare*/						
 						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlB, authorB,
-								version, channel, projectRootPath, nologinResult, onceResult, gameProject, gameTimeout);
+								version, channel, projectRootPath, nologinResult, onceResult, gamePath, gameProject, gameTimeout);
 						cachedThreadPool.execute(apiExecuteRun);
 					}
 				}
@@ -177,7 +179,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private String visitorLogin(String loginname, String token) {
+	private String visitorLogin(String loginname, String token) throws Exception{
 		if("游客登录".equals(loginname)){
 			String t = new ReadyUtil().getVisitorToken();
 			if(t == null || t.isEmpty()){

@@ -21,17 +21,21 @@ public class ReadyUtil {
 	private static final String VAR_ACCESSTOKEN			= "accessToken";
 	
 	public static void main(String[] args) {
-		System.out.println(new ReadyUtil().getVisitorToken());
+		try {
+			System.out.println(new ReadyUtil().getVisitorToken());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public String getVisitorToken(){
+	public String getVisitorToken() throws Exception{
 		String result = sendMessage(URL_LOGIN_VISITOR, BODY_VISITOR, APP_VERSION, APP_CHANNEL);
 		String data = getTokenData(result);
 		result = sendMessage(URL_LOGIN_ACCESSTOKEN, String.format(BODY_ACCESSTOKEN, data), APP_VERSION, APP_CHANNEL);
 		return getAccessToken(result);
 	}
 	
-	public String sendMessage(String url, String data, String version, String channel){
+	public String sendMessage(String url, String data, String version, String channel) throws Exception{
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 		CloseableHttpClient httpClient = httpClientBuilder.build();
 		ApiSendMessage sendMessage = new ApiSendMessage();
@@ -41,7 +45,7 @@ public class ReadyUtil {
 			logger.info("[游客登录]==>[" + result + "]");
 			return result;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				if(httpClient != null){
@@ -51,7 +55,6 @@ public class ReadyUtil {
 				e.printStackTrace();
 			}
 		}
-		return "";
 	}
 	
 	public String getTokenData(String data){

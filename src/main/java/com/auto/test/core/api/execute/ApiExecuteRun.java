@@ -45,11 +45,12 @@ public class ApiExecuteRun implements Runnable {
 	private String projectRootPath = null;
 	private String nologinResult = null;
 	private String onceResult = null;
+	private String gamePath = null;
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 
-	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB,
-			String version, String channel, String projectRootPath, String nologinResult, String onceResult, String gameProject, Integer gameTimeout) {
+	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB, String version, String channel,
+			String projectRootPath, String nologinResult, String onceResult, String gamePath, String gameProject, Integer gameTimeout) {
 		super();
 		this.httpClientManager = httpClientManager;
 		this.apiContext = apiContext;
@@ -61,6 +62,7 @@ public class ApiExecuteRun implements Runnable {
 		this.projectRootPath = projectRootPath;
 		this.nologinResult = nologinResult;
 		this.onceResult = onceResult;
+		this.gamePath = gamePath;
 		this.gameProject = gameProject;
 		this.gameTimeout = gameTimeout;
 	}
@@ -90,10 +92,15 @@ public class ApiExecuteRun implements Runnable {
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
 				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
+					String result = resultDetail.getResultb();
+					AResultDetail ard= new AResultDetail();
 					for (ACase aCase : list) {
-						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), resultDetail.getResultb()));
+						aCase.setBody(new JSONVar().replaceBody(aCase.getBody(), result));
 						testPass(aCase);
-						oneRunBody(aCase, new AResultDetail());
+						oneRunBody(aCase, ard);
+						if(Arrays.asList(gamePath.split(",")).contains(ard.getUrl())){
+							result = ard.getResultb();
+						}
 					}
 				}else{
 					for (ACase aCase : list) {
