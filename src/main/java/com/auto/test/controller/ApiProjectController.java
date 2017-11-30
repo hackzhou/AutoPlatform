@@ -25,7 +25,6 @@ import com.auto.test.utils.ArrayUtil;
 @RequestMapping(value = "api/project")
 public class ApiProjectController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ApiProjectController.class);
-	private static String[] IP_ARR = ArrayUtil.getAllIP();
 	
 	@Resource
 	private IApiProjectService projectService;
@@ -94,10 +93,10 @@ public class ApiProjectController extends BaseController{
 	@RequestMapping(value = "/create/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> createOrUpdate(@RequestParam("api-project-id") String id, @RequestParam("api-project-name") String name, 
-			@RequestParam("api-project-serverb") String serverb, @RequestParam("api-project-path") String path) {
+			@RequestParam("api-project-server") String server, @RequestParam("api-project-path") String path) {
 		try {
 			if(isNull(id)){
-				Integer pid = projectService.create(new AProject(name.trim(), null, serverb.trim(), path.trim()));
+				Integer pid = projectService.create(new AProject(name.trim(), server.trim(), path.trim()));
 				if(pid != null){
 					logger.info("[Project]==>添加项目[id=" + pid + ",name=" + name + "]成功！");
 					return successJson();
@@ -106,7 +105,7 @@ public class ApiProjectController extends BaseController{
 					return failedJson("添加项目[name=" + name + "]失败！");
 				}
 			}else{
-				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), null, serverb.trim(), path.trim()));
+				AProject aProject = projectService.update(new AProject(Integer.parseInt(id), name.trim(), server.trim(), path.trim()));
 				if(aProject != null){
 					logger.info("[Project]==>更新项目[id=" + id + ",name=" + name + "]成功！");
 					return successJson();
@@ -141,7 +140,7 @@ public class ApiProjectController extends BaseController{
 	public Map<String, Object> getToolWarIPs() {
 		logger.info("[Project]==>获取所有服务器IP列表数据！");
 		try {
-			return successJson(IP_ARR);
+			return successJson(ArrayUtil.getServerUrls());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failedJson(e.getMessage());

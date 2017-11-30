@@ -1,38 +1,25 @@
 package com.auto.test.utils;
 
-import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
+import com.auto.test.common.config.GlobalValueConfig;
 
 public class ArrayUtil {
-	private static final String URL_ROOT_TEST = "%s.beeplay123.com";
-	
-	public static void main(String[] args) {
-		System.out.println(Arrays.toString(getAllIP()));
+	private static final String URL_ROOT_BEEPLAY = "%s.beeplay123.com";
+	private static final String URL_ROOT_JDDFUN = "%s.jddfun.com";
+	private static String[] URL_SERVERS = null;
+	static{
+		URL_SERVERS = addAllArray(createArray(URL_ROOT_BEEPLAY, GlobalValueConfig.getConfig("host.url.beeplay").split(",")), createArray(URL_ROOT_JDDFUN, GlobalValueConfig.getConfig("host.url.jddfun").split(",")));
 	}
 	
-	public static String[] getAllIP(){
-//		String[] a = createArray(Const.IP_SERVER_1, new String[]{"220", "229", "209", "211", "217", "214", "213", "215", "221", "216", "219", "222", "218", "224", "228"});
-//		String[] b = createArray(Const.IP_SERVER_2, new String[]{"208", "209", "219", "127", "150", "161", "230", "238", "232", "236", "237", "239", "241", "242", "243", "162", "163"});
-//		return addAllArray(b, a);
-		return createArray(new String[]{"uic-api", "trans-api", "platform-api", "shop-api", "ops-api", "open-api", "quoits-api", "data-api", "admin", "game-api", "www"});
+	public static String[] getServerUrls(){
+		return URL_SERVERS == null ? new String[]{} : URL_SERVERS;
 	}
-	
-	public static String[] createArray(String[] vals){
-		if(vals != null && vals.length > 0){
-			String[] arr = new String[vals.length];
-			for (int i = 0; i < vals.length; i++) {
-				arr[i] = String.format(URL_ROOT_TEST, vals[i]);
-			}
-			return arr;
-		}
-		return new String[]{};
-	}
-	
+
 	public static String[] createArray(String text, String[] vals){
 		if(vals != null && vals.length > 0){
 			String[] arr = new String[vals.length];
 			for (int i = 0; i < vals.length; i++) {
-				arr[i] = text + "." + vals[i];
+				arr[i] = String.format(text, vals[i]);
 			}
 			return arr;
 		}

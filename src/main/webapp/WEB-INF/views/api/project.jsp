@@ -84,19 +84,11 @@
                   <div class="modal-body">
                     <form id="api-project-form" class="form-horizontal form-material">
                         <input type="hidden" id="api-project-id" name="api-project-id" value="">
-                        <%-- <div class="form-group">
-	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>服务器  <i class="fa fa-chevron-right text-danger"></i></code></label>
-	                        <div class="col-sm-9">
-		                        <select id="api-project-servera" name="api-project-servera" class="form-select" style="width: 80%;"></select>
-	                        </div>
-	                      </div>
-	                    </div> --%>
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>服务器  <i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>服务地址  <i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
-		                        <select id="api-project-serverb" name="api-project-serverb" class="form-select" style="width: 80%;"></select>
+		                        <select id="api-project-server" name="api-project-server" class="form-select" style="width: 80%;"></select>
 	                        </div>
 	                      </div>
 	                    </div>
@@ -110,7 +102,7 @@
 	                      <div class="col-md-12 m-b-20">
 	                        <input type="text" id="api-project-path" name="api-project-path" class="form-control" placeholder="项目地址">
 	                        <i class="ti-star text-danger m-r-10"></i>
-	                        <label class="text-info">(请求地址=域名[IP+端口]+<b class="text-danger">项目地址</b>+接口地址)</label>
+	                        <label class="text-info">(请求地址=服务地址[IP+端口]+<b class="text-danger">项目地址</b>+接口地址)</label>
 	                      </div>
 	                    </div>
 	                    <div class="form-group">
@@ -174,8 +166,8 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th><b class='label label-primary'>测试服务</b></th>
-                  <th><b class='label label-danger'>地址</b></th>
+                  <th><b class='label label-primary'>服务地址</b></th>
+                  <th><b class='label label-danger'>项目地址</b></th>
                   <th><b class='label label-inverse'>名称</b></th>
                   <th>创建时间</th>
                   <th>操作</th>
@@ -425,8 +417,8 @@
         					}
         				}
     				}
-    				$('#api-project-serverb').empty();
-    				$('#api-project-serverb').append(optionstring);
+    				$('#api-project-server').empty();
+    				$('#api-project-server').append(optionstring);
     			}
     		}
     	});
@@ -435,7 +427,7 @@
     function apiProjectSave(){
     	var pname = $('#api-project-name').val();
     	var ppath = $('#api-project-path').val();
-    	var pserverb = $('#api-project-serverb').val();
+    	var pserverb = $('#api-project-server').val();
     	if(pname == null || pname.trim() == ""){
 	    	showMsgDiv("请输入项目名称！");
     	}else if(pserverb == null || pserverb.trim() == ""){
