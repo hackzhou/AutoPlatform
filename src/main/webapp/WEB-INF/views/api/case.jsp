@@ -550,7 +550,7 @@
 					"mRender" : function(data, type, full) {
 						var html = "";
 						if(data.run == 1){
-							html = "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><lable class='{1}' data-toggle=\"modal\" data-target=\"#exampleModalRun1\">{2}</label></a>";
+							html = "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><lable class='{1}' data-toggle=\"modal\" data-target=\"#exampleModalRun1\" onclick=\"initApiRunModal()\">{2}</label></a>";
 						}else{
 							html = "<lable class='{1}'>{2}</label>";
 						}
@@ -601,7 +601,7 @@
 					"mRender" : function(data, type, full) {
 						var html = "";
 						if(data.run == 1){
-							html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\"></i></a>";
+							html += "<a href=\"#\" data-id='{0}' class='initApiCaseRun'><i class=\"fa fa-toggle-right text-success m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalRun1\" onclick=\"initApiRunModal()\"></i></a>";
 						}
 						html += "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiCaseEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalCase\"></i></a>"
 							 + "<a href=\"#\" data-id='{0}' class='apiCaseDel'><i class=\"fa fa-close text-danger\"></i></a>";
@@ -707,6 +707,12 @@
     	hideMsgDiv();
     }
 	
+	function initApiRunModal(){
+    	$("#api-case-run-compare0").prop("checked", true);
+    	$("#api-case-run-platform").removeAttr("disabled");
+		$("#api-case-run-platform").val("1");
+    }
+	
 	function initApiCaseLink(pid, vid){
 		var count = parseInt($('#api-case-count').val());
 		if(count > 1){
@@ -790,6 +796,7 @@
 	}
 	
 	function apiCaseRun(){
+		$("#api-case-run-platform").removeAttr("disabled");
 		$.ajax({
 			type:"post",
       		url:"<%=request.getContextPath()%>/api/case/run",

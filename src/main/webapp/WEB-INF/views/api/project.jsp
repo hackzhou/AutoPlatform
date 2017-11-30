@@ -299,7 +299,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><b data-toggle=\"modal\" data-target=\"#exampleModalRun2\">{1}</b></a>";
+						var html = "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><b data-toggle=\"modal\" data-target=\"#exampleModalRun2\" onclick=\"initApiRunModal()\">{1}</b></a>";
 						return String.format(html, data.id, data.name);
 					}
 				},
@@ -318,7 +318,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var html = "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><i class=\"fa fa-toggle-right text-success m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\"></i></a>"
+						var html = "<a href=\"#\" data-id='{0}' class='initApiProjectRun'><i class=\"fa fa-toggle-right text-success m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalRun2\" onclick=\"initApiRunModal()\"></i></a>"
 							+ "<a href=\"#\" data-id='{0}' data-data='{1}' class='apiProjectEdit'><i class=\"fa fa-pencil text-inverse m-r-15\" data-toggle=\"modal\" data-target=\"#exampleModalProject\"></i></a>"
 							+ "<a href=\"#\" data-id='{0}' class='apiProjectDel'><i class=\"fa fa-close text-danger\"></i></a>";
 						return String.format(html, data.id, JSON.stringify(data));
@@ -362,11 +362,18 @@
     	hideMsgDiv();
     }
     
+    function initApiRunModal(){
+    	$("#api-project-run-compare0").prop("checked", true);
+    	$("#api-project-run-platform").removeAttr("disabled");
+		$("#api-project-run-platform").val("1");
+    }
+    
     function apiProjectRun(){
     	var prunversion = $('#api-project-run-version').val();
     	if(prunversion == null || prunversion.trim() == ""){
 	    	swal("错误", "请选择运行版本！", "error");
     	}else {
+    		$("#api-project-run-platform").removeAttr("disabled");
     		$.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/project/run",

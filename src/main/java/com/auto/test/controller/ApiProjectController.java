@@ -31,7 +31,8 @@ public class ApiProjectController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runProject(HttpServletRequest request, @RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-version") String version, @RequestParam("api-project-run-account") String account) {
+	public Map<String, Object> runProject(HttpServletRequest request, @RequestParam("api-project-run-id") String runid, @RequestParam("api-project-run-version") String version,
+			@RequestParam("api-project-run-account") String account, @RequestParam("api-project-run-compare") String compare, @RequestParam("api-project-run-platform") String platform) {
 		try {
 			logger.info("[Project]==>运行项目[id=" + runid + ",account=" + account + ",version=" + version + ",user=" + getCurrentUserName(request) + "]");
 			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");

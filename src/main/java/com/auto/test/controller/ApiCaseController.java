@@ -42,7 +42,8 @@ public class ApiCaseController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> runCase(HttpServletRequest request, @RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account) {
+	public Map<String, Object> runCase(HttpServletRequest request, @RequestParam("api-case-run-id") String runid, @RequestParam("api-case-run-account") String account,
+			@RequestParam("api-case-run-compare") String compare, @RequestParam("api-case-run-platform") String platform) {
 		try {
 			logger.info("[Case]==>运行案例[id=" + runid + ",account=" + account + ",user=" + getCurrentUserName(request) + "]");
 			IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
