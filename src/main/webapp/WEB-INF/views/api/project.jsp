@@ -247,7 +247,7 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						return data.serverb;
+						return data.server;
 					}
 				},
 				{
@@ -306,7 +306,7 @@
 			$('#api-project-id').val(p.id);
 	      	$('#api-project-name').val(p.name);
 	      	$('#api-project-path').val(p.path);
-	      	initToolWarIP(p.serverb);
+	      	initToolWarIP(p.server);
 		});
 		
 		$(".apiProjectDel").on("click",function(){
@@ -427,10 +427,10 @@
     function apiProjectSave(){
     	var pname = $('#api-project-name').val();
     	var ppath = $('#api-project-path').val();
-    	var pserverb = $('#api-project-server').val();
+    	var pserver = $('#api-project-server').val();
     	if(pname == null || pname.trim() == ""){
 	    	showMsgDiv("请输入项目名称！");
-    	}else if(pserverb == null || pserverb.trim() == ""){
+    	}else if(pserver == null || pserver.trim() == ""){
     		showMsgDiv("请选择服务器IP！");
     	}else if(ppath == null || ppath.trim() == ""){
     		showMsgDiv("请输入项目地址！");
