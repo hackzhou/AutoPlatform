@@ -49,6 +49,12 @@ public class ATask implements Serializable{
 	@Column(name="mail")
 	private Integer mail;
 	
+	@Column(name="compare")
+	private Integer compare;
+	
+	@Column(name="platform")
+	private Integer platform;
+	
 	@Column(name="email")
 	private String email;
 	
@@ -74,7 +80,7 @@ public class ATask implements Serializable{
 		super();
 	}
 	
-	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby, Integer mail, String email) {
+	public ATask(String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String createby, Integer compare, Integer platform, Integer mail, String email) {
 		super();
 		if(pid != null && !pid.isEmpty()){
 			this.projecto = new AProject(Integer.parseInt(pid));
@@ -90,10 +96,12 @@ public class ATask implements Serializable{
 		this.runTime = runTime;
 		this.createby = createby;
 		this.runby = createby;
+		this.compare = compare;
+		this.platform = platform;
 		this.mail = mail;
 		this.email = email;
 	}
-	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby, Integer mail, String email) {
+	public ATask(Integer id, String pid, String vid, String aid, Integer runFlag, Integer monitor, String runTime, String runby, Integer compare, Integer platform, Integer mail, String email) {
 		super();
 		this.id = id;
 		if(pid != null && !pid.isEmpty()){
@@ -109,6 +117,8 @@ public class ATask implements Serializable{
 		this.monitor = monitor;
 		this.runTime = runTime;
 		this.runby = runby;
+		this.compare = compare;
+		this.platform = platform;
 		this.mail = mail;
 		this.email = email;
 	}
@@ -119,6 +129,8 @@ public class ATask implements Serializable{
 		this.accounto = aTask.getAccounto();
 		this.runFlag = aTask.getRunFlag();
 		this.monitor = aTask.getMonitor();
+		this.compare = aTask.getCompare();
+		this.platform = aTask.getPlatform();
 		this.mail = aTask.getMail();
 		this.email = aTask.getEmail();
 		this.runTime = aTask.getRunTime();
@@ -162,6 +174,18 @@ public class ATask implements Serializable{
 	}
 	public void setMonitor(Integer monitor) {
 		this.monitor = monitor;
+	}
+	public Integer getCompare() {
+		return compare;
+	}
+	public void setCompare(Integer compare) {
+		this.compare = compare;
+	}
+	public Integer getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
 	}
 	public Integer getMail() {
 		return mail;
@@ -215,8 +239,9 @@ public class ATask implements Serializable{
 	@Override
 	public String toString() {
 		return "ATask [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", accounto=" + accounto
-				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", mail=" + mail + ", email=" + email + ", runTime="
-				+ runTime + ", createby=" + createby + ", runby=" + runby + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", runFlag=" + runFlag + ", monitor=" + monitor + ", mail=" + mail + ", compare=" + compare
+				+ ", platform=" + platform + ", email=" + email + ", runTime=" + runTime + ", createby=" + createby
+				+ ", runby=" + runby + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
+				+ "]";
 	}
 }

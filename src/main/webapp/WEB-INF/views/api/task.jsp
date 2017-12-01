@@ -472,6 +472,13 @@
 			$('#api-task-run' + t.runFlag).prop("checked", true);
 			$('#api-task-mail' + t.mail).prop("checked", true);
 			$('#api-task-monitor' + t.monitor).prop("checked", true);
+			$('#api-task-compare' + t.compare).prop("checked", true);
+			$("#api-task-platform").val(t.platform);
+			if(t.compare == 1){
+				$("#api-task-platform").attr({"disabled":"disabled"});
+			}else{
+				$("#api-task-platform").removeAttr("disabled");
+			}
 			if(t.mail == 1){
 				initApiTaskEmail(t.email);
 				$("#api-task-email-div").show();
@@ -513,6 +520,9 @@
     	$(".task-time-div").show();
 		$(".task-cycle-div").hide();
 		$("#api-task-email-div").hide();
+		$("#api-task-compare0").prop("checked", true);
+    	$("#api-task-platform").removeAttr("disabled");
+		$("#api-task-platform").val("1");
 		initApiTaskCycle(null);
     	initApiTaskProject(null);
     	initApiTaskVersion(null,null);
@@ -552,6 +562,7 @@
     		}
     		hideMsgDiv();
     		$('#exampleModalTask').modal('hide');
+    		$("#api-task-platform").removeAttr("disabled");
     		$.ajax({
     			type:"post",
           		url:"<%=request.getContextPath()%>/api/task/create/update",
