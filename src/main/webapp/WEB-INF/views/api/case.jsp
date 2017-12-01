@@ -281,7 +281,7 @@
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>对比方式<i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-run-compare0" name="api-case-run-compare" value="0" checked>自定义对比</label>
-                          		<label class="radio-inline"><input type="radio" id="api-case-run-compare1" name="api-case-run-compare" value="1">线上对比</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-run-compare1" name="api-case-run-compare" value="1" disabled>线上对比</label>
                         	</div>
 	                      </div>
 	                    </div>
