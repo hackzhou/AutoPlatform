@@ -41,8 +41,8 @@ public class ReadyData {
 		super();
 	}
 	
-	public static void exe(int index, int uid, String loginname, String body){
-		if(getTestPlatform()){
+	public static void exe(boolean bool,int index, int uid, String loginname, String body){
+		if(bool){
 			switch (index) {
 			case 101:
 				new ReadyDataImpl().AA(uid);
@@ -123,7 +123,7 @@ public class ReadyData {
 		return new ReadyDataImpl().getUserID(loginname);
 	}
 	
-	private static boolean getTestPlatform(){
+	public static boolean getTestPlatform(){
 		try {
 			InetAddress ip = InetAddress.getByName("uic-api.beeplay123.com");
 			if(Const.IP_SERVER_TEST.equals(ip.getHostAddress())){
