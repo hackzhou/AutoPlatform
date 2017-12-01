@@ -47,7 +47,7 @@ public class ApiRunService implements IApiRunService {
 	@Override
 	public void rerun(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion version, String runby) throws Exception{
 		isNotRunAccount(account.getId());
-		ApiContext apiContext = getApiContext(type, runId, list, account, version, runby, false, null);
+		ApiContext apiContext = getApiContext(type, runId, list, account, version, runby, null, null, false, null);
 		apiContext.getResult().setName("<失败重跑>-" + apiContext.getResult().getName());
 		if(apiContext != null){
 			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
@@ -56,14 +56,29 @@ public class ApiRunService implements IApiRunService {
 	}
 
 	@Override
-	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, boolean mail, String emails) throws Exception{
+	public void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, Integer compare, Integer platform, boolean mail, String emails) throws Exception{
+		checkComparePlatform(compare, platform);
 		isNotRunAccount(accountId);
 		List<ACase> list = getRunCases(type, runId, versionId);
 		AVersion aVersion = getApiVersion(list, type, versionId);
-		ApiContext apiContext = getApiContext(type, runId, list, getAAccount(accountId), aVersion, runby, mail, emails);
+		ApiContext apiContext = getApiContext(type, runId, list, getAAccount(accountId), aVersion, runby, compare, platform, mail, emails);
 		if(apiContext != null){
 			IApiCaseParse caseParse = (IApiCaseParse) SpringContext.getBean("apiCaseParse");
 			caseParse.execute(apiContext);
+		}
+	}
+	
+	private void checkComparePlatform(Integer compare, Integer platform){
+		if(new Integer(0).equals(compare)){
+			if(!(new Integer(1).equals(platform) || new Integer(2).equals(platform) || new Integer(3).equals(platform))){
+				throw throwException(logger, "测试环境[platform=" + platform + "]获取异常！");
+			}
+		}else if(new Integer(1).equals(compare)){
+			if(!new Integer(2).equals(platform)){
+				throw throwException(logger, "测试环境[platform=" + platform + "]线上对比必须为预发环境！");
+			}
+		}else{
+			throw throwException(logger, "对比方式[compare=" + compare + "]获取异常！");
 		}
 	}
 	
@@ -119,7 +134,7 @@ public class ApiRunService implements IApiRunService {
 		return null;
 	}
 	
-	private ApiContext getApiContext(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion aVersion, String runby, boolean mail, String emails) throws Exception{
+	private ApiContext getApiContext(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion aVersion, String runby, Integer compare, Integer platform, boolean mail, String emails) throws Exception{
 		ApiContext apiContext = new ApiContext();
 		apiContext.setAccount(account);
 		if(mail && (emails == null || emails.isEmpty())){
@@ -131,28 +146,20 @@ public class ApiRunService implements IApiRunService {
 		apiContext.setVersion(aVersion);
 		Integer len = aVersion.getChannel().split(",").length;
 		apiContext.setTotal(getCaseTotal(list, len));
-		/*apiContext.setBool(isRunOnline(list));	//Online Compare
-		if(apiContext.getAccount() != null && "1".equals(apiContext.getAccount().getToken())){
+		apiContext.setCompare(new Integer(1).equals(compare));
+		apiContext.setPlatform(platform);
+		if(apiContext.getAccount() != null && "1".equals(apiContext.getAccount().getToken()) && !"游客登录".equals(apiContext.getAccount().getLoginname())){
 			int index = apiContext.getAccount().getPassword().split(",").length;
 			if(index > 2){
 				throw throwException(logger, "Token[格式错误]-[" + apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword() + "]");
 			}
-			if(apiContext.isBool() && index != 2){
+			if(apiContext.isCompare() && index != 2){
 				throw throwException(logger, "Token[线上未设置]-[" + apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword() + "]");
 			}
-		}*/
+		}
 		apiContext.setResult(createApiResult(type, runId, runby, apiContext));
 		return apiContext;
 	}
-	
-	/*private boolean isRunOnline(List<ACase> list){	//Online Compare
-		for (ACase aCase : list) {
-			if(aCase.getResult() == null || aCase.getResult().isEmpty()){
-				return true;
-			}
-		}
-		return false;
-	}*/
 	
 	private AResult createApiResult(ApiRunType type, Integer runId, String runby, ApiContext apiContext) throws Exception{
 		AResult aResult = new AResult();

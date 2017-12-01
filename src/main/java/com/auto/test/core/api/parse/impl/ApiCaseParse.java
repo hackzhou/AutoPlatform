@@ -21,7 +21,6 @@ import com.auto.test.core.api.parse.IApiCaseParse;
 import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
-import com.auto.test.service.IApiAccountService;
 import com.auto.test.service.IApiResultService;
 import com.auto.test.utils.EmailUtil;
 import com.auto.test.utils.ReadyUtil;
@@ -29,11 +28,10 @@ import com.auto.test.utils.ReadyUtil;
 public class ApiCaseParse implements IApiCaseParse {
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaseParse.class);
 	private ExecutorService cachedThreadPool = null;
-	private HttpClientManager httpClientManager = null;
-//	private String loginUrlA = null;
-	private String loginUrlB = null;
-	/*private String urlA = null;	//Online Compare*/	
-	private String urlB = null;
+	private HttpClientManager httpClientManagerA = null;
+	private HttpClientManager httpClientManagerB = null;
+	private String loginUrl = null;
+	private String url = null;
 	private String userLogin = null;
 	private String usersAccessToken = null;
 	private String projectRootPath = null;
@@ -50,12 +48,10 @@ public class ApiCaseParse implements IApiCaseParse {
 		this.cachedThreadPool = ApiThreadPool.getInstance();
 		this.userLogin = GlobalValueConfig.getConfig("uri.user.login");
 		this.usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
-		this.httpClientManager = (HttpClientManager) SpringContext.getBean("httpClientManager");
 		this.projectRootPath = GlobalValueConfig.getConfig("uri.project.path");
 		this.nologinResult = GlobalValueConfig.getConfig("api.nologin.result");
 		this.onceResult = GlobalValueConfig.getConfig("api.once.result");
-//		this.loginUrlA = GlobalValueConfig.getConfig("url.login.online");
-		this.loginUrlB = GlobalValueConfig.getConfig("url.login.test");
+		this.loginUrl = GlobalValueConfig.getConfig("url.login.uic");
 		this.gameStatus = GlobalValueConfig.getConfig("game.timeout.status");
 		this.gameBetting = GlobalValueConfig.getConfig("game.timeout.betting");
 		this.gameResult = GlobalValueConfig.getConfig("game.timeout.result");
@@ -66,18 +62,25 @@ public class ApiCaseParse implements IApiCaseParse {
 
 	@Override
 	public void execute(ApiContext apiContext) throws Exception{
-		if(this.httpClientManager == null){
-			throw new BusinessException("[HTTP/HTTPS]请求管理初始化失败！");
+		this.httpClientManagerB = new HttpClientManager(apiContext.getPlatform());
+		if(apiContext.isCompare()){
+			this.httpClientManagerA = new HttpClientManager(3);
 		}
 		try {
-			/*this.urlA = "http://" + apiContext.getProject().getServera();		//Online Compare*/
-			this.urlB = "http://" + apiContext.getProject().getServer();
+			this.url = "https://" + apiContext.getProject().getServer();
 			executeBody(apiContext);
 		} catch (Exception e) {
 			String message = e.getMessage() == null ? "Error" : e.getMessage();
 			executeFinal(apiContext, message);
 			logger.error(message);
 			throw e;
+		} finally {
+			if(httpClientManagerA != null){
+				httpClientManagerA.close();
+			}
+			if(httpClientManagerB != null){
+				httpClientManagerB.close();
+			}
 		}
 	}
 	
@@ -86,36 +89,73 @@ public class ApiCaseParse implements IApiCaseParse {
 		if(list != null && !list.isEmpty()){
 			String version = apiContext.getVersion().getVersion();
 			String channels = apiContext.getVersion().getChannel();
-			/*String authorA = null;	//Online Compare*/				
-			String authorB = null;
-			if(apiContext.getAccount() != null){
-				if("1".equals(apiContext.getAccount().getToken())){
-					String loginname = apiContext.getAccount().getLoginname();
-					String token = apiContext.getAccount().getPassword();
-					/*if(token.contains(",")){	//Online Compare
-						authorA = token.split(",")[0];
-						authorB = token.split(",")[1];
+			if(apiContext.isCompare()){
+				String authorA = null;//线上
+				String authorB = null;//预发
+				if(apiContext.getAccount() != null){
+					if("1".equals(apiContext.getAccount().getToken())){
+						String loginname = apiContext.getAccount().getLoginname();
+						if("游客登录".equals(loginname)){
+							authorA = visitorLogin(httpClientManagerA);
+							authorB = visitorLogin(httpClientManagerB);
+						}else{
+							String token = apiContext.getAccount().getPassword();
+							if(token.contains(",")){
+								authorA = token.split(",")[0];
+								authorB = token.split(",")[1];
+							}else{
+								throw new BusinessException("TOKEN[线上,预发]格式错误！");
+							}
+						}
 					}else{
-						authorB = token;
-					}*/
-					authorB = visitorLogin(loginname, token);
-				}else{
-					/*if(apiContext.isBool()){	//Online Compare
-						authorA = setAuthor(apiContext.getAccount(), loginUrlA, version, channel, "线上");
-						logger.info("[登录权限][线上]==>[" + authorA + "]");
-					}*/
-					authorB = setAuthor(apiContext.getAccount(), loginUrlB, version, channels.split(",")[0], "线下");
-					logger.info("[登录权限][线下]==>[" + authorB + "]");
+						authorA = setAuthor(httpClientManagerA, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], "线上");
+						authorB = setAuthor(httpClientManagerB, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], "预发");
+					}
 				}
-			}
-			for (String channel : channels.split(",")) {
-				for (ACase aCase : list) {
-					if(new Integer(1).equals(aCase.getRun())){
-						/*ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlA, urlB, authorA, authorB, version, channel,
-								projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameResult, gameProject, gameTimeout);	//Online Compare*/						
-						ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManager, apiContext, aCase, urlB, authorB, version, channel,
-								projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameResult, gameProject, gameTimeout);
-						cachedThreadPool.execute(apiExecuteRun);
+				for (String channel : channels.split(",")) {
+					for (ACase aCase : list) {
+						if(new Integer(1).equals(aCase.getRun())){
+							ApiExecuteRun apiExecuteRun = new ApiExecuteRun(httpClientManagerA, httpClientManagerB, apiContext, aCase, url, authorA, authorB, version, channel,
+									projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameResult, gameProject, gameTimeout);
+							cachedThreadPool.execute(apiExecuteRun);
+						}
+					}
+				}
+			}else{
+				String memo = "";
+				if(new Integer(1).equals(apiContext.getPlatform())){
+					memo = "测试";
+				}else if(new Integer(2).equals(apiContext.getPlatform())){
+					memo = "预发";
+				}else if(new Integer(3).equals(apiContext.getPlatform())){
+					memo = "线上";
+				}else{
+					throw new BusinessException("测试环境未知！");
+				}
+				String author = null;
+				if(apiContext.getAccount() != null){
+					if("1".equals(apiContext.getAccount().getToken())){
+						String loginname = apiContext.getAccount().getLoginname();
+						if("游客登录".equals(loginname)){
+							author = visitorLogin(httpClientManagerB);
+						}else{
+							String token = apiContext.getAccount().getPassword();
+							if(token.contains(",")){
+								throw new BusinessException("TOKEN[" + memo + "]格式错误！");
+							}
+							author = token;
+						}
+					}else{
+						author = setAuthor(httpClientManagerB, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], memo);
+					}
+				}
+				for (String channel : channels.split(",")) {
+					for (ACase aCase : list) {
+						if(new Integer(1).equals(aCase.getRun())){
+							ApiExecuteRun apiExecuteRun = new ApiExecuteRun(null, httpClientManagerB, apiContext, aCase, url, null, author, version, channel,
+									projectRootPath, nologinResult, onceResult, gameStatus, gameBetting, gameResult, gameProject, gameTimeout);
+							cachedThreadPool.execute(apiExecuteRun);
+						}
 					}
 				}
 			}
@@ -136,9 +176,6 @@ public class ApiCaseParse implements IApiCaseParse {
 			aResult.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
 			apiResultService.update(aResult);
 		} finally {
-			if(httpClientManager != null){
-				httpClientManager.close();
-			}
 			if(apiContext.isMail() && aResult.getFail() > 0){
 				apiContext.getResult().setFailMsg(message);
 				new EmailUtil().sendEmail(aResult, apiContext.getEmails());
@@ -146,14 +183,14 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private String setAuthor(AAccount aAccount, String url, String version, String channel, String type) throws Exception{
+	private String setAuthor(HttpClientManager httpClientManager, AAccount aAccount, String url, String version, String channel, String type) throws Exception{
 		ApiApplication apiApplication = (ApiApplication) SpringContext.getBean("apiApplication");
 		apiApplication.add(aAccount.getId());
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
-		return sendMessage(apiSendMessage, url, aAccount, version, channel, type);
+		return sendMessage(httpClientManager, apiSendMessage, url, aAccount, version, channel, type);
 	}
 	
-	private String sendMessage(IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
+	private String sendMessage(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, AAccount aAccount, String version, String channel, String type) throws Exception{
 		String data = "{\"username\":\"" + aAccount.getLoginname() + "\",\"password\":\"" + aAccount.getPassword() + "\"}";
 		logger.info("[登录权限][" + type + "]==>[POST:" + url + userLogin + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
 		String result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url + userLogin, data, "", channel, version, true, null);
@@ -183,31 +220,12 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 	}
 	
-	private String visitorLogin(String loginname, String token) throws Exception{
-		if("游客登录".equals(loginname)){
-			String t = new ReadyUtil().getVisitorToken();
-			if(t == null || t.isEmpty()){
-				throw new BusinessException("[游客登录]登录失败！");
-			}
-			IApiAccountService apiAccountService = (IApiAccountService) SpringContext.getBean("apiAccountService");
-			List<AAccount> list = apiAccountService.findByName("游客登录");
-			if(list != null && !list.isEmpty()){
-				for (int i = 0; i < list.size(); i++) {
-					if(i == 0){
-						AAccount ac = list.get(i);
-						ac.setPassword(t);
-						apiAccountService.update(ac);
-					}else{
-						apiAccountService.delete(list.get(i).getId());
-					}
-				}
-			}else{
-				apiAccountService.create(new AAccount("1", "游客登录", t));
-			}
-			return t;
-		}else{
-			return token;
+	private String visitorLogin(HttpClientManager httpClientManager) throws Exception{
+		String t = new ReadyUtil().getVisitorToken(httpClientManager);
+		if(t == null || t.isEmpty()){
+			throw new BusinessException("[游客登录]登录失败！");
 		}
+		return t;
 	}
 	
 }

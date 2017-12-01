@@ -21,12 +21,25 @@ import com.auto.test.service.IApiAccountService;
 @RequestMapping(value = "api/account")
 public class ApiAccountController extends BaseController{
 	private static Logger logger = LoggerFactory.getLogger(ApiAccountController.class);
+	private static final String LOGIN_VISITOR = "游客登录";
+	private static final String TOKEN_VISITOR = "_token_autogeneration";
 
 	@Resource
 	private IApiAccountService accountService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getAllAccount(HttpServletRequest request) {
+		logger.info("[Account]==>检查游客登录账号！");
+		List<AAccount> list = accountService.findByName(LOGIN_VISITOR);
+		if(list != null && !list.isEmpty()){
+			for (int i = 0; i < list.size(); i++) {
+				if(i != 0){
+					accountService.delete(list.get(i).getId());
+				}
+			}
+		}else{
+			accountService.create(new AAccount("1", LOGIN_VISITOR, TOKEN_VISITOR));
+		}
 		logger.info("[Account]==>请求页面[api/account],登录用户[" + getCurrentUserName(request) + "]");
 		return success("api/account", getCurrentUserName(request));
 	}

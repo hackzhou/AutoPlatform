@@ -11,7 +11,8 @@ import com.auto.test.entity.AResult;
 import com.auto.test.entity.AVersion;
 
 public class ApiContext {
-//	private boolean bool;
+	private boolean compare;
+	private Integer platform;
 	private boolean mail;
 	private String emails;
 	private Integer count;
@@ -38,12 +39,18 @@ public class ApiContext {
 	public synchronized void successPlus(){
 		this.result.setSuccess(this.result.getSuccess() + 1);
 	}
-//	public boolean isBool() {
-//		return bool;
-//	}
-//	public void setBool(boolean bool) {
-//		this.bool = bool;
-//	}
+	public boolean isCompare() {
+		return compare;
+	}
+	public void setCompare(boolean compare) {
+		this.compare = compare;
+	}
+	public Integer getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
 	public Integer getCount() {
 		return count;
 	}

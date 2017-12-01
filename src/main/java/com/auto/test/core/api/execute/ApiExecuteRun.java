@@ -34,12 +34,12 @@ import com.auto.test.utils.EmailUtil;
 
 public class ApiExecuteRun implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(ApiExecuteRun.class);
-	private HttpClientManager httpClientManager = null;
+	private HttpClientManager httpClientManagerA = null;
+	private HttpClientManager httpClientManagerB = null;
 	private ApiContext apiContext = null;
 	private ACase aCase = null;
-	/*private String urlA = null;	//Online Compare*/	
-	private String urlB = null;
-	/*private String authorA = null;	//Online Compare*/	
+	private String url = null;
+	private String authorA = null;
 	private String authorB = null;
 	private String version = null;
 	private String channel = null;
@@ -52,13 +52,16 @@ public class ApiExecuteRun implements Runnable {
 	private String gameProject = null;
 	private Integer gameTimeout = null;
 
-	public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, String urlB, String authorB, String version, String channel,
-			String projectRootPath, String nologinResult, String onceResult, String gameStatus, String gameBetting, String gameResult, String gameProject, Integer gameTimeout) {
+	public ApiExecuteRun(HttpClientManager httpClientManagerA, HttpClientManager httpClientManagerB, ApiContext apiContext, ACase aCase, String url, 
+			String authorA, String authorB, String version, String channel, String projectRootPath, String nologinResult, String onceResult, 
+			String gameStatus, String gameBetting, String gameResult, String gameProject, Integer gameTimeout) {
 		super();
-		this.httpClientManager = httpClientManager;
+		this.httpClientManagerA = httpClientManagerA;
+		this.httpClientManagerB = httpClientManagerB;
 		this.apiContext = apiContext;
 		this.aCase = aCase;
-		this.urlB = urlB;
+		this.url = url;
+		this.authorA = authorA;
 		this.authorB = authorB;
 		this.version = version;
 		this.channel = channel;
@@ -72,23 +75,6 @@ public class ApiExecuteRun implements Runnable {
 		this.gameTimeout = gameTimeout;
 	}
 	
-	/*public ApiExecuteRun(HttpClientManager httpClientManager, ApiContext apiContext, ACase aCase, 
-			String urlA, String urlB, String authorA, String authorB, String version, String channel, String projectRootPath, String nologinResult, String onceResult) {	//Online Compare
-		super();
-		this.httpClientManager = httpClientManager;
-		this.apiContext = apiContext;
-		this.aCase = aCase;
-		this.urlA = urlA;
-		this.urlB = urlB;
-		this.authorA = authorA;
-		this.authorB = authorB;
-		this.version = version;
-		this.channel = channel;
-		this.projectRootPath = projectRootPath;
-		this.nologinResult = nologinResult;
-		this.onceResult = onceResult;
-	}*/
-
 	@Override
 	public void run() {
 		try {
@@ -262,8 +248,8 @@ public class ApiExecuteRun implements Runnable {
 				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 				apiResultService.update(aResult);
 			} finally {
-				if(httpClientManager != null){
-					httpClientManager.close();
+				if(httpClientManagerB != null){
+					httpClientManagerB.close();
 				}
 				if(apiContext.isMail() && aResult.getFail() > 0){
 					new EmailUtil().sendEmail(aResult, apiContext.getEmails());
@@ -280,19 +266,21 @@ public class ApiExecuteRun implements Runnable {
 		try {
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
-				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-					addResulta(aCase, aResultDetail);
+				if(apiContext.isCompare()){
+					aResultDetail.setResulta(sendMessageGet(httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, null), authorA, version, channel, aCase.getId(), null));
 				}else{
-					/*aResultDetail.setResulta(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlA, null), authorA, version, channel, aCase.getId()));	//Online Compare*/			
+					addResulta(aCase, aResultDetail);
 				}
-				aResultDetail.setResultb(sendMessageGet(apiSendMessage, getFullUrl(aCase, urlB, null), authorB, version, channel, aCase.getId(), time));
+				aResultDetail.setResultb(sendMessageGet(httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, null), authorB, version, channel, aCase.getId(), time));
 			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
-				if(aCase.getResult() != null && !aCase.getResult().isEmpty()){
-					addResulta(aCase, aResultDetail);
+				if(apiContext.isCompare()){
+					aResultDetail.setResulta(sendMessagePost(httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
+							authorA, version, channel, aCase.getId(), aCase.getImg(), null));
 				}else{
-					/*aResultDetail.setResulta(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlA, aCase.getBody()), aCase.getBody(), authorA, version, channel, aCase.getId(), aCase.getImg()));	//Online Compare*/			
+					addResulta(aCase, aResultDetail);
 				}
-				aResultDetail.setResultb(sendMessagePost(apiSendMessage, getFullUrl(aCase, urlB, aCase.getBody()), aCase.getBody(), authorB, version, channel, aCase.getId(), aCase.getImg(), time));
+				aResultDetail.setResultb(sendMessagePost(httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
+						authorB, version, channel, aCase.getId(), aCase.getImg(), time));
 			}
 		} finally {
 			if(time.getTime() == null){
@@ -341,26 +329,28 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private String sendMessageGet(IApiSendMessage apiSendMessage, String url, String author, String version, String channel, Integer runid, ARunTime time) throws Exception{
+	private String sendMessageGet(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String author, 
+			String version, String channel, Integer runid, ARunTime time) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
-		String result = apiSendMessage.sendGet(httpClientManager.getHttpClient(), url, author, channel, version, time);
+		String result = apiSendMessage.sendGet(httpClientManagerB.getHttpClient(), url, author, channel, version, time);
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;
 	}
 	
-	private String sendMessagePost(IApiSendMessage apiSendMessage, String url, String body, String author, String version, String channel, Integer runid, String img, ARunTime time) throws Exception{
+	private String sendMessagePost(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String body, String author, 
+			String version, String channel, Integer runid, String img, ARunTime time) throws Exception{
 		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = "";
 		if(img != null && !img.isEmpty()){
 			File file = new File(img);
 			if(file.exists() && file.isFile()){
-				result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, file, time);
+				result = apiSendMessage.sendPost(httpClientManagerB.getHttpClient(), url, body, author, channel, version, false, file, time);
 			}else{
 				logger.error("[案例][" + runid + "]==>文件不存在[" + img + "]");
 				throw new BusinessException("[案例][" + runid + "]==>文件不存在[" + img + "]");
 			}
 		}else{
-			result = apiSendMessage.sendPost(httpClientManager.getHttpClient(), url, body, author, channel, version, false, time);
+			result = apiSendMessage.sendPost(httpClientManagerB.getHttpClient(), url, body, author, channel, version, false, time);
 		}
 		logger.info("[主体运行][" + runid + "]==>" + result);
 		return result;

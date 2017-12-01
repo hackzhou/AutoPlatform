@@ -1,12 +1,10 @@
 package com.auto.test.utils;
 
-import java.io.IOException;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.impl.ApiSendMessage;
 
 public class ReadyUtil {
@@ -20,40 +18,22 @@ public class ReadyUtil {
 	private static final String VAR_DATA				= "data";
 	private static final String VAR_ACCESSTOKEN			= "accessToken";
 	
-	public static void main(String[] args) {
-		try {
-			System.out.println(new ReadyUtil().getVisitorToken());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public String getVisitorToken() throws Exception{
-		String result = sendMessage(URL_LOGIN_VISITOR, BODY_VISITOR, APP_VERSION, APP_CHANNEL);
+	public String getVisitorToken(HttpClientManager httpClientManager) throws Exception{
+		String result = sendMessage(httpClientManager, URL_LOGIN_VISITOR, BODY_VISITOR, APP_VERSION, APP_CHANNEL);
 		String data = getTokenData(result);
-		result = sendMessage(URL_LOGIN_ACCESSTOKEN, String.format(BODY_ACCESSTOKEN, data), APP_VERSION, APP_CHANNEL);
+		result = sendMessage(httpClientManager, URL_LOGIN_ACCESSTOKEN, String.format(BODY_ACCESSTOKEN, data), APP_VERSION, APP_CHANNEL);
 		return getAccessToken(result);
 	}
 	
-	public String sendMessage(String url, String data, String version, String channel) throws Exception{
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-		CloseableHttpClient httpClient = httpClientBuilder.build();
+	public String sendMessage(HttpClientManager httpClientManager, String url, String data, String version, String channel) throws Exception{
 		ApiSendMessage sendMessage = new ApiSendMessage();
 		try {
 			logger.info("[游客登录]==>[POST:" + url + "][Version:" + version + "],[Channel:" + channel + "],[Data:" + data + "]");
-			String result = sendMessage.sendPost(httpClient, url, data, null, channel, version, false, null);
+			String result = sendMessage.sendPost(httpClientManager.getHttpClient(), url, data, null, channel, version, false, null);
 			logger.info("[游客登录]==>[" + result + "]");
 			return result;
 		} catch (Exception e) {
 			throw e;
-		} finally {
-			try {
-				if(httpClient != null){
-					httpClient.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
