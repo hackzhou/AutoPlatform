@@ -13,6 +13,7 @@ import com.auto.test.common.bean.AResultFail;
 import com.auto.test.common.bean.ARunTime;
 import com.auto.test.common.constant.ApiRunStatus;
 import com.auto.test.common.constant.ApiStatus;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.constant.HttpType;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
@@ -225,7 +226,7 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private void setRequest(AResultDetail aResultDetail){
-		String url = "http://" + apiContext.getProject().getServer() + apiContext.getProject().getPath() + aResultDetail.getUrl();
+		String url = Const.API_HTTPS + apiContext.getProject().getServer() + apiContext.getProject().getPath() + aResultDetail.getUrl();
 		String memo = url + ";Authorization:" + authorB + ";App-Version:" + aResultDetail.getVersion() + ";App-Channel:" + aResultDetail.getChannel()+ ";Body:" + aResultDetail.getBody();
 		aResultDetail.setMemo(memo);
 	}
@@ -248,6 +249,9 @@ public class ApiExecuteRun implements Runnable {
 				aResult.setFail(aResult.getTotal() - aResult.getSuccess());
 				apiResultService.update(aResult);
 			} finally {
+				if(httpClientManagerA != null){
+					httpClientManagerA.close();
+				}
 				if(httpClientManagerB != null){
 					httpClientManagerB.close();
 				}

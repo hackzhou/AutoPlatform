@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.common.constant.ApiRunStatus;
+import com.auto.test.common.constant.Const;
 import com.auto.test.common.context.ApiApplication;
 import com.auto.test.common.context.ApiContext;
 import com.auto.test.common.context.SpringContext;
@@ -67,20 +68,13 @@ public class ApiCaseParse implements IApiCaseParse {
 			this.httpClientManagerA = new HttpClientManager(3);
 		}
 		try {
-			this.url = "https://" + apiContext.getProject().getServer();
+			this.url = Const.API_HTTPS + apiContext.getProject().getServer();
 			executeBody(apiContext);
 		} catch (Exception e) {
 			String message = e.getMessage() == null ? "Error" : e.getMessage();
 			executeFinal(apiContext, message);
 			logger.error(message);
 			throw e;
-		} finally {
-			if(httpClientManagerA != null){
-				httpClientManagerA.close();
-			}
-			if(httpClientManagerB != null){
-				httpClientManagerB.close();
-			}
 		}
 	}
 	
@@ -176,6 +170,12 @@ public class ApiCaseParse implements IApiCaseParse {
 			aResult.setMsg(message.length() > 2048 ? message.substring(0, 2048) : message);
 			apiResultService.update(aResult);
 		} finally {
+			if(httpClientManagerA != null){
+				httpClientManagerA.close();
+			}
+			if(httpClientManagerB != null){
+				httpClientManagerB.close();
+			}
 			if(apiContext.isMail() && aResult.getFail() > 0){
 				apiContext.getResult().setFailMsg(message);
 				new EmailUtil().sendEmail(aResult, apiContext.getEmails());

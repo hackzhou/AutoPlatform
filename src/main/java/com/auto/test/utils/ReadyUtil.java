@@ -4,13 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auto.test.common.constant.Const;
 import com.auto.test.core.api.http.HttpClientManager;
 import com.auto.test.core.api.http.impl.ApiSendMessage;
 
 public class ReadyUtil {
 	private static final Logger logger = LoggerFactory.getLogger(ReadyUtil.class);
-	private static final String URL_LOGIN_VISITOR		= "http://uic-api.beeplay123.com/uic/api/user/login/visitor";
-	private static final String URL_LOGIN_ACCESSTOKEN	= "http://uic-api.beeplay123.com/uic/api/user/login/accessToken";
+	private static final String URL_LOGIN_VISITOR		= Const.API_HTTPS + "uic-api.beeplay123.com/uic/api/user/login/visitor";
+	private static final String URL_LOGIN_ACCESSTOKEN	= Const.API_HTTPS + "uic-api.beeplay123.com/uic/api/user/login/accessToken";
 	private static final String BODY_VISITOR			= "{\"source\":1,\"visitorToken\":\"08ef7567-cfa1-3e46-9060-f62f846cb0fa\"}";
 	private static final String BODY_ACCESSTOKEN		= "{\"type\":1,\"token\":\"%s\"}";
 	private static final String APP_VERSION				= "1.0.0";

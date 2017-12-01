@@ -13,12 +13,13 @@ public class Const {
 	public static final String IP_ONLINE				= IP_SERVER_1 + ".242";
 	public static final String IP_TEST					= "10.33.80.18";
 	public static final String IP_CURRENT				= getCurrentIP();
-	
+
 	public static final String RUN_PROJECT_NAME_Y		= "项目[%s]-已登录";
 	public static final String RUN_CASE_NAME_Y			= "案例[%s]-已登录";
 	public static final String RUN_PROJECT_NAME_N		= "项目[%s]-未登录";
 	public static final String RUN_CASE_NAME_N			= "案例[%s]-未登录";
 
+	public static final String API_HTTPS				= "https://";
 	public static final String API_PLATFORM				= "api_platform";
 	public static final String AUTO_PLATFORM			= "AutoPlatform";
 	public static final String PATH_AUTO_PLATFORM		= System.getProperty("user.home") + File.separator + AUTO_PLATFORM;
