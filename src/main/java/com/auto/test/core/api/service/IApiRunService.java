@@ -8,7 +8,7 @@ import com.auto.test.entity.AVersion;
 
 public interface IApiRunService{
 	
-	void rerun(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion version, String runby) throws Exception;
+	void rerun(ApiRunType type, Integer runId, List<ACase> list, AAccount account, AVersion version, String runby, Integer compare, Integer platform) throws Exception;
 	
 	void run(ApiRunType type, Integer runId, Integer accountId, Integer versionId, String runby, Integer compare, Integer platform, boolean mail, String emails) throws Exception;
 

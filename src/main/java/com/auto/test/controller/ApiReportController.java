@@ -176,9 +176,11 @@ public class ApiReportController extends BaseController{
 				}
 			}
 			try {
+				Integer compare = list.get(0).getResulto().getCompare();
+				Integer platform = list.get(0).getResulto().getPlatform();
 				logger.info("[失败重跑]==>运行项目[id=" + runid + ",account=" + account + ",version=" + version + ",channel=" + channel + ",user=" + getCurrentUserName(request) + "]");
 				IApiRunService apiRunService = (IApiRunService) SpringContext.getBean("apiRunService");
-				apiRunService.rerun(ApiRunType.PROJECT, runid, caseList, accountList.get(0), versionList.get(0), getCurrentUserName(request));
+				apiRunService.rerun(ApiRunType.PROJECT, runid, caseList, accountList.get(0), versionList.get(0), getCurrentUserName(request), compare, platform);
 				logger.info("[失败重跑]==>运行项目成功！");
 				return successJson();
 			} catch (Exception e) {

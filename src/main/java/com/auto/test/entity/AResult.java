@@ -60,6 +60,12 @@ public class AResult implements Serializable{
 	@Column(name="msg")
 	private String msg;
 	
+	@Column(name="compare")
+	private Integer compare;
+	
+	@Column(name="platform")
+	private Integer platform;
+	
 	@Column(name="start_time")
 	private Date startTime;
 	
@@ -100,6 +106,8 @@ public class AResult implements Serializable{
 		this.total = aResult.getTotal();
 		this.status = aResult.getStatus();
 		this.msg = aResult.getMsg();
+		this.compare = aResult.getCompare();
+		this.platform = aResult.getPlatform();
 		this.startTime = aResult.getStartTime();
 		this.endTime = aResult.getEndTime();
 		this.updateTime = new Date();
@@ -166,6 +174,18 @@ public class AResult implements Serializable{
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	public Integer getCompare() {
+		return compare;
+	}
+	public void setCompare(Integer compare) {
+		this.compare = compare;
+	}
+	public Integer getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -219,8 +239,9 @@ public class AResult implements Serializable{
 	public String toString() {
 		return "AResult [id=" + id + ", projecto=" + projecto + ", versiono=" + versiono + ", name=" + name + ", runby="
 				+ runby + ", success=" + success + ", fail=" + fail + ", total=" + total + ", status=" + status
-				+ ", msg=" + msg + ", startTime=" + startTime + ", endTime=" + endTime + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", memo=" + memo + "]";
+				+ ", msg=" + msg + ", compare=" + compare + ", platform=" + platform + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo="
+				+ memo + ", failMsg=" + failMsg + ", fails=" + fails + ", timeouts=" + timeouts + "]";
 	}
 	
 }
