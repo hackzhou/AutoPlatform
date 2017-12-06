@@ -104,7 +104,7 @@ public class HttpClientManager {
 				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
 				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
 		if(ip == null || ip.isEmpty()){
-			throw new BusinessException(text + "[ip=" + ip + "]未配置！");
+			throw new BusinessException(text + "[ip为空]未配置！");
 		}
 		if(ip.matches(regex)){
 			try {
