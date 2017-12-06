@@ -11,6 +11,7 @@ public class AInterfaceCase {
 	private String body;
 	private String result;
 	private String strategy;
+	private String validate;
 	private String login;
 	private String once;
 	private String link;
@@ -76,6 +77,12 @@ public class AInterfaceCase {
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+	public String getValidate() {
+		return validate;
+	}
+	public void setValidate(String validate) {
+		this.validate = validate;
+	}
 	public String getLogin() {
 		return login;
 	}
@@ -111,7 +118,7 @@ public class AInterfaceCase {
 	public String toString() {
 		return "AInterfaceCase [project=" + project + ", name=" + name + ", type=" + type + ", url=" + url
 				+ ", description=" + description + ", version=" + version + ", body=" + body + ", result=" + result
-				+ ", strategy=" + strategy + ", login=" + login + ", once=" + once + ", link=" + link + ", ready="
-				+ ready + ", rowNum=" + rowNum + "]";
+				+ ", strategy=" + strategy + ", validate=" + validate + ", login=" + login + ", once=" + once
+				+ ", link=" + link + ", ready=" + ready + ", rowNum=" + rowNum + "]";
 	}
 }

@@ -214,7 +214,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 		Integer login = "Yes".equalsIgnoreCase(aInterfaceCase.getLogin()) ? 1 : 0;
 		String once = "Yes".equalsIgnoreCase(aInterfaceCase.getOnce()) ? "0" : null;
-		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), aInterfaceCase.getReady(), null, null, once, 1, 1, login);
+		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), aInterfaceCase.getValidate(), aInterfaceCase.getReady(), null, null, once, 1, 1, login);
 		if(caseo == null){
 			c.setCreateTime(new Date());
 			casedDao.create(c);

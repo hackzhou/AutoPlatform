@@ -151,8 +151,15 @@
 	                    <hr style="height:3px;border:none;border-top:3px dotted red;">
 	                    <div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点</span>
+				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点(自定义)</span>
 				              <input type="text" id="api-case-strategy" name="api-case-strategy" value="" data-role="tagsinput" placeholder="添加字段">
+				            </div>
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <div class="col-md-12 m-b-20">
+				            <div class="input-group m-b-20"> <span class="input-group-addon">非验证点(线上)</span>
+				              <input type="text" id="api-case-validate" name="api-case-validate" value="" data-role="tagsinput" placeholder="添加字段">
 				            </div>
 	                      </div>
 	                    </div>
@@ -281,7 +288,7 @@
 	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>对比方式<i class="fa fa-chevron-right text-danger"></i></code></label>
                           	<div class="radio-list">
                           		<label class="radio-inline"><input type="radio" id="api-case-run-compare0" name="api-case-run-compare" value="0" checked>自定义对比</label>
-                          		<label class="radio-inline"><input type="radio" id="api-case-run-compare1" name="api-case-run-compare" value="1" disabled>线上对比</label>
+                          		<label class="radio-inline"><input type="radio" id="api-case-run-compare1" name="api-case-run-compare" value="1">线上对比</label>
                         	</div>
 	                      </div>
 	                    </div>
@@ -628,6 +635,8 @@
   	      	$('#api-case-flag' + c.flag).prop("checked", true);
   	      	$('#api-case-strategy').tagsinput('removeAll');
 	      	$('#api-case-strategy').tagsinput('add', c.strategy);
+	      	$('#api-case-validate').tagsinput('removeAll');
+	      	$('#api-case-validate').tagsinput('add', c.validate);
   	      	if(c.body != null && c.body != ""){
   	      		$('#api-case-is-body1').prop("checked",true);
   	  			$('#api-case-body').val(jsonFormat(c.body));
@@ -687,6 +696,7 @@
 		$('#api-case-login1').prop("checked",true);
 		$('#api-case-flag0').prop("checked",true);
 		$('#api-case-strategy').tagsinput('removeAll');
+		$('#api-case-validate').tagsinput('removeAll');
 		$('#api-case-is-body0').prop("checked",true);
 		$('#api-case-body').val("");
 		$("#bodyDiv").hide();

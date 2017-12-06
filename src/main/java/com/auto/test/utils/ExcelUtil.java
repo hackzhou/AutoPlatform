@@ -84,6 +84,9 @@ public class ExcelUtil {
 	                	case 12:
 	                		aInterfaceCase.setStrategy(splitStr(trimStr(cell.getStringCellValue())));
 		                    break;
+	                	case 13:
+	                		aInterfaceCase.setValidate(splitStr(trimStr(cell.getStringCellValue())));
+		                    break;
 	                	default:
 		                    break;
 	                }
