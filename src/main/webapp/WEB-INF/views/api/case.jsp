@@ -287,7 +287,7 @@
 	                    </div>
                     	<div class="form-group">
 	                      <div class="col-md-12 m-b-20">
-	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>测试环境<i class="fa fa-chevron-right text-danger"></i></code></label>
+	                        <label class="col-sm-3 text-info text-center"><i class="ti-star text-danger m-r-10"></i><code>运行环境<i class="fa fa-chevron-right text-danger"></i></code></label>
 	                        <div class="col-sm-9">
 		                        <select id="api-case-run-platform" name="api-case-run-platform" class="form-select" style="width: 80%;">
 		                        	<option value='1' selected="selected">测试环境</option>
