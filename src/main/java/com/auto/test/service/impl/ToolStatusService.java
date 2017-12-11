@@ -15,7 +15,7 @@ public class ToolStatusService implements IToolStatusService {
 	
 	@Override
 	public List<TStatus> findAll() {
-		return dao.findAllOrder();
+		return dao.findAllOrderAsc();
 	}
 
 	@Override

@@ -19,6 +19,8 @@ public interface IBaseDao <T extends java.io.Serializable> {
     
     List<T> findAllOrder();
 
+    List<T> findAllOrderAsc();
+
     List<T> findAllOrder(final String field, final Order order);
     
     T create(final T entity);

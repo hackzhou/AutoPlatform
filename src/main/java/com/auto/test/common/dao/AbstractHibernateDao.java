@@ -60,6 +60,11 @@ public abstract class AbstractHibernateDao <T extends java.io.Serializable> impl
 	public final List<T> findAllOrder() {
 		return getCurrentSession().createQuery("from " + clazz.getName() + " order by id desc").list();
 	}
+	
+	@Override
+	public final List<T> findAllOrderAsc() {
+		return getCurrentSession().createQuery("from " + clazz.getName() + " order by id asc").list();
+	}
 
 	@Override
 	public final List<T> findAllOrder(final String field, final Order order) {
