@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
-<title>压力测试-持久连接</title>
+<title>项目测试状态</title>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/eliteadmin/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
@@ -39,64 +39,687 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>工具(压力测试-持久连接)</b></span></h4>
+          <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>工具(项目测试状态)</b></span></h4>
         </div>
       </div>
-      <div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-			<div id="msgDiv" class="alert alert-danger alert-dismissable" style="display: none">
-				<button type="button" class="close" aria-hidden="true">
-					&times;
-				</button>
-				<span id="msg">${msg}</span>
-			</div>
-		</div>
-	  </div>
       <!-- /row -->
       <div class="row">
-        <div class="col-md-12">
-          <div class="panel panel-info">
-            <div class="panel-body">
-	          <div class="form-body">
-	            <form id="tool-pressure-form" action="${pageContext.request.contextPath}/tool/pressure/run" method="post" enctype="multipart/form-data">
-	              <div class="row">
-	                <div class="col-md-3 text-center">
-	                  <div class="form-group">
-	                    <label class="col-sm-4 text-center"><code>压测项目 <i class="fa fa-chevron-right text-info"></i></code></label>
-					    <div class="col-sm-8">
-	                      <select id="tool-pressure-project" name="tool-pressure-project" class="form-select" style="width:90%;"></select>
-					    </div>
-	                  </div>
-	                </div>
-	                <div class="col-md-6">
-	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-		                <span class="input-group-addon btn btn-pressurening btn-file"> <span class="fileinput-new">选择TOKEN文件</span> <span class="fileinput-exists">重选</span>
-		                <input type="file" name="file">
-		                </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
-		                <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-		              </div>
-	                </div>
-	                <div class="col-md-3 text-center">
-	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-pressure-run" onclick="toolPressureRun();">运行</button>
-	                  <button type="button" class="btn btn-danger waves-effect waves-light m-r-20" id="tool-pressure-run" onclick="toolPressureStop();">停止</button>
-	                </div>
-	              </div>
-	            </form>
-	          </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
 	  	<div class="col-sm-12">
-	  	  <form class="form-horizontal">
-	  	  	<div class="form-group">
-              <label class="col-md-12">查看日志结果显示</label>
-              <div class="col-md-12">
-                <textarea id="tool-pressure-resultlog" class="form-control" rows="25" readonly="readonly" autofocus="autofocus"></textarea>
-              </div>
+	  	  <div class="white-box">
+	  	  	<!-- /.table -->
+            <div class="table-responsive">
+              <table id="tool-status-table" class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th><b class='label label-inverse'>项目</b></th>
+                    <th><b class='label label-inverse'>子项目</b></th>
+                    <th><b class='label label-inverse'>项目状态</b></th>
+                    <th><b class='label label-inverse'>更新人</b></th>
+                    <th><b class='label label-inverse'>操作</b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <tr>
+                  	<td rowspan="3"><b>wf_uic</b></td>
+                  	<td><b>api</b></td>
+                  	<td><label id="wf_uic_api"></label></td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_uic_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_uic_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_uic_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="3"><b>wf_dart</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_dart_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_dart_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_dart_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="2"><b>wf_wars</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_wars_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_wars_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="1"><b>wf_tcard</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_tcard_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="3"><b>wf_kindom</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_kindom_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_kindom_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_kindom_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="2"><b>wf_fish</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_fish_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>ws</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_fish_ws')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="3"><b>wf_billiards</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_billiards_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_billiards_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_billiards_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="1"><b>wf_arrows</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_arrows_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="3"><b>wf_bike</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_bike_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_bike_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_bike_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="4"><b>wf_trans</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_trans_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_trans_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_trans_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_trans_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="5"><b>wf_platform</b></td>
+                  	<td><b>app_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_platform_app_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_platform_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_platform_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_platform_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>wap_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_platform_wap_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="4"><b>wf_shop</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_shop_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_shop_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_shop_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_shop_rpc_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="4"><b>wf_ops</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_ops_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_ops_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_ops_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_ops_rpc_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="1"><b>wf_open</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_open_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="1"><b>wf_base</b></td>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_base_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="3"><b>wf_quoits</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_quoits_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_quoits_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_quoits_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="4"><b>wf_data</b></td>
+                  	<td><b>api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_data_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>rpc_api</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_data_rpc_api')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>task</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_data_task')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>mqc</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('wf_data_mqc')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="10"><b>ch002.open.doyo.cn</b></td>
+                  	<td><b>\channel\wxpayment</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wxpayment')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\home</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_home')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\ring</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_ring')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\wechat\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('ch002_open_doyo_cn_channel_wechat_samguk')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="10"><b>com-code.pt.3gfly.net</b></td>
+                  	<td><b>\channel\payment</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_payment')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\home</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_home')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\ring</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_ring')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\weituo\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('com_code_pt_3gfly_net_channel_weituo_samguk')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td rowspan="39"><b>www.beeplay123.com</b></td>
+                  	<td><b>\agreement</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_agreement')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\appnew</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_appnew')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\home</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_home')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\m</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_m')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\payment</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_payment')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\ring</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_ring')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_samguk')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\wap\home</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_wap_home')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\club\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_club_samguk')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\home</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_home')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\ring</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_ring')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\newokooo\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_newokooo_samguk')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\billiards</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_billiards')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\dart</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_dart')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\fish</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_fish')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\home\meizu</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_home/meizu')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\kingdom</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_kingdom')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\legion</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_legion')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\moto</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_moto')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\ring</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_ring')">更新状态</button></td>
+                  </tr>
+                  <tr>
+                  	<td><b>\channel\flyme\samguk</b></td>
+                  	<td>测试完成</td>
+                  	<td>system</td>
+                  	<td><button class="btn btn-info btn-outline" onclick="updateStatus('www_beeplay123_com_channel_flyme_samguk')">更新状态</button></td>
+                  </tr> -->
+                </tbody>
+              </table>
             </div>
-	  	  </form>
+	  	  </div>
 	  	</div>
 	  </div>
       <!-- /.container-fluid -->
@@ -129,80 +752,96 @@
 <script>
 
 	$(document).ready(function(){
-		var msg = "${msg}";
-		if(msg != null && msg != ""){
-			showMsgDiv(msg);
-		}else{
-			hideMsgDiv();
-		}
-		initPressureProjects();
+		createTable();
 	});
 	
-	function initPressureProjects(){
-		$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/tool/pressure/projects",
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				var optionstring = "";
-    				var list = data.data;
-    				if(list != null){
-    					for(var i = 0; i < list.length; i++){
-        					if(i == 0){
-        						optionstring += "<option value='" + list[i] + "' selected>" + list[i] + "</option>";
-        					}else{
-    	    					optionstring += "<option value='" + list[i] + "'>" + list[i] + "</option>";
-        					}
-        				}
-    				}
-    				$('#tool-pressure-project').empty();
-    				$('#tool-pressure-project').append(optionstring);
-    			}else{
-    				$('#tool-pressure-project').empty();
-    				showMsgDiv(data.responseMsg);
-    			}
-    		}
+	function createTable() {
+    	$('#tool-status-table').dataTable().fnDestroy();
+    	$('#tool-status-table').DataTable({
+    		responsive : false,
+    		sAjaxSource : "<%=request.getContextPath()%>/tool/status/list",
+    		bProcessing : false,
+    		"aaSorting": [
+    			[0,'desc']
+    		],
+    		aoColumnDefs : [
+    			{
+					"sWidth" : "10%",
+					"aTargets" : [ 0 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.id;
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 1 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.root;
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 2 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.name;
+					}
+				},
+				{
+					"sWidth" : "30%",
+					"aTargets" : [ 3 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						if(data.status == "测试中"){
+							return "<b class='text-success'>" + data.status + "...</b>";
+						}else{
+							return "<b class='text-info'>" + data.status + "</b>";
+						}
+					}
+				},
+				{
+					"sWidth" : "20%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return data.operator;
+					}
+				},
+				{
+					"sWidth" : "10%",
+					"aTargets" : [ 5 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						return "<button class=\"btn btn-info btn-outline\" onclick=\"updateStatus('" + data.id + "')\">更新状态</button>";
+					}
+				}
+    		],
     	});
-	}
+    }
 	
-	function toolPressureRun(){
-		var project = $('#tool-pressure-project').val();
-		var filename = $('.fileinput-filename').html();
-		if(project == null || project.trim() == ""){
-			showMsgDiv("请选择压测项目！");
-		}else if(filename == null || filename == ""){
-			showMsgDiv("请选择TOKEN文件！");
-		}else if(!checkFiles(filename)){
-			showMsgDiv("选择文件不合法，文件的扩展名必须为.txt！");
-		}else{
-			$('#tool-pressure-form').submit();
-		}
-	}
-	
-	function checkFiles(str){
-		var strRegex = "(.txt)$";
-		var re = new RegExp(strRegex);
-		if (re.test(str.toLowerCase())){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	function toolPressureStop(){
+	function updateStatus(id){
 		$.ajax({
-    		type:"get",
-    		url:"<%=request.getContextPath()%>/tool/pressure/stop",
-    		success:function(data){
-    			if(data.responseCode == "0000"){
-    				swal("成功", "全部停止！", "success");
-    			}else{
-    				showMsgDiv(data.responseMsg);
-    			}
-    		}
-    	});
+			type:"get",
+      		url:"<%=request.getContextPath()%>/tool/status/update/id=" + id,
+      		success:function(data){
+      			if(data.responseCode == "0000"){
+      				swal("成功", "更新成功！", "success");
+      	    	}else{
+      	    		swal("错误", data.responseMsg, "error");
+      	    	}
+      			$('#tool-status-table').dataTable()._fnAjaxUpdate();
+      	    }
+		});
 	}
-
+	
 </script>
 <!--Style Switcher -->
 <script src="${pageContext.request.contextPath}/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
