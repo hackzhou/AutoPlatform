@@ -6,9 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
@@ -97,6 +100,32 @@ public class FileUtil {
 			}
 		}
 		return null;
+	}
+	
+	public List<String> readFile(InputStream is){
+		BufferedReader reader = null;
+		List<String> list = null;
+		try {
+			list = new ArrayList<String>();
+			reader = new BufferedReader(new InputStreamReader(is));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				if(!tempString.trim().isEmpty()){
+					list.add(tempString.trim());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(reader != null){
+					reader.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return list != null ? list : new ArrayList<String>();
 	}
 	
 	public String getLastLogFile(String path){
