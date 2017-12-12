@@ -19,6 +19,11 @@ public class ToolStatusService implements IToolStatusService {
 	}
 
 	@Override
+	public List<TStatus> findByDept(String dept) {
+		return dao.findByDept(dept);
+	}
+	
+	@Override
 	public List<TStatus> findByRootName(String root, String name) {
 		return dao.findByRootName(root, name);
 	}

@@ -12,12 +12,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name="t_status")
 public class TStatus implements Serializable{
-	private static final long serialVersionUID = 7437485615863657645L;
+	private static final long serialVersionUID = -7262391312027168219L;
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
 	private Integer id;
+	
+	@Column(name="dept")
+	private String dept;
 	
 	@Column(name="root")
 	private String root;
@@ -49,6 +52,7 @@ public class TStatus implements Serializable{
 	}
 
 	public void update(TStatus tStatus) {
+		this.dept = tStatus.getDept();
 		this.root = tStatus.getRoot();
 		this.name = tStatus.getName();
 		this.status = tStatus.getStatus();
@@ -62,6 +66,12 @@ public class TStatus implements Serializable{
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public String getDept() {
+		return dept;
+	}
+	public void setDept(String dept) {
+		this.dept = dept;
 	}
 	public String getRoot() {
 		return root;
@@ -108,7 +118,8 @@ public class TStatus implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "TStatus [id=" + id + ", root=" + root + ", name=" + name + ", status=" + status + ", operator="
-				+ operator + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
+		return "TStatus [id=" + id + ", dept=" + dept + ", root=" + root + ", name=" + name + ", status=" + status
+				+ ", operator=" + operator + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo="
+				+ memo + "]";
 	}
 }

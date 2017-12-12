@@ -108,6 +108,17 @@ public class BaseController implements MessageSourceAware {
 		mv.addAllObjects(map);
 		return mv;
 	}
+	public ModelAndView success(Object data, Object data2, String viewName, String username) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName(viewName);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_CODE, SUCCESS_CODE);
+		map.put(DATA, data);
+		map.put(DATA + "2", data2);
+		map.put(USER_NAME, username);
+		mv.addAllObjects(map);
+		return mv;
+	}
 
 	public ModelAndView data(String name, Object data, String viewName) {
 		ModelAndView mv = new ModelAndView();

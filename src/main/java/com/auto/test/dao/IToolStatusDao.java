@@ -8,6 +8,8 @@ public interface IToolStatusDao extends IBaseDao<TStatus> {
 
 	List<TStatus> findAll();
 	
+	List<TStatus> findByDept(String dept);
+	
 	List<TStatus> findByRootName(String root, String name);
 
 	TStatus update(TStatus tStatus);

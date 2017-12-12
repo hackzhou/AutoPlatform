@@ -9,6 +9,8 @@ public interface IToolStatusService{
 	
 	List<TStatus> findAll();
 
+	List<TStatus> findByDept(String dept);
+
 	List<TStatus> findByRootName(String root, String name);
 	
 	TStatus findById(Integer id);

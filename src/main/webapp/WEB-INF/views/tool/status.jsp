@@ -42,30 +42,75 @@
           <h4 class="page-title"><i class="fa fa-pagelines m-r-10" style='color:green'></i><span><b style='color:black'>工具(项目测试状态)</b></span></h4>
         </div>
       </div>
-      <!-- /row -->
+	  <!-- .row -->
       <div class="row">
-	  	<div class="col-sm-12">
-	  	  <div class="white-box">
-	  	  	<!-- /.table -->
-            <div class="table-responsive">
-              <table id="tool-status-table" class="table">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">【前端】</div>
+            <div class="panel-wrapper collapse in">
+              <div class="panel-body">
+                <!-- /.table -->
+                <table id="tool-status-table" border="1" style="width: 100%;height: 100%;" >
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th><b class='label label-inverse'>项目</b></th>
-                    <th><b class='label label-inverse'>子项目</b></th>
-                    <th><b class='label label-inverse'>项目状态</b></th>
-                    <th><b class='label label-inverse'>更新人</b></th>
-                    <th><b class='label label-inverse'>操作</b></th>
+                    <th style="text-align:center;"><b>项目</b></th>
+                    <th style="text-align:center;"><b>子项目</b></th>
+                    <th style="text-align:center;"><b>更新人</b></th>
+                    <th style="text-align:center;"><b>项目状态</b></th>
                   </tr>
                 </thead>
                 <tbody>
+                <c:forEach items="${data2}" var="item">
+                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':'#90EE90'}">
+                  	<c:if test="${not empty item.memo}">
+                  	  <td rowspan="${item.memo}" style="vertical-align:middle;background:#87CEEB"><b>${item.root}</b></td>
+                  	</c:if>
+                  	<td><b>${item.name}</b></td>
+                  	<td><b>${item.operator}</b></td>
+                  	<td><button id="btn-${item.id}" onclick="updateStatus('${item.id}')">${item.status}</button></td>
+                  </tr>
+                </c:forEach>
                 </tbody>
-              </table>
+                </table>
+              </div>
+              <div class="panel-footer"> 【前端】 </div>
             </div>
-	  	  </div>
-	  	</div>
-	  </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">【后端】</div>
+            <div class="panel-wrapper collapse in">
+              <div class="panel-body">
+                <!-- /.table -->
+                <table id="tool-status-table" border="1" style="width: 100%;height: 100%;" >
+                <thead>
+                  <tr>
+                    <th style="text-align:center;"><b>项目</b></th>
+                    <th style="text-align:center;"><b>子项目</b></th>
+                    <th style="text-align:center;"><b>更新人</b></th>
+                    <th style="text-align:center;"><b>项目状态</b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${data}" var="item">
+                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':'#90EE90'}">
+                  	<c:if test="${not empty item.memo}">
+                  	  <td rowspan="${item.memo}" style="vertical-align:middle;background:#87CEEB"><b>${item.root}</b></td>
+                  	</c:if>
+                  	<td><b>${item.name}</b></td>
+                  	<td><b>${item.operator}</b></td>
+                  	<td><button id="btn-${item.id}" onclick="updateStatus('${item.id}')">${item.status}</button></td>
+                  </tr>
+                </c:forEach>
+                </tbody>
+                </table>
+              </div>
+              <div class="panel-footer"> 【后端】 </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- /.container-fluid -->
       <jsp:include page="/WEB-INF/views/foot.jsp"></jsp:include>
     </div>
@@ -96,86 +141,7 @@
 <script>
 
 	$(document).ready(function(){
-		createTable();
 	});
-	
-	function createTable() {
-    	$('#tool-status-table').dataTable().fnDestroy();
-    	$('#tool-status-table').DataTable({
-    		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/tool/status/list",
-    		bProcessing : false,
-    		"aaSorting": [
-    			[0,'asc']
-    		],
-    		"paging": false,
-    		bLengthChange: false,
-    		aoColumnDefs : [
-    			{
-					"sWidth" : "10%",
-					"aTargets" : [ 0 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return data.id;
-					}
-				},
-				{
-					"sWidth" : "15%",
-					"aTargets" : [ 1 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						if(data.memo % 2 == 0){
-							return "<b style='color:purple'>" + data.root + "</b>";
-						}else{
-							return "<b style='color:coral'>" + data.root + "</b>";
-						}
-					}
-				},
-				{
-					"sWidth" : "15%",
-					"aTargets" : [ 2 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return "<b>" + data.name + "</b>";
-					}
-				},
-				{
-					"sWidth" : "30%",
-					"aTargets" : [ 3 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						if(data.status == "测试中"){
-							return "<b class='text-success'>" + data.status + "...</b>";
-						}else{
-							return "<b class='text-info'>" + data.status + "</b>";
-						}
-					}
-				},
-				{
-					"sWidth" : "20%",
-					"aTargets" : [ 4 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return data.operator;
-					}
-				},
-				{
-					"sWidth" : "10%",
-					"aTargets" : [ 5 ],
-					"mData" : null,
-					"sClass" : "text-center",
-					"mRender" : function(data, type, full) {
-						return "<button class=\"btn btn-info btn-outline\" onclick=\"updateStatus('" + data.id + "')\">更新状态</button>";
-					}
-				}
-    		],
-    	});
-    }
 	
 	function updateStatus(id){
 		$.ajax({
@@ -183,11 +149,17 @@
       		url:"<%=request.getContextPath()%>/tool/status/update/id=" + id,
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				swal("成功", "更新成功！", "success");
+      				var status = data.data.status;
+      				if("测试中" == status){
+	      				$('#tr-' + id).css("background-color", "#FFD700");
+      					$('#btn-' + id).text("测试中");
+      				}else{
+      					$('#tr-' + id).css("background-color", "#90EE90");
+	      				$('#btn-' + id).text("测试完成");
+      				}
       	    	}else{
-      	    		swal("错误", data.responseMsg, "error");
+      				swal("错误", data.responseMsg, "error");
       	    	}
-      			$('#tool-status-table').dataTable()._fnAjaxUpdate();
       	    }
 		});
 	}

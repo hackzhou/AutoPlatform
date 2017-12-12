@@ -27,15 +27,9 @@ public class ToolStatusController extends BaseController{
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ModelAndView getToolWar(HttpServletRequest request) {
 		logger.info("[War]==>请求页面[tool/status],登录用户[" + getCurrentUserName(request) + "]");
-		return success("tool/status", getCurrentUserName(request));
-	}
-	
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> listStatus() {
-		logger.info("[Status]==>获取所有测试状态！");
-		List<TStatus> list = statusService.findAll();
-		return successJson(list);
+		List<TStatus> list = statusService.findByDept("后端");
+		List<TStatus> list2 = statusService.findByDept("前端");
+		return success(list, list2, "tool/status", getCurrentUserName(request));
 	}
 	
 	@RequestMapping(value = "/update/id={id}", method = RequestMethod.GET)
@@ -53,7 +47,7 @@ public class ToolStatusController extends BaseController{
 			}
 			tStatus.setOperator(getCurrentUserName(request));
 			statusService.update(tStatus);
-			return successJson();
+			return successJson(tStatus);
 		}
 		logger.error("[Status]==>获取测试状态[id=" + id + "]不存在！");
 		return failedJson("获取测试状态[id=" + id + "]不存在！");
