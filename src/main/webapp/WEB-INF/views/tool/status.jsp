@@ -99,7 +99,7 @@
                   	  <td rowspan="${item.memo}" style="vertical-align:middle;background:#87CEEB"><b>${item.root}</b></td>
                   	</c:if>
                   	<td><b>${item.name}</b></td>
-                  	<td><b>${item.operator}</b></td>
+                  	<td><b id="operator-${item.id}" >${item.operator}</b></td>
                   	<td><button id="btn-${item.id}" onclick="updateStatus('${item.id}')">${item.status}</button></td>
                   </tr>
                 </c:forEach>
@@ -149,13 +149,15 @@
       		url:"<%=request.getContextPath()%>/tool/status/update/id=" + id,
       		success:function(data){
       			if(data.responseCode == "0000"){
-      				var status = data.data.status;
-      				if("测试中" == status){
+      				if("测试中" == data.data.status){
 	      				$('#tr-' + id).css("background-color", "#FFD700");
       					$('#btn-' + id).text("测试中");
+      					$('#btn-' + id).text("测试完成");
+      					$('#operator-' + id).html(data.data.operator);
       				}else{
       					$('#tr-' + id).css("background-color", "#90EE90");
 	      				$('#btn-' + id).text("测试完成");
+	      				$('#operator-' + id).html(data.data.operator);
       				}
       	    	}else{
       				swal("错误", data.responseMsg, "error");
