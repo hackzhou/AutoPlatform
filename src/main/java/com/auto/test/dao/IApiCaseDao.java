@@ -19,10 +19,14 @@ public interface IApiCaseDao extends IBaseDao<ACase> {
 	List<ACase> findByInterfaceId(Integer id);
 	
 	List<ACase> findByInterfaceIdFlag(Integer id, Integer flag);
+	
+	List<ACase> findByInterfaceIdFlagBody(Integer id, Integer flag, String body);
 
 	List<ACase> findByVersionId(Integer id);
 	
 	List<ACase> findByProjectVersion(Integer pid, Integer vid);
+
+	List<ACase> findByProjectNotBatch(Integer pid, String batch);
 	
 	List<ACase> findByIds(List<Integer> cids);
 

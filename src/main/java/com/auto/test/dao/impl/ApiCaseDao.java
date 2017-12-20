@@ -76,6 +76,12 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	public List<ACase> findByInterfaceIdFlagBody(Integer id, Integer flag, String body) {
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("interfaceo", new AInterface(id))).add(Restrictions.eq("flag", flag)).add(Restrictions.eq("body", body)).addOrder(Order.asc("id")).list();
+	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
 	public List<ACase> findByVersionId(Integer id) {
 		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(id))).list();
 	}
@@ -86,6 +92,16 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
 		if(interList != null && !interList.isEmpty()){
 			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.eq("versiono", new AVersion(vid))).add(Restrictions.in("interfaceo", interList)).addOrder(Order.desc("id")).list();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<ACase> findByProjectNotBatch(Integer pid, String batch) {
+		List<AInterface> interList = getCurrentSession().createCriteria(AInterface.class).add(Restrictions.eq("projecto", new AProject(pid))).list();
+		if(interList != null && !interList.isEmpty()){
+			return getCurrentSession().createCriteria(ACase.class).add(Restrictions.ne("batch", batch)).add(Restrictions.in("interfaceo", interList)).list();
 		}
 		return null;
 	}

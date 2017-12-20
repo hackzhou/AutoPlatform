@@ -120,10 +120,16 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	
 	@Override
 	public void deleteCascade(Integer pid, String batch) {
-		List<AInterface> list = findByNotBacth(pid, batch);
-		if(list != null && !list.isEmpty()){
-			for (AInterface aInterface : list) {
+		List<AInterface> iList = findByNotBacth(pid, batch);
+		if(iList != null && !iList.isEmpty()){
+			for (AInterface aInterface : iList) {
 				deleteCascade(aInterface.getId());
+			}
+		}
+		List<ACase> cList = casedDao.findByProjectNotBatch(pid, batch);
+		if(cList != null && !cList.isEmpty()){
+			for (ACase aCase : cList) {
+				casedDao.delete(aCase);
 			}
 		}
 	}
@@ -169,7 +175,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 					}else{
 						try {
 							Integer iid = batchInterface(aInterfaceCase, batchProject, batch, checkInterMap);
-							batchCase(linkMap, aInterfaceCase, iid, vList.get(0).getId());
+							batchCase(linkMap, aInterfaceCase, iid, vList.get(0).getId(), batch);
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
 						}
@@ -208,32 +214,24 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 	}
 	
-	private void batchCase(Map<String, ACase> linkMap, AInterfaceCase aInterfaceCase, Integer iid, Integer vid){
-		ACase caseo = null;
-		List<ACase> list = casedDao.findByInterfaceIdFlag(iid, 1);
-		if(list != null && !list.isEmpty()){
-			for (int i = 0; i < list.size(); i++) {
-				if(i == 0){
-					caseo = list.get(0);
-				}else{
-					casedDao.delete(list.get(i));
-				}
-			}
-		}
+	private void batchCase(Map<String, ACase> linkMap, AInterfaceCase aInterfaceCase, Integer iid, Integer vid, String batch){
 		Integer login = "Yes".equalsIgnoreCase(aInterfaceCase.getLogin()) ? 1 : 0;
 		String once = "Yes".equalsIgnoreCase(aInterfaceCase.getOnce()) ? "0" : null;
 		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), aInterfaceCase.getValidate(), aInterfaceCase.getReady(), null, null, once, 1, 1, login);
-		if(caseo == null){
-			c.setCreateTime(new Date());
-			casedDao.create(c);
-			if(aInterfaceCase.getLink() != null){
-				linkMap.put(aInterfaceCase.getLink(), c);
-			}
-		}else{
+		c.setBatch(batch);
+		List<ACase> list = casedDao.findByInterfaceIdFlagBody(iid, 1, aInterfaceCase.getBody());
+		if(list != null && !list.isEmpty()){
+			ACase caseo = list.get(0);
 			caseo.update(c, false, true);
 			casedDao.update(caseo);
 			if(aInterfaceCase.getLink() != null){
 				linkMap.put(aInterfaceCase.getLink(), caseo);
+			}
+		}else{
+			c.setCreateTime(new Date());
+			casedDao.create(c);
+			if(aInterfaceCase.getLink() != null){
+				linkMap.put(aInterfaceCase.getLink(), c);
 			}
 		}
 	}

@@ -74,6 +74,9 @@ public class ACase implements Serializable{
 	
 	@Column(name="login")
 	private Integer login;
+	
+	@Column(name="batch")
+	private String batch;
 
 	@Column(name="create_time")
 	private Date createTime;
@@ -161,6 +164,7 @@ public class ACase implements Serializable{
 		}else{
 			this.once = aCase.getOnce();
 		}
+		this.batch = aCase.getBatch();
 		this.updateTime = new Date();
 		this.memo = aCase.getMemo();
 	}
@@ -255,6 +259,12 @@ public class ACase implements Serializable{
 	public void setLogin(Integer login) {
 		this.login = login;
 	}
+	public String getBatch() {
+		return batch;
+	}
+	public void setBatch(String batch) {
+		this.batch = batch;
+	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -285,7 +295,7 @@ public class ACase implements Serializable{
 		return "ACase [id=" + id + ", interfaceo=" + interfaceo + ", versiono=" + versiono + ", name=" + name
 				+ ", link=" + link + ", body=" + body + ", result=" + result + ", strategy=" + strategy + ", validate="
 				+ validate + ", ready=" + ready + ", once=" + once + ", img=" + img + ", flag=" + flag + ", run=" + run
-				+ ", login=" + login + ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo
-				+ ", list=" + list + "]";
+				+ ", login=" + login + ", batch=" + batch + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + ", list=" + list + "]";
 	}
 }
