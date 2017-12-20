@@ -134,6 +134,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 			Integer batchProject = 0;
 			String batch = String.valueOf(System.currentTimeMillis());
 			Map<String, ACase> linkMap = new HashMap<String, ACase>();
+			Map<String, Integer> checkInterMap = new HashMap<String, Integer>();
 			int linkCount = 0;
 			for (AInterfaceCase aInterfaceCase : list) {
 				if(isNull(aInterfaceCase.getProject())){
@@ -167,7 +168,7 @@ public class ApiInterfaceService implements IApiInterfaceService {
 						throw new BusinessException("【第" + aInterfaceCase.getRowNum() + "行】发现接口地址【格式】错误！");
 					}else{
 						try {
-							Integer iid = batchInterface(aInterfaceCase, batchProject, batch);
+							Integer iid = batchInterface(aInterfaceCase, batchProject, batch, checkInterMap);
 							batchCase(linkMap, aInterfaceCase, iid, vList.get(0).getId());
 						} catch (Exception e) {
 							throw new BusinessException(e.getMessage());
@@ -185,18 +186,25 @@ public class ApiInterfaceService implements IApiInterfaceService {
 		}
 	}
 	
-	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid, String batch){
-		List<AInterface> interList = findByProjectUrl(pid, aInterfaceCase.getUrl());
-		if(interList != null && !interList.isEmpty()){
-			AInterface aInterfaceDB = interList.get(0);
-			aInterfaceDB.update(new AInterface(aInterfaceCase, pid));
-			aInterfaceDB.setBatch(batch);
-			update(aInterfaceDB);
-			return aInterfaceDB.getId();
+	private Integer batchInterface(AInterfaceCase aInterfaceCase, Integer pid, String batch, Map<String, Integer> checkInterMap){
+		if(checkInterMap.containsKey(aInterfaceCase.getUrl())){
+			return checkInterMap.get(aInterfaceCase.getUrl());
 		}else{
-			AInterface aInterfaceDB = new AInterface(aInterfaceCase, pid);
-			aInterfaceDB.setBatch(batch);
-			return create(aInterfaceDB);
+			List<AInterface> interList = findByProjectUrl(pid, aInterfaceCase.getUrl());
+			if(interList != null && !interList.isEmpty()){
+				AInterface aInterfaceDB = interList.get(0);
+				aInterfaceDB.update(new AInterface(aInterfaceCase, pid));
+				aInterfaceDB.setBatch(batch);
+				update(aInterfaceDB);
+				checkInterMap.put(aInterfaceDB.getUrl(), aInterfaceDB.getId());
+				return aInterfaceDB.getId();
+			}else{
+				AInterface aInterfaceDB = new AInterface(aInterfaceCase, pid);
+				aInterfaceDB.setBatch(batch);
+				Integer iid = create(aInterfaceDB);
+				checkInterMap.put(aInterfaceDB.getUrl(), iid);
+				return iid;
+			}
 		}
 	}
 	
