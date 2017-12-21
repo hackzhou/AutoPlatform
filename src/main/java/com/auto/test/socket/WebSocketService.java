@@ -39,6 +39,7 @@ public class WebSocketService {
 					ws.addListener(new FlowerWebSocketAdapter(token));
 					ws.connect();
 					wsList.add(ws);
+					
 				}
 			}
 		} catch (Exception e) {
@@ -51,6 +52,7 @@ public class WebSocketService {
 			for (WebSocket ws : wsList) {
 				ws.disconnect();
 			}
+			wsList = null;
 		}
 	}
 	
