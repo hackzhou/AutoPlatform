@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class JSONCompare {
+	public static final String DISORDER_START	= "[DISORDER_START]";
+	public static final String DISORDER_END		= "[DISORDER_END]";
 	
 	/**
 	 * JSON Compare
@@ -93,7 +95,17 @@ public class JSONCompare {
 	}
 	
 	public boolean compareJson(String str1, String str2) {
-        if(str1.equals(str2)) {
+		if(str1.contains(DISORDER_START) && str1.contains(DISORDER_END)){
+			if(str2.length() == str1.replace(DISORDER_START, "").replace(DISORDER_END, "").length()){
+				String[] arr = str1.substring(str1.indexOf(DISORDER_START) + DISORDER_START.length(), str1.indexOf(DISORDER_END)).replace("，", ",").split(",");
+				for (String arrStr : arr) {
+					if(!str2.contains(arrStr)) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}else if(str1.equals(str2)) {
         	return true;
         }
         return false;
