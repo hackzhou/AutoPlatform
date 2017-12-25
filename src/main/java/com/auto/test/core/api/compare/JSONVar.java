@@ -8,6 +8,7 @@ public class JSONVar {
 	private static final String DATA_VAR	= "\"_DATA_VAR\"";
 	private static final String DATA_RANDOM	= "\"_DATA_RANDOM\"";
 	private static final String DATA_TOKEN	= "\"_DATA_TOKEN\"";
+	private static final String DATA_IMG	= "\"_DATA_IMG\"";
 	
 	public static void main(String[] args) {
 		String r = "{\"code\":200,\"data\":{\"awardId\":1505,\"playId\":98047,\"configId\":2618,\"useAmount\":997922834,\"awardType\":9}}";
@@ -19,7 +20,15 @@ public class JSONVar {
 	public String replaceBodyVar(String b, String token){
 		String val = replaceRandom(b);
 		val = replaceToken(val, token);
+		val = replaceImg(val);
 		return val;
+	}
+	
+	public String replaceImg(String b){
+		if(b == null || b.isEmpty() || !b.contains(DATA_IMG)){
+			return b;
+		}
+		return b.replace(DATA_IMG, "\"\"");
 	}
 	
 	public String replaceRandom(String b){

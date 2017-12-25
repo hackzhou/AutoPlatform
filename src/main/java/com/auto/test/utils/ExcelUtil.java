@@ -29,6 +29,7 @@ public class ExcelUtil {
 	public List<AInterfaceCase> readXls(InputStream is) throws Exception {
 		List<AInterfaceCase> list = null;
 		AInterfaceCase aInterfaceCase = null;
+		AInterfaceCase aInterfaceCaseFirst = null;
 		Workbook wb = null;
 		try {
 			wb = new XSSFWorkbook(is);
@@ -40,6 +41,7 @@ public class ExcelUtil {
 				if(row.getRowNum() == 0){
 					continue;
 				}
+				aInterfaceCaseFirst = aInterfaceCase;
 				aInterfaceCase = new AInterfaceCase();
 	            Iterator<Cell> cells = row.cellIterator();
 	            while (cells.hasNext()) {
@@ -92,6 +94,7 @@ public class ExcelUtil {
 	                }
 	            }
 	            aInterfaceCase.setRowNum(row.getRowNum() + 1);
+	            setAInterface(aInterfaceCase, aInterfaceCaseFirst);
 	            list.add(aInterfaceCase);
 	        }
 		} finally {
@@ -103,6 +106,16 @@ public class ExcelUtil {
 			}
 		}
 		return list;
+	}
+	
+	private void setAInterface(AInterfaceCase aInterfaceCase, AInterfaceCase aInterfaceCaseFirst){
+		if(aInterfaceCase.getProject().isEmpty() && aInterfaceCaseFirst != null){
+			aInterfaceCase.setProject(aInterfaceCaseFirst.getProject());
+			aInterfaceCase.setName(aInterfaceCaseFirst.getName());
+			aInterfaceCase.setType(aInterfaceCaseFirst.getType());
+			aInterfaceCase.setUrl(aInterfaceCaseFirst.getUrl());
+			aInterfaceCase.setDescription(aInterfaceCaseFirst.getDescription());
+		}
 	}
 	
 	private String getRequestBoy(String text, Integer row){

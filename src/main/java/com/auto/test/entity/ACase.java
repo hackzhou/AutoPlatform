@@ -116,7 +116,7 @@ public class ACase implements Serializable{
 		this.login = login;
 		this.link = link;
 	}
-	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String validate, Integer ready, String link, String img,  String once, Integer flag, Integer run, Integer login) {
+	public ACase(Integer id, AVersion versiono, AInterface interfaceo, String name, String body, String result, String strategy, String validate, Integer ready, String link, String img, String once, Integer flag, Integer run, Integer login) {
 		super();
 		this.id = id;
 		this.versiono = versiono;

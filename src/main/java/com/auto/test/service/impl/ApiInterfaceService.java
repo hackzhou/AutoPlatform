@@ -1,11 +1,13 @@
 package com.auto.test.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import com.auto.test.common.bean.AInterfaceCase;
 import com.auto.test.common.constant.HttpType;
@@ -22,6 +24,8 @@ import com.auto.test.service.IApiInterfaceService;
 
 @Service("apiInterfaceService")
 public class ApiInterfaceService implements IApiInterfaceService {
+	private static final String TOMCAT_ROOT	= ApiInterfaceService.class.getClassLoader().getResource("").getPath().substring(1).split("webapps")[0] + "webapps/ROOT/";
+	private static final String DATA_IMG	= "\"_DATA_IMG\"";
 	
 	@Resource(name="apiInterfaceDao")
 	private IApiInterfaceDao dao;
@@ -217,12 +221,21 @@ public class ApiInterfaceService implements IApiInterfaceService {
 	private void batchCase(Map<String, ACase> linkMap, AInterfaceCase aInterfaceCase, Integer iid, Integer vid, String batch){
 		Integer login = "Yes".equalsIgnoreCase(aInterfaceCase.getLogin()) ? 1 : 0;
 		String once = "Yes".equalsIgnoreCase(aInterfaceCase.getOnce()) ? "0" : null;
-		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), aInterfaceCase.getValidate(), aInterfaceCase.getReady(), null, null, once, 1, 1, login);
+		String caseImg = null;
+		if(aInterfaceCase.getBody() != null && aInterfaceCase.getBody().contains(DATA_IMG)){
+			try {
+				caseImg = TOMCAT_ROOT + "images/" +  aInterfaceCase.getUrl().replace("/", "_") + ".png";
+				FileUtils.copyFile(new File(TOMCAT_ROOT + "tomcat.png"), new File(caseImg));
+			} catch (Exception e) {
+				throw new BusinessException("自动设置图片异常[" + e.getMessage() + "]");
+			}
+		}
+		ACase c = new ACase(new AVersion(vid), new AInterface(iid), aInterfaceCase.getName(), aInterfaceCase.getBody(), aInterfaceCase.getResult(), aInterfaceCase.getStrategy(), aInterfaceCase.getValidate(), aInterfaceCase.getReady(), null, caseImg, once, 1, 1, login);
 		c.setBatch(batch);
 		List<ACase> list = casedDao.findByInterfaceIdFlagBody(iid, 1, aInterfaceCase.getBody());
 		if(list != null && !list.isEmpty()){
 			ACase caseo = list.get(0);
-			caseo.update(c, false, true);
+			caseo.update(c);
 			casedDao.update(caseo);
 			if(aInterfaceCase.getLink() != null){
 				linkMap.put(aInterfaceCase.getLink(), caseo);
