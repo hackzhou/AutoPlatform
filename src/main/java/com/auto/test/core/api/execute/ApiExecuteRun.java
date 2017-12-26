@@ -120,22 +120,27 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private void testPass(ACase aCase, ACase statusCase, String varBody, AData aData) throws Exception{
-		AResultDetail rd = null;
-		for (int j = 0; j < gameTimeout; j++) {
-			rd = new AResultDetail();
-			oneRunBodyTimeout(aCase, rd);
-			if(rd.getResultb() != null){
-				JSONObject obj = JSON.parseObject(rd.getResultb());
-				if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
-					break;
-				}else if("期数错误".equals(obj.get("message")) || "期次号错误".equals(obj.get("message"))){
-					AResultDetail srd = new AResultDetail();
-					oneRunBodyTimeout(statusCase, srd);
-					aCase.setBody(new JSONVar().replaceBody(varBody, srd.getResultb()));
-					aData.setResult(srd.getResultb());
+		try {
+			AResultDetail rd = null;
+			for (int j = 0; j < gameTimeout; j++) {
+				rd = new AResultDetail();
+				oneRunBodyTimeout(aCase, rd);
+				if(rd.getResultb() != null){
+					JSONObject obj = JSON.parseObject(rd.getResultb());
+					if(new Integer(200).equals(obj.get("code")) || "200".equals(obj.get("code"))  || "500".equals(obj.get("code"))  || "502".equals(obj.get("code")) || "游戏已关服".equals(obj.get("message"))){
+						break;
+					}else if("期数错误".equals(obj.get("message")) || "期次号错误".equals(obj.get("message"))){
+						AResultDetail srd = new AResultDetail();
+						oneRunBodyTimeout(statusCase, srd);
+						aCase.setBody(new JSONVar().replaceBody(varBody, srd.getResultb()));
+						aData.setResult(srd.getResultb());
+					}
+					Thread.sleep(1000);
 				}
-				Thread.sleep(1000);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	

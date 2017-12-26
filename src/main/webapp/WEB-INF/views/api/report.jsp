@@ -212,13 +212,23 @@
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
+						var platform = "";
+						if(data.platform == "1"){
+							platform = "测试环境";
+						}else if(data.platform == "2"){
+							platform = "预发环境";
+						}else if(data.platform == "3"){
+							platform = "线上环境";
+						}else{
+							platform = "-";
+						}
 						if("COMPLETE" == data.status){
 							if(data.msg == null || data.msg == ""){
-								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={0}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\">{1}</a></div>";
-								return String.format(html, data.id, data.name);
+								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={1}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\">{2}</a></div>";
+								return String.format(html, platform, data.id, data.name);
 							}else{
 								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'>{2}</a></div>";
-								return String.format(html, data.id, data.msg, data.name);
+								return String.format(html, platform, data.msg, data.name);
 							}
 						}
 						return data.name;
