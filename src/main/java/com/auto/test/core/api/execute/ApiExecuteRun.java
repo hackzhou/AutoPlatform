@@ -266,7 +266,7 @@ public class ApiExecuteRun implements Runnable {
 			}
 		}
 		if(aResultDetail != null && aResultDetail.getCaseo() != null){
-			logger.info("[主体运行][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toString());
+			logger.info("[主体运行][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toLogString());
 		}
 	}
 	

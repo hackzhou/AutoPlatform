@@ -43,6 +43,8 @@ public class ReadyDataImpl {
 	public void AC(int uid){
 		String sql = "DELETE FROM uic_user_weal WHERE user_id = " + uid;
 		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_3306, TEST_DB_UIC, TEST_USER, TEST_PWD, sql);
+		String s = "UPDATE uic_user SET nickname = 'hackzhou' WHERE id = " + uid;
+		new DBUtil().updateSQL(TEST_IP_219, TEST_PORT_8066, TEST_DB_MYCATUIC, TEST_USER, TEST_PWD, s);
 		logger.info("[用户中心-删除个人关联信息(保存本站/修改昵称)]-->" + sql);
 	}
 	

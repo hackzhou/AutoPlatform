@@ -250,5 +250,13 @@ public class AResultDetail implements Serializable{
 				+ resulta + ", resultb=" + resultb + ", status=" + status + ", time=" + time + ", msg=" + msg
 				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", memo=" + memo + "]";
 	}
+	
+	public String toLogString() {
+		return "AResultDetail [id=" + id + ", name=" + name + ", type=" + type + ", url=" + url + ", description="
+				+ description + ", version=" + version + ", channel=" + channel + ", account=" + account + ", strategy="
+				+ strategy + ", body=" + body + ", resulta=" + resulta + ", resultb=" + resultb + ", status=" + status
+				+ ", time=" + time + ", msg=" + msg + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", memo=" + memo + "]";
+	}
 
 }
