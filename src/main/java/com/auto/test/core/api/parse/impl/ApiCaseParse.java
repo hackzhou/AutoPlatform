@@ -90,20 +90,28 @@ public class ApiCaseParse implements IApiCaseParse {
 					if("1".equals(apiContext.getAccount().getToken())){
 						String loginname = apiContext.getAccount().getLoginname();
 						if("游客登录".equals(loginname)){
-							authorA = visitorLogin(httpClientManagerA);
+							//authorA = visitorLogin(httpClientManagerA);
 							authorB = visitorLogin(httpClientManagerB);
+							authorA = authorB;
 						}else{
 							String token = apiContext.getAccount().getPassword();
-							if(token.contains(",")){
+							/*if(token.contains(",")){
 								authorA = token.split(",")[0];
 								authorB = token.split(",")[1];
 							}else{
 								throw new BusinessException("TOKEN[线上,预发]格式错误！");
+							}*/
+							if(!token.contains(",")){
+								authorA = token;
+								authorB = token;
+							}else{
+								throw new BusinessException("TOKEN[线上/预发]格式错误！");
 							}
 						}
 					}else{
-						authorA = setAuthor(httpClientManagerA, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], "线上");
+						//authorA = setAuthor(httpClientManagerA, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], "线上");
 						authorB = setAuthor(httpClientManagerB, apiContext.getAccount(), loginUrl, version, channels.split(",")[0], "预发");
+						authorA = authorB;
 					}
 				}
 				for (String channel : channels.split(",")) {
