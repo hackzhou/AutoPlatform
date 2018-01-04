@@ -69,6 +69,8 @@
                   <th>ID</th>
                   <th>项目</th>
                   <th>版本</th>
+                  <th><b class='label label-info'>对比</b></th>
+                  <th><b class='label label-success'>运行</b></th>
                   <th><b class='label label-inverse'>名称</b></th>
                   <th><b class='label label-warning'>状态</b></th>
                   <th>运行时长</th>
@@ -180,7 +182,7 @@
     		],
     		aoColumnDefs : [
     			{
-					"sWidth" : "10%",
+					"sWidth" : "8%",
 					"aTargets" : [ 0 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -198,7 +200,7 @@
 					}
 				},
 				{
-					"sWidth" : "7%",
+					"sWidth" : "5%",
 					"aTargets" : [ 2 ],
 					"mData" : null,
 					"sClass" : "text-center",
@@ -207,36 +209,58 @@
 					}
 				},
 				{
-					"sWidth" : "17%",
+					"sWidth" : "5%",
 					"aTargets" : [ 3 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
-						var platform = "";
-						if(data.platform == "1"){
-							platform = "测试环境";
-						}else if(data.platform == "2"){
-							platform = "预发环境";
-						}else if(data.platform == "3"){
-							platform = "线上环境";
+						if(data.compare == "0"){
+							return "结果";
+						}else if(data.compare == "1"){
+							return "线上";
 						}else{
-							platform = "-";
+							return "-";
 						}
+					}
+				},
+				{
+					"sWidth" : "5%",
+					"aTargets" : [ 4 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
+						if(data.platform == "1"){
+							return "测试";
+						}else if(data.platform == "2"){
+							return "预发";
+						}else if(data.platform == "3"){
+							return "线上";
+						}else{
+							return "-";
+						}
+					}
+				},
+				{
+					"sWidth" : "15%",
+					"aTargets" : [ 5 ],
+					"mData" : null,
+					"sClass" : "text-center",
+					"mRender" : function(data, type, full) {
 						if("COMPLETE" == data.status){
 							if(data.msg == null || data.msg == ""){
 								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"${pageContext.request.contextPath}/api/report/detail/list/id={1}\" target='_blank' data-toggle=\"tooltip\" data-original-title=\"Detail\">{2}</a></div>";
-								return String.format(html, platform, data.id, data.name);
+								return String.format(html, data.id, data.id, data.name);
 							}else{
 								var html = "<div data-toggle='tooltip' title='{0}' data-placement='left'><a href=\"#\" data-data='{1}' class='alertError'>{2}</a></div>";
-								return String.format(html, platform, data.msg, data.name);
+								return String.format(html, data.id, data.msg, data.name);
 							}
 						}
 						return data.name;
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 4 ],
+					"sWidth" : "7%",
+					"aTargets" : [ 6 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -252,8 +276,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 5 ],
+					"sWidth" : "7%",
+					"aTargets" : [ 7 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -268,7 +292,7 @@
 				},
 				{
 					"sWidth" : "12%",
-					"aTargets" : [ 6 ],
+					"aTargets" : [ 8 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -283,8 +307,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 7 ],
+					"sWidth" : "7%",
+					"aTargets" : [ 9 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -301,8 +325,8 @@
 					}
 				},
 				{
-					"sWidth" : "8%",
-					"aTargets" : [ 8 ],
+					"sWidth" : "7%",
+					"aTargets" : [ 10 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -311,7 +335,7 @@
 				},
 				{
 					"sWidth" : "10%",
-					"aTargets" : [ 9 ],
+					"aTargets" : [ 11 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
@@ -320,7 +344,7 @@
 				},
 				{
 					"sWidth" : "5%",
-					"aTargets" : [ 10 ],
+					"aTargets" : [ 12 ],
 					"mData" : null,
 					"sClass" : "text-center",
 					"mRender" : function(data, type, full) {
