@@ -175,17 +175,32 @@ public class ApiExecuteRun implements Runnable {
 			aResultDetail.setAccount(apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword());
 		}
 		IApiResultDetailService apiResultDetailService = (IApiResultDetailService) SpringContext.getBean("apiResultDetailService");
-		String[] ignore = null;
-		if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
-			ignore = aCase.getStrategy().split(",");
-		}
 		JSONCompare jsonCompare = (JSONCompare) SpringContext.getBean("jsonCompare");
 		aResultDetail.setResulta(jsonCompare.sortJson(aResultDetail.getResulta()));
 		aResultDetail.setResultb(jsonCompare.sortJson(aResultDetail.getResultb()));
-		if(jsonCompare.compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
-			aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+		String[] ignore = null;
+		if(apiContext.isCompare()){
+			if("_RETURN_SUCCESS".equals(aCase.getValidate())){
+				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+			}else{
+				if(aCase.getValidate() != null && !aCase.getValidate().isEmpty()){
+					ignore = aCase.getValidate().split(",");
+				}
+				if(jsonCompare.compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+					aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+				}else{
+					aResultDetail.setStatus(ApiStatus.FAILURE.name());
+				}
+			}
 		}else{
-			aResultDetail.setStatus(ApiStatus.FAILURE.name());
+			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
+				ignore = aCase.getStrategy().split(",");
+			}
+			if(jsonCompare.compareJson(aResultDetail.getResulta(), aResultDetail.getResultb(), ignore)){
+				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
+			}else{
+				aResultDetail.setStatus(ApiStatus.FAILURE.name());
+			}
 		}
 		setRequest(aResultDetail);
 		apiResultDetailService.create(aResultDetail);

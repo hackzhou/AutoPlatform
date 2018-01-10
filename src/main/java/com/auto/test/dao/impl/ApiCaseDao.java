@@ -2,12 +2,9 @@ package com.auto.test.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.springframework.stereotype.Repository;
-import com.auto.test.common.constant.Const;
 import com.auto.test.common.dao.AbstractHibernateDao;
 import com.auto.test.dao.IApiCaseDao;
 import com.auto.test.entity.ACase;
@@ -26,16 +23,16 @@ public class ApiCaseDao extends AbstractHibernateDao<ACase> implements IApiCaseD
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<ACase> findByImg() {
-		Criteria criteria = getCurrentSession().createCriteria(ACase.class);
-		if(Const.IMG_PARAME_KEY != null && Const.IMG_PARAME_KEY.length() > 0){
-			String[] keys = Const.IMG_PARAME_KEY.split(",");
-			SimpleExpression[] se = new SimpleExpression[keys.length];
-			for (int i = 0; i < keys.length; i++) {
-				se[i] = Restrictions.like("body", "%\"" + keys[i] + "\":%");
-			}
-			return criteria.add(Restrictions.or(se)).addOrder(Order.desc("id")).list();
-		}
-		return null;
+//		Criteria criteria = getCurrentSession().createCriteria(ACase.class);
+//		if(Const.IMG_PARAME_KEY != null && Const.IMG_PARAME_KEY.length() > 0){
+//			String[] keys = Const.IMG_PARAME_KEY.split(",");
+//			SimpleExpression[] se = new SimpleExpression[keys.length];
+//			for (int i = 0; i < keys.length; i++) {
+//				se[i] = Restrictions.like("body", "%\"" + keys[i] + "\":%");
+//			}
+//			return criteria.add(Restrictions.or(se)).addOrder(Order.desc("id")).list();
+//		}
+		return getCurrentSession().createCriteria(ACase.class).add(Restrictions.like("body", "%\"_DATA_IMG\"%")).addOrder(Order.desc("id")).list();
 	}
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
