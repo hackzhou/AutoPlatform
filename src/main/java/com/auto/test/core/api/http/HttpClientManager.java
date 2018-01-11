@@ -82,9 +82,9 @@ public class HttpClientManager {
 						checkIP(testIp, "测试环境");
 						return new InetAddress[] {InetAddress.getByName(testIp.trim())};
 					}else if(new Integer(2).equals(type)){
-						String testIp = GlobalValueConfig.getConfig("host.preview.ip");
-						checkIP(testIp, "预发环境");
-						return super.resolve(host);
+						String previewIp = GlobalValueConfig.getConfig("host.preview.ip");
+						checkIP(previewIp, "预发环境");
+						return new InetAddress[] {InetAddress.getByName(previewIp.trim())};
 					}else if(new Integer(3).equals(type)){
 						return super.resolve(host);
 					}else{
