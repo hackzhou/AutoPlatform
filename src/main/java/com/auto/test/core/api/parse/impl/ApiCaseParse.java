@@ -23,6 +23,7 @@ import com.auto.test.entity.AAccount;
 import com.auto.test.entity.ACase;
 import com.auto.test.entity.AResult;
 import com.auto.test.service.IApiResultService;
+import com.auto.test.utils.CheckUtil;
 import com.auto.test.utils.EmailUtil;
 import com.auto.test.utils.ReadyUtil;
 
@@ -63,6 +64,19 @@ public class ApiCaseParse implements IApiCaseParse {
 
 	@Override
 	public void execute(ApiContext apiContext) throws Exception{
+		if(new Integer(1).equals(apiContext.getPlatform())){
+			String testIp = GlobalValueConfig.getConfig("host.test.ip");
+			new CheckUtil().checkIP(testIp, "测试环境");
+			logger.info("[运行环境]==>测试环境");
+		}else if(new Integer(2).equals(apiContext.getPlatform())){
+			String previewIp = GlobalValueConfig.getConfig("host.preview.ip");
+			new CheckUtil().checkIP(previewIp, "预发环境");
+			logger.info("[运行环境]==>预发环境");
+		}else if(new Integer(3).equals(apiContext.getPlatform())){
+			logger.info("[运行环境]==>线上环境");
+		}else{
+			throw new BusinessException("运行环境[type=" + apiContext.getPlatform() + "]不存在！");
+		}
 		this.httpClientManagerB = new HttpClientManager(apiContext.getPlatform());
 		if(apiContext.isCompare()){
 			this.httpClientManagerA = new HttpClientManager(3);

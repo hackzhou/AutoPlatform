@@ -18,14 +18,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultDnsResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.auto.test.common.config.GlobalValueConfig;
 import com.auto.test.common.exception.BusinessException;
 import com.auto.test.utils.ArrayUtil;
 
 public class HttpClientManager {
-	private static Logger logger = LoggerFactory.getLogger(HttpClientManager.class);
 	private static final Integer MAX_TOTAL = 500;
 	private static final Integer MAX_PERROUTE = MAX_TOTAL / 2;
 	private CloseableHttpClient httpClient = null;
@@ -81,17 +78,10 @@ public class HttpClientManager {
 			public InetAddress[] resolve(final String host) throws UnknownHostException {
 				if(Arrays.asList(ArrayUtil.getServerUrls()).contains(host)){
 					if(new Integer(1).equals(type)){
-						logger.info("[运行环境]==>测试环境");
-						String testIp = GlobalValueConfig.getConfig("host.test.ip");
-						checkIP(testIp, "测试环境");
-						return new InetAddress[] {InetAddress.getByName(testIp.trim())};
+						return new InetAddress[] {InetAddress.getByName(GlobalValueConfig.getConfig("host.test.ip").trim())};
 					}else if(new Integer(2).equals(type)){
-						logger.info("[运行环境]==>预发环境");
-						String previewIp = GlobalValueConfig.getConfig("host.preview.ip");
-						checkIP(previewIp, "预发环境");
-						return new InetAddress[] {InetAddress.getByName(previewIp.trim())};
+						return new InetAddress[] {InetAddress.getByName(GlobalValueConfig.getConfig("host.preview.ip").trim())};
 					}else if(new Integer(3).equals(type)){
-						logger.info("[运行环境]==>线上环境");
 						return super.resolve(host);
 					}else{
 						throw new BusinessException("运行环境[type=" + type + "]不存在！");
@@ -102,27 +92,6 @@ public class HttpClientManager {
 			}
 		};
 		return dnsResolver;
-	}
-	
-	public void checkIP(String ip, String text) {
-		String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
-		if(ip == null || ip.isEmpty()){
-			throw new BusinessException(text + "[ip为空]未配置！");
-		}
-		if(ip.matches(regex)){
-			try {
-				if(!InetAddress.getByName(ip).isReachable(3000)){
-					throw new BusinessException(text + "[ip=" + ip + "]连接超时！");
-				}
-			} catch (IOException e) {
-				throw new BusinessException(text + "[ip=" + ip + "]连接超时！[" + e.getMessage() + "]");
-			}
-		}else{
-			throw new BusinessException(text + "[ip=" + ip + "]格式错误！");
-		}
 	}
 	
 	public void close(){

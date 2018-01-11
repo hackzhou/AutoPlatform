@@ -281,7 +281,7 @@ public class ApiExecuteRun implements Runnable {
 			}
 		}
 		if(aResultDetail != null && aResultDetail.getCaseo() != null){
-			logger.info("[主体运行][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toLogString());
+			logger.info("[主体运行-" + apiContext.getPlatform() + "][" + aResultDetail.getCaseo().getId() + "]==>" + aResultDetail.toLogString());
 		}
 	}
 	
@@ -355,15 +355,15 @@ public class ApiExecuteRun implements Runnable {
 	
 	private String sendMessageGet(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String author, 
 			String version, String channel, Integer runid, ARunTime time) throws Exception{
-		logger.info("[主体运行][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
+		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(httpClientManagerB.getHttpClient(), url, author, channel, version, time);
-		logger.info("[主体运行][" + runid + "]==>" + result);
+		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>" + result);
 		return result;
 	}
 	
 	private String sendMessagePost(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String body, String author, 
 			String version, String channel, Integer runid, String img, ARunTime time) throws Exception{
-		logger.info("[主体运行][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
+		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = "";
 		if(img != null && !img.isEmpty()){
 			File file = new File(img);
@@ -376,7 +376,7 @@ public class ApiExecuteRun implements Runnable {
 		}else{
 			result = apiSendMessage.sendPost(httpClientManagerB.getHttpClient(), url, body, author, channel, version, false, time);
 		}
-		logger.info("[主体运行][" + runid + "]==>" + result);
+		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>" + result);
 		return result;
 	}
 	
