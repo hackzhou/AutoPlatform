@@ -157,7 +157,7 @@ public class ApiExecuteRun implements Runnable {
 	
 	private void oneRunBodyTimeout(ACase aCase, AResultDetail aResultDetail) throws Exception{
 		aCase.setBody(new JSONVar().replaceBodyVar(aCase.getBody(), authorB));
-		if(aCase.getReady() != null && aCase.getReady() > 0 && apiContext.getAccount() != null){
+		if(new Integer(1).equals(apiContext.getPlatform()) && aCase.getReady() != null && aCase.getReady() > 0 && apiContext.getAccount() != null){
 			if(apiContext.getDbUser() == 0){
 				apiContext.setDbUser(ReadyData.getUserID(apiContext.getAccount().getLoginname()));
 			}
