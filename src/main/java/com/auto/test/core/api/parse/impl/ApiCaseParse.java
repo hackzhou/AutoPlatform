@@ -79,6 +79,7 @@ public class ApiCaseParse implements IApiCaseParse {
 		}
 		this.httpClientManagerB = new HttpClientManager(apiContext.getPlatform());
 		if(apiContext.isCompare()){
+			logger.info("[运行环境]==>线上环境(对比预发环境)");
 			this.httpClientManagerA = new HttpClientManager(3);
 		}
 		try {

@@ -299,7 +299,7 @@
 		                        <select id="api-case-run-platform" name="api-case-run-platform" class="form-select" style="width: 80%;">
 		                        	<option value='1' selected="selected">测试环境</option>
 		                        	<option value='2'>预发环境</option>
-		                        	<option value='3'>线上环境</option>
+		                        	<!-- <option value='3'>线上环境</option> -->
 		                        </select>
 	                        </div>
 	                      </div>

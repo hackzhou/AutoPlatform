@@ -286,24 +286,32 @@ public class ApiExecuteRun implements Runnable {
 	}
 	
 	private void sendMessage(ACase aCase, AResultDetail aResultDetail) throws Exception{
+		String platform = "";
+		if(new Integer(1).equals(apiContext.getPlatform())){
+			platform = "测试";
+		}else if(new Integer(2).equals(apiContext.getPlatform())){
+			platform = "预发";
+		}else if(new Integer(3).equals(apiContext.getPlatform())){
+			platform = "线上";
+		}
 		ARunTime time = new ARunTime();
 		try {
 			IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 			if(HttpType.GET.name().equals(aCase.getInterfaceo().getType())){
 				if(apiContext.isCompare()){
-					aResultDetail.setResulta(sendMessageGet(httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, null), authorA, version, channel, aCase.getId(), null));
+					aResultDetail.setResulta(sendMessageGet("线上", httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, null), authorA, version, channel, aCase.getId(), null));
 				}else{
 					addResulta(aCase, aResultDetail);
 				}
-				aResultDetail.setResultb(sendMessageGet(httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, null), authorB, version, channel, aCase.getId(), time));
+				aResultDetail.setResultb(sendMessageGet(platform, httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, null), authorB, version, channel, aCase.getId(), time));
 			}else if(HttpType.POST.name().equals(aCase.getInterfaceo().getType())){
 				if(apiContext.isCompare()){
-					aResultDetail.setResulta(sendMessagePost(httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
+					aResultDetail.setResulta(sendMessagePost("线上", httpClientManagerA, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
 							authorA, version, channel, aCase.getId(), aCase.getImg(), null));
 				}else{
 					addResulta(aCase, aResultDetail);
 				}
-				aResultDetail.setResultb(sendMessagePost(httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
+				aResultDetail.setResultb(sendMessagePost(platform, httpClientManagerB, apiSendMessage, getFullUrl(aCase, url, aCase.getBody()), aCase.getBody(), 
 						authorB, version, channel, aCase.getId(), aCase.getImg(), time));
 			}
 		} finally {
@@ -353,17 +361,17 @@ public class ApiExecuteRun implements Runnable {
 		}
 	}
 	
-	private String sendMessageGet(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String author, 
+	private String sendMessageGet(String platform, HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String author, 
 			String version, String channel, Integer runid, ARunTime time) throws Exception{
-		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
+		logger.info("[主体运行-" + platform + "][" + runid + "]==>[GET:" + url  + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "]");
 		String result = apiSendMessage.sendGet(httpClientManagerB.getHttpClient(), url, author, channel, version, time);
-		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>" + result);
+		logger.info("[主体运行-" + platform + "][" + runid + "]==>" + result);
 		return result;
 	}
 	
-	private String sendMessagePost(HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String body, String author, 
+	private String sendMessagePost(String platform, HttpClientManager httpClientManager, IApiSendMessage apiSendMessage, String url, String body, String author, 
 			String version, String channel, Integer runid, String img, ARunTime time) throws Exception{
-		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
+		logger.info("[主体运行-" + platform + "][" + runid + "]==>[POST:" + url + "],[Author:" + author + "],[Version:" + version + "],[Channel:" + channel + "],[Data:" + body + "]");
 		String result = "";
 		if(img != null && !img.isEmpty()){
 			File file = new File(img);
@@ -376,7 +384,7 @@ public class ApiExecuteRun implements Runnable {
 		}else{
 			result = apiSendMessage.sendPost(httpClientManagerB.getHttpClient(), url, body, author, channel, version, false, time);
 		}
-		logger.info("[主体运行-" + apiContext.getPlatform() + "][" + runid + "]==>" + result);
+		logger.info("[主体运行-" + platform + "][" + runid + "]==>" + result);
 		return result;
 	}
 	
