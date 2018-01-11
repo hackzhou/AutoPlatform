@@ -16,7 +16,7 @@ public class CheckUtil {
 		}
 		if(ip.matches(regex)){
 			try {
-				if(!InetAddress.getByName(ip).isReachable(3000)){
+				if(!InetAddress.getByName(ip).isReachable(5000)){
 					throw new BusinessException(text + "[ip=" + ip + "]连接超时！");
 				}
 			} catch (IOException e) {
