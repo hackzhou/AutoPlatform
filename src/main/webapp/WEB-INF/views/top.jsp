@@ -30,7 +30,7 @@
 			<li class="dropdown"> <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs m-r-10">测试工具</b> </a>
 			<ul class="dropdown-menu dropdown-user animated flipInY">
 				<li><a href="${pageContext.request.contextPath}/tool/status/page"><i class="fa fa-rocket m-r-10"></i> 项目测试状态</a></li>
-				<%-- <li><a href="${pageContext.request.contextPath}/tool/pressure/page"><i class="fa fa-tablet m-r-10"></i> 压力测试-持久连接</a></li> --%>
+				<li><a href="${pageContext.request.contextPath}/tool/pressure/page"><i class="fa fa-tablet m-r-10"></i> 压力测试-持久连接</a></li>
 				<%-- <li><a href="${pageContext.request.contextPath}/tool/war/page"><i class="fa fa-rocket m-r-10"></i> 更新包(后端部署)</a></li> --%>
 				<%-- <li><a href="${pageContext.request.contextPath}/tool/web/page"><i class="fa fa-tablet m-r-10"></i> 更新包(前端部署)</a></li> --%>
 				<%-- <li><a href="${pageContext.request.contextPath}/tool/time/page"><i class="ti-timer m-r-10"></i> 工具(调整时间)</a></li> --%>
