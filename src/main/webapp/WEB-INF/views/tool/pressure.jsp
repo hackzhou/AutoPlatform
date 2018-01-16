@@ -78,7 +78,7 @@
 	                </div>
 	                <div class="col-md-3 text-center">
 	                  <button type="button" class="btn btn-success waves-effect waves-light m-r-20" id="tool-pressure-run" onclick="toolPressureRun();">运行</button>
-	                  <button type="button" class="btn btn-danger waves-effect waves-light m-r-20" id="tool-pressure-run" onclick="toolPressureStop();">停止</button>
+	                  <button type="button" class="btn btn-danger waves-effect waves-light m-r-20" id="tool-pressure-stop" onclick="toolPressureStop();">停止</button>
 	                </div>
 	              </div>
 	            </form>
@@ -130,13 +130,47 @@
 
 	$(document).ready(function(){
 		var msg = "${msg}";
-		if(msg != null && msg != ""){
-			showMsgDiv(msg);
-		}else{
+		var hdata = GetQueryStringChinese("data");
+		if(hdata == "success"){
+			checkPressureProjects();
 			hideMsgDiv();
+		}else{
+			if(msg != null && msg != ""){
+				checkStopPressureProjects();
+				showMsgDiv(msg);
+			}else{
+				hideMsgDiv();
+			}
 		}
 		initPressureProjects();
 	});
+	
+	var myInterval;
+	function checkPressureProjects(){
+		myInterval = setInterval(function(){
+			$.ajax({
+	    		type:"get",
+	    		url:"<%=request.getContextPath()%>/tool/pressure/check",
+	    		success:function(data){
+	    			if(data.responseCode == "0000"){
+	    				if(data.data.check > 0){
+	    					$('#tool-pressure-resultlog').empty();
+		    				$('#tool-pressure-resultlog').val("在线人数：" + data.data.check);
+	    				}else{
+	    					checkStopPressureProjects();
+	    				}
+	    			}else{
+	    				showMsgDiv(data.responseMsg);
+	    			}
+	    		}
+	    	});
+		}, 2 * 1000);
+	}
+	
+	function checkStopPressureProjects(){
+		$('#tool-pressure-resultlog').empty();
+		clearInterval(myInterval);
+	}
 	
 	function initPressureProjects(){
 		$.ajax({
@@ -175,6 +209,7 @@
 		}else if(!checkFiles(filename)){
 			showMsgDiv("选择文件不合法，文件的扩展名必须为.txt！");
 		}else{
+			checkPressureProjects();
 			$('#tool-pressure-form').submit();
 		}
 	}
@@ -195,6 +230,7 @@
     		url:"<%=request.getContextPath()%>/tool/pressure/stop",
     		success:function(data){
     			if(data.responseCode == "0000"){
+    				checkStopPressureProjects();
     				swal("成功", "全部停止！", "success");
     			}else{
     				showMsgDiv(data.responseMsg);

@@ -24,7 +24,7 @@ public class FishWebSocketAdapter extends WebSocketAdapter{
 	public void onConnected(WebSocket websocket, Map<String, List<String>> headers) {
 		int id = websocket.getSocket().hashCode();
 		System.out.println("当前连接的token:" + token);
-		ClientSession cs = new ClientSession(id, token, websocket);
+		ClientSession cs = new ClientSession(id, "", token, websocket);
 		SessionRegistry.addSession(cs);
 		ClientThreadPool.exec(cs);
 	}

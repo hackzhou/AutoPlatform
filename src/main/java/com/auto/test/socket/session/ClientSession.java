@@ -1,21 +1,22 @@
 package com.auto.test.socket.session;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import com.auto.test.socket.data.IMessageDef;
 import com.auto.test.socket.data.ProtocolData;
 import com.neovisionaries.ws.client.WebSocket;
 
 public class ClientSession implements Runnable{
-	private int channelId;
+	private int id;
 	private String token;
+	private String channelId;
 	private WebSocket ws;
 	private boolean enter;
-	private List<List<String>> fishs;
 	private boolean isEnter;
 	
-	public ClientSession(int channelId, String token, WebSocket ws){
+	public ClientSession(int id, String channelId, String token, WebSocket ws){
+		this.id = id;
 		this.channelId = channelId;
 		this.token = token;
 		this.ws = ws;
@@ -24,64 +25,104 @@ public class ClientSession implements Runnable{
 	@Override
 	public void run() {
 		try {
-			Map<String, Object> params = new HashMap<>();
-
 			if (!enter && !isEnter) {
 				isEnter = true;
-				params.put("roomConfigId", 1);
+				Map<String, Object> params = new HashMap<>();
 				params.put("token", token);
-				String content = new ProtocolData(2,params).toJson();
-				ws.sendText(content);
-			}else if(enter){
-				params.put("score", 1);
-				String content = new ProtocolData(15,params).toJson();
-				ws.sendText(content);
+				params.put("channelId", channelId);
+				String content = new ProtocolData(2, params).toJson();
+				ws.sendText(content); //登录
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void dealMessage(ProtocolData pd){
 		try {
-			if(pd.getProtocolId() == 2){
-				long roomId = ((Double) pd.getData().get("roomId")).longValue();
-				
-				if(roomId!=0){
-					this.enter = true;
-					this.fishs = (List<List<String>>) pd.getData().get("fish");
+			switch (pd.getProtocolId()) {
+			case IMessageDef.LOGIN:
+				Object obj = pd.getData().get("result");
+				if(obj != null){
+					double result = Double.parseDouble(obj.toString());
+					if (1 == result) {
+						this.enter = true;
+					}
 				}
-			}else if (pd.getProtocolId() == 3) {
-				this.fishs = (List<List<String>>) pd.getData().get("fish");
+				sendEnterRoomReq();
+				break;
+			case IMessageDef.ENTER_ROOM:
+				break;
+			case IMessageDef.ENTER_ROOM_PUSH:
+				break;
+			case IMessageDef.GAME_BEGIN_PUSH:
+				sendQiangZhuangReq();
+				break;
+			case IMessageDef.QIANG_ZHUANG:
+				break;
+			case IMessageDef.QIANG_ZHUANG_PUSH:
+				break;
+			case IMessageDef.QIANG_ZHUANG_OVER_PUSH:
+				sendXianJiaJiaBeiReq();
+				break;
+			case IMessageDef.XIAN_JIA_JIA_BEI:
+				break;
+			case IMessageDef.XIAN_JIA_JIA_BEI_PUSH:
+				break;
+			case IMessageDef.XIAN_JIA_JIA_BEI_OVER_PUSH:
+				sendZuPaiReq();
+				break;
+			case IMessageDef.ZU_PAI:
+				break;
+			case IMessageDef.ZU_PAI_PUSH:
+				break;
+			case IMessageDef.GAME_OVER_PUSH:
+				break;
+			default:
+				break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public String randomFishId(){
-		if (this.fishs!=null) {
-			List<String> fish = this.fishs.get(new Random().nextInt(this.fishs.size()));
-			return fish.get(3);
-		}
-		return "0";
+	private void sendEnterRoomReq() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("roomType", new Random().nextInt(3) + 1);
+		params.put("token", token);
+		params.put("channelId", channelId);
+		String content = new ProtocolData(IMessageDef.ENTER_ROOM, params).toJson();
+		ws.sendText(content);
 	}
-
-	public boolean isEnter() {
-		return enter;
+	
+	private void sendQiangZhuangReq() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("multiples", 0);
+		String content = new ProtocolData(IMessageDef.QIANG_ZHUANG, params).toJson();
+		ws.sendText(content);
 	}
-	public void setEnter(boolean enter) {
-		this.enter = enter;
+	
+	private void sendXianJiaJiaBeiReq() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("multiples", 5);
+		String content = new ProtocolData(IMessageDef.XIAN_JIA_JIA_BEI, params).toJson();
+		ws.sendText(content);
 	}
-	public int getChannelId() {
+	
+	private void sendZuPaiReq() {
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getChannelId() {
 		return channelId;
 	}
-	public void setChannelId(int channelId) {
+	public void setChannelId(String channelId) {
 		this.channelId = channelId;
-	}
-	public WebSocket getWs() {
-		return ws;
 	}
 	public String getToken() {
 		return token;
@@ -89,4 +130,11 @@ public class ClientSession implements Runnable{
 	public void setToken(String token) {
 		this.token = token;
 	}
+	public WebSocket getWs() {
+		return ws;
+	}
+	public void setWs(WebSocket ws) {
+		this.ws = ws;
+	}
+
 }

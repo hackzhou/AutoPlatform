@@ -280,9 +280,9 @@
 	</dependency>
 	<!-- nv-websocket -->
 	<dependency>
-	    <groupId>com.neovisionaries</groupId>
-	    <artifactId>nv-websocket-client</artifactId>
-	    <version>1.4</version>
+		<groupId>com.neovisionaries</groupId>
+		<artifactId>nv-websocket-client</artifactId>
+		<version>1.13</version>
 	</dependency>
 	<!-- junit4 -->
     <dependency>

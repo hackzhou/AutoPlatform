@@ -4,21 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SessionRegistry {
-	private static Map<Integer, ClientSession> channelSessionMap = new HashMap<Integer, ClientSession>();
+	private static Map<Integer, ClientSession> sessionMap = new HashMap<Integer, ClientSession>();
 	
 	public static void addSession(ClientSession session){
-		channelSessionMap.put(session.getChannelId(), session);
+		sessionMap.put(session.getId(), session);
 	}
 	
-	public static ClientSession getSessionById(int channelId){
-		return channelSessionMap.get(channelId);
+	public static ClientSession getSessionById(int id){
+		return sessionMap.get(id);
 	}
 	
 	public static int getOnlineCount(){
-		return  channelSessionMap.size();
+		return sessionMap.size();
 	}
 	
-	public static void remove(int channelId){
-		channelSessionMap.remove(channelId);
+	public static void remove(int id){
+		sessionMap.remove(id);
 	}
 }

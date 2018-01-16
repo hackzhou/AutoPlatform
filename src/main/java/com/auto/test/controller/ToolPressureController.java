@@ -1,6 +1,7 @@
 package com.auto.test.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,9 @@ import com.auto.test.core.api.http.IApiSendMessage;
 import com.auto.test.core.api.http.bean.AccessToken;
 import com.auto.test.core.api.http.bean.Login;
 import com.auto.test.socket.WebSocketService;
+import com.auto.test.socket.session.SessionRegistry;
 import com.auto.test.utils.FileUtil;
+import com.neovisionaries.ws.client.WebSocket;
 
 @RestController
 @RequestMapping(value = "tool/pressure")
@@ -40,21 +43,41 @@ public class ToolPressureController extends BaseController{
 	public ModelAndView runToolPressure(HttpServletRequest request, @RequestParam("tool-pressure-project") String project, @RequestParam("file") CommonsMultipartFile file) {
 		try {
 			logger.info("[Pressure]==>获取文件所有TOKEN！");
-			List<String> tokenList = getTokens(new FileUtil().readFile(file.getInputStream()));
-			logger.info("[Pressure]==>Token个数[" + tokenList.size() + "]");
-			if(tokenList.isEmpty()){
-				return failMsg("Token不能为空！", "tool/pressure");
+			List<String> reqList = new FileUtil().readFile(file.getInputStream());
+			if(reqList.isEmpty()){
+				return failMsg("文本内容不能为空！", "tool/pressure");
 			}
-			for (String token : tokenList) {
-				System.out.println(token);
-			}
-//			WebSocketService wss = new WebSocketService();
-//			wss.checkProjectUrl(project);
-//			wss.getInstance(project, tokenList);
-			return success("redirect:/tool/pressure/page", getCurrentUserName(request));
+			String version = reqList.get(0).split(",")[0];
+			String channel = reqList.get(0).split(",")[1];
+			reqList.remove(0);
+			List<String> tokenList = getTokens(version, channel, reqList);
+			logger.info("[Pressure]==>版本[" + version + "],渠道号[" + channel + "],Token个数[" + tokenList.size() + "]");
+			WebSocketService wss = new WebSocketService();
+			wss.checkProjectUrl(project);
+			wss.getInstance(project, channel, tokenList);
+			return success("success", "redirect:/tool/pressure/page", getCurrentUserName(request));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failMsg(e.getMessage(), "tool/pressure");
+		}
+	}
+	
+	@RequestMapping(value = "/check", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> checkToolPressure() {
+		logger.info("[Pressure]==>检查压测项目状态！");
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<WebSocket> list = WebSocketService.getWsList();
+			if(list == null || list.isEmpty()){
+				map.put("check", -1);
+			}else{
+				map.put("check", SessionRegistry.getOnlineCount());
+			}
+			return successJson(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failedJson(e.getMessage());
 		}
 	}
 	
@@ -83,17 +106,15 @@ public class ToolPressureController extends BaseController{
 		}
 	}
 	
-	private List<String> getTokens(List<String> accountList) throws Exception{
+	private List<String> getTokens(String version, String channel, List<String> accountList) throws Exception{
 		if(accountList == null || accountList.isEmpty()){
 			throw new BusinessException("账号/密码不可以为空！");
 		}
-		HttpClientManager httpClientManager = new HttpClientManager(1);
+		HttpClientManager httpClientManager = new HttpClientManager(3);
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 		String loginUrl = GlobalValueConfig.getConfig("url.login.uic");
 		String userLogin = GlobalValueConfig.getConfig("uri.user.login");
 		String usersAccessToken = GlobalValueConfig.getConfig("uri.user.accessToken");
-		String version = "1.0.0";
-		String channel = "100001";
 		List<String> tokenList = new ArrayList<String>();
 		for (String account : accountList) {
 			if(!account.contains(",")){
