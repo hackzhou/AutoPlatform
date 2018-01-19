@@ -154,7 +154,7 @@
 	    		success:function(data){
 	    			if(data.responseCode == "0000"){
 	    				if(data.data.check > 0){
-	    					$('#tool-pressure-resultlog').empty();
+	    					$('#tool-pressure-resultlog').val("");
 		    				$('#tool-pressure-resultlog').val("在线人数：" + data.data.check);
 	    				}else{
 	    					checkStopPressureProjects();
@@ -168,8 +168,8 @@
 	}
 	
 	function checkStopPressureProjects(){
-		$('#tool-pressure-resultlog').empty();
 		clearInterval(myInterval);
+		$('#tool-pressure-resultlog').val("");
 	}
 	
 	function initPressureProjects(){
