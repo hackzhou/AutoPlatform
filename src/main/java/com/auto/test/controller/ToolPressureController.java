@@ -40,9 +40,15 @@ public class ToolPressureController extends BaseController{
 	
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView runToolPressure(HttpServletRequest request, @RequestParam("tool-pressure-project") String project, @RequestParam("file") CommonsMultipartFile file) {
+	public ModelAndView runToolPressure(HttpServletRequest request, @RequestParam("tool-pressure-project") String project, @RequestParam("tool-pressure-platform") String platform, @RequestParam("file") CommonsMultipartFile file) {
 		try {
 			logger.info("[Pressure]==>获取文件所有TOKEN！");
+			if(project == null || project.isEmpty()){
+				return failMsg("压测项目不能为空！", "tool/pressure");
+			}
+			if(platform == null || platform.isEmpty()){
+				return failMsg("压测环境不能为空！", "tool/pressure");
+			}
 			List<String> reqList = new FileUtil().readFile(file.getInputStream());
 			if(reqList.isEmpty()){
 				return failMsg("文本内容不能为空！", "tool/pressure");
@@ -50,7 +56,7 @@ public class ToolPressureController extends BaseController{
 			String version = reqList.get(0).split(",")[0];
 			String channel = reqList.get(0).split(",")[1];
 			reqList.remove(0);
-			List<String> tokenList = getTokens(version, channel, reqList);
+			List<String> tokenList = getTokens(Integer.parseInt(platform), version, channel, reqList);
 			logger.info("[Pressure]==>版本[" + version + "],渠道号[" + channel + "],Token个数[" + tokenList.size() + "]");
 			WebSocketService wss = new WebSocketService();
 			wss.checkProjectUrl(project);
@@ -106,11 +112,11 @@ public class ToolPressureController extends BaseController{
 		}
 	}
 	
-	private List<String> getTokens(String version, String channel, List<String> accountList) throws Exception{
+	private List<String> getTokens(Integer platform, String version, String channel, List<String> accountList) throws Exception{
 		if(accountList == null || accountList.isEmpty()){
 			throw new BusinessException("账号/密码不可以为空！");
 		}
-		HttpClientManager httpClientManager = new HttpClientManager(3);
+		HttpClientManager httpClientManager = new HttpClientManager(platform);
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 		String loginUrl = GlobalValueConfig.getConfig("url.login.uic");
 		String userLogin = GlobalValueConfig.getConfig("uri.user.login");

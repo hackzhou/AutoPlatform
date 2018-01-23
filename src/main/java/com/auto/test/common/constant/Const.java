@@ -11,8 +11,9 @@ public class Const {
 	public static final String IP_SERVER_2				= "192.168.136";
 	public static final String IP_SERVER_TEST			= IP_SERVER_2 + ".208";
 	public static final String IP_ONLINE				= IP_SERVER_1 + ".242";
-	public static final String IP_TEST					= "10.33.80.18";
+	public static final String IP_TEST					= "10.33.80.82";
 	public static final String IP_CURRENT				= getCurrentIP();
+	public static final boolean IP_IS_CURRENT			= Const.IP_TEST.equals(Const.IP_CURRENT);
 
 	public static final String RUN_PROJECT_NAME_Y		= "项目[%s]-已登录";
 	public static final String RUN_CASE_NAME_Y			= "案例[%s]-已登录";

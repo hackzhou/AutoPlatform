@@ -60,7 +60,18 @@
 	          <div class="form-body">
 	            <form id="tool-pressure-form" action="${pageContext.request.contextPath}/tool/pressure/run" method="post" enctype="multipart/form-data">
 	              <div class="row">
-	                <div class="col-md-3 text-center">
+	                <div class="col-md-2 text-center">
+	                  <div class="form-group">
+	                    <label class="col-sm-4 text-center"><code>压测环境 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-8">
+	                      <select id="tool-pressure-platform" name="tool-pressure-platform" class="form-select" style="width: 80%;">
+                        	<option value='1' selected="selected">测试环境</option>
+                        	<!-- <option value='3'>其他环境</option> -->
+                          </select>
+					    </div>
+	                  </div>
+	                </div>
+	                <div class="col-md-2 text-center">
 	                  <div class="form-group">
 	                    <label class="col-sm-4 text-center"><code>压测项目 <i class="fa fa-chevron-right text-info"></i></code></label>
 					    <div class="col-sm-8">
@@ -68,7 +79,7 @@
 					    </div>
 	                  </div>
 	                </div>
-	                <div class="col-md-6">
+	                <div class="col-md-5">
 	              	  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
 		                <span class="input-group-addon btn btn-pressurening btn-file"> <span class="fileinput-new">选择TOKEN文件</span> <span class="fileinput-exists">重选</span>
 		                <input type="file" name="file">
