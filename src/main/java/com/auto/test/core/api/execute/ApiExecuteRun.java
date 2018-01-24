@@ -83,7 +83,7 @@ public class ApiExecuteRun implements Runnable {
 			oneRunBody(aCase, resultDetail);
 			List<ACase> list = aCase.getList();
 			if(list != null && !list.isEmpty()){
-				if(Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
+				if(aCase.getLink() != null && !aCase.getLink().isEmpty() && Arrays.asList(gameProject.split(",")).contains(apiContext.getProject().getPath())){
 					ACase statusCase = null;
 					if(Arrays.asList(gameStatus.split(",")).contains(aCase.getInterfaceo().getUrl())){
 						statusCase = aCase;
