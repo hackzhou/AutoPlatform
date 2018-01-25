@@ -1,5 +1,7 @@
 package com.auto.test.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
@@ -10,14 +12,33 @@ import com.auto.test.core.api.http.impl.ApiSendMessage;
 
 public class ReadyUtil {
 	private static final Logger logger = LoggerFactory.getLogger(ReadyUtil.class);
+	//private static final String URL_LOGIN_VISITOR		= "https://game-api.yingdd888.com/" + "uic/api/user/login/visitor";
+	//private static final String URL_LOGIN_ACCESSTOKEN	= "https://game-api.yingdd888.com/" + "uic/api/user/login/accessToken";
 	private static final String URL_LOGIN_VISITOR		= Const.API_HTTPS + "uic-api.beeplay123.com/uic/api/user/login/visitor";
 	private static final String URL_LOGIN_ACCESSTOKEN	= Const.API_HTTPS + "uic-api.beeplay123.com/uic/api/user/login/accessToken";
-	private static final String BODY_VISITOR			= "{\"source\":1,\"visitorToken\":\"08ef7567-cfa1-3e46-9060-f62f846cb0fa\"}";
+	//private static final String BODY_VISITOR			= "{\"source\":1,\"visitorToken\":\"08ef7567-cfa1-3e46-9060-f62f846cb0fa\"}";
+	private static final String BODY_VISITOR			= "{\"source\":1,\"visitorToken\":\"\"}";
 	private static final String BODY_ACCESSTOKEN		= "{\"type\":1,\"token\":\"%s\"}";
 	private static final String APP_VERSION				= "1.0.0";
 	private static final String APP_CHANNEL				= "200001";
 	private static final String VAR_DATA				= "data";
 	private static final String VAR_ACCESSTOKEN			= "accessToken";
+	
+	public static void main(String[] args) {
+		try {
+			ReadyUtil readyUtil = new ReadyUtil();
+			HttpClientManager httpClientManager = new HttpClientManager(3);
+			List<String> list = new ArrayList<String>();
+			for (int i = 0; i < 3000; i++) {
+				list.add(readyUtil.getVisitorToken(httpClientManager));
+			}
+			for (String string : list) {
+				System.out.println(string);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public String getVisitorToken(HttpClientManager httpClientManager) throws Exception{
 		String result = sendMessage(httpClientManager, URL_LOGIN_VISITOR, BODY_VISITOR, APP_VERSION, APP_CHANNEL);
