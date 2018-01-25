@@ -180,6 +180,7 @@ public class ApiExecuteRun implements Runnable {
 		aResultDetail.setResultb(jsonCompare.sortJson(aResultDetail.getResultb()));
 		String[] ignore = null;
 		if(apiContext.isCompare()){
+			aResultDetail.setStrategy(aCase.getValidate());
 			if("_RETURN_SUCCESS".equals(aCase.getValidate())){
 				aResultDetail.setStatus(ApiStatus.SUCCESS.name());
 			}else{
@@ -193,6 +194,7 @@ public class ApiExecuteRun implements Runnable {
 				}
 			}
 		}else{
+			aResultDetail.setStrategy(aCase.getStrategy());
 			if(aCase.getStrategy() != null && !aCase.getStrategy().isEmpty()){
 				ignore = aCase.getStrategy().split(",");
 			}
@@ -213,6 +215,11 @@ public class ApiExecuteRun implements Runnable {
 		aResultDetail.setVersion(version);
 		aResultDetail.setChannel(channel);
 		aResultDetail.setResulto(apiContext.getResult());
+		if(apiContext.isCompare()){
+			aResultDetail.setStrategy(aCase.getValidate());
+		}else{
+			aResultDetail.setStrategy(aCase.getStrategy());
+		}
 		if(apiContext.getAccount() != null){
 			aResultDetail.setAccount(apiContext.getAccount().getLoginname() + "/" + apiContext.getAccount().getPassword());
 		}

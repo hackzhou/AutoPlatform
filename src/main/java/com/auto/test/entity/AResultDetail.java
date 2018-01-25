@@ -118,7 +118,6 @@ public class AResultDetail implements Serializable{
 		this.description = aCase.getInterfaceo().getDescription();
 		this.name = aCase.getName();
 		this.body = aCase.getBody();
-		this.strategy = aCase.getStrategy();
 	}
 
 	public Integer getId() {
