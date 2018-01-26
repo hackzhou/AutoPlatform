@@ -88,7 +88,7 @@ public class ClientSession implements Runnable{
 	
 	private void sendEnterRoomReq() {
 		Map<String, Object> params = new HashMap<>();
-		params.put("roomType", new Random().nextInt(3) + 1);
+		params.put("roomType", new Random().nextInt(4) + 1);
 		params.put("token", token);
 		params.put("channelId", channelId);
 		String content = new ProtocolData(IMessageDef.ENTER_ROOM, params).toJson();
