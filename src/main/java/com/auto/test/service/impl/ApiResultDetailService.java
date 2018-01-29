@@ -38,6 +38,11 @@ public class ApiResultDetailService implements IApiResultDetailService {
 	public List<AResultDetail> findByResultId(Integer rid) {
 		return dao.findByResultId(rid);
 	}
+	
+	@Override
+	public List<AResultDetail> findByResultId(Integer rid, Integer filter) {
+		return dao.findByResultId(rid, filter);
+	}
 
 	@Override
 	public AResultDetail findById(Integer id) {

@@ -41,5 +41,14 @@ public class ApiResultDetailDao extends AbstractHibernateDao<AResultDetail> impl
 	public List<AResultDetail> findByResultId(Integer rid) {
 		return getCurrentSession().createCriteria(AResultDetail.class).add(Restrictions.eq("resulto", new AResult(rid))).list();
 	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<AResultDetail> findByResultId(Integer rid, Integer filter) {
+		if(new Integer(1).equals(filter)){
+			return getCurrentSession().createCriteria(AResultDetail.class).add(Restrictions.eq("resulto", new AResult(rid))).add(Restrictions.isNotNull("strategy")).add(Restrictions.ne("strategy", "")).list();
+		}
+		return getCurrentSession().createCriteria(AResultDetail.class).add(Restrictions.eq("resulto", new AResult(rid))).list();
+	}
 
 }

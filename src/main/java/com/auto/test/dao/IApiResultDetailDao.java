@@ -13,5 +13,7 @@ public interface IApiResultDetailDao extends IBaseDao<AResultDetail> {
 	List<AResultDetail> findByErr500(Integer rid);
 	
 	List<AResultDetail> findByResultId(Integer rid);
+
+	List<AResultDetail> findByResultId(Integer rid, Integer filter);
 	
 }

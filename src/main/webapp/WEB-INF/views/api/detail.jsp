@@ -55,6 +55,13 @@
         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
           <button type="button" id="api-rerun" class="btn btn-default" onclick="rerun()">失败重跑</button>
         </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+          <label class="col-md-6">是否包含非验证点：</label>
+          <select id="api-report-detail-filter-s" name="api-report-detail-filter-s" class="col-md-6">
+            <option value="0" selected="selected">全部</option>
+            <option value="1">包含</option>
+          </select>
+        </div>
       </div>
       <!-- /.modal -->
       <div class="modal fade" id="exampleModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDetail">
@@ -169,22 +176,28 @@
 		$('.top-menu-all').hide();
 		$('.top-logout-user').hide();
 		initEvent();
-		createTable("0");
+		createTable(0,0);
 	});
 	
 	function initEvent() {
 		$("#api-rerun").attr("disabled","true");
 		$("#api-report-detail-err-s").change(function(){
+			$("#api-report-detail-filter-s").val("0");
 			$("#api-rerun").attr("disabled","true");
-			createTable($(this).val());
+			createTable($(this).val(),0);
+		});
+		
+		$("#api-report-detail-filter-s").change(function(){
+			$("#api-report-detail-err-s").val("0");
+			createTable(0,$(this).val());
 		});
 	}
 	
-	function createTable(index) {
+	function createTable(index,filter) {
 		$('#api-report-detail-table').dataTable().fnDestroy();
     	$('#api-report-detail-table').DataTable({
     		responsive : false,
-    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/i=" + index + "/id=${data}",
+    		sAjaxSource : "<%=request.getContextPath()%>/api/report/detail/list/data/i=" + index + "/j=" + filter + "/id=${data}",
     		bProcessing : false,
     		"aaSorting": [
     			[9,'asc']

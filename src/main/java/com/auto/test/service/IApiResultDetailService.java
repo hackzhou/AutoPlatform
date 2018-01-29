@@ -17,6 +17,8 @@ public interface IApiResultDetailService{
 
 	List<AResultDetail> findByResultId(Integer rid);
 	
+	List<AResultDetail> findByResultId(Integer rid, Integer filter);
+	
 	AResultDetail findById(Integer id);
 	
 	Integer create(AResultDetail aResultDetail);

@@ -101,13 +101,17 @@ public class ApiReportController extends BaseController{
 		return success(id, "api/detail", getCurrentUserName(request));
 	}
 	
-	@RequestMapping(value = "/detail/list/data/i={i}/id={id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/detail/list/data/i={i}/j={j}/id={id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getReportDetailDataByResultId(@PathVariable("i") String i, @PathVariable("id") String id) {
+	public Map<String, Object> getReportDetailDataByResultId(@PathVariable("i") String i, @PathVariable("j") String j, @PathVariable("id") String id) {
 		logger.info("[ReportDetail]==>获取所有报告[id=" + id + "]详情数据！");
 		List<AResultDetail> list = null;
 		if("0".equals(i)){
-			list = resultDetailService.findByResultId(Integer.parseInt(id));
+			if("1".equals(j)){
+				list = resultDetailService.findByResultId(Integer.parseInt(id), 1);
+			}else{
+				list = resultDetailService.findByResultId(Integer.parseInt(id));
+			}
 		}else if("1".equals(i)){
 			list = resultDetailService.findByAllErr(Integer.parseInt(id));
 		}else if("2".equals(i)){
