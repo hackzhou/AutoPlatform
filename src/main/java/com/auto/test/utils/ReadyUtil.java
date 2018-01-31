@@ -1,7 +1,5 @@
 package com.auto.test.utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
@@ -28,13 +26,15 @@ public class ReadyUtil {
 		try {
 			ReadyUtil readyUtil = new ReadyUtil();
 			HttpClientManager httpClientManager = new HttpClientManager(3);
-			List<String> list = new ArrayList<String>();
+			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < 3000; i++) {
-				list.add(readyUtil.getVisitorToken(httpClientManager));
+				String token = readyUtil.getVisitorToken(httpClientManager);
+				sb.append(token + "\r\n");
+				System.out.println(token);
+				Thread.sleep(1000);
 			}
-			for (String string : list) {
-				System.out.println(string);
-			}
+			httpClientManager.close();
+			new FileUtil().writeJavaFile("D:\\", "TOKEN.txt", sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
