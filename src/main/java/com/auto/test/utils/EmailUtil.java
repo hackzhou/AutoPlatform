@@ -95,7 +95,7 @@ public class EmailUtil {
         //邮件的文本内容
         message.setContent(context, "text/html;charset=UTF-8");*/
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("id", aResult.getId());
+        root.put("id", String.valueOf(aResult.getId()));
         root.put("project", aResult.getProjecto().getName());
         root.put("version", aResult.getVersiono().getVersion());
         root.put("name", aResult.getName());
@@ -103,9 +103,9 @@ public class EmailUtil {
         root.put("startTime", DateUtil.getFormatDateTime(aResult.getStartTime()));
         root.put("endTime", DateUtil.getFormatDateTime(aResult.getEndTime()));
         root.put("subTime", DateUtil.subTime(aResult.getEndTime().getTime() - aResult.getStartTime().getTime()));
-        root.put("total", aResult.getTotal());
-        root.put("success", aResult.getSuccess());
-        root.put("fail", aResult.getFail());
+        root.put("total", String.valueOf(aResult.getTotal()));
+        root.put("success", String.valueOf(aResult.getSuccess()));
+        root.put("fail", String.valueOf(aResult.getFail()));
         DecimalFormat df = new DecimalFormat("#.##%");
         root.put("per", df.format((float) aResult.getSuccess() /(float) aResult.getTotal()));
         root.put("ip", Const.getCurrentIP());
