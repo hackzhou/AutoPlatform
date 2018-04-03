@@ -59,8 +59,15 @@
 	          <div class="form-body">
 	            <form id="api-upload-form" class="form-horizontal" action="${pageContext.request.contextPath}/tool/token/fileUpload" method="post" enctype="multipart/form-data">
 	              <div class="form-group">
+	                <label class="col-sm-2 text-center"><code>环境 <i class="fa fa-chevron-right text-info"></i></code></label>
+					    <div class="col-sm-2">
+	                      <select id="tool-token-platform" name="tool-token-platform" class="form-select" style="width: 80%;">
+                        	<option value='1' selected="selected">测试环境</option>
+                        	<!-- <option value='3'>其他环境</option> -->
+                          </select>
+					    </div>
 	                <label class="col-sm-2 text-info text-center">文件上传（TXT）：</label>
-	                <div class="col-sm-8">
+	                <div class="col-sm-4">
 	                  <div class="fileinput fileinput-new input-group" data-provides="fileinput" onclick="hideMsgDiv();">
 	                    <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 	                    <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">选择文件</span> <span class="fileinput-exists">重选</span>
@@ -132,7 +139,7 @@
 		var hdata = GetQueryStringChinese("data");
 		if(hdata != null && hdata != ""){
 			if(hdata == "success"){
-				swal("成功!", "成功生成！", "success");
+				swal("成功!", "成功生成！ 请点击[结果下载]", "success");
 			}else if(hdata.indexOf("Error") == 0){
 				showMsgDiv(hdata);
 			}

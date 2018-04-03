@@ -52,7 +52,11 @@ public class ToolTokenController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
-	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file) throws Exception {
+	public ModelAndView fileUpload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file, @RequestParam("tool-token-platform") String platform) throws Exception {
+		if(platform == null || platform.isEmpty()){
+			logger.error("[Upload]==>批量生成Token[平台不能为空！]");
+			return failMsg("平台不能为空！", "tool/token");
+		}
 		if(file == null || file.isEmpty()){
 			logger.error("[Upload]==>批量生成Token[文件是空或者不存在！]");
 			return failMsg("文件是空或者不存在！", "tool/token");
@@ -67,7 +71,7 @@ public class ToolTokenController extends BaseController{
 			String version = reqList.get(0).split(",")[0];
 			String channel = reqList.get(0).split(",")[1];
 			reqList.remove(0);
-			String tokens = getTokens(version, channel, reqList);
+			String tokens = getTokens(version, channel, reqList, Integer.parseInt(platform));
 			fu.writeJavaFile("C:\\", "Tokens.txt", tokens);
 			logger.info("[Upload]==>批量生成Token文件上传成功！");
 			return success("success", "redirect:/tool/token/page", getCurrentUserName(request));
@@ -77,11 +81,11 @@ public class ToolTokenController extends BaseController{
 		}
 	}
 	
-	private String getTokens(String version, String channel, List<String> accountList) throws Exception{
+	private String getTokens(String version, String channel, List<String> accountList, Integer platform) throws Exception{
 		if(accountList == null || accountList.isEmpty()){
 			throw new BusinessException("账号/密码不可以为空！");
 		}
-		HttpClientManager httpClientManager = new HttpClientManager(3);
+		HttpClientManager httpClientManager = new HttpClientManager(platform);
 		IApiSendMessage apiSendMessage = (IApiSendMessage) SpringContext.getBean("apiSendMessage");
 		String loginUrl = GlobalValueConfig.getConfig("url.login.uic");
 		String userLogin = GlobalValueConfig.getConfig("uri.user.login");
