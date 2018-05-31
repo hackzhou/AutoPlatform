@@ -41,6 +41,8 @@ public class ToolStatusController extends BaseController{
 			if("测试中".equals(tStatus.getStatus())){
 				tStatus.setStatus("测试完成");
 			}else if("测试完成".equals(tStatus.getStatus())){
+				tStatus.setStatus("冲突");
+			}else if("冲突".equals(tStatus.getStatus())){
 				tStatus.setStatus("测试中");
 			}else{
 				tStatus.setStatus("测试完成");

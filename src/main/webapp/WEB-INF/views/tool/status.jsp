@@ -61,7 +61,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${data2}" var="item">
-                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':'#90EE90'}">
+                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':(item.status=='冲突'?'#FF0000':'#90EE90')}">
                   	<c:if test="${not empty item.memo}">
                   	  <td rowspan="${item.memo}" style="vertical-align:middle;background:#87CEEB"><b>${item.root}</b></td>
                   	</c:if>
@@ -94,7 +94,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${data}" var="item">
-                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':'#90EE90'}">
+                  <tr id="tr-${item.id}" style="background: ${item.status=='测试中'?'#FFD700':(item.status=='冲突'?'#FF0000':'#90EE90')}">
                   	<c:if test="${not empty item.memo}">
                   	  <td rowspan="${item.memo}" style="vertical-align:middle;background:#87CEEB"><b>${item.root}</b></td>
                   	</c:if>
@@ -153,9 +153,13 @@
 	      				$('#tr-' + id).css("background-color", "#FFD700");
       					$('#btn-' + id).text("测试中");
       					$('#operator-' + id).text(data.data.operator);
-      				}else{
+      				}else if("测试完成" == data.data.status){
       					$('#tr-' + id).css("background-color", "#90EE90");
 	      				$('#btn-' + id).text("测试完成");
+	      				$('#operator-' + id).text(data.data.operator);
+      				}else if("冲突" == data.data.status){
+      					$('#tr-' + id).css("background-color", "#FF0000");
+	      				$('#btn-' + id).text("冲突");
 	      				$('#operator-' + id).text(data.data.operator);
       				}
       	    	}else{
